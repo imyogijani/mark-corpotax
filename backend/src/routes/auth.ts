@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { UserService } from "../services/firebaseService";
+import { EmailService } from "../services/emailService";
 import { protect } from "../middleware/auth";
 
 const router = express.Router();
@@ -228,17 +229,17 @@ router.post("/check-email", async (req: Request, res: Response) => {
   }
 });
 
-// @desc    Reset password
-// @route   POST /api/auth/reset-password
+// @desc    Request password reset (send email with reset link)
+// @route   POST /api/auth/forgot-password
 // @access  Public
-router.post("/reset-password", async (req: Request, res: Response) => {
+router.post("/forgot-password", async (req: Request, res: Response) => {
   try {
-    const { email, newPassword } = req.body;
+    const { email } = req.body;
 
-    if (!email || !newPassword) {
+    if (!email) {
       res.status(400).json({
         success: false,
-        message: "Email and new password are required",
+        message: "Email is required",
       });
       return;
     }
@@ -246,9 +247,123 @@ router.post("/reset-password", async (req: Request, res: Response) => {
     // Find user
     const user = await UserService.findByEmail(email);
     if (!user) {
+      // Don't reveal if user exists or not for security
+      res.status(200).json({
+        success: true,
+        message:
+          "If an account exists with this email, a password reset link has been sent",
+      });
+      return;
+    }
+
+    // Generate reset token and store in Firebase
+    const resetToken = await EmailService.generatePasswordResetToken(email);
+    if (!resetToken) {
+      res.status(500).json({
+        success: false,
+        message: "Failed to generate reset token",
+      });
+      return;
+    }
+
+    // Create reset URL
+    const clientUrl = process.env.CLIENT_URL || "https://markcorpotax.com";
+    const resetUrl = `${clientUrl}/reset-password?token=${resetToken}`;
+
+    // Send password reset email
+    const emailSent = await EmailService.sendPasswordResetEmail(
+      email,
+      resetUrl
+    );
+    if (!emailSent) {
+      res.status(500).json({
+        success: false,
+        message: "Failed to send reset email. Please try again later.",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset email sent successfully",
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || "Server error sending reset email",
+    });
+  }
+});
+
+// @desc    Verify reset token
+// @route   POST /api/auth/verify-reset-token
+// @access  Public
+router.post("/verify-reset-token", async (req: Request, res: Response) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      res.status(400).json({
+        success: false,
+        message: "Reset token is required",
+      });
+      return;
+    }
+
+    const result = await EmailService.verifyPasswordResetToken(token);
+
+    if (!result.valid) {
+      res.status(400).json({
+        success: false,
+        message: "Invalid or expired reset token",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Token is valid",
+      data: { email: result.email },
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || "Server error verifying token",
+    });
+  }
+});
+
+// @desc    Reset password with token
+// @route   POST /api/auth/reset-password
+// @access  Public
+router.post("/reset-password", async (req: Request, res: Response) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    if (!token || !newPassword) {
+      res.status(400).json({
+        success: false,
+        message: "Reset token and new password are required",
+      });
+      return;
+    }
+
+    // Verify token
+    const result = await EmailService.verifyPasswordResetToken(token);
+    if (!result.valid || !result.email) {
+      res.status(400).json({
+        success: false,
+        message: "Invalid or expired reset token",
+      });
+      return;
+    }
+
+    // Find user
+    const user = await UserService.findByEmail(result.email);
+    if (!user) {
       res.status(404).json({
         success: false,
-        message: "User not found with this email",
+        message: "User not found",
       });
       return;
     }
@@ -257,6 +372,9 @@ router.post("/reset-password", async (req: Request, res: Response) => {
     const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
     await UserService.update(user.id!, { password: hashedPassword });
+
+    // Mark token as used
+    await EmailService.markTokenAsUsed(token);
 
     res.status(200).json({
       success: true,

@@ -5,6 +5,7 @@ import {
   UserService,
   NotificationService,
 } from "../services/firebaseService";
+import { EmailService } from "../services/emailService";
 import { protect, authorize } from "../middleware/auth";
 
 const router = express.Router();
@@ -233,5 +234,87 @@ router.get("/my", protect, async (req: any, res: Response) => {
     });
   }
 });
+
+// @desc    Reply to contact submission via email
+// @route   POST /api/contact/:id/reply
+// @access  Private/Admin
+router.post(
+  "/:id/reply",
+  protect,
+  authorize("admin"),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { replyMessage } = req.body;
+
+      if (!replyMessage || replyMessage.trim() === "") {
+        res.status(400).json({
+          success: false,
+          message: "Reply message is required",
+        });
+        return;
+      }
+
+      // Get the contact
+      const contact = await ContactService.findById(id);
+      if (!contact) {
+        res.status(404).json({
+          success: false,
+          message: "Contact not found",
+        });
+        return;
+      }
+
+      // Send reply email
+      const emailSent = await EmailService.sendContactReply({
+        to: contact.email,
+        customerName: contact.name,
+        originalSubject: contact.subject,
+        originalMessage: contact.message,
+        replyMessage: replyMessage.trim(),
+      });
+
+      if (!emailSent) {
+        res.status(500).json({
+          success: false,
+          message: "Failed to send reply email. Please try again.",
+        });
+        return;
+      }
+
+      // Update contact status to replied
+      await ContactService.update(id, { status: "replied" });
+
+      // Notify user if they have an account
+      const user = await UserService.findByEmail(contact.email);
+      if (user) {
+        await NotificationService.create({
+          userId: user.id!,
+          type: "success",
+          title: "Reply Received",
+          message: `We've responded to your inquiry "${contact.subject}". Please check your email.`,
+          category: "contact",
+          actionUrl: "/dashboard",
+          actionLabel: "View Dashboard",
+          metadata: {
+            contactId: contact.id,
+            subject: contact.subject,
+          },
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Reply sent successfully",
+        data: { emailSent: true },
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        message: error.message || "Server error sending reply",
+      });
+    }
+  }
+);
 
 export default router;
