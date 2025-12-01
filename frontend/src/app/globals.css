@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 224 71% 4%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
+    --primary: 174 100% 29%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 220 13% 96%;
+    --secondary-foreground: 224 71% 4%;
+    --muted: 220 13% 91%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 220 13% 91%;
+    --accent-foreground: 224 71% 4%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 174 100% 29%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 224 71% 4%;
+    --sidebar-foreground: 213 31% 91%;
+    --sidebar-primary: 262 83% 58%;
+    --sidebar-primary-foreground: 210 20% 98%;
+    --sidebar-accent: 215 28% 17%;
+    --sidebar-accent-foreground: 210 20% 98%;
+    --sidebar-border: 215 28% 17%;
+    --sidebar-ring: 262 83% 58%;
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+    --popover: 224 71% 4%;
+    --popover-foreground: 213 31% 91%;
+    --primary: 174 100% 29%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 215 28% 17%;
+    --secondary-foreground: 210 20% 98%;
+    --muted: 215 28% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 215 28% 17%;
+    --accent-foreground: 210 20% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 215 28% 17%;
+    --input: 215 28% 17%;
+    --ring: 174 100% 29%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 224 71% 4%;
+    --sidebar-foreground: 213 31% 91%;
+    --sidebar-primary: 262 83% 58%;
+    --sidebar-primary-foreground: 210 20% 98%;
+    --sidebar-accent: 215 28% 17%;
+    --sidebar-accent-foreground: 210 20% 98%;
+    --sidebar-border: 215 28% 17%;
+    --sidebar-ring: 262 83% 58%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent;
+  }
+}
+
+/* Logo optimization styles */
+@layer components {
+  .logo-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  
+  /* Responsive logo container */
+  .logo-container {
+    @apply flex items-center justify-center;
+  }
+  
+  /* Logo hover effects */
+  .logo-hover {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  
+  .logo-hover:hover {
+    @apply scale-105 brightness-110;
+  }
+  
+  /* Footer brand container */
+  .brand-container {
+    @apply flex items-center gap-3 transition-all duration-300 ease-in-out;
+  }
+  
+  .brand-container:hover {
+    @apply scale-105;
+  }
+  
+  .brand-info {
+    @apply flex flex-col justify-center;
+  }
+  
+  .brand-text {
+    @apply font-bold text-gray-800 leading-tight text-lg sm:text-xl;
+  }
+  
+  .brand-subtitle {
+    @apply text-gray-600 leading-tight text-xs sm:text-sm;
+  }
+  
+  /* Footer widget styling */
+  .footer-widget {
+    @apply space-y-4;
+  }
+  
+  /* Footer logo responsive sizing */
+  @media (max-width: 640px) {
+    .brand-container .logo-image {
+      width: 36px !important;
+      height: 36px !important;
+    }
+  }
+  
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .brand-container .logo-image {
+      width: 42px !important;
+      height: 42px !important;
+    }
+  }
+
+}

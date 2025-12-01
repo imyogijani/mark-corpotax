@@ -1,0 +1,154 @@
+# MARK GROUP - Required Images List with Download Links
+
+## 1. Hero Section Images
+### Main Hero Background
+- **Image Type**: Professional office building or financial district
+- **Dimensions**: 1920x1080 (landscape)
+- **Style**: Modern, clean, professional
+- **Download Links**:
+  - https://unsplash.com/photos/wSTCaQpiLtc (Modern office building)
+  - https://unsplash.com/photos/ZVprbBmT8QA (Financial district skyline)
+  - https://unsplash.com/photos/qwtCeJ5cLYs (Corporate building exterior)
+
+### Secondary Hero Elements
+- **Image Type**: Business handshake, financial charts, calculator
+- **Dimensions**: 600x400 
+- **Download Links**:
+  - https://unsplash.com/photos/IgUR1iX0mqM (Business handshake)
+  - https://unsplash.com/photos/qjnAnF0jIGk (Financial charts and graphs)
+  - https://unsplash.com/photos/npxXWgQ33ZQ (Calculator and documents)
+
+## 2. About Section Images  
+### Company History & Team
+- **Image Type**: Professional team, meeting room, office environment
+- **Dimensions**: 800x600
+- **Download Links**:
+  - https://unsplash.com/photos/QckxruozjRg (Professional team meeting)
+  - https://unsplash.com/photos/1K6IQsQbizI (Modern office environment)
+  - https://unsplash.com/photos/bzdhc5b3Bxs (Business conference room)
+
+### Surat Office Location  
+- **Image Type**: APMC Building Surat, Gujarat skyline, local business district
+- **Dimensions**: 1200x800
+- **Download Links**:
+  - https://unsplash.com/photos/xUUZcpQlqpM (Modern business building)
+  - https://unsplash.com/photos/rwHv7lG_by4 (City commercial district)
+  - https://unsplash.com/photos/j2c7yf223Mk (Office building exterior)
+
+## 3. Services Section Images
+### MSME Financing
+- **Image Type**: Manufacturing equipment, textile machinery, small business
+- **Dimensions**: 600x400
+- **Download Links**:
+  - https://unsplash.com/photos/b18TRXc8UPQ (Manufacturing facility)
+  - https://unsplash.com/photos/n95VMLxqM2I (Textile manufacturing)
+  - https://unsplash.com/photos/3y1zF4hIPCg (Industrial machinery)
+
+### Working Capital Solutions
+- **Image Type**: Cash flow, banking, financial documents
+- **Dimensions**: 600x400  
+- **Download Links**:
+  - https://unsplash.com/photos/5QgIuuBxKwM (Banking and finance)
+  - https://unsplash.com/photos/aJeH0KcFkuc (Financial documents)
+  - https://unsplash.com/photos/OqtafYT5kTw (Business accounting)
+
+### Taxation Services
+- **Image Type**: Tax documents, accounting, legal paperwork
+- **Dimensions**: 600x400
+- **Download Links**:
+  - https://unsplash.com/photos/MYbhN8KaaEc (Tax documents and calculator)
+  - https://unsplash.com/photos/Bd7gNnWJBkU (Accounting workspace)
+  - https://unsplash.com/photos/rfZOGfaCGwk (Legal documents)
+
+## 4. Industry-Specific Images
+### Textile & Garment
+- **Image Type**: Textile manufacturing, fabric, garment production
+- **Dimensions**: 400x300
+- **Download Links**:
+  - https://unsplash.com/photos/3WGJKiTxoB0 (Textile manufacturing)
+  - https://unsplash.com/photos/9SoCnyQmkzI (Fabric and materials)
+  - https://unsplash.com/photos/YzSZN3qvHeo (Garment production)
+
+### Diamond & Jewellery  
+- **Image Type**: Diamond cutting, jewellery making, precious stones
+- **Dimensions**: 400x300
+- **Download Links**:
+  - https://unsplash.com/photos/cl-NgBIAFdE (Diamond and jewellery)
+  - https://unsplash.com/photos/Tk9m_HP4rgQ (Precious stones)
+  - https://unsplash.com/photos/YLSwjSy7stw (Jewellery crafting)
+
+### Chemical & Pharmaceutical
+- **Image Type**: Laboratory, chemical processing, pharmaceutical
+- **Dimensions**: 400x300
+- **Download Links**:
+  - https://unsplash.com/photos/ZPeXrWxOjRQ (Laboratory equipment)
+  - https://unsplash.com/photos/ND6kT2VhHwk (Chemical processing)
+  - https://unsplash.com/photos/HMPD9z7yRe0 (Pharmaceutical research)
+
+## 5. Contact & Office Images
+### Contact Section Background
+- **Image Type**: Office reception, customer service, professional consultation
+- **Dimensions**: 1200x600
+- **Download Links**:
+  - https://unsplash.com/photos/IfLy8qRqvcc (Professional consultation)
+  - https://unsplash.com/photos/mfB1B1s4sMc (Office reception area)
+  - https://unsplash.com/photos/1-aA2Fadydc (Customer service)
+
+### Location Map/Building
+- **Image Type**: Surat cityscape, APMC building area, commercial district
+- **Dimensions**: 800x400
+- **Download Links**:
+  - https://unsplash.com/photos/8mn8murzWDM (City commercial area)
+  - https://unsplash.com/photos/7uSrOyY9ySY (Business district)
+  - https://unsplash.com/photos/hssvylNV_SQ (Modern commercial buildings)
+
+## 6. Blog & News Section Images
+### Financial News & Updates
+- **Image Type**: Newspapers, financial reports, business news
+- **Dimensions**: 400x250
+- **Download Links**:
+  - https://unsplash.com/photos/AbMTkVvd4XQ (Financial newspapers)
+  - https://unsplash.com/photos/PxM8aeJbzvk (Business reports)
+  - https://unsplash.com/photos/9SoCnyQmkzI (Market analysis)
+
+## 7. Testimonials & Success Stories
+### Client Success Images
+- **Image Type**: Happy business owners, successful entrepreneurs, growth charts
+- **Dimensions**: 300x300 (circular/square profile images)
+- **Download Links**:
+  - https://unsplash.com/photos/WNoLnJo7tS8 (Professional business person)
+  - https://unsplash.com/photos/rDEOVtE7vOs (Successful entrepreneur)
+  - https://unsplash.com/photos/7YVZYZeITc8 (Business growth chart)
+
+## 8. Government & Banking Partners
+### Bank Partnership Images  
+- **Image Type**: Bank buildings, government institutions, partnership handshake
+- **Dimensions**: 200x100 (logo style)
+- **Download Links**:
+  - https://unsplash.com/photos/tBtuxtLvAZs (Bank building exterior)
+  - https://unsplash.com/photos/zB9mjQXCx_I (Government building)
+  - https://unsplash.com/photos/IgUR1iX0mqM (Partnership handshake)
+
+## Image Usage Guidelines:
+- **Format**: JPG/PNG for web optimization
+- **Compression**: Optimize for web (< 500KB per image)
+- **Alt Text**: Include descriptive alt text for SEO and accessibility
+- **Copyright**: All Unsplash images are free for commercial use
+- **Attribution**: Optional but recommended for Unsplash images
+
+## Professional Photography Recommendations:
+For higher quality branded images, consider hiring a local photographer in Surat to capture:
+- MARK GROUP office at APMC Building
+- Team photos with actual staff members
+- Client testimonial photos (with permission)
+- Local Surat business environment
+- Actual textile/diamond industry partnerships
+
+## Stock Photo Alternative Sources:
+- **Pexels**: https://pexels.com (Free stock photos)
+- **Pixabay**: https://pixabay.com (Free images and vectors)
+- **Shutterstock**: https://shutterstock.com (Premium stock photos)
+- **Getty Images**: https://gettyimages.com (Premium professional images)
+
+---
+**Note**: Download and resize images as needed. Ensure all images align with MARK GROUP's professional branding and the specific industries they serve (Textile, Diamond, Chemical, etc.).

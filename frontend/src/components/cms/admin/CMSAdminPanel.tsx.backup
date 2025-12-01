@@ -1,0 +1,409 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { ComponentData } from '../BaseComponent';
+import { Plus, Edit, Trash2, Eye, Copy, Settings, Palette, Layout, FileText } from 'lucide-react';
+
+// CMS Admin Panel Props
+export interface CMSAdminPanelProps {
+  isOpen: boolean;
+  onClose: () => void;
+  currentPage?: string;
+}
+
+// Component Library Item
+interface ComponentLibraryItem {
+  type: string;
+  name: string;
+  category: string;
+  icon: string;
+  description: string;
+  defaultData: Partial<ComponentData>;
+}
+
+// Component Library
+const componentLibrary: ComponentLibraryItem[] = [
+  {
+    type: 'text',
+    name: 'Text',
+    category: 'basic',
+    icon: '📝',
+    description: 'Add text content with various styling options',
+    defaultData: {
+      content: {
+        text: 'Your text here',
+        tag: 'p',
+        alignment: 'left'
+      },
+      styles: {
+        fontSize: '16px',
+        color: '#333333',
+        fontWeight: 'normal'
+      }
+    }
+  },
+  {
+    type: 'button',
+    name: 'Button',
+    category: 'basic',
+    icon: '🔘',
+    description: 'Interactive button with customizable styles',
+    defaultData: {
+      content: {
+        text: 'Click Me',
+        variant: 'default',
+        size: 'default'
+      },
+      styles: {
+        margin: '10px 0',
+        display: 'inline-block'
+      }
+    }
+  },
+  {
+    type: 'image',
+    name: 'Image',
+    category: 'media',
+    icon: '🖼️',
+    description: 'Display images with caption and styling options',
+    defaultData: {
+      content: {
+        src: '/placeholder-image.jpg',
+        alt: 'Image description',
+        objectFit: 'cover'
+      },
+      styles: {
+        width: '100%',
+        borderRadius: '8px'
+      }
+    }
+  },
+  {
+    type: 'container',
+    name: 'Container',
+    category: 'layout',
+    icon: '📦',
+    description: 'Layout container for organizing other components',
+    defaultData: {
+      content: {
+        layout: 'flex',
+        direction: 'column',
+        gap: '16px'
+      },
+      styles: {
+        padding: '20px',
+        backgroundColor: '#f9f9f9',
+        borderRadius: '8px'
+      }
+    }
+  },
+  {
+    type: 'card',
+    name: 'Card',
+    category: 'content',
+    icon: '🃏',
+    description: 'Card component for displaying structured content',
+    defaultData: {
+      content: {
+        title: 'Card Title',
+        description: 'Card description goes here',
+        showHeader: true,
+        showFooter: true
+      },
+      styles: {
+        margin: '10px 0'
+      }
+    }
+  },
+  {
+    type: 'form',
+    name: 'Form',
+    category: 'form',
+    icon: '📋',
+    description: 'Dynamic form with customizable fields',
+    defaultData: {
+      content: {
+        title: 'Contact Form',
+        fields: [
+          {
+            id: 'name',
+            type: 'text',
+            name: 'name',
+            label: 'Full Name',
+            required: true,
+            order: 0
+          },
+          {
+            id: 'email',
+            type: 'email',
+            name: 'email',
+            label: 'Email Address',
+            required: true,
+            order: 1
+          }
+        ],
+        submitButtonText: 'Submit',
+        showReset: false,
+        successMessage: 'Thank you for your submission!',
+        errorMessage: 'There was an error submitting the form.'
+      }
+    }
+  }
+];
+
+export const CMSAdminPanel: React.FC<CMSAdminPanelProps> = ({
+  isOpen,
+  onClose,
+  currentPage = 'home'
+}) => {
+  const [activeTab, setActiveTab] = useState('components');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [components, setComponents] = useState<ComponentData[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Filter components by search and category
+  const filteredLibrary = componentLibrary.filter(item => {
+    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         item.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const categories = ['all', ...Array.from(new Set(componentLibrary.map(item => item.category)))];
+
+  // Mock functions - these would connect to your API
+  const handleAddComponent = async (libraryItem: ComponentLibraryItem) => {
+    const newComponent: ComponentData = {
+      id: `comp_${Date.now()}`,
+      name: libraryItem.name,
+      type: libraryItem.type,
+      category: libraryItem.category,
+      content: libraryItem.defaultData.content || {},
+      styles: libraryItem.defaultData.styles || {},
+      attributes: {},
+      order: components.length,
+      isVisible: true,
+      isLocked: false
+    };
+
+    setComponents(prev => [...prev, newComponent]);
+    console.log('Added component:', newComponent);
+  };
+
+  const handleEditComponent = (component: ComponentData) => {
+    console.log('Edit component:', component);
+    // This would open the component editor modal
+  };
+
+  const handleDeleteComponent = (componentId: string) => {
+    setComponents(prev => prev.filter(comp => comp.id !== componentId));
+    console.log('Deleted component:', componentId);
+  };
+
+  const handleDuplicateComponent = (component: ComponentData) => {
+    const duplicated = {
+      ...component,
+      id: `comp_${Date.now()}`,
+      name: `${component.name} (Copy)`,
+      order: components.length
+    };
+    setComponents(prev => [...prev, duplicated]);
+    console.log('Duplicated component:', duplicated);
+  };
+
+  const handlePreviewMode = () => {
+    console.log('Entering preview mode');
+    // This would switch to preview mode
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex">
+      {/* Sidebar */}
+      <div className="w-80 bg-white shadow-lg flex flex-col">
+        <div className="p-4 border-b">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold">CMS Editor</h2>
+            <Button variant="ghost" size="sm" onClick={onClose}>
+              ✕
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <Button size="sm" variant="outline" onClick={handlePreviewMode}>
+              <Eye className="w-4 h-4 mr-1" />
+              Preview
+            </Button>
+            <Button size="sm" variant="outline">
+              <Settings className="w-4 h-4 mr-1" />
+              Settings
+            </Button>
+          </div>
+        </div>
+
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
+          <TabsList className="mx-4 mt-4">
+            <TabsTrigger value="components" className="flex items-center gap-1">
+              <Layout className="w-4 h-4" />
+              Components
+            </TabsTrigger>
+            <TabsTrigger value="pages" className="flex items-center gap-1">
+              <FileText className="w-4 h-4" />
+              Pages
+            </TabsTrigger>
+            <TabsTrigger value="themes" className="flex items-center gap-1">
+              <Palette className="w-4 h-4" />
+              Themes
+            </TabsTrigger>
+          </TabsList>
+
+          <div className="flex-1 overflow-auto">
+            <TabsContent value="components" className="p-4 space-y-4">
+              {/* Search and Filter */}
+              <div className="space-y-3">
+                <div>
+                  <Label htmlFor="search">Search Components</Label>
+                  <Input
+                    id="search"
+                    placeholder="Search components..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+                
+                <div>
+                  <Label>Category</Label>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {categories.map(category => (
+                      <Badge
+                        key={category}
+                        variant={selectedCategory === category ? "default" : "outline"}
+                        className="cursor-pointer capitalize"
+                        onClick={() => setSelectedCategory(category)}
+                      >
+                        {category}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Component Library */}
+              <div className="space-y-2">
+                <h3 className="font-semibold text-sm text-gray-600 uppercase tracking-wide">
+                  Component Library
+                </h3>
+                {filteredLibrary.map(item => (
+                  <Card key={item.type} className="cursor-pointer hover:shadow-md transition-shadow">
+                    <CardContent className="p-3">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-3">
+                          <span className="text-2xl">{item.icon}</span>
+                          <div>
+                            <h4 className="font-medium">{item.name}</h4>
+                            <p className="text-xs text-gray-600 mt-1">{item.description}</p>
+                            <Badge variant="outline" className="mt-1 text-xs">
+                              {item.category}
+                            </Badge>
+                          </div>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleAddComponent(item)}
+                        >
+                          <Plus className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Current Page Components */}
+              {components.length > 0 && (
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-sm text-gray-600 uppercase tracking-wide">
+                    Page Components
+                  </h3>
+                  {components.map(component => (
+                    <Card key={component.id}>
+                      <CardContent className="p-3">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="font-medium">{component.name}</h4>
+                            <p className="text-xs text-gray-600">{component.type}</p>
+                          </div>
+                          <div className="flex gap-1">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => handleEditComponent(component)}
+                            >
+                              <Edit className="w-3 h-3" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => handleDuplicateComponent(component)}
+                            >
+                              <Copy className="w-3 h-3" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => handleDeleteComponent(component.id)}
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="pages" className="p-4">
+              <div className="space-y-4">
+                <h3 className="font-semibold">Page Management</h3>
+                <p className="text-sm text-gray-600">Manage your website pages here.</p>
+                {/* Page management interface would go here */}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="themes" className="p-4">
+              <div className="space-y-4">
+                <h3 className="font-semibold">Theme Customization</h3>
+                <p className="text-sm text-gray-600">Customize colors, fonts, and styling.</p>
+                {/* Theme management interface would go here */}
+              </div>
+            </TabsContent>
+          </div>
+        </Tabs>
+      </div>
+
+      {/* Main Content Area */}
+      <div className="flex-1 bg-gray-100 p-4">
+        <div className="bg-white rounded-lg shadow-sm h-full p-6">
+          <div className="text-center text-gray-600">
+            <Layout className="w-16 h-16 mx-auto mb-4 opacity-50" />
+            <h3 className="text-lg font-medium mb-2">Visual Editor</h3>
+            <p className="text-sm">
+              Add components from the sidebar to start building your page.
+              Components will appear here where you can edit them visually.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

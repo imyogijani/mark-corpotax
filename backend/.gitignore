@@ -1,0 +1,56 @@
+# Dependencies
+/node_modules/
+
+# Build output
+dist/
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment files (SENSITIVE!)
+.env
+.env.local
+.env*.local
+!.env.development
+!.env.production
+
+# Firebase Service Account (SENSITIVE!)
+serviceAccountKey.json
+*serviceAccountKey*.json
+src/serviceAccountKey.json
+
+# Firebase
+firebase-debug.log
+firestore-debug.log
+.firebase/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Uploads (local storage)
+uploads/*
+!uploads/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary
+*.tmp
+*.temp
+.cache/
