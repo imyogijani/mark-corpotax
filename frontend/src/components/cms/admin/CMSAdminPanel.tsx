@@ -1,117 +1,118 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { ComponentData } from '../BaseComponent';
-import { ComponentRenderer } from '../ComponentRenderer';
-import { VisualEditor } from './VisualEditor';
-import { ComponentEditModal } from './ComponentEditModal';
-import { 
-  Layout, 
-  Palette, 
-  FileText, 
-  Settings, 
-  Plus, 
-  Eye, 
-  Edit, 
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { ComponentData } from "../BaseComponent";
+import { VisualEditor } from "./VisualEditor";
+import { ComponentEditModal } from "./ComponentEditModal";
+import {
+  Layout,
+  Palette,
+  FileText,
+  Settings,
+  Plus,
+  Eye,
+  Edit,
   Trash2,
   Save,
-  RefreshCw
-} from 'lucide-react';
+} from "lucide-react";
 
 // Sample data for demonstration
 const sampleComponents: ComponentData[] = [
   {
-    id: 'hero-1',
-    name: 'Hero Section',
-    type: 'text',
-    category: 'sections',
+    id: "hero-1",
+    name: "Hero Section",
+    type: "text",
+    category: "sections",
     content: {
-      content: 'Welcome to Our Website',
-      tag: 'h1',
-      className: 'text-4xl font-bold text-center text-white'
+      content: "Welcome to Our Website",
+      tag: "h1",
+      className: "text-4xl font-bold text-center text-white",
     },
     styles: {
-      backgroundColor: '#1f2937',
-      color: 'white',
-      padding: '80px 20px'
+      backgroundColor: "#1f2937",
+      color: "white",
+      padding: "80px 20px",
     },
     attributes: {},
     order: 1,
-    page: 'home',
-    section: 'hero',
+    page: "home",
+    section: "hero",
     isVisible: true,
     isLocked: false,
-    created: new Date('2024-01-01'),
-    updated: new Date('2024-01-01')
+    created: new Date("2024-01-01"),
+    updated: new Date("2024-01-01"),
   },
   {
-    id: 'features-1',
-    name: 'Features Section',
-    type: 'card',
-    category: 'sections',
+    id: "features-1",
+    name: "Features Section",
+    type: "card",
+    category: "sections",
     content: {
-      title: 'Our Features',
-      content: 'Lightning fast performance, bank-level security, and scalable solutions that grow with your business.'
+      title: "Our Features",
+      content:
+        "Lightning fast performance, bank-level security, and scalable solutions that grow with your business.",
     },
     styles: {
-      padding: '60px 20px',
-      backgroundColor: '#f9fafb'
+      padding: "60px 20px",
+      backgroundColor: "#f9fafb",
     },
     attributes: {},
     order: 2,
-    page: 'home',
-    section: 'features',
+    page: "home",
+    section: "features",
     isVisible: true,
     isLocked: false,
-    created: new Date('2024-01-01'),
-    updated: new Date('2024-01-01')
-  }
+    created: new Date("2024-01-01"),
+    updated: new Date("2024-01-01"),
+  },
 ];
 
 const sampleThemes = [
   {
-    id: 'default',
-    name: 'Default Theme',
+    id: "default",
+    name: "Default Theme",
     colors: {
-      primary: '#3b82f6',
-      secondary: '#64748b',
-      accent: '#f59e0b',
-      background: '#ffffff',
-      text: '#1f2937'
+      primary: "#3b82f6",
+      secondary: "#64748b",
+      accent: "#f59e0b",
+      background: "#ffffff",
+      text: "#1f2937",
     },
     fonts: {
-      heading: 'Inter, sans-serif',
-      body: 'Inter, sans-serif'
+      heading: "Inter, sans-serif",
+      body: "Inter, sans-serif",
     },
-    isActive: true
+    isActive: true,
   },
   {
-    id: 'dark',
-    name: 'Dark Theme',
+    id: "dark",
+    name: "Dark Theme",
     colors: {
-      primary: '#60a5fa',
-      secondary: '#94a3b8',
-      accent: '#fbbf24',
-      background: '#111827',
-      text: '#f9fafb'
+      primary: "#60a5fa",
+      secondary: "#94a3b8",
+      accent: "#fbbf24",
+      background: "#111827",
+      text: "#f9fafb",
     },
     fonts: {
-      heading: 'Inter, sans-serif',
-      body: 'Inter, sans-serif'
+      heading: "Inter, sans-serif",
+      body: "Inter, sans-serif",
     },
-    isActive: false
-  }
+    isActive: false,
+  },
 ];
 
 export const CMSAdminPanel: React.FC = () => {
-  const [components, setComponents] = useState<ComponentData[]>(sampleComponents);
-  const [selectedComponent, setSelectedComponent] = useState<ComponentData | null>(null);
+  const [components, setComponents] =
+    useState<ComponentData[]>(sampleComponents);
+  const [selectedComponent, setSelectedComponent] =
+    useState<ComponentData | null>(null);
   const [isPreviewMode, setIsPreviewMode] = useState(false);
-  const [activeTab, setActiveTab] = useState('visual-editor');
+  const [activeTab, setActiveTab] = useState("visual-editor");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const handleComponentEdit = (component: ComponentData) => {
@@ -120,52 +121,66 @@ export const CMSAdminPanel: React.FC = () => {
   };
 
   const handleComponentSave = (updatedComponent: ComponentData) => {
-    setComponents(prev => 
-      prev.map(comp => comp.id === updatedComponent.id ? updatedComponent : comp)
+    setComponents((prev) =>
+      prev.map((comp) =>
+        comp.id === updatedComponent.id ? updatedComponent : comp
+      )
     );
     setSelectedComponent(null);
     setIsEditModalOpen(false);
   };
 
   const handleComponentDelete = (componentId: string) => {
-    setComponents(prev => prev.filter(comp => comp.id !== componentId));
+    setComponents((prev) => prev.filter((comp) => comp.id !== componentId));
   };
 
   const handleComponentAdd = (newComponentData: Partial<ComponentData>) => {
     const now = new Date();
     const newComponent: ComponentData = {
       id: newComponentData.id || `component-${Date.now()}`,
-      name: newComponentData.name || 'New Component',
-      type: newComponentData.type || 'text',
-      category: newComponentData.category || 'basic',
+      name: newComponentData.name || "New Component",
+      type: newComponentData.type || "text",
+      category: newComponentData.category || "basic",
       content: newComponentData.content || {},
       styles: newComponentData.styles || {},
       attributes: newComponentData.attributes || {},
       order: newComponentData.order || components.length + 1,
-      page: newComponentData.page || 'home',
-      section: newComponentData.section || 'main',
-      isVisible: newComponentData.isVisible !== undefined ? newComponentData.isVisible : true,
-      isLocked: newComponentData.isLocked !== undefined ? newComponentData.isLocked : false,
+      page: newComponentData.page || "home",
+      section: newComponentData.section || "main",
+      isVisible:
+        newComponentData.isVisible !== undefined
+          ? newComponentData.isVisible
+          : true,
+      isLocked:
+        newComponentData.isLocked !== undefined
+          ? newComponentData.isLocked
+          : false,
       created: newComponentData.created || now,
       updated: newComponentData.updated || now,
-      ...newComponentData
+      ...newComponentData,
     };
-    setComponents(prev => [...prev, newComponent]);
+    setComponents((prev) => [...prev, newComponent]);
   };
 
-  const handleComponentMove = (componentId: string, direction: 'up' | 'down') => {
-    setComponents(prev => {
-      const componentIndex = prev.findIndex(comp => comp.id === componentId);
+  const handleComponentMove = (
+    componentId: string,
+    direction: "up" | "down"
+  ) => {
+    setComponents((prev) => {
+      const componentIndex = prev.findIndex((comp) => comp.id === componentId);
       if (componentIndex === -1) return prev;
 
       const newComponents = [...prev];
-      const targetIndex = direction === 'up' ? componentIndex - 1 : componentIndex + 1;
+      const targetIndex =
+        direction === "up" ? componentIndex - 1 : componentIndex + 1;
 
       if (targetIndex < 0 || targetIndex >= newComponents.length) return prev;
 
       // Swap components
-      [newComponents[componentIndex], newComponents[targetIndex]] = 
-      [newComponents[targetIndex], newComponents[componentIndex]];
+      [newComponents[componentIndex], newComponents[targetIndex]] = [
+        newComponents[targetIndex],
+        newComponents[componentIndex],
+      ];
 
       // Update order values
       newComponents.forEach((comp, index) => {
@@ -190,10 +205,10 @@ export const CMSAdminPanel: React.FC = () => {
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold text-gray-900">Content Management System</h1>
-            <Badge variant="secondary">
-              {components.length} Components
-            </Badge>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Content Management System
+            </h1>
+            <Badge variant="secondary">{components.length} Components</Badge>
           </div>
           <div className="flex items-center gap-2">
             <Button
@@ -202,7 +217,7 @@ export const CMSAdminPanel: React.FC = () => {
               onClick={handlePreviewModeToggle}
             >
               <Eye className="w-4 h-4 mr-2" />
-              {isPreviewMode ? 'Exit Preview' : 'Preview'}
+              {isPreviewMode ? "Exit Preview" : "Preview"}
             </Button>
             <Button size="sm">
               <Save className="w-4 h-4 mr-2" />
@@ -215,7 +230,11 @@ export const CMSAdminPanel: React.FC = () => {
       <div className="flex h-[calc(100vh-73px)]">
         {/* Sidebar */}
         <div className="w-80 bg-white border-r border-gray-200 overflow-y-auto">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="h-full"
+          >
             <TabsList className="grid w-full grid-cols-4 rounded-none border-b">
               <TabsTrigger value="visual-editor" className="gap-2">
                 <Layout className="w-4 h-4" />
@@ -242,47 +261,58 @@ export const CMSAdminPanel: React.FC = () => {
                   <Plus className="w-4 h-4" />
                 </Button>
               </div>
-              
+
               <div className="space-y-2">
                 {components
                   .sort((a, b) => a.order - b.order)
                   .map((component) => (
-                  <Card key={component.id} className="cursor-pointer hover:shadow-md transition-shadow">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h4 className="font-medium">{component.name}</h4>
-                          <p className="text-sm text-gray-600 capitalize">{component.type}</p>
+                    <Card
+                      key={component.id}
+                      className="cursor-pointer hover:shadow-md transition-shadow"
+                    >
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="font-medium">{component.name}</h4>
+                            <p className="text-sm text-gray-600 capitalize">
+                              {component.type}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => handleComponentEdit(component)}
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() =>
+                                handleComponentDelete(component.id)
+                              }
+                              className="text-red-600 hover:text-red-700"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => handleComponentEdit(component)}
+                        <div className="mt-2 flex items-center gap-2">
+                          <Badge
+                            variant={
+                              component.isVisible ? "default" : "secondary"
+                            }
                           >
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => handleComponentDelete(component.id)}
-                            className="text-red-600 hover:text-red-700"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
+                            {component.isVisible ? "Visible" : "Hidden"}
+                          </Badge>
+                          {component.isLocked && (
+                            <Badge variant="outline">Locked</Badge>
+                          )}
                         </div>
-                      </div>
-                      <div className="mt-2 flex items-center gap-2">
-                        <Badge variant={component.isVisible ? "default" : "secondary"}>
-                          {component.isVisible ? 'Visible' : 'Hidden'}
-                        </Badge>
-                        {component.isLocked && (
-                          <Badge variant="outline">Locked</Badge>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                      </CardContent>
+                    </Card>
+                  ))}
               </div>
             </TabsContent>
 
@@ -293,28 +323,33 @@ export const CMSAdminPanel: React.FC = () => {
                   <Plus className="w-4 h-4" />
                 </Button>
               </div>
-              
+
               <div className="space-y-3">
                 {sampleThemes.map((theme) => (
-                  <Card key={theme.id} className={`cursor-pointer transition-all ${theme.isActive ? 'ring-2 ring-blue-500' : ''}`}>
+                  <Card
+                    key={theme.id}
+                    className={`cursor-pointer transition-all ${
+                      theme.isActive ? "ring-2 ring-blue-500" : ""
+                    }`}
+                  >
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
                         <div>
                           <h4 className="font-medium">{theme.name}</h4>
                           <div className="flex gap-1 mt-2">
-                            {Object.entries(theme.colors).slice(0, 5).map(([key, color]) => (
-                              <div
-                                key={key}
-                                className="w-6 h-6 rounded-full border-2 border-white shadow-sm"
-                                style={{ backgroundColor: color }}
-                                title={key}
-                              />
-                            ))}
+                            {Object.entries(theme.colors)
+                              .slice(0, 5)
+                              .map(([key, color]) => (
+                                <div
+                                  key={key}
+                                  className="w-6 h-6 rounded-full border-2 border-white shadow-sm"
+                                  style={{ backgroundColor: color }}
+                                  title={key}
+                                />
+                              ))}
                           </div>
                         </div>
-                        {theme.isActive && (
-                          <Badge>Active</Badge>
-                        )}
+                        {theme.isActive && <Badge>Active</Badge>}
                       </div>
                     </CardContent>
                   </Card>
@@ -329,7 +364,7 @@ export const CMSAdminPanel: React.FC = () => {
                   <Plus className="w-4 h-4" />
                 </Button>
               </div>
-              
+
               <div className="text-center text-gray-500 py-8">
                 <FileText className="w-12 h-12 mx-auto mb-2 opacity-50" />
                 <p>No forms created yet</p>
@@ -339,7 +374,7 @@ export const CMSAdminPanel: React.FC = () => {
 
             <TabsContent value="settings" className="p-4 space-y-4">
               <h3 className="font-semibold">Site Settings</h3>
-              
+
               <div className="space-y-4">
                 <Card>
                   <CardHeader className="pb-3">
@@ -347,18 +382,28 @@ export const CMSAdminPanel: React.FC = () => {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div>
-                      <label htmlFor="site-title" className="text-sm font-medium">Site Title</label>
-                      <input 
+                      <label
+                        htmlFor="site-title"
+                        className="text-sm font-medium"
+                      >
+                        Site Title
+                      </label>
+                      <input
                         id="site-title"
-                        type="text" 
+                        type="text"
                         className="w-full mt-1 px-3 py-2 border rounded-md text-sm"
-                        defaultValue="FinBest Finance"
+                        defaultValue="Mark Corpotax"
                         placeholder="Enter site title"
                       />
                     </div>
                     <div>
-                      <label htmlFor="meta-description" className="text-sm font-medium">Meta Description</label>
-                      <textarea 
+                      <label
+                        htmlFor="meta-description"
+                        className="text-sm font-medium"
+                      >
+                        Meta Description
+                      </label>
+                      <textarea
                         id="meta-description"
                         className="w-full mt-1 px-3 py-2 border rounded-md text-sm"
                         rows={3}
@@ -375,7 +420,7 @@ export const CMSAdminPanel: React.FC = () => {
 
         {/* Main Content Area */}
         <div className="flex-1 overflow-hidden">
-          {activeTab === 'visual-editor' ? (
+          {activeTab === "visual-editor" ? (
             <VisualEditor
               components={components}
               isPreviewMode={isPreviewMode}
@@ -390,9 +435,9 @@ export const CMSAdminPanel: React.FC = () => {
               <div className="bg-white rounded-lg shadow-sm h-full overflow-y-auto">
                 <div className="p-6">
                   <h2 className="text-xl font-semibold mb-4">
-                    {activeTab === 'themes' && 'Theme Management'}
-                    {activeTab === 'forms' && 'Form Builder'}
-                    {activeTab === 'settings' && 'Site Settings'}
+                    {activeTab === "themes" && "Theme Management"}
+                    {activeTab === "forms" && "Form Builder"}
+                    {activeTab === "settings" && "Site Settings"}
                   </h2>
                   <div className="text-center text-gray-500 py-12">
                     <p>Feature coming soon...</p>
@@ -412,7 +457,7 @@ export const CMSAdminPanel: React.FC = () => {
         onSave={handleComponentSave}
         onPreview={(component: ComponentData) => {
           // Handle preview functionality
-          console.log('Preview component:', component);
+          console.log("Preview component:", component);
         }}
       />
     </div>

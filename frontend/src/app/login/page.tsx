@@ -188,7 +188,7 @@ export default function LoginPage() {
               </p>
               <div className="space-y-1 text-xs sm:text-sm text-blue-700">
                 <p>
-                  <strong>Admin:</strong> admin@finbest.com / admin123
+                  <strong>Admin:</strong> admin@markcorpotax.com / admin123
                 </p>
                 <p>
                   <strong>User:</strong> john@example.com / user123
@@ -210,7 +210,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="mt-6 text-center text-xs sm:text-sm text-gray-600">
-          <p>© 2025 FinBest Finance. All rights reserved.</p>
+          <p>© 2025 Mark Corpotax. All rights reserved.</p>
         </div>
       </div>
     </div>

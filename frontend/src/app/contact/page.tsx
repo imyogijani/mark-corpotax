@@ -113,7 +113,7 @@ export default function ContactPage() {
           description: result.message,
         });
       }
-    } catch (error) {
+    } catch {
       toast({
         variant: "destructive",
         title: "Error",

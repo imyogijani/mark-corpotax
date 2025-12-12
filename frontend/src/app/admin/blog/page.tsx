@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { apiClient, type Blog } from "@/lib/api-client";
-import { Plus, Search, Edit, Trash2, Eye } from "lucide-react";
+import { Plus, Edit, Trash2, Eye } from "lucide-react";
 import Link from "next/link";
 
 export default function BlogManagementPage() {

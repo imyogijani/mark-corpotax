@@ -9,15 +9,11 @@ import {
   Calendar,
   User,
   ArrowRight,
-  Search,
-  Tag,
   FileText,
   BarChart2,
   PieChart,
   DollarSign,
   TrendingUp,
-  BookOpen,
-  Users,
 } from "lucide-react";
 import { DynamicCTASection } from "@/components/DynamicCTASection";
 

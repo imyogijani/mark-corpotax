@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
@@ -18,71 +18,92 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { useNotifications, Notification } from '@/contexts/NotificationContext';
-import { 
-  Bell, 
-  BellRing, 
-  Check, 
-  X, 
-  Trash2, 
+} from "@/components/ui/sheet";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useNotifications, Notification } from "@/contexts/NotificationContext";
+import {
+  Bell,
+  BellRing,
+  Check,
+  X,
+  Trash2,
   ExternalLink,
   AlertCircle,
   CheckCircle2,
   Info,
-  AlertTriangle
-} from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import Link from 'next/link';
+  AlertTriangle,
+} from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import Link from "next/link";
 
 interface NotificationBellProps {
-  variant?: 'dropdown' | 'sheet';
+  variant?: "dropdown" | "sheet";
 }
 
-export function NotificationBell({ variant = 'sheet' }: NotificationBellProps) {
-  const { notifications, unreadCount, markAsRead, markAllAsRead, removeNotification, clearAll } = useNotifications();
+export function NotificationBell({ variant = "sheet" }: NotificationBellProps) {
+  const {
+    notifications,
+    unreadCount,
+    markAsRead,
+    markAllAsRead,
+    removeNotification,
+    clearAll,
+  } = useNotifications();
   const [isOpen, setIsOpen] = useState(false);
 
-  const getNotificationIcon = (type: Notification['type']) => {
+  const getNotificationIcon = (type: Notification["type"]) => {
     switch (type) {
-      case 'success':
+      case "success":
         return <CheckCircle2 className="w-4 h-4 text-green-600" />;
-      case 'warning':
+      case "warning":
         return <AlertTriangle className="w-4 h-4 text-yellow-600" />;
-      case 'error':
+      case "error":
         return <AlertCircle className="w-4 h-4 text-red-600" />;
       default:
         return <Info className="w-4 h-4 text-blue-600" />;
     }
   };
 
-  const getNotificationBgColor = (type: Notification['type'], read: boolean) => {
-    if (read) return 'bg-gray-50';
-    
+  const getNotificationBgColor = (
+    type: Notification["type"],
+    read: boolean
+  ) => {
+    if (read) return "bg-gray-50";
+
     switch (type) {
-      case 'success':
-        return 'bg-green-50 border-l-4 border-green-500';
-      case 'warning':
-        return 'bg-yellow-50 border-l-4 border-yellow-500';
-      case 'error':
-        return 'bg-red-50 border-l-4 border-red-500';
+      case "success":
+        return "bg-green-50 border-l-4 border-green-500";
+      case "warning":
+        return "bg-yellow-50 border-l-4 border-yellow-500";
+      case "error":
+        return "bg-red-50 border-l-4 border-red-500";
       default:
-        return 'bg-blue-50 border-l-4 border-blue-500';
+        return "bg-blue-50 border-l-4 border-blue-500";
     }
   };
 
-  const NotificationItem = ({ notification, inSheet = false }: { notification: Notification; inSheet?: boolean }) => (
+  const NotificationItem = ({
+    notification,
+    inSheet = false,
+  }: {
+    notification: Notification;
+    inSheet?: boolean;
+  }) => (
     <div
-      className={`p-4 transition-colors duration-200 ${getNotificationBgColor(notification.type, notification.read)} ${
-        inSheet ? 'border-b border-gray-100' : ''
-      }`}
+      className={`p-4 transition-colors duration-200 ${getNotificationBgColor(
+        notification.type,
+        notification.read
+      )} ${inSheet ? "border-b border-gray-100" : ""}`}
     >
       <div className="flex items-start gap-3">
         {getNotificationIcon(notification.type)}
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
-            <h4 className={`text-sm font-medium ${notification.read ? 'text-gray-600' : 'text-gray-900'}`}>
+            <h4
+              className={`text-sm font-medium ${
+                notification.read ? "text-gray-600" : "text-gray-900"
+              }`}
+            >
               {notification.title}
             </h4>
             <div className="flex items-center gap-1">
@@ -99,7 +120,11 @@ export function NotificationBell({ variant = 'sheet' }: NotificationBellProps) {
               </Button>
             </div>
           </div>
-          <p className={`text-sm ${notification.read ? 'text-gray-500' : 'text-gray-700'} mb-2`}>
+          <p
+            className={`text-sm ${
+              notification.read ? "text-gray-500" : "text-gray-700"
+            } mb-2`}
+          >
             {notification.message}
           </p>
           <div className="flex items-center justify-between">
@@ -111,7 +136,7 @@ export function NotificationBell({ variant = 'sheet' }: NotificationBellProps) {
                 <Link href={notification.actionUrl}>
                   <Button variant="outline" size="sm" className="h-6 text-xs">
                     <ExternalLink className="w-3 h-3 mr-1" />
-                    {notification.actionLabel || 'View'}
+                    {notification.actionLabel || "View"}
                   </Button>
                 </Link>
               )}
@@ -133,7 +158,7 @@ export function NotificationBell({ variant = 'sheet' }: NotificationBellProps) {
     </div>
   );
 
-  if (variant === 'dropdown') {
+  if (variant === "dropdown") {
     return (
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
@@ -144,16 +169,19 @@ export function NotificationBell({ variant = 'sheet' }: NotificationBellProps) {
               <Bell className="h-5 w-5" />
             )}
             {unreadCount > 0 && (
-              <Badge 
-                variant="destructive" 
+              <Badge
+                variant="destructive"
                 className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs"
               >
-                {unreadCount > 9 ? '9+' : unreadCount}
+                {unreadCount > 9 ? "9+" : unreadCount}
               </Badge>
             )}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-80 max-h-96 overflow-y-auto" align="end">
+        <DropdownMenuContent
+          className="w-80 max-h-96 overflow-y-auto"
+          align="end"
+        >
           <DropdownMenuLabel className="flex items-center justify-between">
             Notifications
             {unreadCount > 0 && (
@@ -200,11 +228,11 @@ export function NotificationBell({ variant = 'sheet' }: NotificationBellProps) {
             <Bell className="h-5 w-5" />
           )}
           {unreadCount > 0 && (
-            <Badge 
-              variant="destructive" 
+            <Badge
+              variant="destructive"
               className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs"
             >
-              {unreadCount > 9 ? '9+' : unreadCount}
+              {unreadCount > 9 ? "9+" : unreadCount}
             </Badge>
           )}
         </Button>
@@ -217,9 +245,11 @@ export function NotificationBell({ variant = 'sheet' }: NotificationBellProps) {
               <Badge variant="secondary">{unreadCount} unread</Badge>
             )}
           </SheetTitle>
-          <SheetDescription>Stay updated with your latest activities</SheetDescription>
+          <SheetDescription>
+            Stay updated with your latest activities
+          </SheetDescription>
         </SheetHeader>
-        
+
         <div className="mt-6">
           {notifications.length > 0 && (
             <div className="flex gap-2 mb-4">
@@ -235,18 +265,24 @@ export function NotificationBell({ variant = 'sheet' }: NotificationBellProps) {
               </Button>
             </div>
           )}
-          
+
           <ScrollArea className="h-[calc(100vh-200px)]">
             {notifications.length === 0 ? (
               <div className="p-8 text-center text-gray-500">
                 <Bell className="w-12 h-12 mx-auto mb-4 opacity-50" />
                 <h3 className="text-lg font-medium mb-2">No notifications</h3>
-                <p className="text-sm">You're all caught up! Check back later for new updates.</p>
+                <p className="text-sm">
+                  You&apos;re all caught up! Check back later for new updates.
+                </p>
               </div>
             ) : (
               <div className="space-y-0">
                 {notifications.map((notification) => (
-                  <NotificationItem key={notification.id} notification={notification} inSheet />
+                  <NotificationItem
+                    key={notification.id}
+                    notification={notification}
+                    inSheet
+                  />
                 ))}
               </div>
             )}

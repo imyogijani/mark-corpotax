@@ -642,11 +642,32 @@ export const SiteSettingsService = {
   },
 };
 
-// Page Content Service
+// Page Content Service - In-memory cache for faster access
+let pageContentCache: { data: IPageContent[]; timestamp: number } | null = null;
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache
+
 export const PageContentService = {
+  // Clear cache when content is updated
+  clearCache(): void {
+    pageContentCache = null;
+  },
+
   async findAll(): Promise<IPageContent[]> {
+    // Check cache first
+    if (
+      pageContentCache &&
+      Date.now() - pageContentCache.timestamp < CACHE_TTL
+    ) {
+      return pageContentCache.data;
+    }
+
     const content = await db.getAll(COLLECTIONS.PAGE_CONTENT);
-    return content.map(formatTimestamp);
+    const formattedContent = content.map(formatTimestamp);
+
+    // Update cache
+    pageContentCache = { data: formattedContent, timestamp: Date.now() };
+
+    return formattedContent;
   },
 
   async findById(id: string): Promise<IPageContent | null> {
@@ -660,19 +681,40 @@ export const PageContentService = {
     key?: string;
     isActive?: boolean;
   }): Promise<IPageContent[]> {
-    let content = await db.getAll(COLLECTIONS.PAGE_CONTENT);
+    // Build Firestore query with proper filters for better performance
+    const conditions: Array<{
+      field: string;
+      operator: FirebaseFirestore.WhereFilterOp;
+      value: any;
+    }> = [];
 
     if (filters.page) {
-      content = content.filter((c: any) => c.page === filters.page);
+      conditions.push({ field: "page", operator: "==", value: filters.page });
     }
+    if (filters.isActive !== undefined) {
+      conditions.push({
+        field: "isActive",
+        operator: "==",
+        value: filters.isActive,
+      });
+    }
+
+    let content: any[];
+
+    if (conditions.length > 0) {
+      // Use optimized query with conditions
+      content = await db.queryMultiple(COLLECTIONS.PAGE_CONTENT, conditions);
+    } else {
+      // Fallback to getAll if no conditions
+      content = await db.getAll(COLLECTIONS.PAGE_CONTENT);
+    }
+
+    // Apply remaining filters that can't be done in Firestore (compound queries limitation)
     if (filters.section) {
       content = content.filter((c: any) => c.section === filters.section);
     }
     if (filters.key) {
       content = content.filter((c: any) => c.key === filters.key);
-    }
-    if (filters.isActive !== undefined) {
-      content = content.filter((c: any) => c.isActive === filters.isActive);
     }
 
     return content.map(formatTimestamp);
@@ -682,6 +724,7 @@ export const PageContentService = {
     data.isActive = data.isActive ?? true;
     const id = await db.create(COLLECTIONS.PAGE_CONTENT, data);
     const content = await db.getById(COLLECTIONS.PAGE_CONTENT, id);
+    this.clearCache(); // Clear cache on create
     return formatTimestamp(content);
   },
 
@@ -691,12 +734,14 @@ export const PageContentService = {
   ): Promise<IPageContent | null> {
     await db.update(COLLECTIONS.PAGE_CONTENT, id, data);
     const content = await db.getById(COLLECTIONS.PAGE_CONTENT, id);
+    this.clearCache(); // Clear cache on update
     return content ? formatTimestamp(content) : null;
   },
 
   async delete(id: string): Promise<boolean> {
     try {
       await db.delete(COLLECTIONS.PAGE_CONTENT, id);
+      this.clearCache(); // Clear cache on delete
       return true;
     } catch (error) {
       console.error("Error deleting page content:", error);

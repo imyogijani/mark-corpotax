@@ -16,9 +16,9 @@ import {
   Settings,
   Save,
   ChevronRight,
+  ChevronLeft,
   X,
   Type,
-  Image,
   FileText,
   Globe,
   Mail,
@@ -316,7 +316,20 @@ export function SiteEditor() {
       );
 
       await Promise.all(promises);
+
+      // Clear backend cache explicitly
+      await authFetch("/content/clear-cache", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ page: selectedPage }),
+      });
+
+      // Clear frontend cache
       contentService.clearCache();
+
+      // Set flag for other tabs/pages to know content was updated
+      localStorage.setItem("content_updated", Date.now().toString());
+
       setSaveStatus((prev) => ({ ...prev, [sectionKey]: "saved" }));
       setOriginalData((prev) => ({
         ...prev,
@@ -346,7 +359,19 @@ export function SiteEditor() {
   const clearAllCache = async () => {
     setClearingCache(true);
     try {
+      // Clear backend cache
+      await authFetch("/content/clear-cache", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+
+      // Clear frontend cache
       contentService.clearCache();
+
+      // Set flag for other pages
+      localStorage.setItem("content_updated", Date.now().toString());
+
       setPreviewKey((prev) => prev + 1);
       await loadPageContent();
     } finally {
@@ -405,6 +430,10 @@ export function SiteEditor() {
       working_hours: <Clock className="h-4 w-4" />,
       address: <MapPin className="h-4 w-4" />,
       company: <Globe className="h-4 w-4" />,
+      footer: <Layout className="h-4 w-4" />,
+      navigation: <Layers className="h-4 w-4" />,
+      footer_links: <ExternalLink className="h-4 w-4" />,
+      footer_services: <Layers className="h-4 w-4" />,
     };
     return icons[sectionKey] || <FileText className="h-4 w-4" />;
   };
@@ -474,18 +503,28 @@ export function SiteEditor() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-80px)] bg-slate-50 dark:bg-slate-950">
+    <div className="flex h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {/* Left Panel - Navigation */}
-      <div className="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col">
+      <div className="w-64 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-800/50 flex flex-col shadow-xl">
+        {/* Back to Admin Button */}
+        <Link href="/admin" className="block">
+          <div className="px-3 pt-3 pb-1">
+            <div className="flex items-center gap-2 px-3 py-2 text-sm text-slate-500 hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-900/20 rounded-lg transition-all duration-200 group">
+              <ChevronLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
+              <span className="font-medium">Back to Admin Panel</span>
+            </div>
+          </div>
+        </Link>
+
         {/* Header */}
-        <div className="p-4 border-b border-slate-200 dark:border-slate-800">
+        <div className="p-4 border-b border-slate-200/50 dark:border-slate-800/50 bg-gradient-to-r from-violet-500/10 to-purple-500/10">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-primary/10">
-              <Globe className="h-5 w-5 text-primary" />
+            <div className="p-2.5 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg shadow-violet-500/25">
+              <Globe className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h2 className="font-semibold text-slate-900 dark:text-white">
-                Site Editor
+              <h2 className="font-bold text-slate-900 dark:text-white">
+                Page Editor
               </h2>
               <p className="text-xs text-slate-500">Edit & Preview Live</p>
             </div>
@@ -502,10 +541,10 @@ export function SiteEditor() {
               <button
                 key={config.id}
                 onClick={() => setSelectedPage(config.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all ${
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-200 ${
                   selectedPage === config.id
-                    ? "bg-primary text-white shadow-md shadow-primary/25"
-                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                    ? "bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/30"
+                    : "text-slate-600 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-800/50 hover:shadow-md"
                 }`}
               >
                 <span
@@ -523,7 +562,7 @@ export function SiteEditor() {
                   className={`text-[10px] h-5 ${
                     selectedPage === config.id
                       ? "bg-white/20 text-white border-0"
-                      : "bg-slate-100 dark:bg-slate-800"
+                      : "bg-slate-100/80 dark:bg-slate-800/80 backdrop-blur-sm"
                   }`}
                 >
                   {config.sections.length}
@@ -533,7 +572,7 @@ export function SiteEditor() {
           </div>
         </div>
 
-        <Separator className="mx-3" />
+        <Separator className="mx-3 bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700 to-transparent" />
 
         {/* Sections List */}
         <div className="flex-1 overflow-hidden flex flex-col">
@@ -555,17 +594,21 @@ export function SiteEditor() {
                     onClick={() =>
                       setSelectedSection(isSelected ? null : section.id)
                     }
-                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all ${
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-300 group ${
                       isSelected
-                        ? "bg-slate-100 dark:bg-slate-800 ring-2 ring-primary/50"
-                        : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
-                    } ${changed ? "border-l-2 border-l-amber-500" : ""}`}
+                        ? "bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/30 scale-[1.02]"
+                        : "hover:bg-white/80 dark:hover:bg-slate-800/80 hover:shadow-md hover:scale-[1.01]"
+                    } ${
+                      changed && !isSelected
+                        ? "border-l-3 border-l-amber-500"
+                        : ""
+                    }`}
                   >
                     <div
-                      className={`p-1.5 rounded-md ${
+                      className={`p-1.5 rounded-lg transition-all duration-300 ${
                         isSelected
-                          ? "bg-primary text-white"
-                          : "bg-slate-100 dark:bg-slate-700 text-slate-500"
+                          ? "bg-white/20 text-white shadow-inner"
+                          : "bg-slate-100/80 dark:bg-slate-700/80 text-slate-500 group-hover:bg-violet-100 group-hover:text-violet-600"
                       }`}
                     >
                       {getSectionIcon(section.id)}
@@ -574,29 +617,49 @@ export function SiteEditor() {
                       <p
                         className={`text-sm font-medium truncate ${
                           isSelected
-                            ? "text-slate-900 dark:text-white"
-                            : "text-slate-600 dark:text-slate-400"
+                            ? "text-white"
+                            : "text-slate-600 dark:text-slate-400 group-hover:text-slate-900"
                         }`}
                       >
                         {section.name}
                       </p>
-                      <p className="text-[10px] text-slate-400">
+                      <p
+                        className={`text-[10px] ${
+                          isSelected ? "text-white/70" : "text-slate-400"
+                        }`}
+                      >
                         {section.fields.length} fields
                       </p>
                     </div>
                     <div className="flex items-center gap-1.5">
                       {changed && (
-                        <div className="w-2 h-2 rounded-full bg-amber-500" />
+                        <div
+                          className={`w-2 h-2 rounded-full ${
+                            isSelected
+                              ? "bg-white/80 animate-pulse"
+                              : "bg-amber-500"
+                          }`}
+                        />
                       )}
                       {status === "saved" && (
-                        <Check className="h-3.5 w-3.5 text-green-500" />
+                        <Check
+                          className={`h-3.5 w-3.5 ${
+                            isSelected ? "text-white" : "text-green-500"
+                          }`}
+                        />
                       )}
                       {status === "error" && (
-                        <AlertCircle className="h-3.5 w-3.5 text-red-500" />
+                        <AlertCircle
+                          className={`h-3.5 w-3.5 ${
+                            isSelected ? "text-white" : "text-red-500"
+                          }`}
+                        />
                       )}
                       <ChevronRight
-                        className={`h-4 w-4 text-slate-300 transition-transform ${
-                          isSelected ? "rotate-90" : ""
+                        className={`h-4 w-4 transition-transform duration-300 ${
+                          isSelected
+                            ? "rotate-90 text-white/80"
+                            : "text-slate-300 group-hover:text-violet-400"
                         }`}
                       />
                     </div>
@@ -608,11 +671,11 @@ export function SiteEditor() {
         </div>
 
         {/* Bottom Actions */}
-        <div className="p-3 border-t border-slate-200 dark:border-slate-800 space-y-2">
+        <div className="p-3 border-t border-slate-200/50 dark:border-slate-800/50 space-y-2 bg-gradient-to-r from-slate-50/50 to-white/50 dark:from-slate-900/50 dark:to-slate-800/50 backdrop-blur-sm">
           <Button
             onClick={saveAllSections}
             disabled={saving !== null || !hasAnyChanges()}
-            className="w-full h-10 bg-primary hover:bg-primary/90"
+            className="w-full h-11 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 shadow-lg shadow-violet-500/25 transition-all duration-200 hover:shadow-xl hover:shadow-violet-500/30"
           >
             {saving ? (
               <>
@@ -630,7 +693,7 @@ export function SiteEditor() {
             variant="outline"
             onClick={clearAllCache}
             disabled={clearingCache}
-            className="w-full h-9 text-slate-600 border-slate-200 hover:bg-slate-50"
+            className="w-full h-9 text-slate-600 border-slate-200/50 hover:bg-white/50 hover:shadow-md backdrop-blur-sm transition-all"
           >
             {clearingCache ? (
               <>
@@ -650,7 +713,7 @@ export function SiteEditor() {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Toolbar */}
-        <div className="h-14 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4">
+        <div className="h-14 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between px-4 shadow-sm">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
               {getPageIcon(selectedPage)}
@@ -674,13 +737,13 @@ export function SiteEditor() {
 
           <div className="flex items-center gap-2">
             {/* Device Toggle */}
-            <div className="flex bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
+            <div className="flex bg-slate-100/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl p-1 shadow-inner">
               <button
                 onClick={() => setPreviewMode("desktop")}
                 title="Desktop preview"
-                className={`p-2 rounded-md transition-all ${
+                className={`p-2 rounded-lg transition-all duration-200 ${
                   previewMode === "desktop"
-                    ? "bg-white dark:bg-slate-700 shadow-sm text-primary"
+                    ? "bg-white dark:bg-slate-700 shadow-md text-violet-600"
                     : "text-slate-400 hover:text-slate-600"
                 }`}
               >
@@ -689,9 +752,9 @@ export function SiteEditor() {
               <button
                 onClick={() => setPreviewMode("tablet")}
                 title="Tablet preview"
-                className={`p-2 rounded-md transition-all ${
+                className={`p-2 rounded-lg transition-all duration-200 ${
                   previewMode === "tablet"
-                    ? "bg-white dark:bg-slate-700 shadow-sm text-primary"
+                    ? "bg-white dark:bg-slate-700 shadow-md text-violet-600"
                     : "text-slate-400 hover:text-slate-600"
                 }`}
               >
@@ -709,9 +772,9 @@ export function SiteEditor() {
               <button
                 onClick={() => setPreviewMode("mobile")}
                 title="Mobile preview"
-                className={`p-2 rounded-md transition-all ${
+                className={`p-2 rounded-lg transition-all duration-200 ${
                   previewMode === "mobile"
-                    ? "bg-white dark:bg-slate-700 shadow-sm text-primary"
+                    ? "bg-white dark:bg-slate-700 shadow-md text-violet-600"
                     : "text-slate-400 hover:text-slate-600"
                 }`}
               >
@@ -719,13 +782,13 @@ export function SiteEditor() {
               </button>
             </div>
 
-            <div className="w-px h-6 bg-slate-200 dark:bg-slate-700" />
+            <div className="w-px h-6 bg-slate-200/50 dark:bg-slate-700/50" />
 
             <Button
               variant="ghost"
               size="icon"
               onClick={refreshPreview}
-              className="h-9 w-9"
+              className="h-9 w-9 hover:bg-slate-100/80 hover:shadow-md transition-all"
             >
               <RefreshCw className="h-4 w-4" />
             </Button>
@@ -733,7 +796,7 @@ export function SiteEditor() {
               variant="ghost"
               size="icon"
               onClick={() => window.open(getPageUrl(), "_blank")}
-              className="h-9 w-9"
+              className="h-9 w-9 hover:bg-slate-100/80 hover:shadow-md transition-all"
             >
               <ExternalLink className="h-4 w-4" />
             </Button>
@@ -744,12 +807,12 @@ export function SiteEditor() {
         <div className="flex-1 flex overflow-hidden">
           {/* Editor Panel */}
           {selectedSection && (
-            <div className="w-[380px] bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col shadow-lg">
+            <div className="w-[380px] bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-800/50 flex flex-col shadow-2xl">
               {/* Editor Header */}
-              <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+              <div className="p-4 border-b border-slate-200/50 dark:border-slate-800/50 bg-gradient-to-r from-violet-500/5 to-purple-500/5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-xl bg-primary text-white shadow-lg shadow-primary/25">
+                    <div className="p-2.5 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/30">
                       {getSectionIcon(selectedSection)}
                     </div>
                     <div>
@@ -901,13 +964,13 @@ export function SiteEditor() {
 
               {/* Editor Footer - only show for non-posts sections */}
               {selectedSection !== "posts" && (
-                <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+                <div className="p-4 border-t border-slate-200/50 dark:border-slate-800/50 bg-gradient-to-r from-slate-50/80 to-white/80 dark:from-slate-900/80 dark:to-slate-800/80 backdrop-blur-sm">
                   <Button
                     onClick={() => saveSection(selectedSection)}
                     disabled={
                       saving === selectedSection || !hasChanges(selectedSection)
                     }
-                    className="w-full h-11 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25"
+                    className="w-full h-11 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 shadow-lg shadow-violet-500/25 transition-all duration-200 hover:shadow-xl"
                   >
                     {saving === selectedSection ? (
                       <>
@@ -927,7 +990,7 @@ export function SiteEditor() {
           )}
 
           {/* Preview Area */}
-          <div className="flex-1 bg-slate-100 dark:bg-slate-950 overflow-auto">
+          <div className="flex-1 bg-gradient-to-br from-slate-100 via-slate-50 to-blue-50/50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-auto">
             <div className="min-h-full p-6 flex justify-center">
               <div
                 className={`${getPreviewWidth()} transition-all duration-300 ${
@@ -935,7 +998,7 @@ export function SiteEditor() {
                 }`}
               >
                 <div
-                  className={`bg-white dark:bg-slate-900 rounded-xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 ${
+                  className={`bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden border border-slate-200/50 dark:border-slate-800/50 ring-1 ring-black/5 ${
                     previewMode === "mobile"
                       ? "h-[700px]"
                       : previewMode === "tablet"

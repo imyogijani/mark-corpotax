@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useNotifications } from '@/contexts/NotificationContext';
-import { toast } from '@/hooks/use-toast';
-import { Bell, CheckCircle2, AlertCircle, AlertTriangle, Info } from 'lucide-react';
+import React from "react";
+import { useNotifications } from "@/contexts/NotificationContext";
+import { toast } from "@/hooks/use-toast";
+import { CheckCircle2, AlertCircle, AlertTriangle, Info } from "lucide-react";
 
 export function NotificationToast() {
   const { notifications } = useNotifications();
@@ -11,17 +11,17 @@ export function NotificationToast() {
   React.useEffect(() => {
     // Find the most recent unread notification
     const latestUnread = notifications
-      .filter(n => !n.read)
+      .filter((n) => !n.read)
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
 
     if (latestUnread) {
       const getIcon = () => {
         switch (latestUnread.type) {
-          case 'success':
+          case "success":
             return CheckCircle2;
-          case 'warning':
+          case "warning":
             return AlertTriangle;
-          case 'error':
+          case "error":
             return AlertCircle;
           default:
             return Info;
@@ -30,18 +30,20 @@ export function NotificationToast() {
 
       const getVariant = () => {
         switch (latestUnread.type) {
-          case 'error':
-            return 'destructive' as const;
+          case "error":
+            return "destructive" as const;
           default:
-            return 'default' as const;
+            return "default" as const;
         }
       };
 
       // Show toast for new notifications
       const timeDiff = Date.now() - latestUnread.createdAt.getTime();
-      if (timeDiff < 5000) { // Show toast for notifications less than 5 seconds old
-        const Icon = getIcon();
-        
+      if (timeDiff < 5000) {
+        // Show toast for notifications less than 5 seconds old
+        // Get icon for potential future use
+        void getIcon();
+
         toast({
           title: latestUnread.title,
           description: latestUnread.message,

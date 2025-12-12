@@ -138,7 +138,7 @@ export default function AppointmentPage() {
   const API_URL =
     typeof process !== "undefined" && process.env?.NEXT_PUBLIC_API_URL
       ? process.env.NEXT_PUBLIC_API_URL
-      : "http://localhost:5000";
+      : "http://localhost:5000/api";
 
   const form = useForm<AppointmentFormValues>({
     resolver: zodResolver(appointmentFormSchema),
@@ -167,7 +167,7 @@ export default function AppointmentPage() {
   async function onSubmit(data: AppointmentFormValues) {
     setIsSubmitting(true);
     try {
-      const response = await fetch(`${API_URL}/api/appointments`, {
+      const response = await fetch(`${API_URL}/appointments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -200,7 +200,7 @@ export default function AppointmentPage() {
           description: result.message,
         });
       }
-    } catch (error) {
+    } catch {
       toast({
         variant: "destructive",
         title: "Error",

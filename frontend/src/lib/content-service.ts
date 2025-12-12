@@ -4,23 +4,75 @@ interface ContentCache {
   [key: string]: {
     data: any;
     timestamp: number;
+    version: number;
   };
 }
 
-// Track in-flight requests to prevent duplicate calls
-const pendingRequests: { [key: string]: Promise<any> } = {};
+// Global cache version - incremented on every cache invalidation
+let cacheVersion = 0;
 
-// Check if we should skip cache (preview mode or cache busting)
-const shouldSkipCache = (): boolean => {
-  if (typeof window === "undefined") return false;
-  const params = new URLSearchParams(window.location.search);
-  return params.has("_t") || params.has("nocache") || params.has("refresh");
+// Get stored cache version from localStorage
+const getStoredCacheVersion = (): number => {
+  if (typeof window === "undefined") return 0;
+  const stored = localStorage.getItem("content_cache_version");
+  return stored ? parseInt(stored, 10) : 0;
 };
+
+// Store cache version to localStorage
+const storeCacheVersion = (version: number): void => {
+  if (typeof window === "undefined") return;
+  localStorage.setItem("content_cache_version", version.toString());
+};
+
+// Event for cache invalidation (components can listen to this)
+const CACHE_INVALIDATION_EVENT = "content-cache-invalidated";
 
 class ContentService {
   private cache: ContentCache = {};
   private cacheTimeout = 5 * 60 * 1000; // 5 minutes cache for production
   private shortCacheTimeout = 30 * 1000; // 30 seconds for development
+  private initialized = false;
+
+  constructor() {
+    this.initialize();
+  }
+
+  private initialize() {
+    if (typeof window === "undefined") return;
+    if (this.initialized) return;
+    this.initialized = true;
+
+    // Check localStorage for cache version on init
+    const storedVersion = getStoredCacheVersion();
+    if (storedVersion > cacheVersion) {
+      // Another tab updated the cache version, sync it
+      cacheVersion = storedVersion;
+    }
+
+    // Check if there's a content_updated flag (legacy support)
+    const contentUpdated = localStorage.getItem("content_updated");
+    if (contentUpdated) {
+      localStorage.removeItem("content_updated");
+      this.clearCache();
+    }
+
+    // Listen for storage events from other tabs
+    window.addEventListener("storage", (e: StorageEvent) => {
+      if (e.key === "content_cache_version" && e.newValue) {
+        const newVersion = parseInt(e.newValue, 10);
+        if (newVersion > cacheVersion) {
+          cacheVersion = newVersion;
+          this.cache = {}; // Clear local cache
+          // Dispatch event so components can refresh
+          window.dispatchEvent(new CustomEvent(CACHE_INVALIDATION_EVENT));
+        }
+      }
+      // Legacy support
+      if (e.key === "content_updated" && e.newValue) {
+        this.clearCache();
+      }
+    });
+  }
 
   private getCacheTimeout(): number {
     if (
@@ -35,55 +87,47 @@ class ContentService {
   private isCacheValid(key: string): boolean {
     const cached = this.cache[key];
     if (!cached) return false;
+    // Check if cache version is current
+    if (cached.version < cacheVersion) return false;
+    // Check if cache has expired
     return Date.now() - cached.timestamp < this.getCacheTimeout();
   }
 
   // Get full page content (cached) - optimized version
   private async getFullPageContent(page: string): Promise<any> {
     const cacheKey = `page-${page}`;
-    const skipCache = shouldSkipCache();
 
-    // If skipping cache, clear existing cache for this page
-    if (skipCache) {
-      delete this.cache[cacheKey];
-      delete pendingRequests[cacheKey];
+    // Check URL for cache busting params
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has("_t") || params.has("nocache") || params.has("refresh")) {
+        delete this.cache[cacheKey];
+      }
     }
 
-    // Check cache first (unless skipping)
-    if (!skipCache && this.cache[cacheKey] && this.isCacheValid(cacheKey)) {
+    // Check cache first
+    if (this.cache[cacheKey] && this.isCacheValid(cacheKey)) {
       return this.cache[cacheKey].data;
     }
 
-    // Check if there's already a pending request for this page
-    if (cacheKey in pendingRequests) {
-      return pendingRequests[cacheKey];
-    }
+    // Fetch fresh data
+    try {
+      const response = await apiClient.getPageContent(page);
 
-    // Create the request and store it
-    pendingRequests[cacheKey] = (async () => {
-      try {
-        const response = await apiClient.getPageContent(page);
-
-        if (response.success && response.data) {
-          this.cache[cacheKey] = {
-            data: response.data,
-            timestamp: Date.now(),
-          };
-          return response.data;
-        }
-        return {};
-      } catch (error) {
-        console.error("Error fetching page content:", error);
-        return {};
-      } finally {
-        // Clean up pending request after a short delay
-        setTimeout(() => {
-          delete pendingRequests[cacheKey];
-        }, 100);
+      if (response.success && response.data) {
+        // Store with current cache version
+        this.cache[cacheKey] = {
+          data: response.data,
+          timestamp: Date.now(),
+          version: cacheVersion,
+        };
+        return response.data;
       }
-    })();
-
-    return pendingRequests[cacheKey];
+      return {};
+    } catch (error) {
+      console.error("Error fetching page content:", error);
+      return {};
+    }
   }
 
   // Generic method to get content by page and key
@@ -228,20 +272,41 @@ class ContentService {
     return fallbacks[fallbackKey] || null;
   }
 
-  // Clear cache (useful for admin updates)
+  // Clear cache and increment version (useful for admin updates)
   clearCache() {
+    // Increment global cache version
+    cacheVersion++;
+    // Store to localStorage for cross-tab sync
+    storeCacheVersion(cacheVersion);
+    // Clear in-memory cache
     this.cache = {};
-    // Also clear pending requests
-    Object.keys(pendingRequests).forEach((key) => {
-      delete pendingRequests[key];
-    });
+    // Dispatch event so components can refresh
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent(CACHE_INVALIDATION_EVENT));
+    }
   }
 
   // Clear specific cache entry
   clearCacheItem(page: string, _key?: string) {
     const cacheKey = `page-${page}`;
     delete this.cache[cacheKey];
-    delete pendingRequests[cacheKey];
+    // Increment version to invalidate any stale data
+    cacheVersion++;
+    storeCacheVersion(cacheVersion);
+    // Dispatch event so components can refresh
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent(CACHE_INVALIDATION_EVENT, { detail: { page } })
+      );
+    }
+  }
+
+  // Subscribe to cache invalidation events
+  onCacheInvalidated(callback: () => void): () => void {
+    if (typeof window === "undefined") return () => {};
+    const handler = () => callback();
+    window.addEventListener(CACHE_INVALIDATION_EVENT, handler);
+    return () => window.removeEventListener(CACHE_INVALIDATION_EVENT, handler);
   }
 
   // Get content by page and section (uses cached full page response)
@@ -270,6 +335,14 @@ class ContentService {
   // Warm up cache - call this on app init
   async warmUpCache(): Promise<void> {
     await this.prefetchPages(["home", "services", "about"]);
+  }
+
+  // Force refresh - clears cache and refetches
+  async forceRefresh(page?: string): Promise<void> {
+    this.clearCache();
+    if (page) {
+      await this.getFullPageContent(page);
+    }
   }
 }
 

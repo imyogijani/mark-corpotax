@@ -40,8 +40,8 @@ export default function SettingsPage() {
 
   // Site settings state
   const [settings, setSettings] = useState<SiteSettings>({
-    siteName: "FinBest Finance",
-    siteEmail: "info@finbestfinance.com",
+    siteName: "Mark Corpotax",
+    siteEmail: "info@markcorpotax.com",
     sitePhone: "+1 (555) 123-4567",
     siteAddress: "123 Financial District, New York, NY 10005",
     businessHours: "Monday - Friday: 9:00 AM - 5:00 PM",
@@ -66,7 +66,7 @@ export default function SettingsPage() {
     if (saved) {
       try {
         setSettings(JSON.parse(saved));
-      } catch (e) {
+      } catch {
         console.error("Failed to parse saved settings");
       }
     }

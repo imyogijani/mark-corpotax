@@ -1,9 +1,14 @@
-import React from 'react';
-import { ComponentData } from '../BaseComponent';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import React from "react";
+import { ComponentData } from "../BaseComponent";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ComponentEditModalProps {
   isOpen: boolean;
@@ -18,7 +23,7 @@ export const ComponentEditModal: React.FC<ComponentEditModalProps> = ({
   component,
   onClose,
   onSave,
-  onPreview
+  onPreview: _onPreview,
 }) => {
   if (!component) return null;
 
@@ -35,11 +40,16 @@ export const ComponentEditModal: React.FC<ComponentEditModalProps> = ({
           </div>
           <div>
             <label htmlFor="component-content">Content</label>
-            <Textarea id="component-content" defaultValue={JSON.stringify(component.content)} />
+            <Textarea
+              id="component-content"
+              defaultValue={JSON.stringify(component.content)}
+            />
           </div>
           <div className="flex gap-2">
             <Button onClick={() => onSave(component)}>Save</Button>
-            <Button variant="outline" onClick={onClose}>Cancel</Button>
+            <Button variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
           </div>
         </div>
       </DialogContent>

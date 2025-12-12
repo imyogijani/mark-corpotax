@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { contentService } from "@/lib/content-service";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -18,36 +18,40 @@ interface CTASectionData {
 // Static fallback content
 const FALLBACK_CTA: CTASectionData = {
   title: "A financial partner you can trust",
-  description: "www.markgroup.in",
+  description: "www.markcorpotax.com",
   buttonText: "Subscribe",
-  logoText: "MARK GROUP",
+  logoText: "Mark Corpotax",
 };
 
 export function DynamicCTASection() {
   const [ctaSection, setCtaSection] = useState<CTASectionData>(FALLBACK_CTA);
 
-  useEffect(() => {
-    let mounted = true;
-
-    const fetchContent = async () => {
-      try {
-        const ctaContent = await contentService.getContentBySection(
-          "home",
-          "cta"
-        );
-        if (mounted && ctaContent?.cta_section) {
-          setCtaSection(() => ({ ...FALLBACK_CTA, ...ctaContent.cta_section }));
-        }
-      } catch (error) {
-        console.error("Error loading CTA content:", error);
+  const fetchContent = useCallback(async () => {
+    try {
+      const ctaContent = await contentService.getContentBySection(
+        "home",
+        "cta"
+      );
+      if (ctaContent?.cta_section) {
+        setCtaSection(() => ({ ...FALLBACK_CTA, ...ctaContent.cta_section }));
       }
-    };
-
-    fetchContent();
-    return () => {
-      mounted = false;
-    };
+    } catch (error) {
+      console.error("Error loading CTA content:", error);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchContent();
+
+    // Subscribe to cache invalidation events
+    const unsubscribe = contentService.onCacheInvalidated(() => {
+      fetchContent();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [fetchContent]);
 
   return (
     <section
@@ -61,7 +65,7 @@ export function DynamicCTASection() {
         >
           <Logo className="h-10 w-10 text-teal-600" />
           <span className="text-2xl font-bold">
-            {ctaSection?.logoText || "MARK GROUP"}
+            {ctaSection?.logoText || "Mark Corpotax"}
           </span>
         </Link>
         <h2 className="text-3xl md:text-4xl font-bold">
@@ -70,7 +74,7 @@ export function DynamicCTASection() {
         <p className="mt-2 text-lg opacity-70">
           {ctaSection?.description ||
             ctaSection?.websiteUrl ||
-            "www.markgroup.in"}
+            "www.markcorpotax.com"}
         </p>
 
         <form className="mt-8 max-w-lg mx-auto flex items-center gap-4 p-2 bg-white border border-gray-200 rounded-full shadow-sm focus-within:ring-2 focus-within:ring-teal-500 focus-within:ring-offset-2 transition-shadow">

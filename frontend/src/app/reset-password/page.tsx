@@ -1,43 +1,50 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Mail, ArrowLeft, CheckCircle, AlertCircle, Eye, EyeOff } from 'lucide-react';
-import Link from 'next/link';
-import { apiClient } from '@/lib/api-client';
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Mail,
+  ArrowLeft,
+  CheckCircle,
+  AlertCircle,
+  Eye,
+  EyeOff,
+} from "lucide-react";
+import Link from "next/link";
+import { apiClient } from "@/lib/api-client";
 
 export default function ResetPasswordPage() {
-  const [step, setStep] = useState<'email' | 'reset'>('email');
-  const [email, setEmail] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [step, setStep] = useState<"email" | "reset">("email");
+  const [email, setEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    setMessage('');
+    setError("");
+    setMessage("");
 
     try {
       const response = await apiClient.checkEmailExists(email);
-      
+
       if (response.success && response.data?.exists) {
-        setStep('reset');
-        setMessage('Email verified! You can now set a new password.');
+        setStep("reset");
+        setMessage("Email verified! You can now set a new password.");
       } else {
-        setError('Email not found in our system. Please check and try again.');
+        setError("Email not found in our system. Please check and try again.");
       }
-    } catch (err) {
-      setError('Failed to verify email. Please try again.');
+    } catch {
+      setError("Failed to verify email. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -45,17 +52,17 @@ export default function ResetPasswordPage() {
 
   const handlePasswordReset = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setMessage('');
+    setError("");
+    setMessage("");
 
     // Validate passwords
     if (newPassword.length < 6) {
-      setError('Password must be at least 6 characters long.');
+      setError("Password must be at least 6 characters long.");
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError('Passwords do not match.');
+      setError("Passwords do not match.");
       return;
     }
 
@@ -63,32 +70,36 @@ export default function ResetPasswordPage() {
 
     try {
       const response = await apiClient.resetPassword(email, newPassword);
-      
+
       if (response.success) {
-        setMessage('Password reset successfully! You can now login with your new password.');
+        setMessage(
+          "Password reset successfully! You can now login with your new password."
+        );
         // Clear form
-        setNewPassword('');
-        setConfirmPassword('');
+        setNewPassword("");
+        setConfirmPassword("");
       } else {
-        setError(response.error || 'Failed to reset password. Please try again.');
+        setError(
+          response.error || "Failed to reset password. Please try again."
+        );
       }
-    } catch (err) {
-      setError('Failed to reset password. Please try again.');
+    } catch {
+      setError("Failed to reset password. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   const resetForm = () => {
-    setStep('email');
-    setEmail('');
-    setNewPassword('');
-    setConfirmPassword('');
-    setError('');
-    setMessage('');
+    setStep("email");
+    setEmail("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setError("");
+    setMessage("");
   };
 
-  const isDevelopment = process.env.NODE_ENV === 'development';
+  const isDevelopment = process.env.NODE_ENV === "development";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -100,7 +111,7 @@ export default function ResetPasswordPage() {
           </p>
         </div>
       )}
-      
+
       <div className="w-full max-w-md">
         <Card className="shadow-lg">
           <CardHeader className="text-center space-y-2">
@@ -108,13 +119,12 @@ export default function ResetPasswordPage() {
               <Mail className="h-6 w-6 text-primary" />
             </div>
             <CardTitle className="text-2xl font-bold">
-              {step === 'email' ? 'Reset Password' : 'Set New Password'}
+              {step === "email" ? "Reset Password" : "Set New Password"}
             </CardTitle>
             <p className="text-muted-foreground">
-              {step === 'email' 
-                ? 'Enter your email to verify your account' 
-                : 'Enter your new password'
-              }
+              {step === "email"
+                ? "Enter your email to verify your account"
+                : "Enter your new password"}
             </p>
           </CardHeader>
 
@@ -139,7 +149,7 @@ export default function ResetPasswordPage() {
             )}
 
             {/* Email Verification Step */}
-            {step === 'email' && (
+            {step === "email" && (
               <form onSubmit={handleEmailSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="email">Email Address</Label>
@@ -154,18 +164,18 @@ export default function ResetPasswordPage() {
                   />
                 </div>
 
-                <Button 
-                  type="submit" 
-                  className="w-full bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 py-2 font-medium transition-colors" 
+                <Button
+                  type="submit"
+                  className="w-full bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 py-2 font-medium transition-colors"
                   disabled={loading || !email}
                 >
-                  {loading ? 'Verifying...' : 'Verify Email'}
+                  {loading ? "Verifying..." : "Verify Email"}
                 </Button>
               </form>
             )}
 
             {/* Password Reset Step */}
-            {step === 'reset' && (
+            {step === "reset" && (
               <form onSubmit={handlePasswordReset} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="email-display">Email</Label>
@@ -183,7 +193,7 @@ export default function ResetPasswordPage() {
                   <div className="relative">
                     <Input
                       id="new-password"
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       placeholder="Enter new password"
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
@@ -212,7 +222,7 @@ export default function ResetPasswordPage() {
                   <div className="relative">
                     <Input
                       id="confirm-password"
-                      type={showConfirmPassword ? 'text' : 'password'}
+                      type={showConfirmPassword ? "text" : "password"}
                       placeholder="Confirm new password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
@@ -225,7 +235,9 @@ export default function ResetPasswordPage() {
                       variant="ghost"
                       size="sm"
                       className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-teal-50 text-teal-600"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
                     >
                       {showConfirmPassword ? (
                         <EyeOff className="h-4 w-4" />
@@ -247,12 +259,12 @@ export default function ResetPasswordPage() {
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Back
                   </Button>
-                  <Button 
-                    type="submit" 
-                    className="flex-1 bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 py-2 font-medium transition-colors" 
+                  <Button
+                    type="submit"
+                    className="flex-1 bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 py-2 font-medium transition-colors"
                     disabled={loading || !newPassword || !confirmPassword}
                   >
-                    {loading ? 'Resetting...' : 'Reset Password'}
+                    {loading ? "Resetting..." : "Reset Password"}
                   </Button>
                 </div>
               </form>
@@ -261,14 +273,20 @@ export default function ResetPasswordPage() {
             {/* Navigation Links */}
             <div className="text-center space-y-2">
               <p className="text-sm text-muted-foreground">
-                Remember your password?{' '}
-                <Link href="/login" className="text-primary hover:underline font-medium">
+                Remember your password?{" "}
+                <Link
+                  href="/login"
+                  className="text-primary hover:underline font-medium"
+                >
                   Sign in
                 </Link>
               </p>
-              {message.includes('successfully') && (
+              {message.includes("successfully") && (
                 <Link href="/login">
-                  <Button variant="outline" className="w-full border-teal-600 text-teal-600 hover:bg-teal-50 rounded-full px-6 py-2 font-medium transition-colors">
+                  <Button
+                    variant="outline"
+                    className="w-full border-teal-600 text-teal-600 hover:bg-teal-50 rounded-full px-6 py-2 font-medium transition-colors"
+                  >
                     Go to Login
                   </Button>
                 </Link>

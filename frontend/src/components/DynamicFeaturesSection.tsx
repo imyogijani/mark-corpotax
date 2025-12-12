@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { contentService } from "@/lib/content-service";
 import { Card } from "@/components/ui/card";
 import { FileText, Briefcase, CheckCircle, Users } from "lucide-react";
@@ -99,29 +99,33 @@ export function DynamicFeaturesSection() {
   const [processSection, setProcessSection] =
     useState<ProcessSectionData>(FALLBACK_PROCESS);
 
-  useEffect(() => {
-    let mounted = true;
-
-    const fetchContent = async () => {
-      try {
-        const processContent = await contentService.getContentBySection(
-          "home",
-          "process"
-        );
-        if (mounted && processContent?.process_section) {
-          const transformed = transformProcessData(processContent);
-          setProcessSection(() => ({ ...FALLBACK_PROCESS, ...transformed }));
-        }
-      } catch (error) {
-        console.error("Error loading features content:", error);
+  const fetchContent = useCallback(async () => {
+    try {
+      const processContent = await contentService.getContentBySection(
+        "home",
+        "process"
+      );
+      if (processContent?.process_section) {
+        const transformed = transformProcessData(processContent);
+        setProcessSection(() => ({ ...FALLBACK_PROCESS, ...transformed }));
       }
-    };
-
-    fetchContent();
-    return () => {
-      mounted = false;
-    };
+    } catch (error) {
+      console.error("Error loading features content:", error);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchContent();
+
+    // Subscribe to cache invalidation events
+    const unsubscribe = contentService.onCacheInvalidated(() => {
+      fetchContent();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [fetchContent]);
 
   const getIcon = (iconName: string, index: number) => {
     const iconMap: { [key: string]: JSX.Element } = {

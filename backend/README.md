@@ -1,6 +1,6 @@
-# FinBest Finance Backend API
+# Mark Corpotax Backend API
 
-A robust Node.js/Express backend API for the FinBest Finance application with TypeScript, MongoDB, and comprehensive security features.
+A robust Node.js/Express backend API for the Mark Corpotax application with TypeScript, MongoDB, and comprehensive security features.
 
 ## 🚀 Features
 
@@ -40,21 +40,24 @@ backend/
 ## 🛠️ Installation
 
 1. **Install dependencies:**
+
    ```bash
    cd backend
    npm install
    ```
 
 2. **Environment Setup:**
+
    ```bash
    cp .env.example .env
    ```
-   
+
    Update the `.env` file with your configuration:
+
    ```env
    NODE_ENV=development
    PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/finbest-db
+   MONGODB_URI=mongodb://localhost:27017/mark-corpotax-db
    JWT_SECRET=your-super-secret-jwt-key-here
    SMTP_HOST=smtp.gmail.com
    SMTP_USER=your-email@gmail.com
@@ -69,17 +72,20 @@ backend/
 ## 🚀 Running the Application
 
 ### Development Mode
+
 ```bash
 npm run dev
 ```
 
 ### Production Build
+
 ```bash
 npm run build
 npm start
 ```
 
 ### Other Scripts
+
 ```bash
 npm run lint          # Run ESLint
 npm run lint:fix      # Fix ESLint issues
@@ -89,29 +95,35 @@ npm test              # Run tests
 ## 📚 API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - User login
 - `GET /api/auth/me` - Get current user profile
 
 ### Contact
+
 - `POST /api/contact` - Submit contact form
 - `GET /api/contact` - Get all contact submissions (Admin)
 
 ### Appointments
+
 - `POST /api/appointments` - Book appointment
 - `GET /api/appointments` - Get all appointments (Admin)
 - `PUT /api/appointments/:id` - Update appointment status (Admin)
 
 ### Blog
+
 - `GET /api/blog` - Get all blog posts
 - `GET /api/blog/:id` - Get single blog post
 - `POST /api/blog` - Create blog post (Admin)
 
 ### Services
+
 - `GET /api/services` - Get all services
 - `GET /api/services/:id` - Get single service
 
 ### Health Check
+
 - `GET /health` - API health status
 
 ## 🔒 Security Features
@@ -126,6 +138,7 @@ npm test              # Run tests
 ## 🗃️ Database Schema
 
 The application uses MongoDB with the following collections:
+
 - `users` - User accounts and profiles
 - `contacts` - Contact form submissions
 - `appointments` - Appointment bookings
@@ -135,6 +148,7 @@ The application uses MongoDB with the following collections:
 ## 📧 Email Configuration
 
 The API supports email notifications for:
+
 - Contact form submissions
 - Appointment confirmations
 - User registration
@@ -144,18 +158,18 @@ Configure your SMTP settings in the `.env` file.
 
 ## 🛡️ Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `NODE_ENV` | Environment mode | development |
-| `PORT` | Server port | 5000 |
-| `MONGODB_URI` | MongoDB connection string | mongodb://localhost:27017/finbest-db |
-| `JWT_SECRET` | JWT signing secret | - |
-| `JWT_EXPIRES_IN` | JWT expiration time | 7d |
-| `CLIENT_URL` | Frontend URL for CORS | http://localhost:3000 |
-| `SMTP_HOST` | Email SMTP host | smtp.gmail.com |
-| `SMTP_PORT` | Email SMTP port | 587 |
-| `SMTP_USER` | Email username | - |
-| `SMTP_PASS` | Email password | - |
+| Variable         | Description               | Default                                    |
+| ---------------- | ------------------------- | ------------------------------------------ |
+| `NODE_ENV`       | Environment mode          | development                                |
+| `PORT`           | Server port               | 5000                                       |
+| `MONGODB_URI`    | MongoDB connection string | mongodb://localhost:27017/mark-corpotax-db |
+| `JWT_SECRET`     | JWT signing secret        | -                                          |
+| `JWT_EXPIRES_IN` | JWT expiration time       | 7d                                         |
+| `CLIENT_URL`     | Frontend URL for CORS     | http://localhost:3000                      |
+| `SMTP_HOST`      | Email SMTP host           | smtp.gmail.com                             |
+| `SMTP_PORT`      | Email SMTP port           | 587                                        |
+| `SMTP_USER`      | Email username            | -                                          |
+| `SMTP_PASS`      | Email password            | -                                          |
 
 ## 🧪 Testing
 
@@ -166,6 +180,7 @@ npm test
 ## 📝 API Response Format
 
 ### Success Response
+
 ```json
 {
   "success": true,
@@ -175,6 +190,7 @@ npm test
 ```
 
 ### Error Response
+
 ```json
 {
   "success": false,
@@ -185,6 +201,7 @@ npm test
 ## 🚀 Deployment
 
 1. Build the application:
+
    ```bash
    npm run build
    ```

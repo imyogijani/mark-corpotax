@@ -14,7 +14,6 @@ import {
   Mail,
   Phone,
   Search,
-  Filter,
   CheckCircle,
   X,
   Eye,

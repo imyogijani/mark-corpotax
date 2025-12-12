@@ -6,6 +6,7 @@ import {
 } from "../services/firebaseService";
 import { AppointmentDatabaseService } from "../services/appointmentDatabase";
 import { protect, authorize } from "../middleware/auth";
+import { clearContentCache } from "./content";
 
 // Use appointment database service (external or default) - only appointments use external DB
 const AppointmentService = AppointmentDatabaseService;
@@ -113,6 +114,10 @@ router.post("/content", async (req: Request, res: Response) => {
       });
     }
 
+    // Clear content cache for this page
+    clearContentCache(page);
+    PageContentService.clearCache();
+
     res.status(200).json({
       success: true,
       message: "Content saved successfully",
@@ -166,6 +171,10 @@ router.put("/content", async (req: Request, res: Response) => {
         isActive: true,
       });
     }
+
+    // Clear content cache for this page
+    clearContentCache(page);
+    PageContentService.clearCache();
 
     res.status(200).json({
       success: true,

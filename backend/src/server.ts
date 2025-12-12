@@ -65,7 +65,7 @@ if (process.env.NODE_ENV === "development") {
 app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({
     status: "OK",
-    message: "FinBest Backend API is running",
+    message: "Mark Corpotax Backend API is running",
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || "development",
     database: "Firebase Firestore",

@@ -63,7 +63,7 @@ export default function NewBlogPage() {
       } else {
         setError(response.error || "Failed to create blog post");
       }
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred");
     } finally {
       setIsLoading(false);

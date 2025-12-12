@@ -401,7 +401,7 @@ export const PAGE_CONFIGS: PageConfig[] = [
             key: "cta_section.logoText",
             label: "Logo Text",
             type: "text",
-            placeholder: "FinBest",
+            placeholder: "Mark Corpotax",
           },
           {
             key: "cta_section.title",
@@ -413,7 +413,7 @@ export const PAGE_CONFIGS: PageConfig[] = [
             key: "cta_section.description",
             label: "Website URL / Description",
             type: "text",
-            placeholder: "www.example.com",
+            placeholder: "www.markcorpotax.com",
           },
           {
             key: "cta_section.buttonText",

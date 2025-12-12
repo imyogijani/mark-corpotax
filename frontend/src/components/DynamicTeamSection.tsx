@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { contentService } from "@/lib/content-service";
 import { Card } from "@/components/ui/card";
 import { User } from "lucide-react";
@@ -80,29 +80,33 @@ export function DynamicTeamSection() {
   const [teamSection, setTeamSection] =
     useState<TeamSectionData>(FALLBACK_TEAM);
 
-  useEffect(() => {
-    let mounted = true;
-
-    const fetchContent = async () => {
-      try {
-        const teamContent = await contentService.getContentBySection(
-          "home",
-          "team"
-        );
-        if (mounted && teamContent?.team_section) {
-          const transformed = transformTeamData(teamContent);
-          setTeamSection(() => ({ ...FALLBACK_TEAM, ...transformed }));
-        }
-      } catch (error) {
-        console.error("Error loading team content:", error);
+  const fetchContent = useCallback(async () => {
+    try {
+      const teamContent = await contentService.getContentBySection(
+        "home",
+        "team"
+      );
+      if (teamContent?.team_section) {
+        const transformed = transformTeamData(teamContent);
+        setTeamSection(() => ({ ...FALLBACK_TEAM, ...transformed }));
       }
-    };
-
-    fetchContent();
-    return () => {
-      mounted = false;
-    };
+    } catch (error) {
+      console.error("Error loading team content:", error);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchContent();
+
+    // Subscribe to cache invalidation events
+    const unsubscribe = contentService.onCacheInvalidated(() => {
+      fetchContent();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [fetchContent]);
 
   // Memoize team members
   const teamMembers = useMemo(

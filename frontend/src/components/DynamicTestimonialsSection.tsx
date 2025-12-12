@@ -115,33 +115,37 @@ export function DynamicTestimonialsSection() {
     "right"
   );
 
-  useEffect(() => {
-    let mounted = true;
-
-    const fetchContent = async () => {
-      try {
-        const testimonialsContent = await contentService.getContentBySection(
-          "home",
-          "testimonials"
-        );
-        if (mounted && testimonialsContent?.testimonials_section) {
-          const transformedContent =
-            transformTestimonialsData(testimonialsContent);
-          setTestimonialsSection(() => ({
-            ...FALLBACK_TESTIMONIALS,
-            ...transformedContent,
-          }));
-        }
-      } catch (error) {
-        console.error("Error loading testimonials content:", error);
+  const fetchContent = useCallback(async () => {
+    try {
+      const testimonialsContent = await contentService.getContentBySection(
+        "home",
+        "testimonials"
+      );
+      if (testimonialsContent?.testimonials_section) {
+        const transformedContent =
+          transformTestimonialsData(testimonialsContent);
+        setTestimonialsSection(() => ({
+          ...FALLBACK_TESTIMONIALS,
+          ...transformedContent,
+        }));
       }
-    };
-
-    fetchContent();
-    return () => {
-      mounted = false;
-    };
+    } catch (error) {
+      console.error("Error loading testimonials content:", error);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchContent();
+
+    // Subscribe to cache invalidation events
+    const unsubscribe = contentService.onCacheInvalidated(() => {
+      fetchContent();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [fetchContent]);
 
   const testimonials = useMemo(
     () => testimonialsSection?.testimonials || [],

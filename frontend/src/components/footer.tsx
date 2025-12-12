@@ -1,13 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Logo } from "./logo-image";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Facebook, Twitter, Linkedin, Instagram, Youtube } from "lucide-react";
-import { DribbbleIcon } from "./logo";
+import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 import { contentService } from "@/lib/content-service";
+
+interface FooterLink {
+  label: string;
+  url: string;
+}
 
 interface SiteSettings {
   company_name?: string;
@@ -23,39 +27,112 @@ interface SiteSettings {
   instagram?: string;
 }
 
+interface FooterSettings {
+  company_description?: string;
+  copyright_text?: string;
+  newsletter_title?: string;
+  newsletter_description?: string;
+  quick_links_title?: string;
+  services_title?: string;
+  working_hours_title?: string;
+  working_hours_weekday?: string;
+  working_hours_saturday?: string;
+  working_hours_sunday?: string;
+}
+
+interface FooterLinksSettings {
+  [key: string]: string;
+}
+
 export function Footer() {
   const [settings, setSettings] = useState<SiteSettings>({});
+  const [footerSettings, setFooterSettings] = useState<FooterSettings>({});
+  const [quickLinks, setQuickLinks] = useState<FooterLink[]>([]);
+  const [serviceLinks, setServiceLinks] = useState<FooterLink[]>([]);
 
-  useEffect(() => {
-    const loadSettings = async () => {
-      try {
-        const headerSettings = await contentService.getContentBySection(
-          "settings",
-          "header"
-        );
-        const contactSettings = await contentService.getContentBySection(
-          "settings",
-          "contact"
-        );
-        const socialSettings = await contentService.getContentBySection(
-          "settings",
-          "social"
-        );
-        setSettings({
-          ...headerSettings,
-          ...contactSettings,
-          ...socialSettings,
-        });
-      } catch (error) {
-        console.error("Error loading footer settings:", error);
+  const loadSettings = useCallback(async () => {
+    try {
+      const headerSettings = await contentService.getContentBySection(
+        "settings",
+        "header"
+      );
+      const contactSettings = await contentService.getContentBySection(
+        "settings",
+        "contact"
+      );
+      const socialSettings = await contentService.getContentBySection(
+        "settings",
+        "social"
+      );
+      const footer = await contentService.getContentBySection(
+        "settings",
+        "footer"
+      );
+      const footerLinksData: FooterLinksSettings =
+        await contentService.getContentBySection("settings", "footer_links");
+      const footerServicesData: FooterLinksSettings =
+        await contentService.getContentBySection("settings", "footer_services");
+
+      setSettings({
+        ...headerSettings,
+        ...contactSettings,
+        ...socialSettings,
+      });
+      setFooterSettings(footer || {});
+
+      // Build quick links from settings
+      if (footerLinksData && Object.keys(footerLinksData).length > 0) {
+        const links: FooterLink[] = [];
+        for (let i = 1; i <= 6; i++) {
+          const label = footerLinksData[`link_${i}_label`];
+          const url = footerLinksData[`link_${i}_url`];
+          if (label && url) {
+            links.push({ label, url });
+          }
+        }
+        if (links.length > 0) {
+          setQuickLinks(links);
+        }
       }
-    };
-    loadSettings();
+
+      // Build service links from settings
+      if (footerServicesData && Object.keys(footerServicesData).length > 0) {
+        const links: FooterLink[] = [];
+        for (let i = 1; i <= 6; i++) {
+          const label = footerServicesData[`service_${i}_label`];
+          const url = footerServicesData[`service_${i}_url`];
+          if (label && url) {
+            links.push({ label, url });
+          }
+        }
+        if (links.length > 0) {
+          setServiceLinks(links);
+        }
+      }
+    } catch (error) {
+      console.error("Error loading footer settings:", error);
+    }
   }, []);
 
-  const companyName = settings.company_name || "Mark Corpotext";
+  useEffect(() => {
+    loadSettings();
+
+    // Subscribe to cache invalidation events to refresh when content is updated
+    const unsubscribe = contentService.onCacheInvalidated(() => {
+      loadSettings();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [loadSettings]);
+
+  const companyName = settings.company_name || "Mark Corpotax";
   const companyTagline =
     settings.company_tagline || "Financial & Legal Solutions";
+  const companyDescription =
+    footerSettings.company_description ||
+    "Founded in 2012 in Surat, Gujarat. Delivering comprehensive financial and legal solutions designed to address the unique requirements of our clients.";
   const address =
     settings.address ||
     "705, 7th Floor, APMC Building, Krushi Bazar, Sahara Darwaja, Ring Road, Surat - 395003";
@@ -67,6 +144,38 @@ export function Footer() {
   const twitterUrl = settings.twitter || "#";
   const linkedinUrl = settings.linkedin || "#";
   const instagramUrl = settings.instagram || "#";
+
+  const quickLinksTitle = footerSettings.quick_links_title || "Quick Links";
+  const servicesTitle = footerSettings.services_title || "Our Services";
+  const newsletterTitle = footerSettings.newsletter_title || "Subscribe";
+  const newsletterDescription =
+    footerSettings.newsletter_description ||
+    "Join our community to get the latest updates.";
+  const copyrightText =
+    footerSettings.copyright_text ||
+    `© ${new Date().getFullYear()} MARK GROUP. All Rights Reserved.`;
+
+  // Default links if none from CMS
+  const defaultQuickLinks: FooterLink[] = [
+    { label: "About Us", url: "/about" },
+    { label: "Services", url: "/services" },
+    { label: "Blog", url: "/blog" },
+    { label: "Contact", url: "/contact" },
+    { label: "Appointments", url: "/appointment" },
+  ];
+
+  const defaultServiceLinks: FooterLink[] = [
+    { label: "MSME Project Finance", url: "/services/msme-project-finance" },
+    { label: "Working Capital", url: "/services/working-capital" },
+    { label: "Home & Mortgage Loans", url: "/services/home-mortgage-loans" },
+    { label: "Taxation Services", url: "/services/tax-planning" },
+    { label: "Business Loans", url: "/services/business-loans" },
+  ];
+
+  const displayQuickLinks =
+    quickLinks.length > 0 ? quickLinks : defaultQuickLinks;
+  const displayServiceLinks =
+    serviceLinks.length > 0 ? serviceLinks : defaultServiceLinks;
 
   return (
     <footer className="w-full border-t border-gray-200 bg-[#ffffff] text-gray-700">
@@ -87,9 +196,7 @@ export function Footer() {
               </Link>
             </div>
             <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-              Founded in 2012 in Surat, Gujarat. Delivering comprehensive
-              financial and legal solutions designed to address the unique
-              requirements of our clients.
+              {companyDescription}
             </p>
             <div className="text-gray-600 text-sm space-y-2 mb-6">
               <p>
@@ -146,80 +253,45 @@ export function Footer() {
             </div>
           </div>
           <div className="footer-widget">
-            <h4 className="font-semibold text-gray-800 mb-4">Quick Links</h4>
+            <h4 className="font-semibold text-gray-800 mb-4">
+              {quickLinksTitle}
+            </h4>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/about"
-                  className="text-gray-600 hover:text-primary"
-                >
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services"
-                  className="text-gray-600 hover:text-primary"
-                >
-                  Services
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="text-gray-600 hover:text-primary">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-gray-600 hover:text-primary"
-                >
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/appointment"
-                  className="text-gray-600 hover:text-primary"
-                >
-                  Appointments
-                </Link>
-              </li>
+              {displayQuickLinks.map((link, index) => (
+                <li key={index}>
+                  <Link
+                    href={link.url}
+                    className="text-gray-600 hover:text-primary"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div className="footer-widget">
-            <h4 className="font-semibold text-gray-800 mb-4">Utility Pages</h4>
+            <h4 className="font-semibold text-gray-800 mb-4">
+              {servicesTitle}
+            </h4>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/privacy-policy"
-                  className="text-gray-600 hover:text-primary"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms-of-service"
-                  className="text-gray-600 hover:text-primary"
-                >
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/login"
-                  className="text-gray-600 hover:text-primary"
-                >
-                  Login
-                </Link>
-              </li>
+              {displayServiceLinks.map((link, index) => (
+                <li key={index}>
+                  <Link
+                    href={link.url}
+                    className="text-gray-600 hover:text-primary"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div className="footer-widget">
-            <h4 className="font-semibold text-gray-800 mb-4">Subscribe</h4>
+            <h4 className="font-semibold text-gray-800 mb-4">
+              {newsletterTitle}
+            </h4>
             <p className="text-gray-600 text-sm mb-4">
-              Join our community to get the latest updates.
+              {newsletterDescription}
             </p>
             <form className="flex gap-2">
               <Input
@@ -233,9 +305,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 pt-8 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500">
-          <p>
-            &copy; {new Date().getFullYear()} MARK GROUP. All Rights Reserved.
-          </p>
+          <p>{copyrightText}</p>
           <div className="flex gap-4 mt-4 sm:mt-0">
             <Link href="/privacy-policy" className="hover:text-primary">
               Privacy Policy

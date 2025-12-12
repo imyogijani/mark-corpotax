@@ -5,14 +5,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { NotificationBell } from "@/components/NotificationBell";
 import { NotificationToast } from "@/components/NotificationToast";
 import AdminSidebar from "./AdminSidebar";
 import {
   Menu,
-  Bell,
-  Search,
   Calendar,
   Users,
   MessageSquare,
@@ -76,9 +73,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
         const API_BASE =
           typeof process !== "undefined" && process.env?.NEXT_PUBLIC_API_URL
             ? process.env.NEXT_PUBLIC_API_URL
-            : "http://localhost:5000";
+            : "http://localhost:5000/api";
         const response = await fetch(
-          `${API_BASE}/api/admin/content?includeInactive=true`,
+          `${API_BASE}/admin/content?includeInactive=true`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

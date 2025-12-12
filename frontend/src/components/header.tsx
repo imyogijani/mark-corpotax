@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -12,11 +12,16 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Menu, BookUser, LogIn, Phone } from "lucide-react";
+import { Menu, BookUser, Phone } from "lucide-react";
 import { Logo } from "./logo-image";
 import { contentService } from "@/lib/content-service";
 
-const defaultNavLinks = [
+interface NavLink {
+  href: string;
+  label: string;
+}
+
+const defaultNavLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
@@ -24,41 +29,92 @@ const defaultNavLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-interface SiteSettings {
+interface HeaderSettings {
   company_name?: string;
   company_tagline?: string;
   phone_finance?: string;
   phone_taxation?: string;
+  show_phone?: string;
+  phone_display?: string;
+  cta_text?: string;
+  cta_link?: string;
+}
+
+interface NavigationSettings {
+  nav_1_label?: string;
+  nav_1_link?: string;
+  nav_2_label?: string;
+  nav_2_link?: string;
+  nav_3_label?: string;
+  nav_3_link?: string;
+  nav_4_label?: string;
+  nav_4_link?: string;
+  nav_5_label?: string;
+  nav_5_link?: string;
 }
 
 export function Header() {
   const pathname = usePathname();
-  const [settings, setSettings] = useState<SiteSettings>({});
-  const [navLinks] = useState(defaultNavLinks);
+  const [settings, setSettings] = useState<HeaderSettings>({});
+  const [navLinks, setNavLinks] = useState<NavLink[]>(defaultNavLinks);
 
-  useEffect(() => {
-    const loadSettings = async () => {
-      try {
-        const headerSettings = await contentService.getContentBySection(
-          "settings",
-          "header"
-        );
-        const contactSettings = await contentService.getContentBySection(
-          "settings",
-          "contact"
-        );
-        setSettings({ ...headerSettings, ...contactSettings });
-      } catch (error) {
-        console.error("Error loading header settings:", error);
+  const loadSettings = useCallback(async () => {
+    try {
+      const headerSettings = await contentService.getContentBySection(
+        "settings",
+        "header"
+      );
+      const contactSettings = await contentService.getContentBySection(
+        "settings",
+        "contact"
+      );
+      const navigationSettings: NavigationSettings =
+        await contentService.getContentBySection("settings", "navigation");
+
+      setSettings({ ...headerSettings, ...contactSettings });
+
+      // Build navigation from settings if available
+      if (navigationSettings && Object.keys(navigationSettings).length > 0) {
+        const customNavLinks: NavLink[] = [];
+        for (let i = 1; i <= 5; i++) {
+          const label =
+            navigationSettings[`nav_${i}_label` as keyof NavigationSettings];
+          const link =
+            navigationSettings[`nav_${i}_link` as keyof NavigationSettings];
+          if (label && link) {
+            customNavLinks.push({ href: link, label });
+          }
+        }
+        if (customNavLinks.length > 0) {
+          setNavLinks(customNavLinks);
+        }
       }
-    };
-    loadSettings();
+    } catch (error) {
+      console.error("Error loading header settings:", error);
+    }
   }, []);
 
-  const companyName = settings.company_name || "Mark Corpotext";
+  useEffect(() => {
+    loadSettings();
+
+    // Subscribe to cache invalidation events to refresh when content is updated
+    const unsubscribe = contentService.onCacheInvalidated(() => {
+      loadSettings();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [loadSettings]);
+
+  const companyName = settings.company_name || "Mark Corpotax";
   const companyTagline =
     settings.company_tagline || "Financial & Legal Solutions";
-  const phoneNumber = settings.phone_finance || "97120 67891";
+  const phoneNumber =
+    settings.phone_display || settings.phone_finance || "97120 67891";
+  const showPhone = settings.show_phone !== "false";
+  const ctaText = settings.cta_text || "Get a Quote";
+  const ctaLink = settings.cta_link || "/appointment";
 
   const isActive = (href: string) => {
     if (href === "/") {
@@ -173,23 +229,25 @@ export function Header() {
 
         <div className="hidden flex-1 items-center justify-end md:flex">
           <div className="hidden md:flex items-center gap-3 lg:gap-4">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 text-primary bg-primary/10 p-2 rounded-full flex items-center justify-center">
-                <Phone size={16} />
+            {showPhone && (
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 text-primary bg-primary/10 p-2 rounded-full flex items-center justify-center">
+                  <Phone size={16} />
+                </div>
+                <div className="hidden xl:block">
+                  <p className="text-xs text-muted-foreground">
+                    Finance Division
+                  </p>
+                  <p className="font-semibold">{phoneNumber}</p>
+                </div>
               </div>
-              <div className="hidden xl:block">
-                <p className="text-xs text-muted-foreground">
-                  Finance Division
-                </p>
-                <p className="font-semibold">{phoneNumber}</p>
-              </div>
-            </div>
+            )}
             <Button
               asChild
               size="lg"
               className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 py-2 font-medium transition-colors"
             >
-              <Link href="/appointment">Get a Quote</Link>
+              <Link href={ctaLink}>{ctaText}</Link>
             </Button>
           </div>
         </div>

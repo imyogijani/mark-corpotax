@@ -1,6 +1,5 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
 import { Logo } from "./logo";
 import Link from "next/link";
 
@@ -16,12 +15,12 @@ export function SubscribeCta() {
           className="flex items-center justify-center space-x-2 mb-4"
         >
           <Logo className="h-10 w-10 text-teal-600" />
-          <span className="text-2xl font-bold">FinBest</span>
+          <span className="text-2xl font-bold">Mark Corpotax</span>
         </Link>
         <h2 className="text-3xl md:text-4xl font-bold">
           A financial partner you can trust
         </h2>
-        <p className="mt-2 text-lg opacity-70">www.example.com</p>
+        <p className="mt-2 text-lg opacity-70">www.markcorpotax.com</p>
 
         <form className="mt-8 max-w-lg mx-auto flex items-center gap-4 p-2 bg-white border border-gray-200 rounded-full shadow-sm focus-within:ring-2 focus-within:ring-teal-500 focus-within:ring-offset-2 transition-shadow">
           <Input

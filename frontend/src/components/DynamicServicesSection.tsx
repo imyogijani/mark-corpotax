@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { contentService } from "@/lib/content-service";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -57,32 +57,35 @@ const FALLBACK_SERVICES: ServiceItem[] = [
 export function DynamicServicesSection() {
   const [services, setServices] = useState<ServiceItem[]>(FALLBACK_SERVICES);
 
-  useEffect(() => {
-    let mounted = true;
-
-    const fetchContent = async () => {
-      try {
-        const servicesContent = await contentService.getContentBySection(
-          "services",
-          "services_list"
-        );
-        if (
-          mounted &&
-          servicesContent?.services_list &&
-          Array.isArray(servicesContent.services_list)
-        ) {
-          setServices(servicesContent.services_list);
-        }
-      } catch (error) {
-        console.error("Error loading services content:", error);
+  const fetchContent = useCallback(async () => {
+    try {
+      const servicesContent = await contentService.getContentBySection(
+        "services",
+        "services_list"
+      );
+      if (
+        servicesContent?.services_list &&
+        Array.isArray(servicesContent.services_list)
+      ) {
+        setServices(servicesContent.services_list);
       }
-    };
-
-    fetchContent();
-    return () => {
-      mounted = false;
-    };
+    } catch (error) {
+      console.error("Error loading services content:", error);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchContent();
+
+    // Subscribe to cache invalidation events
+    const unsubscribe = contentService.onCacheInvalidated(() => {
+      fetchContent();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [fetchContent]);
 
   const getIcon = (iconName: string) => {
     const iconMap: { [key: string]: JSX.Element } = {

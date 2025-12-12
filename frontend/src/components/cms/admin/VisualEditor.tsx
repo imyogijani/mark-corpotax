@@ -1,5 +1,5 @@
-import React from 'react';
-import { ComponentData } from '../BaseComponent';
+import React from "react";
+import { ComponentData } from "../BaseComponent";
 
 interface VisualEditorProps {
   components: ComponentData[];
@@ -8,19 +8,19 @@ interface VisualEditorProps {
   onComponentAdd?: (component: Partial<ComponentData>) => void;
   onComponentEdit?: (component: ComponentData) => void;
   onComponentDelete?: (id: string) => void;
-  onComponentMove?: (componentId: string, direction: 'up' | 'down') => void;
+  onComponentMove?: (componentId: string, direction: "up" | "down") => void;
   onPreviewModeToggle?: () => void;
 }
 
 export const VisualEditor: React.FC<VisualEditorProps> = ({
   components,
-  isPreviewMode = false,
-  onComponentUpdate,
-  onComponentAdd,
-  onComponentEdit,
-  onComponentDelete,
-  onComponentMove,
-  onPreviewModeToggle
+  isPreviewMode: _isPreviewMode = false,
+  onComponentUpdate: _onComponentUpdate,
+  onComponentAdd: _onComponentAdd,
+  onComponentEdit: _onComponentEdit,
+  onComponentDelete: _onComponentDelete,
+  onComponentMove: _onComponentMove,
+  onPreviewModeToggle: _onPreviewModeToggle,
 }) => {
   return (
     <div className="visual-editor">
@@ -28,9 +28,7 @@ export const VisualEditor: React.FC<VisualEditorProps> = ({
         {components.map((component) => (
           <div key={component.id} className="component-container">
             {/* Component preview */}
-            <div className="component-preview">
-              {component.name}
-            </div>
+            <div className="component-preview">{component.name}</div>
           </div>
         ))}
       </div>

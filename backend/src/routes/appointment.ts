@@ -35,7 +35,7 @@ const sendAppointmentEmail = async (
     }
 
     const transporter = getEmailTransporter();
-    const companyName = "Mark Corpotext";
+    const companyName = "Mark Corpotax";
 
     const appointmentDate = new Date(appointment.date).toLocaleDateString(
       "en-US",

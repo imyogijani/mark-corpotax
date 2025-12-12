@@ -1,9 +1,9 @@
-import AdminLayout from '@/components/admin/AdminLayout';
-import type { Metadata } from 'next';
+import AdminLayout from "@/components/admin/AdminLayout";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Admin Dashboard - Mark Corpotext',
-  description: 'Admin dashboard for Mark Corpotext Financial & Legal Solutions.',
+  title: "Admin Dashboard - Mark Corpotax",
+  description: "Admin dashboard for Mark Corpotax Financial & Legal Solutions.",
 };
 
 export default function AdminPage() {

@@ -9,10 +9,14 @@ import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
-  SheetTrigger,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
 import { Logo } from "@/components/logo-image";
 import { contentService } from "@/lib/content-service";
@@ -24,18 +28,24 @@ import {
   Users,
   Settings,
   LogOut,
-  Menu,
   Globe,
-  Edit3,
-  Mail,
-  BookUser,
-  Layers,
   Trash2,
+  ChevronDown,
+  PanelTop,
+  LayoutTemplate,
+  Palette,
 } from "lucide-react";
 
 interface AdminSidebarProps {
   isMobileOpen: boolean;
   setIsMobileOpen: (open: boolean) => void;
+}
+
+interface NavItem {
+  name: string;
+  href: string;
+  icon: React.ElementType;
+  description: string;
 }
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({
@@ -46,6 +56,9 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
   const { user, logout } = useAuth();
   const router = useRouter();
   const [clearingCache, setClearingCache] = useState(false);
+  const [websiteBuilderOpen, setWebsiteBuilderOpen] = useState(
+    pathname.includes("/page-builder") || pathname.includes("/site-builder")
+  );
 
   const handleLogout = () => {
     logout();
@@ -64,18 +77,28 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
     }
   };
 
-  const navigation = [
+  // Website Builder submenu items
+  const websiteBuilderItems: NavItem[] = [
+    {
+      name: "Page Editor",
+      href: "/admin/page-builder",
+      icon: LayoutTemplate,
+      description: "Edit page content",
+    },
+    {
+      name: "Header & Footer",
+      href: "/admin/site-builder",
+      icon: PanelTop,
+      description: "Navigation & footer",
+    },
+  ];
+
+  const navigation: NavItem[] = [
     {
       name: "Dashboard",
       href: "/admin",
       icon: LayoutDashboard,
       description: "Overview & Analytics",
-    },
-    {
-      name: "Site Editor",
-      href: "/admin/page-builder",
-      icon: Layers,
-      description: "Edit Website Content",
     },
     {
       name: "Blog Posts",
@@ -116,7 +139,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
       <div className="flex items-center gap-3 p-6 border-b border-slate-700">
         <Logo className="object-contain" width={32} height={32} />
         <div>
-          <h2 className="font-bold text-lg text-white">Mark Corpotext</h2>
+          <h2 className="font-bold text-lg text-white">Mark Corpotax</h2>
           <p className="text-xs text-slate-300">Admin Panel</p>
         </div>
       </div>
@@ -143,8 +166,114 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-2">
-        {navigation.map((item) => {
+      <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+        {/* Dashboard - First item */}
+        <Link
+          href="/admin"
+          className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${
+            pathname === "/admin"
+              ? "bg-primary text-white shadow-lg shadow-primary/25"
+              : "text-slate-300 hover:bg-slate-800 hover:text-white"
+          }`}
+        >
+          <div
+            className={`p-2 rounded-lg ${
+              pathname === "/admin"
+                ? "bg-white/20"
+                : "bg-slate-700 group-hover:bg-slate-600"
+            }`}
+          >
+            <LayoutDashboard
+              size={18}
+              className={
+                pathname === "/admin"
+                  ? "text-white"
+                  : "text-slate-300 group-hover:text-white"
+              }
+            />
+          </div>
+          <div className="flex-1">
+            <p className="font-medium">Dashboard</p>
+            <p className="text-xs opacity-75">Overview & Analytics</p>
+          </div>
+        </Link>
+
+        {/* Website Builder - Collapsible Group */}
+        <Collapsible
+          open={websiteBuilderOpen}
+          onOpenChange={setWebsiteBuilderOpen}
+        >
+          <CollapsibleTrigger className="w-full">
+            <div
+              className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${
+                pathname.includes("/page-builder") ||
+                pathname.includes("/site-builder")
+                  ? "bg-primary text-white shadow-lg shadow-primary/25"
+                  : "text-slate-300 hover:bg-slate-800 hover:text-white"
+              }`}
+            >
+              <div
+                className={`p-2 rounded-lg ${
+                  pathname.includes("/page-builder") ||
+                  pathname.includes("/site-builder")
+                    ? "bg-white/20"
+                    : "bg-slate-700 group-hover:bg-slate-600"
+                }`}
+              >
+                <Palette
+                  size={18}
+                  className={
+                    pathname.includes("/page-builder") ||
+                    pathname.includes("/site-builder")
+                      ? "text-white"
+                      : "text-slate-300 group-hover:text-white"
+                  }
+                />
+              </div>
+              <div className="flex-1 text-left">
+                <p className="font-medium">Website Builder</p>
+                <p className="text-xs opacity-75">Design & Customize</p>
+              </div>
+              <ChevronDown
+                size={16}
+                className={`transition-transform duration-200 ${
+                  websiteBuilderOpen ? "rotate-180" : ""
+                }`}
+              />
+            </div>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="pl-4 mt-1 space-y-1">
+            {websiteBuilderItems.map((item) => {
+              const active = pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`group flex items-center gap-3 rounded-lg p-2.5 transition-all duration-200 ${
+                    active
+                      ? "bg-white/10 text-white"
+                      : "text-slate-400 hover:bg-slate-800/50 hover:text-white"
+                  }`}
+                >
+                  <item.icon
+                    size={16}
+                    className={
+                      active
+                        ? "text-white"
+                        : "text-slate-400 group-hover:text-white"
+                    }
+                  />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">{item.name}</p>
+                  </div>
+                </Link>
+              );
+            })}
+          </CollapsibleContent>
+        </Collapsible>
+
+        {/* Other Navigation Items */}
+        {navigation.slice(1).map((item) => {
           const active = isActive(item.href);
           return (
             <Link

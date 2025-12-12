@@ -1,5 +1,6 @@
-import React from 'react';
-import { ComponentData } from './BaseComponent';
+import React from "react";
+import Image from "next/image";
+import { ComponentData } from "./BaseComponent";
 
 interface ComponentRendererProps {
   component: ComponentData;
@@ -12,15 +13,23 @@ export const ComponentRenderer: React.FC<ComponentRendererProps> = ({
   component,
   isEditing = false,
   onEdit,
-  onDelete
+  onDelete,
 }) => {
   const renderComponent = () => {
     switch (component.type) {
-      case 'text':
+      case "text":
         return <div dangerouslySetInnerHTML={{ __html: component.content }} />;
-      case 'image':
-        return <img src={component.content.src} alt={component.content.alt} />;
-      case 'button':
+      case "image":
+        return (
+          <Image
+            src={component.content.src}
+            alt={component.content.alt || "Image"}
+            width={400}
+            height={300}
+            className="object-cover"
+          />
+        );
+      case "button":
         return <button>{component.content.text}</button>;
       default:
         return <div>Unknown component type: {component.type}</div>;
@@ -28,7 +37,7 @@ export const ComponentRenderer: React.FC<ComponentRendererProps> = ({
   };
 
   return (
-    <div className={`component-wrapper ${isEditing ? 'editing' : ''}`}>
+    <div className={`component-wrapper ${isEditing ? "editing" : ""}`}>
       {renderComponent()}
       {isEditing && (
         <div className="component-controls">

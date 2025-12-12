@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { contentService } from "@/lib/content-service";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -33,31 +33,35 @@ export function DynamicBlogSection() {
   const [blogSection, setBlogSection] =
     useState<BlogSectionData>(FALLBACK_BLOG);
 
-  useEffect(() => {
-    let mounted = true;
-
-    const fetchContent = async () => {
-      try {
-        const blogContent = await contentService.getContentBySection(
-          "home",
-          "blog"
-        );
-        if (mounted && blogContent?.blog_section) {
-          setBlogSection(() => ({
-            ...FALLBACK_BLOG,
-            ...blogContent.blog_section,
-          }));
-        }
-      } catch (error) {
-        console.error("Error loading blog content:", error);
+  const fetchContent = useCallback(async () => {
+    try {
+      const blogContent = await contentService.getContentBySection(
+        "home",
+        "blog"
+      );
+      if (blogContent?.blog_section) {
+        setBlogSection(() => ({
+          ...FALLBACK_BLOG,
+          ...blogContent.blog_section,
+        }));
       }
-    };
-
-    fetchContent();
-    return () => {
-      mounted = false;
-    };
+    } catch (error) {
+      console.error("Error loading blog content:", error);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchContent();
+
+    // Subscribe to cache invalidation events
+    const unsubscribe = contentService.onCacheInvalidated(() => {
+      fetchContent();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [fetchContent]);
 
   const getIcon = (index: number) => {
     const icons = [

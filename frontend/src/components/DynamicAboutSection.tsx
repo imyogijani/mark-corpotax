@@ -300,29 +300,33 @@ export function DynamicAboutSection() {
   const [aboutSection, setAboutSection] =
     useState<AboutSectionData>(FALLBACK_ABOUT);
 
-  useEffect(() => {
-    let mounted = true;
-
-    const fetchContent = async () => {
-      try {
-        const aboutContent = await contentService.getContentBySection(
-          "home",
-          "about"
-        );
-        if (mounted && aboutContent?.about_section) {
-          const transformed = transformAboutData(aboutContent.about_section);
-          setAboutSection(() => ({ ...FALLBACK_ABOUT, ...transformed }));
-        }
-      } catch (error) {
-        console.error("Error loading about content:", error);
+  const fetchContent = useCallback(async () => {
+    try {
+      const aboutContent = await contentService.getContentBySection(
+        "home",
+        "about"
+      );
+      if (aboutContent?.about_section) {
+        const transformed = transformAboutData(aboutContent.about_section);
+        setAboutSection(() => ({ ...FALLBACK_ABOUT, ...transformed }));
       }
-    };
-
-    fetchContent();
-    return () => {
-      mounted = false;
-    };
+    } catch (error) {
+      console.error("Error loading about content:", error);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchContent();
+
+    // Subscribe to cache invalidation events
+    const unsubscribe = contentService.onCacheInvalidated(() => {
+      fetchContent();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [fetchContent]);
 
   // Memoize content
   const displayContent = useMemo(() => aboutSection, [aboutSection]);

@@ -1,7 +1,7 @@
 {
-  "name": "finbest-backend",
+  "name": "mark-corpotax-backend",
   "version": "1.0.0",
-  "description": "Backend API for FinBest Finance application",
+  "description": "Backend API for Mark Corpotax application",
   "main": "dist/server.js",
   "scripts": {
     "dev": "nodemon src/server.ts",
@@ -21,7 +21,7 @@
     "express",
     "typescript"
   ],
-  "author": "FinBest Team",
+  "author": "Mark Corpotax Team",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",

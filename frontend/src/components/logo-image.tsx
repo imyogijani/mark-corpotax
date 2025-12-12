@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 interface LogoProps {
   className?: string;
@@ -15,11 +15,13 @@ export function Logo({ className = "", width = 32, height = 32 }: LogoProps) {
       height={height}
       className={`logo-image ${className} max-w-full h-auto`}
       priority
-      quality={95}
+      quality={100}
+      unoptimized={true}
       sizes="(max-width: 640px) 110px, (max-width: 768px) 100px, (max-width: 1024px) 140px, 160px"
       style={{
-        objectFit: 'contain',
-        objectPosition: 'center',
+        objectFit: "contain",
+        objectPosition: "center",
+        backgroundColor: "transparent",
       }}
     />
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { contentService } from "@/lib/content-service";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -43,28 +43,32 @@ const FALLBACK_HERO: HeroMainData = {
 export function DynamicHeroSection() {
   const [content, setContent] = useState<HeroMainData>(FALLBACK_HERO);
 
-  useEffect(() => {
-    let mounted = true;
-
-    const fetchContent = async () => {
-      try {
-        const heroContent = await contentService.getContentBySection(
-          "home",
-          "hero_main"
-        );
-        if (mounted && heroContent && Object.keys(heroContent).length > 0) {
-          setContent(() => ({ ...FALLBACK_HERO, ...heroContent }));
-        }
-      } catch (error) {
-        console.error("Error loading hero content:", error);
+  const fetchContent = useCallback(async () => {
+    try {
+      const heroContent = await contentService.getContentBySection(
+        "home",
+        "hero_main"
+      );
+      if (heroContent && Object.keys(heroContent).length > 0) {
+        setContent(() => ({ ...FALLBACK_HERO, ...heroContent }));
       }
-    };
-
-    fetchContent();
-    return () => {
-      mounted = false;
-    };
+    } catch (error) {
+      console.error("Error loading hero content:", error);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchContent();
+
+    // Subscribe to cache invalidation events
+    const unsubscribe = contentService.onCacheInvalidated(() => {
+      fetchContent();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [fetchContent]);
 
   // Memoize the hero content to prevent unnecessary re-renders
   const heroMain = useMemo(() => content, [content]);
