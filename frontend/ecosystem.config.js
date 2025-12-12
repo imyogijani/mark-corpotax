@@ -3,7 +3,8 @@
  * Mark Corpotax - Finance Website
  *
  * Usage:
- *   pm2 start ecosystem.config.js
+ *   First time: npm run build && pm2 start ecosystem.config.js
+ *   After that: pm2 start ecosystem.config.js
  *
  * Commands:
  *   pm2 start ecosystem.config.js          # Start frontend
@@ -11,14 +12,17 @@
  *   pm2 restart frontend                   # Restart frontend
  *   pm2 logs frontend                      # View logs
  *   pm2 monit                              # Monitor
+ *
+ * IMPORTANT: Run 'npm run build' before starting PM2!
  */
 
 module.exports = {
   apps: [
     {
       name: "frontend",
-      script: "npm",
+      script: "node_modules/.bin/next",
       args: "start",
+      cwd: "/root/mark-corpotax/frontend",
       instances: 1,
       exec_mode: "fork",
       watch: false,
