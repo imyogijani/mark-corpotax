@@ -39,6 +39,8 @@ app.use(
       process.env.CLIENT_URL || "http://localhost:3000",
       "http://localhost:9002",
       "http://localhost:3001",
+      "https://markcorpotax.com",
+      "https://www.markcorpotax.com",
     ],
     credentials: true,
   })
