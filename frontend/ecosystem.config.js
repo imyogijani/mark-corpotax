@@ -3,17 +3,10 @@
  * Mark Corpotax - Finance Website
  *
  * Usage:
- *   First time: npm run build && pm2 start ecosystem.config.js
- *   After that: pm2 start ecosystem.config.js
- *
- * Commands:
- *   pm2 start ecosystem.config.js          # Start frontend
- *   pm2 stop frontend                      # Stop frontend
- *   pm2 restart frontend                   # Restart frontend
- *   pm2 logs frontend                      # View logs
- *   pm2 monit                              # Monitor
- *
- * IMPORTANT: Run 'npm run build' before starting PM2!
+ *   First:    npm run build
+ *   Start:    pm2 start ecosystem.config.js --env production
+ *   Restart:  pm2 restart mark-frontend
+ *   Logs:     pm2 logs mark-frontend
  */
 
 module.exports = {
@@ -35,12 +28,13 @@ module.exports = {
       env_production: {
         NODE_ENV: "production",
         PORT: 3001,
+        NEXT_PUBLIC_API_URL: "https://api.markcorpotax.com/api",
       },
 
       // Logging
       log_date_format: "YYYY-MM-DD HH:mm:ss Z",
-      error_file: "logs/error.log",
-      out_file: "logs/out.log",
+      error_file: "/root/mark-corpotax/frontend/logs/error.log",
+      out_file: "/root/mark-corpotax/frontend/logs/out.log",
       merge_logs: true,
 
       // Restart policy

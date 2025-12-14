@@ -1,27 +1,19 @@
 /**
  * PM2 Ecosystem Configuration - Backend
- * MARK GROUP - Finance Website API
+ * MARK Corpotax - Finance Website API
  *
  * Usage:
- *   Development: pm2 start ecosystem.config.js --only backend-dev
  *   Production:  pm2 start ecosystem.config.js --env production
- *
- * Commands:
- *   pm2 start ecosystem.config.js          # Start backend
- *   pm2 stop backend-prod                  # Stop production
- *   pm2 restart backend-prod               # Restart production
- *   pm2 logs backend-prod                  # View logs
- *   pm2 monit                              # Monitor
+ *   Restart:     pm2 restart mark-backend
+ *   Logs:        pm2 logs mark-backend
  */
 
 module.exports = {
   apps: [
-    // ==========================================
-    // Backend API Server - Production
-    // ==========================================
     {
       name: "mark-backend",
       script: "dist/server.js",
+      cwd: "/root/mark-corpotax/backend",
       instances: 1,
       exec_mode: "fork",
       watch: false,
@@ -39,8 +31,8 @@ module.exports = {
 
       // Logging
       log_date_format: "YYYY-MM-DD HH:mm:ss Z",
-      error_file: "logs/error.log",
-      out_file: "logs/out.log",
+      error_file: "/root/mark-corpotax/backend/logs/error.log",
+      out_file: "/root/mark-corpotax/backend/logs/out.log",
       merge_logs: true,
 
       // Restart policy

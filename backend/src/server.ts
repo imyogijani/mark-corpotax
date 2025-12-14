@@ -33,16 +33,34 @@ console.log("🔥 Firebase Firestore initialized");
 
 // Security middleware
 app.use(helmet());
+
+// CORS configuration - handles both development and production
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "http://localhost:9002",
+  "https://markcorpotax.com",
+  "https://www.markcorpotax.com",
+  "http://markcorpotax.com",
+  "http://www.markcorpotax.com",
+];
+
 app.use(
   cors({
-    origin: [
-      process.env.CLIENT_URL || "http://localhost:3000",
-      "http://localhost:9002",
-      "http://localhost:3001",
-      "https://markcorpotax.com",
-      "https://www.markcorpotax.com",
-    ],
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, curl, etc.)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log(`CORS blocked origin: ${origin}`);
+        callback(null, false);
+      }
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin", "Cache-Control"],
   })
 );
 
