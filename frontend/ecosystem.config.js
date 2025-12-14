@@ -21,7 +21,7 @@ module.exports = {
     {
       name: "frontend",
       script: "node_modules/.bin/next",
-      args: "start",
+      args: "start -p 3001",
       cwd: "/root/mark-corpotax/frontend",
       instances: 1,
       exec_mode: "fork",
