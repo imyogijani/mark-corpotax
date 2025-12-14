@@ -20,10 +20,10 @@ module.exports = {
     // Backend API Server - Production
     // ==========================================
     {
-      name: "backend-prod",
+      name: "mark-backend",
       script: "dist/server.js",
-      instances: "max", // Use all CPU cores
-      exec_mode: "cluster",
+      instances: 1,
+      exec_mode: "fork",
       watch: false,
       max_memory_restart: "500M",
 
@@ -53,32 +53,6 @@ module.exports = {
       kill_timeout: 5000,
       wait_ready: true,
       listen_timeout: 10000,
-    },
-
-    // ==========================================
-    // Backend API Server - Development
-    // ==========================================
-    {
-      name: "backend-dev",
-      script: "npx",
-      args: "ts-node src/server.ts",
-      instances: 1,
-      exec_mode: "fork",
-      watch: ["src"],
-      watch_delay: 1000,
-      ignore_watch: ["node_modules", "logs", "uploads", "dist"],
-
-      env: {
-        NODE_ENV: "development",
-        PORT: 5000,
-      },
-
-      // Logging
-      log_date_format: "YYYY-MM-DD HH:mm:ss Z",
-      error_file: "logs/dev-error.log",
-      out_file: "logs/dev-out.log",
-
-      autorestart: true,
     },
   ],
 };
