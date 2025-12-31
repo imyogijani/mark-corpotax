@@ -95,8 +95,8 @@ export default function LoginPage() {
             )}
 
             {success && (
-              <Alert className="bg-green-50 text-green-900 border-green-200 animate-in fade-in slide-in-from-top-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
+              <Alert className="bg-blue-50 text-blue-900 border-blue-200 animate-in fade-in slide-in-from-top-2">
+                <CheckCircle className="h-4 w-4 text-blue-600" />
                 <AlertDescription className="text-sm">
                   {success}
                 </AlertDescription>
@@ -179,6 +179,26 @@ export default function LoginPage() {
                   </>
                 )}
               </Button>
+
+              {process.env.NODE_ENV === "development" && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={async () => {
+                    setEmail("admin@markcorpotax.com");
+                    setPassword("admin123");
+                    // Wait for state updates
+                    setTimeout(() => {
+                      const form = document.querySelector("form");
+                      if (form) form.requestSubmit();
+                    }, 100);
+                  }}
+                  className="w-full h-11 border-dashed border-blue-400 text-blue-600 hover:bg-blue-50"
+                  disabled={isLoading}
+                >
+                  Quick Admin Login (Dev Only)
+                </Button>
+              )}
             </form>
 
             {/* Demo Credentials */}

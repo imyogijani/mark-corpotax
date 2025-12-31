@@ -78,7 +78,7 @@ export default function BlogManagementPage() {
             </p>
           </div>
           <Link href="/admin/blog/new">
-            <Button className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 py-2 font-medium transition-colors">
+            <Button className="bg-primary hover:bg-primary/90 text-white rounded-full px-6 py-2 font-medium transition-colors">
               <Plus className="h-4 w-4 mr-2" />
               New Post
             </Button>

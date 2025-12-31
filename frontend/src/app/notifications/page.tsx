@@ -51,7 +51,7 @@ export default function NotificationsPage() {
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'success':
-        return <CheckCircle2 className="w-5 h-5 text-green-600" />;
+        return <CheckCircle2 className="w-5 h-5 text-blue-600" />;
       case 'warning':
         return <AlertTriangle className="w-5 h-5 text-yellow-600" />;
       case 'error':

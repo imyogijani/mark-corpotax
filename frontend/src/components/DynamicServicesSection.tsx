@@ -89,34 +89,34 @@ export function DynamicServicesSection() {
 
   const getIcon = (iconName: string) => {
     const iconMap: { [key: string]: JSX.Element } = {
-      Landmark: <Landmark className="w-12 h-12" style={{ color: "#0d9488" }} />,
+      Landmark: <Landmark className="w-12 h-12" style={{ color: "#0b4c80" }} />,
       ShieldCheck: (
-        <ShieldCheck className="w-12 h-12" style={{ color: "#0d9488" }} />
+        <ShieldCheck className="w-12 h-12" style={{ color: "#0b4c80" }} />
       ),
-      ShieldHalf: <Shield className="w-12 h-12" style={{ color: "#0d9488" }} />,
+      ShieldHalf: <Shield className="w-12 h-12" style={{ color: "#0b4c80" }} />,
       Briefcase: (
-        <Briefcase className="w-12 h-12" style={{ color: "#0d9488" }} />
+        <Briefcase className="w-12 h-12" style={{ color: "#0b4c80" }} />
       ),
       Building2: (
-        <Building2 className="w-12 h-12" style={{ color: "#0d9488" }} />
+        <Building2 className="w-12 h-12" style={{ color: "#0b4c80" }} />
       ),
       HandCoins: (
-        <HandCoins className="w-12 h-12" style={{ color: "#0d9488" }} />
+        <HandCoins className="w-12 h-12" style={{ color: "#0b4c80" }} />
       ),
-      Home: <Home className="w-12 h-12" style={{ color: "#0d9488" }} />,
-      Award: <Award className="w-12 h-12" style={{ color: "#0d9488" }} />,
-      FileText: <FileText className="w-12 h-12" style={{ color: "#0d9488" }} />,
+      Home: <Home className="w-12 h-12" style={{ color: "#0b4c80" }} />,
+      Award: <Award className="w-12 h-12" style={{ color: "#0b4c80" }} />,
+      FileText: <FileText className="w-12 h-12" style={{ color: "#0b4c80" }} />,
       PiggyBank: (
-        <PiggyBank className="w-12 h-12" style={{ color: "#0d9488" }} />
+        <PiggyBank className="w-12 h-12" style={{ color: "#0b4c80" }} />
       ),
       University: (
-        <GraduationCap className="w-12 h-12" style={{ color: "#0d9488" }} />
+        <GraduationCap className="w-12 h-12" style={{ color: "#0b4c80" }} />
       ),
-      Factory: <Factory className="w-12 h-12" style={{ color: "#0d9488" }} />,
+      Factory: <Factory className="w-12 h-12" style={{ color: "#0b4c80" }} />,
     };
     return (
       iconMap[iconName] || (
-        <Briefcase className="w-12 h-12" style={{ color: "#0d9488" }} />
+        <Briefcase className="w-12 h-12" style={{ color: "#0b4c80" }} />
       )
     );
   };
@@ -145,7 +145,7 @@ export function DynamicServicesSection() {
               </p>
               <Button
                 className="text-white rounded-full px-6 py-2 font-medium transition-colors hover:opacity-90"
-                style={{ backgroundColor: "#0d9488" }}
+                style={{ backgroundColor: "#0b4c80" }}
                 asChild
               >
                 <Link
@@ -163,7 +163,7 @@ export function DynamicServicesSection() {
           <Button
             asChild
             className="text-white rounded-full px-8 py-3 h-12 font-medium transition-colors hover:opacity-90"
-            style={{ backgroundColor: "#0d9488" }}
+            style={{ backgroundColor: "#0b4c80" }}
           >
             <Link href="/services">View All Services</Link>
           </Button>

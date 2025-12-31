@@ -61,7 +61,7 @@ export default function ContactsPage() {
       case "read":
         return "bg-yellow-100 text-yellow-700 border-yellow-200";
       case "replied":
-        return "bg-emerald-100 text-emerald-700 border-emerald-200";
+        return "bg-blue-100 text-blue-700 border-blue-200";
       case "archived":
         return "bg-gray-100 text-gray-700 border-gray-200";
       default:
@@ -76,7 +76,7 @@ export default function ContactsPage() {
       case "medium":
         return "text-yellow-600";
       case "low":
-        return "text-green-600";
+        return "text-blue-600";
       default:
         return "text-gray-600";
     }
@@ -151,15 +151,15 @@ export default function ContactsPage() {
               </div>
             </CardContent>
           </Card>
-          <Card className="border-0 shadow-md bg-gradient-to-br from-emerald-50 to-emerald-100">
+          <Card className="border-0 shadow-md bg-gradient-to-br from-blue-50 to-blue-100">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <Reply size={24} className="text-emerald-600" />
+                <Reply size={24} className="text-blue-600" />
                 <div>
-                  <p className="text-2xl font-bold text-emerald-900">
+                  <p className="text-2xl font-bold text-blue-900">
                     {statusCounts.replied || 0}
                   </p>
-                  <p className="text-xs text-emerald-700">Replied</p>
+                  <p className="text-xs text-blue-700">Replied</p>
                 </div>
               </div>
             </CardContent>
@@ -316,7 +316,7 @@ export default function ContactsPage() {
                             <Button
                               variant="outline"
                               size="sm"
-                              className="border-emerald-200 hover:bg-emerald-50 text-emerald-700"
+                              className="border-blue-200 hover:bg-blue-50 text-blue-700"
                             >
                               <Reply size={14} className="mr-1" />
                               Reply
@@ -448,7 +448,7 @@ export default function ContactsPage() {
               </div>
 
               <div className="flex flex-wrap gap-2">
-                <Button className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700">
+                <Button className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700">
                   <Reply size={16} className="mr-2" />
                   Send Reply
                 </Button>

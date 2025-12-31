@@ -85,9 +85,9 @@ interface AboutPageContent {
 const FinanceAvatar = () => (
   <div
     className="flex items-center justify-center w-20 h-20 rounded-full"
-    style={{ backgroundColor: "#0d948820" }}
+    style={{ backgroundColor: "#0b4c8020" }}
   >
-    <User className="w-10 h-10" style={{ color: "#0d9488" }} />
+    <User className="w-10 h-10" style={{ color: "#0b4c80" }} />
   </div>
 );
 
@@ -141,20 +141,20 @@ const processIcons = [
   <Briefcase
     key="briefcase"
     className="w-8 h-8"
-    style={{ color: "#0d9488" }}
+    style={{ color: "#0b4c80" }}
   />,
   <HandCoins
     key="handcoins"
     className="w-8 h-8"
-    style={{ color: "#0d9488" }}
+    style={{ color: "#0b4c80" }}
   />,
-  <CheckCircle key="check" className="w-8 h-8" style={{ color: "#0d9488" }} />,
+  <CheckCircle key="check" className="w-8 h-8" style={{ color: "#0b4c80" }} />,
   <TrendingUp
     key="trending"
     className="w-8 h-8"
-    style={{ color: "#0d9488" }}
+    style={{ color: "#0b4c80" }}
   />,
-  <Shield key="shield" className="w-8 h-8" style={{ color: "#0d9488" }} />,
+  <Shield key="shield" className="w-8 h-8" style={{ color: "#0b4c80" }} />,
 ];
 
 export default function AboutPage() {
@@ -225,14 +225,14 @@ export default function AboutPage() {
             <div className="flex flex-col items-center bg-white rounded-xl shadow-lg p-6 gap-3 w-full max-w-[200px] hover:shadow-xl transition-shadow">
               <div
                 className="w-16 h-16 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: "#0d948820" }}
+                style={{ backgroundColor: "#0b4c8020" }}
               >
-                <BarChart2 className="w-8 h-8" style={{ color: "#0d9488" }} />
+                <BarChart2 className="w-8 h-8" style={{ color: "#0b4c80" }} />
               </div>
               <div className="text-center">
                 <span
                   className="block text-3xl font-bold"
-                  style={{ color: "#0d9488" }}
+                  style={{ color: "#0b4c80" }}
                 >
                   {stats.years_experience || "12+"}
                 </span>
@@ -245,14 +245,14 @@ export default function AboutPage() {
             <div className="flex flex-col items-center bg-white rounded-xl shadow-lg p-6 gap-3 w-full max-w-[200px] hover:shadow-xl transition-shadow">
               <div
                 className="w-16 h-16 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: "#0d948820" }}
+                style={{ backgroundColor: "#0b4c8020" }}
               >
-                <Users className="w-8 h-8" style={{ color: "#0d9488" }} />
+                <Users className="w-8 h-8" style={{ color: "#0b4c80" }} />
               </div>
               <div className="text-center">
                 <span
                   className="block text-3xl font-bold"
-                  style={{ color: "#0d9488" }}
+                  style={{ color: "#0b4c80" }}
                 >
                   {stats.happy_clients || "2500+"}
                 </span>
@@ -265,14 +265,14 @@ export default function AboutPage() {
             <div className="flex flex-col items-center bg-white rounded-xl shadow-lg p-6 gap-3 w-full max-w-[200px] hover:shadow-xl transition-shadow">
               <div
                 className="w-16 h-16 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: "#0d948820" }}
+                style={{ backgroundColor: "#0b4c8020" }}
               >
-                <Award className="w-8 h-8" style={{ color: "#0d9488" }} />
+                <Award className="w-8 h-8" style={{ color: "#0b4c80" }} />
               </div>
               <div className="text-center">
                 <span
                   className="block text-3xl font-bold"
-                  style={{ color: "#0d9488" }}
+                  style={{ color: "#0b4c80" }}
                 >
                   {stats.projects_completed || "5000+"}
                 </span>
@@ -285,14 +285,14 @@ export default function AboutPage() {
             <div className="flex flex-col items-center bg-white rounded-xl shadow-lg p-6 gap-3 w-full max-w-[200px] hover:shadow-xl transition-shadow">
               <div
                 className="w-16 h-16 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: "#0d948820" }}
+                style={{ backgroundColor: "#0b4c8020" }}
               >
-                <TrendingUp className="w-8 h-8" style={{ color: "#0d9488" }} />
+                <TrendingUp className="w-8 h-8" style={{ color: "#0b4c80" }} />
               </div>
               <div className="text-center">
                 <span
                   className="block text-3xl font-bold"
-                  style={{ color: "#0d9488" }}
+                  style={{ color: "#0b4c80" }}
                 >
                   {stats.success_rate || "98%"}
                 </span>
@@ -314,9 +314,9 @@ export default function AboutPage() {
               <div className="flex items-center gap-4 mb-6">
                 <div
                   className="w-14 h-14 rounded-xl flex items-center justify-center"
-                  style={{ backgroundColor: "#0d948820" }}
+                  style={{ backgroundColor: "#0b4c8020" }}
                 >
-                  <Target className="w-7 h-7" style={{ color: "#0d9488" }} />
+                  <Target className="w-7 h-7" style={{ color: "#0b4c80" }} />
                 </div>
                 <h2 className="text-2xl md:text-3xl font-bold">
                   {mission.mission?.title || "Our Mission"}
@@ -333,9 +333,9 @@ export default function AboutPage() {
               <div className="flex items-center gap-4 mb-6">
                 <div
                   className="w-14 h-14 rounded-xl flex items-center justify-center"
-                  style={{ backgroundColor: "#0d948820" }}
+                  style={{ backgroundColor: "#0b4c8020" }}
                 >
-                  <Eye className="w-7 h-7" style={{ color: "#0d9488" }} />
+                  <Eye className="w-7 h-7" style={{ color: "#0b4c80" }} />
                 </div>
                 <h2 className="text-2xl md:text-3xl font-bold">
                   {mission.vision?.title || "Our Vision"}
@@ -374,11 +374,11 @@ export default function AboutPage() {
                 <li key={index} className="flex items-center gap-3">
                   <div
                     className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ backgroundColor: "#0d948820" }}
+                    style={{ backgroundColor: "#0b4c8020" }}
                   >
                     <CheckCircle
                       className="h-5 w-5"
-                      style={{ color: "#0d9488" }}
+                      style={{ color: "#0b4c80" }}
                     />
                   </div>
                   <span className="text-lg">{solution}</span>
@@ -389,15 +389,15 @@ export default function AboutPage() {
           <div className="flex flex-col items-center gap-6">
             <div
               className="flex items-center justify-center h-64 w-full rounded-2xl shadow-lg"
-              style={{ backgroundColor: "#0d948815" }}
+              style={{ backgroundColor: "#0b4c8015" }}
             >
-              <BarChart2 className="w-32 h-32" style={{ color: "#0d9488" }} />
+              <BarChart2 className="w-32 h-32" style={{ color: "#0b4c80" }} />
             </div>
             <div
               className="flex items-center justify-center h-32 w-full rounded-2xl shadow-lg"
-              style={{ backgroundColor: "#0d948815" }}
+              style={{ backgroundColor: "#0b4c8015" }}
             >
-              <PieChart className="w-20 h-20" style={{ color: "#0d9488" }} />
+              <PieChart className="w-20 h-20" style={{ color: "#0b4c80" }} />
             </div>
           </div>
         </div>
@@ -421,24 +421,24 @@ export default function AboutPage() {
                     {
                       title: "Fast Processing",
                       description:
-                        "Fast and hassle-free loan processing with quick decision-making for timely funding.",
+                          "Fast and hassle-free loan processing with quick decision-making for timely funding.",
                     },
                     {
                       title: "Affordable Rates",
                       description:
-                        "Lowest and affordable interest rates with transparent communication at every step.",
+                          "Lowest and affordable interest rates with transparent communication at every step.",
                     },
                     {
                       title: "Expert Guidance",
                       description:
-                        "Strategic financial advice tailored to your business needs with dedicated support.",
+                          "Strategic financial advice tailored to your business needs with dedicated support.",
                     },
                   ]
               ).map((step, index) => (
                 <div key={index} className="flex items-start gap-4">
                   <div
                     className="p-3 rounded-xl flex-shrink-0"
-                    style={{ backgroundColor: "#0d948820" }}
+                    style={{ backgroundColor: "#0b4c8020" }}
                   >
                     {processIcons[index % processIcons.length]}
                   </div>
@@ -455,9 +455,9 @@ export default function AboutPage() {
           <div className="flex flex-col items-center gap-8">
             <div
               className="flex items-center justify-center h-72 w-full rounded-2xl shadow-lg"
-              style={{ backgroundColor: "#0d948815" }}
+              style={{ backgroundColor: "#0b4c8015" }}
             >
-              <PieChart className="w-40 h-40" style={{ color: "#0d9488" }} />
+              <PieChart className="w-40 h-40" style={{ color: "#0b4c80" }} />
             </div>
           </div>
         </div>
@@ -469,7 +469,7 @@ export default function AboutPage() {
           <div className="section-header text-center mb-12">
             <p
               className="text-sm font-semibold uppercase tracking-wider mb-2"
-              style={{ color: "#0d9488" }}
+              style={{ color: "#0b4c80" }}
             >
               {team.tagline || "Our Team"}
             </p>
@@ -499,7 +499,7 @@ export default function AboutPage() {
                 </div>
                 <CardContent className="p-6">
                   <h3 className="text-xl font-semibold">{member.name}</h3>
-                  <p style={{ color: "#0d9488" }}>{member.title}</p>
+                  <p style={{ color: "#0b4c80" }}>{member.title}</p>
                 </CardContent>
               </Card>
             ))}

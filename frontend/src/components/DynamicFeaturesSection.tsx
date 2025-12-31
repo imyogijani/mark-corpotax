@@ -129,18 +129,18 @@ export function DynamicFeaturesSection() {
 
   const getIcon = (iconName: string, index: number) => {
     const iconMap: { [key: string]: JSX.Element } = {
-      FileText: <FileText className="h-8 w-8" style={{ color: "#0d9488" }} />,
-      Briefcase: <Briefcase className="h-8 w-8" style={{ color: "#0d9488" }} />,
+      FileText: <FileText className="h-8 w-8" style={{ color: "#0b4c80" }} />,
+      Briefcase: <Briefcase className="h-8 w-8" style={{ color: "#0b4c80" }} />,
       CheckCircle: (
-        <CheckCircle className="h-8 w-8" style={{ color: "#0d9488" }} />
+        <CheckCircle className="h-8 w-8" style={{ color: "#0b4c80" }} />
       ),
-      Users: <Users className="h-8 w-8" style={{ color: "#0d9488" }} />,
+      Users: <Users className="h-8 w-8" style={{ color: "#0b4c80" }} />,
     };
     const defaultIcons = [
-      <FileText key="ft" className="h-8 w-8" style={{ color: "#0d9488" }} />,
-      <Briefcase key="bf" className="h-8 w-8" style={{ color: "#0d9488" }} />,
-      <CheckCircle key="cc" className="h-8 w-8" style={{ color: "#0d9488" }} />,
-      <Users key="us" className="h-8 w-8" style={{ color: "#0d9488" }} />,
+      <FileText key="ft" className="h-8 w-8" style={{ color: "#0b4c80" }} />,
+      <Briefcase key="bf" className="h-8 w-8" style={{ color: "#0b4c80" }} />,
+      <CheckCircle key="cc" className="h-8 w-8" style={{ color: "#0b4c80" }} />,
+      <Users key="us" className="h-8 w-8" style={{ color: "#0b4c80" }} />,
     ];
     return iconMap[iconName] || defaultIcons[index % defaultIcons.length];
   };
@@ -157,7 +157,7 @@ export function DynamicFeaturesSection() {
         <div className="text-center mb-12">
           <h2
             className="text-3xl md:text-4xl font-bold mb-4"
-            style={{ color: "#0d9488" }}
+            style={{ color: "#0b4c80" }}
           >
             {processSection?.title || "Why Choose MARK GROUP?"}
           </h2>
@@ -174,7 +174,7 @@ export function DynamicFeaturesSection() {
             >
               <div
                 className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-                style={{ backgroundColor: "#0d948820" }}
+                style={{ backgroundColor: "#0b4c8020" }}
               >
                 {getIcon(feature.icon || "", index)}
               </div>

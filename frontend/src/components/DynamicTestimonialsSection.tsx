@@ -100,9 +100,9 @@ function transformTestimonialsData(
 const FinanceAvatar = () => (
   <div
     className="flex items-center justify-center w-20 h-20 rounded-full"
-    style={{ backgroundColor: "#0d948820" }}
+    style={{ backgroundColor: "#0b4c8020" }}
   >
-    <User className="w-10 h-10" style={{ color: "#0d9488" }} />
+    <User className="w-10 h-10" style={{ color: "#0b4c80" }} />
   </div>
 );
 
@@ -222,7 +222,7 @@ export function DynamicTestimonialsSection() {
                 onClick={goToPrev}
                 disabled={isAnimating}
               >
-                <ChevronLeft className="h-5 w-5" style={{ color: "#0d9488" }} />
+                <ChevronLeft className="h-5 w-5" style={{ color: "#0b4c80" }} />
               </Button>
               <Button
                 variant="outline"
@@ -233,7 +233,7 @@ export function DynamicTestimonialsSection() {
               >
                 <ChevronRight
                   className="h-5 w-5"
-                  style={{ color: "#0d9488" }}
+                  style={{ color: "#0b4c80" }}
                 />
               </Button>
             </>
@@ -293,7 +293,7 @@ export function DynamicTestimonialsSection() {
                   onClick={() => goToSlide(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
                     index === currentIndex
-                      ? "w-8 bg-teal-600"
+                      ? "w-8 bg-primary"
                       : "bg-gray-300 hover:bg-gray-400"
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}

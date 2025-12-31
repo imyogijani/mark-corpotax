@@ -389,7 +389,7 @@ export default function AppointmentPage() {
                                 <Button
                                   variant={"outline"}
                                   className={cn(
-                                    "w-[240px] pl-3 text-left font-medium border-teal-600 text-teal-600 hover:bg-teal-50 rounded-full px-6 py-2 transition-colors",
+                                    "w-[240px] pl-3 text-left font-medium border-primary text-primary hover:bg-blue-50 rounded-full px-6 py-2 transition-colors",
                                     !field.value && "text-muted-foreground"
                                   )}
                                 >
@@ -477,7 +477,7 @@ export default function AppointmentPage() {
                     <Button
                       type="submit"
                       size="lg"
-                      className="w-full md:w-auto bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 py-2 font-medium transition-colors"
+                      className="w-full md:w-auto bg-primary hover:bg-primary/90 text-white rounded-full px-6 py-2 font-medium transition-colors"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (

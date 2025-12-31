@@ -168,8 +168,8 @@ function DashboardContent() {
       title: "Contact Queries",
       value: contacts.length.toString(),
       icon: MessageSquare,
-      color: "text-green-600",
-      bgColor: "bg-green-50",
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
     },
     {
       title: "Completed Services",
@@ -185,11 +185,11 @@ function DashboardContent() {
   const getStatusBadge = (status: string) => {
     const statusConfig = {
       scheduled: { color: "bg-blue-100 text-blue-800", text: "Scheduled" },
-      completed: { color: "bg-green-100 text-green-800", text: "Completed" },
+      completed: { color: "bg-blue-100 text-blue-800", text: "Completed" },
       cancelled: { color: "bg-red-100 text-red-800", text: "Cancelled" },
       pending: { color: "bg-yellow-100 text-yellow-800", text: "Pending" },
       responded: { color: "bg-blue-100 text-blue-800", text: "Responded" },
-      resolved: { color: "bg-green-100 text-green-800", text: "Resolved" },
+      resolved: { color: "bg-blue-100 text-blue-800", text: "Resolved" },
     };
 
     const config =
@@ -327,7 +327,7 @@ function DashboardContent() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
-                  <MessageSquare size={20} className="text-green-600" />
+                  <MessageSquare size={20} className="text-blue-600" />
                   Contact Queries
                 </CardTitle>
                 <Button size="sm" asChild>
@@ -341,7 +341,7 @@ function DashboardContent() {
             <CardContent>
               {isLoading ? (
                 <div className="text-center py-4">
-                  <div className="rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto"></div>
+                  <div className="rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
                 </div>
               ) : contacts.length > 0 ? (
                 <div className="space-y-3">
@@ -351,7 +351,7 @@ function DashboardContent() {
                       className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"
                     >
                       <div className="p-2 bg-white rounded-full shadow-sm">
-                        <MessageSquare size={16} className="text-green-600" />
+                        <MessageSquare size={16} className="text-blue-600" />
                       </div>
                       <div className="flex-1">
                         <p className="text-sm font-medium text-gray-900">
@@ -387,7 +387,7 @@ function DashboardContent() {
         <Card className="mt-8 border-0 shadow-lg bg-white/80 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <TrendingUp size={20} className="text-emerald-600" />
+              <TrendingUp size={20} className="text-blue-600" />
               Quick Actions
             </CardTitle>
           </CardHeader>
@@ -405,10 +405,10 @@ function DashboardContent() {
               <Button
                 asChild
                 variant="outline"
-                className="justify-start border-emerald-200 hover:bg-emerald-50"
+                className="justify-start border-blue-200 hover:bg-blue-50"
               >
                 <Link href="/services">
-                  <FileText size={16} className="mr-2 text-emerald-600" />
+                  <FileText size={16} className="mr-2 text-blue-600" />
                   View Services
                 </Link>
               </Button>

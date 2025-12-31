@@ -70,9 +70,9 @@ function transformTeamData(data: Record<string, unknown>): TeamSectionData {
 const FinanceAvatar = () => (
   <div
     className="flex items-center justify-center w-20 h-20 rounded-full mx-auto"
-    style={{ backgroundColor: "#0d948820" }}
+    style={{ backgroundColor: "#0b4c8020" }}
   >
-    <User className="w-10 h-10" style={{ color: "#0d9488" }} />
+    <User className="w-10 h-10" style={{ color: "#0b4c80" }} />
   </div>
 );
 

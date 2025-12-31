@@ -198,6 +198,30 @@ class ApiClient {
     email: string,
     password: string
   ): Promise<ApiResponse<LoginResponse>> {
+    // Development mode static login bypass
+    if (
+      process.env.NODE_ENV === "development" &&
+      email === "admin@markcorpotax.com" &&
+      password === "admin123"
+    ) {
+      const mockUser = {
+        id: "dev-admin-id",
+        name: "Dev Admin",
+        email: "admin@markcorpotax.com",
+        role: "admin",
+      };
+      const mockToken = "dev-static-token-12345";
+      this.setToken(mockToken);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("user", JSON.stringify(mockUser));
+      }
+      return {
+        success: true,
+        message: "Development static login successful",
+        data: { token: mockToken, user: mockUser },
+      };
+    }
+
     const response = await this.request<LoginResponse>("/auth/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
@@ -602,6 +626,27 @@ class ApiClient {
       method: "PUT",
       body: JSON.stringify(settings),
     });
+  }
+
+  // ============ Health & Debug ============
+  async getHealth(): Promise<ApiResponse<any>> {
+    // Note: /health is often outside /api in some servers, but server.ts says app.get("/health") 
+    // and API_BASE_URL is /api. However, server.ts defines /health BEFORE /api routes.
+    // Let's check server.ts again.
+    // app.get("/health", ...) is direct. API routes are app.use("/api/auth", ...).
+    // So /health is at ROOT/health, not /api/health.
+    
+    const rootURL = this.baseURL.replace("/api", "");
+    try {
+      const response = await fetch(`${rootURL}/health`);
+      return await response.json();
+    } catch (error: any) {
+      return {
+        success: false,
+        message: "Backend unreachable",
+        error: error.message
+      };
+    }
   }
 }
 

@@ -215,17 +215,17 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
               </Card>
 
               {/* Active Content */}
-              <Card className="bg-green-50 border-green-200">
+              <Card className="bg-blue-50 border-blue-200">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <CheckCircle className="h-4 w-4 text-green-600" />
-                        <p className="text-xs font-medium text-green-900">
+                        <CheckCircle className="h-4 w-4 text-blue-600" />
+                        <p className="text-xs font-medium text-blue-900">
                           Active
                         </p>
                       </div>
-                      <p className="text-2xl font-bold text-green-900">
+                      <p className="text-2xl font-bold text-blue-900">
                         {contentStats.loading ? (
                           <Loader2 className="h-6 w-6 animate-spin" />
                         ) : (
@@ -233,8 +233,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
                         )}
                       </p>
                     </div>
-                    <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
-                      <CheckCircle className="h-6 w-6 text-green-600" />
+                    <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <CheckCircle className="h-6 w-6 text-blue-600" />
                     </div>
                   </div>
                 </CardContent>
@@ -319,7 +319,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
                         <div className="text-2xl font-bold text-gray-900">
                           {stat.value}
                         </div>
-                        <div className="flex items-center gap-1 text-xs text-emerald-600">
+                        <div className="flex items-center gap-1 text-xs text-blue-600">
                           <TrendingUp size={12} />
                           {stat.change} from last month
                         </div>
@@ -366,7 +366,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
                               activity.type === "appointment"
                                 ? "bg-blue-100 text-blue-600"
                                 : activity.type === "contact"
-                                ? "bg-emerald-100 text-emerald-600"
+                                ? "bg-blue-200 text-blue-700"
                                 : "bg-purple-100 text-purple-600"
                             }`}
                           >
@@ -412,10 +412,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
                     <Button
                       asChild
                       variant="outline"
-                      className="w-full justify-start border-emerald-200 hover:bg-emerald-50"
+                      className="w-full justify-start border-blue-200 hover:bg-blue-50"
                     >
                       <a href="/admin/appointments">
-                        <Calendar size={16} className="mr-2 text-emerald-600" />
+                        <Calendar size={16} className="mr-2 text-blue-600" />
                         View Appointments
                       </a>
                     </Button>

@@ -68,17 +68,17 @@ export function DynamicBlogSection() {
       <BarChart2
         key="bar"
         className="w-full h-32"
-        style={{ color: "#0d9488", opacity: 0.6 }}
+        style={{ color: "#0b4c80", opacity: 0.6 }}
       />,
       <PieChart
         key="pie"
         className="w-full h-32"
-        style={{ color: "#0d9488", opacity: 0.6 }}
+        style={{ color: "#0b4c80", opacity: 0.6 }}
       />,
       <TrendingUp
         key="trend"
         className="w-full h-32"
-        style={{ color: "#0d9488", opacity: 0.6 }}
+        style={{ color: "#0b4c80", opacity: 0.6 }}
       />,
     ];
     return icons[index % icons.length];
@@ -114,7 +114,7 @@ export function DynamicBlogSection() {
                 </div>
                 <h3 className="text-xl font-semibold mb-4">{post?.title}</h3>
                 <Button
-                  className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 py-2 font-medium transition-colors"
+                  className="bg-primary hover:bg-primary/90 text-white rounded-full px-6 py-2 font-medium transition-colors"
                   asChild
                 >
                   <Link href="/blog">
@@ -128,7 +128,7 @@ export function DynamicBlogSection() {
         <div className="text-center mt-12">
           <Button
             asChild
-            className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-8 py-3 h-12 font-medium transition-colors"
+            className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 py-3 h-12 font-medium transition-colors"
           >
             <Link href="/blog">View All Posts</Link>
           </Button>

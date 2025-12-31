@@ -54,7 +54,7 @@ export function NotificationBell({ variant = "sheet" }: NotificationBellProps) {
   const getNotificationIcon = (type: Notification["type"]) => {
     switch (type) {
       case "success":
-        return <CheckCircle2 className="w-4 h-4 text-green-600" />;
+        return <CheckCircle2 className="w-4 h-4 text-blue-600" />;
       case "warning":
         return <AlertTriangle className="w-4 h-4 text-yellow-600" />;
       case "error":
@@ -72,7 +72,7 @@ export function NotificationBell({ variant = "sheet" }: NotificationBellProps) {
 
     switch (type) {
       case "success":
-        return "bg-green-50 border-l-4 border-green-500";
+        return "bg-blue-50 border-l-4 border-blue-500";
       case "warning":
         return "bg-yellow-50 border-l-4 border-yellow-500";
       case "error":

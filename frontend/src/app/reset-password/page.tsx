@@ -131,9 +131,9 @@ export default function ResetPasswordPage() {
           <CardContent className="space-y-4">
             {/* Alert Messages */}
             {message && (
-              <Alert className="border-green-200 bg-green-50">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-700">
+              <Alert className="border-blue-200 bg-blue-50">
+                <CheckCircle className="h-4 w-4 text-blue-600" />
+                <AlertDescription className="text-blue-700">
                   {message}
                 </AlertDescription>
               </Alert>
@@ -166,7 +166,7 @@ export default function ResetPasswordPage() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 py-2 font-medium transition-colors"
+                  className="w-full bg-primary hover:bg-primary/90 text-white rounded-full px-6 py-2 font-medium transition-colors"
                   disabled={loading || !email}
                 >
                   {loading ? "Verifying..." : "Verify Email"}
@@ -205,7 +205,7 @@ export default function ResetPasswordPage() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-teal-50 text-teal-600"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-blue-50 text-blue-600"
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
@@ -234,7 +234,7 @@ export default function ResetPasswordPage() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-teal-50 text-teal-600"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-blue-50 text-blue-600"
                       onClick={() =>
                         setShowConfirmPassword(!showConfirmPassword)
                       }
@@ -254,14 +254,14 @@ export default function ResetPasswordPage() {
                     variant="outline"
                     onClick={resetForm}
                     disabled={loading}
-                    className="flex-1 border-teal-600 text-teal-600 hover:bg-teal-50 rounded-full px-6 py-2 font-medium transition-colors"
+                    className="flex-1 border-primary text-primary hover:bg-blue-50 rounded-full px-6 py-2 font-medium transition-colors"
                   >
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Back
                   </Button>
                   <Button
                     type="submit"
-                    className="flex-1 bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 py-2 font-medium transition-colors"
+                    className="flex-1 bg-primary hover:bg-primary/90 text-white rounded-full px-6 py-2 font-medium transition-colors"
                     disabled={loading || !newPassword || !confirmPassword}
                   >
                     {loading ? "Resetting..." : "Reset Password"}
@@ -285,7 +285,7 @@ export default function ResetPasswordPage() {
                 <Link href="/login">
                   <Button
                     variant="outline"
-                    className="w-full border-teal-600 text-teal-600 hover:bg-teal-50 rounded-full px-6 py-2 font-medium transition-colors"
+                    className="w-full border-primary text-primary hover:bg-blue-50 rounded-full px-6 py-2 font-medium transition-colors"
                   >
                     Go to Login
                   </Button>

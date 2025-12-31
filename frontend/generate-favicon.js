@@ -13,7 +13,7 @@ async function createFavicon() {
     
     // If user's favicon.png doesn't exist, use the logo as fallback
     if (!fs.existsSync(faviconPngPath)) {
-      inputFile = path.join(__dirname, 'public', 'logo', 'Mark Corpotax x11 Clear BG.png');
+      inputFile = path.join(__dirname, 'public', 'logo', 'Mark Corpotax x11.png');
       console.log('Using logo file as favicon source...');
     } else {
       console.log('Using uploaded favicon.png...');

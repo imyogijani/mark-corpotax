@@ -78,30 +78,30 @@ export function DynamicHeroSection() {
       className="relative min-h-screen bg-gradient-to-br from-slate-50 via-slate-50/30 overflow-hidden"
       style={{
         background:
-          "linear-gradient(to bottom right, #f8fafc, #f1f5f9, #0d948810)",
+          "linear-gradient(to bottom right, #f8fafc, #f1f5f9, #0b4c8010)",
       }}
     >
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div
           className="absolute top-20 left-10 w-4 h-4 rounded-full opacity-60"
-          style={{ backgroundColor: "#0d9488" }}
+          style={{ backgroundColor: "#0b4c80" }}
         ></div>
         <div
           className="absolute top-32 left-20 w-2 h-2 rounded-full opacity-40"
-          style={{ backgroundColor: "#0d9488" }}
+          style={{ backgroundColor: "#0b4c80" }}
         ></div>
         <div
           className="absolute top-40 left-32 w-3 h-3 rounded-full opacity-50"
-          style={{ backgroundColor: "#0d9488" }}
+          style={{ backgroundColor: "#0b4c80" }}
         ></div>
         <div
           className="absolute bottom-40 left-16 w-5 h-5 rounded-full opacity-30"
-          style={{ backgroundColor: "#0d9488" }}
+          style={{ backgroundColor: "#0b4c80" }}
         ></div>
         <div
           className="absolute top-1/3 left-1/4 w-1 h-1 rounded-full opacity-70"
-          style={{ backgroundColor: "#0d9488" }}
+          style={{ backgroundColor: "#0b4c80" }}
         ></div>
 
         {/* Decorative grid pattern */}
@@ -144,7 +144,7 @@ export function DynamicHeroSection() {
                 asChild
                 size="lg"
                 className="h-14 px-8 text-white rounded-full font-medium transition-colors hover:opacity-90"
-                style={{ backgroundColor: "#0d9488" }}
+                style={{ backgroundColor: "#0b4c80" }}
               >
                 <Link
                   href={heroMain?.cta_primary?.link || "/appointment"}
@@ -159,9 +159,9 @@ export function DynamicHeroSection() {
               <div className="flex items-center gap-3 px-2">
                 <div
                   className="flex items-center justify-center w-12 h-12 rounded-full"
-                  style={{ backgroundColor: "#0d948820" }}
+                  style={{ backgroundColor: "#0b4c8020" }}
                 >
-                  <Phone className="w-5 h-5" style={{ color: "#0d9488" }} />
+                  <Phone className="w-5 h-5" style={{ color: "#0b4c80" }} />
                 </div>
                 <div>
                   <div className="text-sm text-slate-500">
@@ -185,7 +185,7 @@ export function DynamicHeroSection() {
               {/* Decorative stars */}
               <div
                 className="absolute -top-8 right-12"
-                style={{ color: "#0d9488" }}
+                style={{ color: "#0b4c80" }}
               >
                 <svg
                   width="32"
@@ -198,7 +198,7 @@ export function DynamicHeroSection() {
               </div>
               <div
                 className="absolute -top-4 right-24"
-                style={{ color: "#0d9488", opacity: 0.8 }}
+                style={{ color: "#0b4c80", opacity: 0.8 }}
               >
                 <svg
                   width="20"
@@ -211,7 +211,7 @@ export function DynamicHeroSection() {
               </div>
               <div
                 className="absolute top-4 -right-4"
-                style={{ color: "#0d9488", opacity: 0.6 }}
+                style={{ color: "#0b4c80", opacity: 0.6 }}
               >
                 <svg
                   width="16"
@@ -259,7 +259,7 @@ export function DynamicHeroSection() {
                           cy="52"
                           r="50"
                           fill="none"
-                          stroke="#0d9488"
+                          stroke="#0b4c80"
                           strokeWidth="3"
                           strokeDasharray="10 4"
                           opacity="0.9"
@@ -282,7 +282,7 @@ export function DynamicHeroSection() {
                   {/* Subtle outer glow */}
                   <div
                     className="absolute inset-0 rounded-full opacity-20 blur-md -z-10"
-                    style={{ backgroundColor: "#0d9488" }}
+                    style={{ backgroundColor: "#0b4c80" }}
                   ></div>
                 </div>
               </div>

@@ -275,7 +275,7 @@ export default function AppointmentsPage() {
       case "confirmed":
         return "bg-blue-100 text-blue-700 border-blue-200";
       case "completed":
-        return "bg-emerald-100 text-emerald-700 border-emerald-200";
+        return "bg-blue-100 text-blue-700 border-blue-200";
       case "cancelled":
         return "bg-red-100 text-red-700 border-red-200";
       default:
@@ -368,7 +368,7 @@ export default function AppointmentsPage() {
             <Button
               onClick={exportToCSV}
               disabled={appointments.length === 0}
-              className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 flex-1 sm:flex-none"
+              className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 flex-1 sm:flex-none"
             >
               <Download size={16} className="mr-2" />
               Export
@@ -421,8 +421,8 @@ export default function AppointmentsPage() {
             </CardContent>
           </Card>
           <Card
-            className={`border-0 shadow-md bg-gradient-to-br from-emerald-50 to-emerald-100 cursor-pointer transition-all ${
-              filterStatus === "completed" ? "ring-2 ring-emerald-400" : ""
+            className={`border-0 shadow-md bg-gradient-to-br from-blue-50 to-blue-100 cursor-pointer transition-all ${
+              filterStatus === "completed" ? "ring-2 ring-blue-400" : ""
             }`}
             onClick={() =>
               setFilterStatus(
@@ -432,12 +432,12 @@ export default function AppointmentsPage() {
           >
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <CheckCircle size={24} className="text-emerald-600" />
+                <CheckCircle size={24} className="text-blue-600" />
                 <div>
-                  <p className="text-2xl font-bold text-emerald-900">
+                  <p className="text-2xl font-bold text-blue-900">
                     {stats.completed}
                   </p>
-                  <p className="text-xs text-emerald-700">Completed</p>
+                  <p className="text-xs text-blue-700">Completed</p>
                 </div>
               </div>
             </CardContent>
@@ -628,7 +628,7 @@ export default function AppointmentsPage() {
                             >
                               <CheckCircle
                                 size={14}
-                                className="mr-2 text-emerald-600"
+                                className="mr-2 text-blue-600"
                               />
                               Mark Completed
                             </DropdownMenuItem>
@@ -853,7 +853,7 @@ export default function AppointmentsPage() {
                           updateStatus(selectedAppointment.id, "completed")
                         }
                         disabled={updating === selectedAppointment.id}
-                        className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700"
+                        className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
                       >
                         {updating === selectedAppointment.id ? (
                           <Loader2 size={16} className="mr-2 animate-spin" />

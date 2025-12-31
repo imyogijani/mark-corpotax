@@ -213,7 +213,7 @@ export function Header() {
                   <SheetClose asChild>
                     <Button
                       asChild
-                      className="w-full bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 py-2 font-medium transition-colors"
+                      className="w-full bg-primary hover:bg-primary/90 text-white rounded-full px-6 py-2 font-medium transition-colors"
                     >
                       <Link href="/appointment">
                         <BookUser className="mr-2" size={16} />
@@ -245,7 +245,7 @@ export function Header() {
             <Button
               asChild
               size="lg"
-              className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 py-2 font-medium transition-colors"
+              className="bg-primary hover:bg-primary/90 text-white rounded-full px-6 py-2 font-medium transition-colors"
             >
               <Link href={ctaLink}>{ctaText}</Link>
             </Button>

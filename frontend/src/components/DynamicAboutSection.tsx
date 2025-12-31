@@ -170,22 +170,22 @@ function AnimatedStat({
 
   const getStatIcon = (iconName?: string, idx?: number) => {
     const iconMap: { [key: string]: JSX.Element } = {
-      Award: <Award className="w-8 h-8" style={{ color: "#0d9488" }} />,
-      Users: <Users className="w-8 h-8" style={{ color: "#0d9488" }} />,
+      Award: <Award className="w-8 h-8" style={{ color: "#0b4c80" }} />,
+      Users: <Users className="w-8 h-8" style={{ color: "#0b4c80" }} />,
       TrendingUp: (
-        <TrendingUp className="w-8 h-8" style={{ color: "#0d9488" }} />
+        <TrendingUp className="w-8 h-8" style={{ color: "#0b4c80" }} />
       ),
-      Shield: <Shield className="w-8 h-8" style={{ color: "#0d9488" }} />,
+      Shield: <Shield className="w-8 h-8" style={{ color: "#0b4c80" }} />,
     };
     const defaultIcons = [
-      <Award key="award" className="w-8 h-8" style={{ color: "#0d9488" }} />,
-      <Users key="users" className="w-8 h-8" style={{ color: "#0d9488" }} />,
+      <Award key="award" className="w-8 h-8" style={{ color: "#0b4c80" }} />,
+      <Users key="users" className="w-8 h-8" style={{ color: "#0b4c80" }} />,
       <TrendingUp
         key="trending"
         className="w-8 h-8"
-        style={{ color: "#0d9488" }}
+        style={{ color: "#0b4c80" }}
       />,
-      <Shield key="shield" className="w-8 h-8" style={{ color: "#0d9488" }} />,
+      <Shield key="shield" className="w-8 h-8" style={{ color: "#0b4c80" }} />,
     ];
     return iconName && iconMap[iconName]
       ? iconMap[iconName]
@@ -199,13 +199,13 @@ function AnimatedStat({
     >
       <div
         className="w-14 h-14 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110"
-        style={{ backgroundColor: "#0d948815" }}
+        style={{ backgroundColor: "#0b4c8015" }}
       >
         {getStatIcon(icon, index)}
       </div>
       <div
         className="text-3xl md:text-4xl font-bold mb-2 tabular-nums"
-        style={{ color: "#0d9488" }}
+        style={{ color: "#0b4c80" }}
       >
         {prefix}
         {formatNumber(count, hasDecimal)}
@@ -340,7 +340,7 @@ export function DynamicAboutSection() {
             {displayContent.tagline && (
               <span
                 className="inline-block text-sm font-semibold uppercase tracking-wider mb-4 px-4 py-1.5 rounded-full"
-                style={{ backgroundColor: "#0d948815", color: "#0d9488" }}
+                style={{ backgroundColor: "#0b4c8015", color: "#0b4c80" }}
               >
                 {displayContent.tagline}
               </span>
@@ -363,7 +363,7 @@ export function DynamicAboutSection() {
                     <li key={index} className="flex items-start gap-3">
                       <CheckCircle
                         className="w-6 h-6 flex-shrink-0 mt-0.5"
-                        style={{ color: "#0d9488" }}
+                        style={{ color: "#0b4c80" }}
                       />
                       <span className="text-gray-700">{highlight}</span>
                     </li>
@@ -377,7 +377,7 @@ export function DynamicAboutSection() {
                 <Button
                   size="lg"
                   className="group"
-                  style={{ backgroundColor: "#0d9488" }}
+                  style={{ backgroundColor: "#0b4c80" }}
                 >
                   {displayContent.cta.text || "Learn More"}
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -403,13 +403,13 @@ export function DynamicAboutSection() {
             ) : (
               <div
                 className="relative rounded-2xl overflow-hidden h-80 lg:h-96"
-                style={{ backgroundColor: "#0d948815" }}
+                style={{ backgroundColor: "#0b4c8015" }}
               >
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <Award
                       className="w-20 h-20 mx-auto mb-4"
-                      style={{ color: "#0d9488" }}
+                      style={{ color: "#0b4c80" }}
                     />
                     <p className="text-gray-600 font-medium">
                       Excellence in Financial Services

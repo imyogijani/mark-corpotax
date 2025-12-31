@@ -11,7 +11,7 @@ export default function NotFound() {
       </p>
       <Button
         asChild
-        className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 py-2 font-medium transition-colors"
+        className="bg-primary hover:bg-primary/90 text-white rounded-full px-6 py-2 font-medium transition-colors"
       >
         <Link href="/services">Return to Services</Link>
       </Button>

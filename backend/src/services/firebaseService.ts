@@ -203,6 +203,19 @@ export const UserService = {
   },
 
   async findById(id: string): Promise<IUser | null> {
+    // Development mode static user bypass
+    if (process.env.NODE_ENV === "development" && id === "dev-admin-id") {
+      return {
+        id: "dev-admin-id",
+        name: "Dev Admin",
+        email: "admin@markcorpotax.com",
+        password: "hashed_password_not_needed_for_bypass",
+        role: "admin",
+        isActive: true,
+        createdAt: new Date().toISOString(),
+      };
+    }
+
     const user = await db.getById(COLLECTIONS.USERS, id);
     return user ? formatTimestamp(user) : null;
   },

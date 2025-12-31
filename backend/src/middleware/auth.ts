@@ -32,6 +32,21 @@ export const protect = async (
       return;
     }
 
+    // Development mode static token bypass
+    if (
+      process.env.NODE_ENV === "development" &&
+      token === "dev-static-token-12345"
+    ) {
+      req.user = {
+        id: "dev-admin-id",
+        name: "Dev Admin",
+        email: "admin@markcorpotax.com",
+        role: "admin",
+        isActive: true,
+      } as any;
+      return next();
+    }
+
     try {
       // Verify token
       const decoded = jwt.verify(

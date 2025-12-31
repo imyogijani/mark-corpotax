@@ -63,7 +63,7 @@ export function DynamicCTASection() {
           href="/"
           className="flex items-center justify-center space-x-2 mb-4"
         >
-          <Logo className="h-10 w-10 text-teal-600" />
+          <Logo className="h-10 w-10 text-primary" />
           <span className="text-2xl font-bold">
             {ctaSection?.logoText || "Mark Corpotax"}
           </span>
@@ -77,7 +77,7 @@ export function DynamicCTASection() {
             "www.markcorpotax.com"}
         </p>
 
-        <form className="mt-8 max-w-lg mx-auto flex items-center gap-4 p-2 bg-white border border-gray-200 rounded-full shadow-sm focus-within:ring-2 focus-within:ring-teal-500 focus-within:ring-offset-2 transition-shadow">
+        <form className="mt-8 max-w-lg mx-auto flex items-center gap-4 p-2 bg-white border border-gray-200 rounded-full shadow-sm focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 transition-shadow">
           <Input
             type="email"
             placeholder="Your email address"
@@ -86,7 +86,7 @@ export function DynamicCTASection() {
           <Button
             type="submit"
             size="lg"
-            className="rounded-full bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 font-medium transition-colors"
+            className="rounded-full bg-primary hover:bg-primary/90 text-white px-6 py-2 font-medium transition-colors"
           >
             {ctaSection?.buttonText || "Subscribe"}
           </Button>

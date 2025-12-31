@@ -644,7 +644,7 @@ export function SiteEditor() {
                       {status === "saved" && (
                         <Check
                           className={`h-3.5 w-3.5 ${
-                            isSelected ? "text-white" : "text-green-500"
+                            isSelected ? "text-white" : "text-blue-500"
                           }`}
                         />
                       )}

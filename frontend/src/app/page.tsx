@@ -6,6 +6,7 @@ import { DynamicServicesSection } from "@/components/DynamicServicesSection";
 import { DynamicTestimonialsSection } from "@/components/DynamicTestimonialsSection";
 import { DynamicTeamSection } from "@/components/DynamicTeamSection";
 import { DynamicBlogSection } from "@/components/DynamicBlogSection";
+import { DebugStatus } from "@/components/DebugStatus";
 
 export default function Home() {
   return (
@@ -33,6 +34,9 @@ export default function Home() {
 
       {/* Newsletter/CTA Section */}
       <DynamicCTASection />
+
+      {/* Debug & Health Status Monitor */}
+      <DebugStatus />
     </div>
   );
 }

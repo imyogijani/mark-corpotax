@@ -82,6 +82,28 @@ export const login = async (
   email: string,
   password: string
 ): Promise<AuthResponse> => {
+  // Development mode static login bypass
+  if (
+    process.env.NODE_ENV === "development" &&
+    email === "admin@markcorpotax.com" &&
+    password === "admin123"
+  ) {
+    const mockUser: AuthUser = {
+      id: "dev-admin-id",
+      name: "Dev Admin",
+      email: "admin@markcorpotax.com",
+      role: "admin",
+    };
+    const mockToken = "dev-static-token-12345";
+    setToken(mockToken);
+    setUser(mockUser);
+    return {
+      success: true,
+      message: "Development static login successful",
+      data: { token: mockToken, user: mockUser },
+    };
+  }
+
   try {
     const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",

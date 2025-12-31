@@ -9,7 +9,7 @@ interface LogoProps {
 export function Logo({ className = "", width = 32, height = 32 }: LogoProps) {
   return (
     <Image
-      src="/logo/Mark Corpotax x11 Clear BG.png"
+      src="/logo/Mark Corpotax x11.png"
       alt="MARK GROUP - Financial Services & Legal Solutions"
       width={width}
       height={height}

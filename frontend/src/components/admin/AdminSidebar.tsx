@@ -159,7 +159,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
         </div>
         <Badge
           variant="secondary"
-          className="mt-2 bg-emerald-100 text-emerald-700"
+          className="mt-2 bg-blue-100 text-blue-700"
         >
           Administrator
         </Badge>

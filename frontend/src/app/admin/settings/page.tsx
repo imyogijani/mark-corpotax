@@ -197,7 +197,7 @@ export default function SettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500" />
+              <CheckCircle2 className="h-5 w-5 text-blue-500" />
               System Status
             </CardTitle>
             <CardDescription>
@@ -208,28 +208,28 @@ export default function SettingsPage() {
             <div className="space-y-3">
               <div className="flex items-center justify-between py-2 border-b">
                 <span className="text-muted-foreground">Database</span>
-                <span className="flex items-center gap-2 text-green-600">
+                <span className="flex items-center gap-2 text-blue-600">
                   <CheckCircle2 className="h-4 w-4" />
                   Connected (Firebase)
                 </span>
               </div>
               <div className="flex items-center justify-between py-2 border-b">
                 <span className="text-muted-foreground">Appointments</span>
-                <span className="flex items-center gap-2 text-green-600">
+                <span className="flex items-center gap-2 text-blue-600">
                   <CheckCircle2 className="h-4 w-4" />
                   Active
                 </span>
               </div>
               <div className="flex items-center justify-between py-2 border-b">
                 <span className="text-muted-foreground">Contacts</span>
-                <span className="flex items-center gap-2 text-green-600">
+                <span className="flex items-center gap-2 text-blue-600">
                   <CheckCircle2 className="h-4 w-4" />
                   Active
                 </span>
               </div>
               <div className="flex items-center justify-between py-2">
                 <span className="text-muted-foreground">Blog</span>
-                <span className="flex items-center gap-2 text-green-600">
+                <span className="flex items-center gap-2 text-blue-600">
                   <CheckCircle2 className="h-4 w-4" />
                   Active
                 </span>
