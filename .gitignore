@@ -126,3 +126,5 @@ next-env.d.ts
 *.temp
 .cache/
 .parcel-cache/
+
+*.md

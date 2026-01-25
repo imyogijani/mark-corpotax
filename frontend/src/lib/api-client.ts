@@ -155,7 +155,7 @@ class ApiClient {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseURL}${endpoint}`;
 
@@ -196,7 +196,7 @@ class ApiClient {
   // ============ Auth Methods ============
   async login(
     email: string,
-    password: string
+    password: string,
   ): Promise<ApiResponse<LoginResponse>> {
     // Development mode static login bypass
     if (
@@ -240,7 +240,7 @@ class ApiClient {
   async register(
     name: string,
     email: string,
-    password: string
+    password: string,
   ): Promise<ApiResponse<LoginResponse>> {
     const response = await this.request<LoginResponse>("/auth/register", {
       method: "POST",
@@ -296,7 +296,7 @@ class ApiClient {
 
   // Password methods
   async checkEmailExists(
-    email: string
+    email: string,
   ): Promise<ApiResponse<{ exists: boolean }>> {
     return this.request<{ exists: boolean }>("/auth/check-email", {
       method: "POST",
@@ -306,7 +306,7 @@ class ApiClient {
 
   async resetPassword(
     email: string,
-    newPassword: string
+    newPassword: string,
   ): Promise<ApiResponse<void>> {
     return this.request<void>("/auth/reset-password", {
       method: "POST",
@@ -316,7 +316,7 @@ class ApiClient {
 
   async changePassword(
     currentPassword: string,
-    newPassword: string
+    newPassword: string,
   ): Promise<ApiResponse<void>> {
     return this.request<void>("/auth/change-password", {
       method: "PUT",
@@ -381,7 +381,7 @@ class ApiClient {
 
   async updateBlog(
     id: string,
-    blog: Partial<Blog>
+    blog: Partial<Blog>,
   ): Promise<ApiResponse<Blog>> {
     return this.request<Blog>(`/blog/${id}`, {
       method: "PUT",
@@ -399,7 +399,7 @@ class ApiClient {
 
   // ============ Contact Methods ============
   async submitContact(
-    contact: Partial<Contact>
+    contact: Partial<Contact>,
   ): Promise<ApiResponse<Contact>> {
     return this.request<Contact>("/contact", {
       method: "POST",
@@ -413,7 +413,7 @@ class ApiClient {
 
   async updateContactStatus(
     id: string,
-    status: Contact["status"]
+    status: Contact["status"],
   ): Promise<ApiResponse<Contact>> {
     return this.request<Contact>(`/contact/${id}`, {
       method: "PUT",
@@ -429,7 +429,7 @@ class ApiClient {
 
   // ============ Appointment Methods ============
   async bookAppointment(
-    appointment: Partial<Appointment>
+    appointment: Partial<Appointment>,
   ): Promise<ApiResponse<Appointment>> {
     return this.request<Appointment>("/appointments", {
       method: "POST",
@@ -443,7 +443,7 @@ class ApiClient {
 
   async updateAppointmentStatus(
     id: string,
-    status: Appointment["status"]
+    status: Appointment["status"],
   ): Promise<ApiResponse<Appointment>> {
     return this.request<Appointment>(`/appointments/${id}`, {
       method: "PUT",
@@ -452,7 +452,7 @@ class ApiClient {
   }
 
   async deleteAppointment(
-    id: string
+    id: string,
   ): Promise<ApiResponse<{ message: string }>> {
     return this.request<{ message: string }>(`/appointments/${id}`, {
       method: "DELETE",
@@ -571,7 +571,7 @@ class ApiClient {
 
   async updatePageContent(
     page: string,
-    content: any
+    content: any,
   ): Promise<ApiResponse<any>> {
     return this.request<any>(`/admin/content/${page}`, {
       method: "PUT",
@@ -599,7 +599,7 @@ class ApiClient {
 
   async bulkUpdateContent(
     page: string,
-    content: any[]
+    content: any[],
   ): Promise<ApiResponse<any>> {
     return this.request<any>(`/admin/content/bulk/${page}`, {
       method: "PUT",
@@ -630,21 +630,28 @@ class ApiClient {
 
   // ============ Health & Debug ============
   async getHealth(): Promise<ApiResponse<any>> {
-    // Note: /health is often outside /api in some servers, but server.ts says app.get("/health") 
-    // and API_BASE_URL is /api. However, server.ts defines /health BEFORE /api routes.
-    // Let's check server.ts again.
-    // app.get("/health", ...) is direct. API routes are app.use("/api/auth", ...).
-    // So /health is at ROOT/health, not /api/health.
-    
-    const rootURL = this.baseURL.replace("/api", "");
+    // Determine Root URL (remove /api suffix)
+    let rootURL = this.baseURL;
+    if (rootURL.endsWith("/api")) {
+      rootURL = rootURL.substring(0, rootURL.length - 4);
+    } else if (rootURL.endsWith("/api/")) {
+      rootURL = rootURL.substring(0, rootURL.length - 5);
+    }
+
+    // Ensure we don't end with a slash for clean appending
+    if (rootURL.endsWith("/")) {
+      rootURL = rootURL.substring(0, rootURL.length - 1);
+    }
+
     try {
       const response = await fetch(`${rootURL}/health`);
+      if (!response.ok) throw new Error("Status " + response.status);
       return await response.json();
     } catch (error: any) {
       return {
         success: false,
         message: "Backend unreachable",
-        error: error.message
+        error: error.message,
       };
     }
   }
