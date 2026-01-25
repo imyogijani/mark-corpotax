@@ -10,7 +10,7 @@ interface AuthRequest extends Request {
 export const protect = async (
   req: AuthRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   try {
     let token;
@@ -51,11 +51,31 @@ export const protect = async (
       // Verify token
       const decoded = jwt.verify(
         token,
-        process.env.JWT_SECRET || "fallback-secret"
+        process.env.JWT_SECRET || "fallback-secret",
       ) as any;
 
-      // Get user from token using Firebase
-      const user = await UserService.findById(decoded.id);
+      // --- CACHE OPTIMIZATION START ---
+      // Simple InMemory Cache
+      if (!(global as any).userCache) (global as any).userCache = {};
+      const cacheKey = `user_${decoded.id}`;
+      let user = (global as any).userCache[cacheKey];
+
+      if (!user) {
+        // Not in cache, fetch from Firestore
+        user = await UserService.findById(decoded.id);
+        if (user) {
+          (global as any).userCache[cacheKey] = user;
+          // Expire after 5 minutes
+          setTimeout(
+            () => {
+              if ((global as any).userCache)
+                delete (global as any).userCache[cacheKey];
+            },
+            5 * 60 * 1000,
+          );
+        }
+      }
+      // --- CACHE OPTIMIZATION END ---
 
       if (!user) {
         res.status(401).json({

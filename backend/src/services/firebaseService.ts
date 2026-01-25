@@ -224,7 +224,7 @@ export const UserService = {
     const user = await db.findOne(
       COLLECTIONS.USERS,
       "email",
-      email.toLowerCase()
+      email.toLowerCase(),
     );
     return user ? formatTimestamp(user) : null;
   },
@@ -232,7 +232,7 @@ export const UserService = {
   async create(data: Partial<IUser>): Promise<IUser> {
     // Hash password before saving
     if (data.password) {
-      const salt = await bcrypt.genSalt(12);
+      const salt = await bcrypt.genSalt(10);
       data.password = await bcrypt.hash(data.password, salt);
     }
     data.isActive = data.isActive ?? true;
@@ -276,7 +276,7 @@ export const ContactService = {
       const contacts = await db.queryOrdered(
         COLLECTIONS.CONTACTS,
         "createdAt",
-        "desc"
+        "desc",
       );
       return contacts.map(formatTimestamp);
     } catch (error) {
@@ -287,7 +287,7 @@ export const ContactService = {
         .sort(
           (a, b) =>
             new Date(b.createdAt || 0).getTime() -
-            new Date(a.createdAt || 0).getTime()
+            new Date(a.createdAt || 0).getTime(),
         );
     }
   },
@@ -328,7 +328,7 @@ export const AppointmentService = {
       const appointments = await db.queryOrdered(
         COLLECTIONS.APPOINTMENTS,
         "createdAt",
-        "desc"
+        "desc",
       );
       return appointments.map(formatTimestamp);
     } catch (error) {
@@ -339,7 +339,7 @@ export const AppointmentService = {
         .sort(
           (a, b) =>
             new Date(b.createdAt || 0).getTime() -
-            new Date(a.createdAt || 0).getTime()
+            new Date(a.createdAt || 0).getTime(),
         );
     }
   },
@@ -351,14 +351,14 @@ export const AppointmentService = {
         COLLECTIONS.APPOINTMENTS,
         "businessId",
         "==",
-        businessId
+        businessId,
       );
       return appointments
         .map(formatTimestamp)
         .sort(
           (a, b) =>
             new Date(b.createdAt || 0).getTime() -
-            new Date(a.createdAt || 0).getTime()
+            new Date(a.createdAt || 0).getTime(),
         );
     } catch (error) {
       console.error("Error fetching appointments by businessId:", error);
@@ -373,17 +373,17 @@ export const AppointmentService = {
 
   async findByStatus(
     status: string,
-    businessId?: string
+    businessId?: string,
   ): Promise<IAppointment[]> {
     let appointments = await db.query(
       COLLECTIONS.APPOINTMENTS,
       "status",
       "==",
-      status
+      status,
     );
     if (businessId) {
       appointments = appointments.filter(
-        (a: any) => a.businessId === businessId
+        (a: any) => a.businessId === businessId,
       );
     }
     return appointments.map(formatTimestamp);
@@ -394,11 +394,11 @@ export const AppointmentService = {
       COLLECTIONS.APPOINTMENTS,
       "date",
       "==",
-      date
+      date,
     );
     if (businessId) {
       appointments = appointments.filter(
-        (a: any) => a.businessId === businessId
+        (a: any) => a.businessId === businessId,
       );
     }
     return appointments.map(formatTimestamp);
@@ -409,7 +409,7 @@ export const AppointmentService = {
       COLLECTIONS.APPOINTMENTS,
       "email",
       "==",
-      email.toLowerCase()
+      email.toLowerCase(),
     );
     return appointments.map(formatTimestamp);
   },
@@ -431,7 +431,7 @@ export const AppointmentService = {
 
   async update(
     id: string,
-    data: Partial<IAppointment>
+    data: Partial<IAppointment>,
   ): Promise<IAppointment | null> {
     await db.update(COLLECTIONS.APPOINTMENTS, id, data);
     const appointment = await db.getById(COLLECTIONS.APPOINTMENTS, id);
@@ -495,7 +495,7 @@ export const BusinessService = {
         COLLECTIONS.BUSINESS,
         "isActive",
         "==",
-        true
+        true,
       );
       return businesses.map(formatTimestamp);
     } catch (error) {
@@ -516,7 +516,7 @@ export const BusinessService = {
 
   async update(
     id: string,
-    data: Partial<IBusiness>
+    data: Partial<IBusiness>,
   ): Promise<IBusiness | null> {
     await db.update(COLLECTIONS.BUSINESS, id, {
       ...data,
@@ -554,7 +554,7 @@ export const ServiceService = {
         COLLECTIONS.SERVICES,
         "businessId",
         "==",
-        businessId
+        businessId,
       );
       return services
         .map(formatTimestamp)
@@ -743,7 +743,7 @@ export const PageContentService = {
 
   async update(
     id: string,
-    data: Partial<IPageContent>
+    data: Partial<IPageContent>,
   ): Promise<IPageContent | null> {
     await db.update(COLLECTIONS.PAGE_CONTENT, id, data);
     const content = await db.getById(COLLECTIONS.PAGE_CONTENT, id);
@@ -771,14 +771,14 @@ export const NotificationService = {
         COLLECTIONS.NOTIFICATIONS,
         "userId",
         "==",
-        userId
+        userId,
       );
       return notifications
         .map(formatTimestamp)
         .sort(
           (a, b) =>
             new Date(b.createdAt || 0).getTime() -
-            new Date(a.createdAt || 0).getTime()
+            new Date(a.createdAt || 0).getTime(),
         );
     } catch (error) {
       console.error("Error finding notifications:", error);
@@ -845,7 +845,7 @@ export const BlogService = {
       .sort(
         (a, b) =>
           new Date(b.publishedAt || b.createdAt || 0).getTime() -
-          new Date(a.publishedAt || a.createdAt || 0).getTime()
+          new Date(a.publishedAt || a.createdAt || 0).getTime(),
       );
   },
 
