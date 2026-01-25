@@ -86,7 +86,7 @@ router.get("/", async (req: Request, res: Response) => {
       setNestedValue(
         groupedContent[item.page][item.section],
         item.key,
-        item.value
+        item.value,
       );
     });
 
@@ -99,7 +99,7 @@ router.get("/", async (req: Request, res: Response) => {
     // Set cache headers
     // Using no-cache to force browser to revalidate with server
     // Server has its own memory cache which is fast enough
-    res.set("Cache-Control", "no-cache"); 
+    res.set("Cache-Control", "no-cache");
 
     res.status(200).json({
       success: true,
@@ -131,7 +131,7 @@ router.get("/:page", async (req: Request, res: Response): Promise<void> => {
     ) {
       // Set cache headers for CDN/browser caching
       // use no-cache so browser always checks with server (which uses memory cache)
-      res.set("Cache-Control", "no-cache"); 
+      res.set("Cache-Control", "no-cache");
       res.status(200).json({
         success: true,
         message: `${page} content retrieved successfully (cached)`,
