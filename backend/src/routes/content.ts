@@ -97,7 +97,9 @@ router.get("/", async (req: Request, res: Response) => {
     };
 
     // Set cache headers
-    res.set("Cache-Control", "public, max-age=300");
+    // Using no-cache to force browser to revalidate with server
+    // Server has its own memory cache which is fast enough
+    res.set("Cache-Control", "no-cache"); 
 
     res.status(200).json({
       success: true,
@@ -128,7 +130,8 @@ router.get("/:page", async (req: Request, res: Response): Promise<void> => {
       Date.now() - contentCache[cacheKey].timestamp < CACHE_TTL
     ) {
       // Set cache headers for CDN/browser caching
-      res.set("Cache-Control", "public, max-age=300"); // 5 minutes
+      // use no-cache so browser always checks with server (which uses memory cache)
+      res.set("Cache-Control", "no-cache"); 
       res.status(200).json({
         success: true,
         message: `${page} content retrieved successfully (cached)`,
