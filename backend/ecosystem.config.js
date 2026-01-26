@@ -14,7 +14,7 @@ module.exports = {
       name: "mark-backend",
       script: "dist/server.js",
       cwd: "/root/mark-corpotax/backend",
-      instances: "max",
+      instances: 1,
       exec_mode: "cluster",
       watch: false,
       max_memory_restart: "500M",
