@@ -106,9 +106,9 @@ const FinanceAvatar = () => (
     transition={{ type: "spring", stiffness: 300 }}
   >
     <motion.div
-       initial={{ y: 0 }}
-       whileInView={{ y: [0, -3, 0] }}
-       transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+      initial={{ y: 0 }}
+      whileInView={{ y: [0, -3, 0] }}
+      transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
     >
       <User className="w-10 h-10" style={{ color: "#0b4c80" }} />
     </motion.div>
@@ -308,16 +308,16 @@ export function DynamicTestimonialsSection() {
               }`}
             >
               <Card className="p-10 md:p-14 text-center shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border-0 bg-white rounded-3xl relative">
-                <motion.div 
+                <motion.div
                   className="absolute top-10 left-10 opacity-10"
-                  animate={{ 
+                  animate={{
                     scale: [1, 1.1, 1],
-                    opacity: [0.1, 0.15, 0.1]
+                    opacity: [0.1, 0.15, 0.1],
                   }}
-                  transition={{ 
-                    duration: 4, 
-                    repeat: Infinity, 
-                    ease: "easeInOut" 
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
                   }}
                 >
                   <Quote className="w-16 h-16 text-[#0b4c80]" />

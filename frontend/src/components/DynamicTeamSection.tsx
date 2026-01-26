@@ -76,9 +76,9 @@ const FinanceAvatar = () => (
     transition={{ type: "spring", stiffness: 300 }}
   >
     <motion.div
-       initial={{ y: 0 }}
-       whileInView={{ y: [0, -3, 0] }}
-       transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+      initial={{ y: 0 }}
+      whileInView={{ y: [0, -3, 0] }}
+      transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
     >
       <User className="w-10 h-10" style={{ color: "#0b4c80" }} />
     </motion.div>

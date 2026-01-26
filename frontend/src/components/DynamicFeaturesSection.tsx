@@ -142,9 +142,10 @@ export function DynamicFeaturesSection() {
       <CheckCircle key="cc" />,
       <Users key="us" />,
     ];
-    
-    const iconElement = iconMap[iconName] || defaultIcons[index % defaultIcons.length];
-    
+
+    const iconElement =
+      iconMap[iconName] || defaultIcons[index % defaultIcons.length];
+
     return (
       <motion.div
         initial={{ scale: 0.8, rotate: -20, opacity: 0 }}

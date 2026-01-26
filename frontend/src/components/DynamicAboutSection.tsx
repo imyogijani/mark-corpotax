@@ -186,10 +186,11 @@ function AnimatedStat({
       <TrendingUp key="trending" className="w-8 h-8" />,
       <Shield key="shield" className="w-8 h-8" />,
     ];
-    
-    const iconElement = iconName && iconMap[iconName]
-      ? iconMap[iconName]
-      : defaultIcons[(idx || 0) % defaultIcons.length];
+
+    const iconElement =
+      iconName && iconMap[iconName]
+        ? iconMap[iconName]
+        : defaultIcons[(idx || 0) % defaultIcons.length];
 
     return (
       <motion.div
@@ -198,7 +199,11 @@ function AnimatedStat({
         viewport={{ once: false }}
         transition={{ type: "spring", stiffness: 200, delay: (idx || 0) * 0.1 }}
         variants={{
-           hover: { rotate: [0, -10, 10, -5, 5, 0], scale: 1.1, transition: { duration: 0.5 } }
+          hover: {
+            rotate: [0, -10, 10, -5, 5, 0],
+            scale: 1.1,
+            transition: { duration: 0.5 },
+          },
         }}
       >
         {iconElement}

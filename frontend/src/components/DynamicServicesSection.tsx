@@ -109,16 +109,18 @@ export function DynamicServicesSection() {
       Factory: <Factory className="w-12 h-12" />,
     };
 
-    const iconElement = iconMap[iconName] || <Briefcase className="w-12 h-12" />;
+    const iconElement = iconMap[iconName] || (
+      <Briefcase className="w-12 h-12" />
+    );
 
     return (
-       <motion.div
+      <motion.div
         whileHover={{ rotateY: 180, scale: 1.1 }}
         transition={{ duration: 0.6 }}
         className="origin-center"
-       >
-         {iconElement}
-       </motion.div>
+      >
+        {iconElement}
+      </motion.div>
     );
   };
 

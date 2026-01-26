@@ -63,11 +63,11 @@ export function Header() {
     try {
       const headerSettings = await contentService.getContentBySection(
         "settings",
-        "header"
+        "header",
       );
       const contactSettings = await contentService.getContentBySection(
         "settings",
-        "contact"
+        "contact",
       );
       const navigationSettings: NavigationSettings =
         await contentService.getContentBySection("settings", "navigation");
@@ -218,11 +218,18 @@ export function Header() {
                       asChild
                       className="w-full bg-primary hover:bg-primary/90 text-white rounded-full px-6 py-2 font-medium transition-colors"
                     >
-                      <Link href="/appointment" className="flex items-center justify-center">
-                        <motion.div 
+                      <Link
+                        href="/appointment"
+                        className="flex items-center justify-center"
+                      >
+                        <motion.div
                           className="mr-2"
-                          animate={{ scale: [1, 1.2, 1] }} 
-                          transition={{ repeat: Infinity, duration: 2, repeatDelay: 3 }}
+                          animate={{ scale: [1, 1.2, 1] }}
+                          transition={{
+                            repeat: Infinity,
+                            duration: 2,
+                            repeatDelay: 3,
+                          }}
                         >
                           <BookUser size={16} />
                         </motion.div>

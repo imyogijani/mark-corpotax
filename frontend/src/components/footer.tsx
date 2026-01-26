@@ -225,7 +225,10 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <motion.div whileHover={{ scale: 1.2, rotate: 10 }} transition={{ type: "spring", stiffness: 400 }}>
+                <motion.div
+                  whileHover={{ scale: 1.2, rotate: 10 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
                   <Facebook size={20} />
                 </motion.div>
               </Link>
@@ -235,7 +238,10 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <motion.div whileHover={{ scale: 1.2, rotate: -10 }} transition={{ type: "spring", stiffness: 400 }}>
+                <motion.div
+                  whileHover={{ scale: 1.2, rotate: -10 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
                   <Twitter size={20} />
                 </motion.div>
               </Link>
@@ -245,7 +251,10 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <motion.div whileHover={{ scale: 1.2, y: -3 }} transition={{ type: "spring", stiffness: 400 }}>
+                <motion.div
+                  whileHover={{ scale: 1.2, y: -3 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
                   <Linkedin size={20} />
                 </motion.div>
               </Link>
@@ -255,7 +264,10 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <motion.div whileHover={{ scale: 1.2, rotate: 10 }} transition={{ type: "spring", stiffness: 400 }}>
+                <motion.div
+                  whileHover={{ scale: 1.2, rotate: 10 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
                   <Instagram size={20} />
                 </motion.div>
               </Link>

@@ -66,8 +66,8 @@ export function DynamicBlogSection() {
 
   const getIcon = (index: number) => {
     const icons = [
-      <motion.div 
-        key="bar" 
+      <motion.div
+        key="bar"
         whileHover={{ scale: 1.05, translateY: -5 }}
         transition={{ type: "spring", stiffness: 300 }}
       >
@@ -76,7 +76,7 @@ export function DynamicBlogSection() {
           style={{ color: "#0b4c80", opacity: 0.6 }}
         />
       </motion.div>,
-      <motion.div 
+      <motion.div
         key="pie"
         whileHover={{ rotate: 90, scale: 1.05 }}
         transition={{ type: "spring", stiffness: 200 }}
@@ -86,7 +86,7 @@ export function DynamicBlogSection() {
           style={{ color: "#0b4c80", opacity: 0.6 }}
         />
       </motion.div>,
-      <motion.div 
+      <motion.div
         key="trend"
         whileHover={{ scale: 1.1, translateX: 5 }}
         transition={{ type: "spring", stiffness: 300 }}
