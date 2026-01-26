@@ -560,8 +560,12 @@ class ApiClient {
   }
 
   // ============ Content Management ============
-  async getPageContent(page: string): Promise<ApiResponse<any>> {
-    return this.request<any>(`/content/${page}`);
+  async getPageContent(
+    page: string,
+    nocache = false,
+  ): Promise<ApiResponse<any>> {
+    const query = nocache ? `?nocache=true&t=${Date.now()}` : "";
+    return this.request<any>(`/content/${page}${query}`);
   }
 
   async getAdminContent(page?: string): Promise<ApiResponse<any>> {

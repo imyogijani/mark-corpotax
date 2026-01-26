@@ -4,8 +4,10 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { PointerEffect } from "@/components/pointer-effect";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { LoadingProvider } from "@/contexts/LoadingContext";
 import { ConditionalLayout } from "@/components/ConditionalLayout";
 import { Inter } from "next/font/google";
+import { DebugStatus } from "@/components/DebugStatus";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,15 +34,18 @@ export default function RootLayout({
         className={cn(
           "font-sans antialiased",
           inter.variable,
-          "min-h-screen bg-background flex flex-col"
+          "min-h-screen bg-background flex flex-col",
         )}
       >
         <AuthProvider>
-          <ConditionalLayout>
-            <PointerEffect />
-            {children}
-          </ConditionalLayout>
-          <Toaster />
+          <LoadingProvider>
+            <ConditionalLayout>
+              <PointerEffect />
+              {children}
+            </ConditionalLayout>
+            <Toaster />
+            <DebugStatus />
+          </LoadingProvider>
         </AuthProvider>
       </body>
     </html>

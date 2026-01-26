@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { contentService } from "@/lib/content-service";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { User, ChevronLeft, ChevronRight } from "lucide-react";
+import { User, ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TestimonialItem {
   quote?: string;
@@ -47,7 +48,7 @@ const FALLBACK_TESTIMONIALS: TestimonialsSectionData = {
 // Transform flat keys from database into the expected structure
 // This merges individual keys (testimonial_1_quote) with existing arrays
 function transformTestimonialsData(
-  data: Record<string, unknown>
+  data: Record<string, unknown>,
 ): TestimonialsSectionData {
   const section = (data.testimonials_section || {}) as Record<string, unknown>;
 
@@ -98,12 +99,20 @@ function transformTestimonialsData(
 }
 
 const FinanceAvatar = () => (
-  <div
+  <motion.div
     className="flex items-center justify-center w-20 h-20 rounded-full"
     style={{ backgroundColor: "#0b4c8020" }}
+    whileHover={{ scale: 1.15, rotate: 5 }}
+    transition={{ type: "spring", stiffness: 300 }}
   >
-    <User className="w-10 h-10" style={{ color: "#0b4c80" }} />
-  </div>
+    <motion.div
+       initial={{ y: 0 }}
+       whileInView={{ y: [0, -3, 0] }}
+       transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+    >
+      <User className="w-10 h-10" style={{ color: "#0b4c80" }} />
+    </motion.div>
+  </motion.div>
 );
 
 export function DynamicTestimonialsSection() {
@@ -112,14 +121,14 @@ export function DynamicTestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [slideDirection, setSlideDirection] = useState<"left" | "right">(
-    "right"
+    "right",
   );
 
   const fetchContent = useCallback(async () => {
     try {
       const testimonialsContent = await contentService.getContentBySection(
         "home",
-        "testimonials"
+        "testimonials",
       );
       if (testimonialsContent?.testimonials_section) {
         const transformedContent =
@@ -149,7 +158,7 @@ export function DynamicTestimonialsSection() {
 
   const testimonials = useMemo(
     () => testimonialsSection?.testimonials || [],
-    [testimonialsSection]
+    [testimonialsSection],
   );
 
   const goToNext = useCallback(() => {
@@ -176,7 +185,7 @@ export function DynamicTestimonialsSection() {
     setIsAnimating(true);
     setSlideDirection("left");
     setCurrentIndex(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length
+      (prev) => (prev - 1 + testimonials.length) % testimonials.length,
     );
     setTimeout(() => setIsAnimating(false), 500);
   }, [isAnimating, testimonials.length]);
@@ -189,7 +198,7 @@ export function DynamicTestimonialsSection() {
       setCurrentIndex(index);
       setTimeout(() => setIsAnimating(false), 500);
     },
-    [isAnimating, currentIndex]
+    [isAnimating, currentIndex],
   );
 
   if (testimonials.length === 0) {
@@ -199,82 +208,153 @@ export function DynamicTestimonialsSection() {
   const currentTestimonial = testimonials[currentIndex];
 
   return (
-    <section className="py-16 md:py-20">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            {testimonialsSection?.title || "What Our Clients Say"}
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            {testimonialsSection?.tagline || "Client Success Stories"}
-          </p>
-        </div>
+    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+      {/* Decorative Background */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-50/50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 -z-10"></div>
+      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-sky-50/50 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 -z-10"></div>
 
+      <div className="container mx-auto px-4 mb-16">
+        <div className="relative text-center max-w-4xl mx-auto">
+          {/* Animated Watermark */}
+          <motion.div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[5rem] md:text-[9rem] opacity-5 font-black text-slate-900 whitespace-nowrap select-none pointer-events-none tracking-tighter"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 0.05, scale: 1 }}
+            viewport={{ once: false }}
+            transition={{ duration: 1 }}
+          >
+            STORIES
+          </motion.div>
+
+          <div className="relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              className="inline-flex items-center gap-2 mb-4"
+            >
+              <span className="w-8 h-[2px] bg-blue-600"></span>
+              <span className="text-sm font-bold uppercase tracking-widest text-[#0b4c80]">
+                {testimonialsSection?.tagline || "Testimonials"}
+              </span>
+              <span className="w-8 h-[2px] bg-blue-600"></span>
+            </motion.div>
+
+            <motion.h2
+              className="text-4xl md:text-5xl font-bold mb-6 text-slate-900"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              transition={{ delay: 0.1 }}
+            >
+              {testimonialsSection?.title || "What Our Clients Say"}
+            </motion.h2>
+
+            <motion.p
+              className="text-lg text-slate-600 max-w-2xl mx-auto"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: false }}
+              transition={{ delay: 0.2 }}
+            >
+              Real stories from businesses we've helped grow.
+            </motion.p>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4">
         {/* Slider Container */}
-        <div className="relative max-w-2xl mx-auto">
+        <motion.div
+          className="relative max-w-4xl mx-auto"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{ duration: 0.8 }}
+        >
           {/* Navigation Arrows */}
           {testimonials.length > 1 && (
             <>
               <Button
                 variant="outline"
                 size="icon"
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-16 z-10 rounded-full bg-white shadow-lg hover:bg-gray-50 border-gray-200"
+                className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-20 z-10 w-12 h-12 rounded-full bg-white shadow-lg hover:bg-blue-50 border-slate-100 hover:border-blue-200 transition-all duration-300 group"
                 onClick={goToPrev}
                 disabled={isAnimating}
               >
-                <ChevronLeft className="h-5 w-5" style={{ color: "#0b4c80" }} />
+                <ChevronLeft className="h-6 w-6 text-slate-400 group-hover:text-[#0b4c80]" />
               </Button>
               <Button
                 variant="outline"
                 size="icon"
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-16 z-10 rounded-full bg-white shadow-lg hover:bg-gray-50 border-gray-200"
+                className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-20 z-10 w-12 h-12 rounded-full bg-white shadow-lg hover:bg-blue-50 border-slate-100 hover:border-blue-200 transition-all duration-300 group"
                 onClick={goToNext}
                 disabled={isAnimating}
               >
-                <ChevronRight
-                  className="h-5 w-5"
-                  style={{ color: "#0b4c80" }}
-                />
+                <ChevronRight className="h-6 w-6 text-slate-400 group-hover:text-[#0b4c80]" />
               </Button>
             </>
           )}
 
           {/* Testimonial Card with Animation */}
-          <div className="overflow-hidden">
+          <div className="overflow-hidden px-4 md:px-0">
             <div
-              className={`transition-all duration-500 ease-in-out transform ${
+              className={`transition-all duration-700 ease-in-out transform ${
                 isAnimating
                   ? slideDirection === "right"
-                    ? "-translate-x-4 opacity-0"
-                    : "translate-x-4 opacity-0"
+                    ? "-translate-x-8 opacity-0"
+                    : "translate-x-8 opacity-0"
                   : "translate-x-0 opacity-100"
               }`}
             >
-              <Card className="p-8 md:p-10 text-center shadow-lg border-0 bg-white">
+              <Card className="p-10 md:p-14 text-center shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border-0 bg-white rounded-3xl relative">
+                <motion.div 
+                  className="absolute top-10 left-10 opacity-10"
+                  animate={{ 
+                    scale: [1, 1.1, 1],
+                    opacity: [0.1, 0.15, 0.1]
+                  }}
+                  transition={{ 
+                    duration: 4, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                >
+                  <Quote className="w-16 h-16 text-[#0b4c80]" />
+                </motion.div>
+
                 {/* Stars */}
-                <div className="flex justify-center mb-6 gap-1">
+                <div className="flex justify-center mb-8 gap-1">
                   {[...Array(currentTestimonial?.rating || 5)].map((_, i) => (
-                    <span key={i} className="text-yellow-400 text-xl">
+                    <motion.span
+                      key={i}
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.3 + i * 0.1 }}
+                      className="text-yellow-400 text-xl"
+                    >
                       ★
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
 
                 {/* Quote */}
-                <blockquote className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed italic">
+                <blockquote className="text-xl md:text-2xl text-slate-700 mb-10 leading-relaxed font-medium">
                   &quot;
                   {currentTestimonial?.quote || currentTestimonial?.content}
                   &quot;
                 </blockquote>
 
                 {/* Author */}
-                <div className="flex items-center justify-center gap-4">
-                  <FinanceAvatar />
-                  <div className="text-left">
-                    <div className="font-semibold text-gray-900 text-lg">
+                <div className="flex flex-col items-center justify-center gap-4">
+                  <div className="mb-2">
+                    <FinanceAvatar />
+                  </div>
+                  <div className="text-center">
+                    <div className="font-bold text-slate-900 text-xl mb-1">
                       {currentTestimonial?.name}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm font-semibold uppercase tracking-wide text-[#0b4c80]">
                       {currentTestimonial?.title ||
                         currentTestimonial?.designation}
                     </div>
@@ -286,15 +366,15 @@ export function DynamicTestimonialsSection() {
 
           {/* Dots Navigation */}
           {testimonials.length > 1 && (
-            <div className="flex justify-center gap-2 mt-8">
+            <div className="flex justify-center gap-3 mt-10">
               {testimonials.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => goToSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  className={`h-2 rounded-full transition-all duration-500 ${
                     index === currentIndex
-                      ? "w-8 bg-primary"
-                      : "bg-gray-300 hover:bg-gray-400"
+                      ? "w-8 bg-[#0b4c80]"
+                      : "w-2 bg-slate-300 hover:bg-slate-400"
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
@@ -308,7 +388,7 @@ export function DynamicTestimonialsSection() {
               {currentIndex + 1} / {testimonials.length}
             </div>
           )}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

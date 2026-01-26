@@ -26,7 +26,7 @@ const getEmailTransporter = () => {
 // Send appointment confirmation email
 const sendAppointmentEmail = async (
   appointment: any,
-  type: "confirmation" | "update" | "reminder"
+  type: "confirmation" | "update" | "reminder",
 ) => {
   try {
     if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
@@ -44,7 +44,7 @@ const sendAppointmentEmail = async (
         year: "numeric",
         month: "long",
         day: "numeric",
-      }
+      },
     );
 
     let subject = "";
@@ -104,10 +104,10 @@ const sendAppointmentEmail = async (
                 appointment.status === "confirmed"
                   ? "#10b981"
                   : appointment.status === "cancelled"
-                  ? "#ef4444"
-                  : appointment.status === "completed"
-                  ? "#3b82f6"
-                  : "#f59e0b"
+                    ? "#ef4444"
+                    : appointment.status === "completed"
+                      ? "#3b82f6"
+                      : "#f59e0b"
               };">${appointment.status.toUpperCase()}</strong></p>
               
               <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -203,50 +203,63 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
       businessId: "website", // Simple identifier for website appointments
     });
 
-    // Send confirmation email
-    const emailSent = await sendAppointmentEmail(appointment, "confirmation");
-
-    // Update appointment with email status
-    if (emailSent) {
-      await AppointmentService.update(appointment.id!, { emailSent: true });
-    }
-
-    // Create notification for admin users
-    const admins = await UserService.findAll();
-    const adminUsers = admins.filter((u) => u.role === "admin");
-
-    for (const admin of adminUsers) {
-      await NotificationService.create({
-        userId: admin.id!,
-        type: "info",
-        title: "New Appointment Request",
-        message: `New appointment request from ${name} for ${
-          serviceName || "consultation"
-        } on ${date} at ${time}`,
-        category: "appointment",
-        actionUrl: "/admin/appointments",
-        actionLabel: "View Appointments",
-        metadata: {
-          appointmentId: appointment.id,
-          customerName: name,
-          customerEmail: email,
-          customerPhone: phone,
-        },
-      });
-    }
-
+    // Send success response immediately to make UI snappy
     res.status(201).json({
       success: true,
       message:
         "Appointment request submitted successfully! We will contact you shortly to confirm.",
       data: appointment,
     });
+
+    // Handle background tasks (Notifications only - Email disabled)
+    // We execute this without awaiting to prevent blocking the response
+    (async () => {
+      try {
+        // Email sending disabled as per request
+        // const emailSent = await sendAppointmentEmail(appointment, "confirmation");
+        // if (emailSent) {
+        //   await AppointmentService.update(appointment.id!, { emailSent: true });
+        // }
+
+        // Create notification for admin users
+        const admins = await UserService.findAll();
+        const adminUsers = admins.filter((u) => u.role === "admin");
+
+        // Use Promise.all for parallel notification creation
+        await Promise.all(
+          adminUsers.map((admin) =>
+            NotificationService.create({
+              userId: admin.id!,
+              type: "info",
+              title: "New Appointment Request",
+              message: `New appointment request from ${name} for ${
+                serviceName || "consultation"
+              } on ${date} at ${time}`,
+              category: "appointment",
+              actionUrl: "/admin/appointments",
+              actionLabel: "View Appointments",
+              metadata: {
+                appointmentId: appointment.id,
+                customerName: name,
+                customerEmail: email,
+                customerPhone: phone,
+              },
+            }),
+          ),
+        );
+      } catch (bgError) {
+        console.error("Background task error (Email/Notification):", bgError);
+      }
+    })();
   } catch (error: any) {
     console.error("Error booking appointment:", error);
-    res.status(400).json({
-      success: false,
-      message: error.message || "Error submitting appointment request",
-    });
+    // Only send error response if we haven't sent success yet
+    if (!res.headersSent) {
+      res.status(400).json({
+        success: false,
+        message: error.message || "Error submitting appointment request",
+      });
+    }
   }
 });
 
@@ -287,7 +300,7 @@ router.get(
         message: error.message || "Server error retrieving appointments",
       });
     }
-  }
+  },
 );
 
 // @desc    Get appointment stats
@@ -319,7 +332,7 @@ router.get(
         message: error.message || "Server error getting stats",
       });
     }
-  }
+  },
 );
 
 // @desc    Get single appointment
@@ -352,7 +365,7 @@ router.get(
         message: error.message || "Server error retrieving appointment",
       });
     }
-  }
+  },
 );
 
 // @desc    Update appointment status
@@ -404,7 +417,7 @@ router.put(
         message: error.message || "Server error updating appointment",
       });
     }
-  }
+  },
 );
 
 // @desc    Delete appointment
@@ -440,7 +453,7 @@ router.delete(
         message: error.message || "Server error deleting appointment",
       });
     }
-  }
+  },
 );
 
 // @desc    Get user's own appointments

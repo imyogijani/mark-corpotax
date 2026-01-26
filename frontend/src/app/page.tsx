@@ -1,4 +1,3 @@
-import { DynamicCTASection } from "@/components/DynamicCTASection";
 import { DynamicHeroSection } from "@/components/DynamicHomeHero";
 import { DynamicAboutSection } from "@/components/DynamicAboutSection";
 import { DynamicFeaturesSection } from "@/components/DynamicFeaturesSection";
@@ -6,7 +5,6 @@ import { DynamicServicesSection } from "@/components/DynamicServicesSection";
 import { DynamicTestimonialsSection } from "@/components/DynamicTestimonialsSection";
 import { DynamicTeamSection } from "@/components/DynamicTeamSection";
 import { DynamicBlogSection } from "@/components/DynamicBlogSection";
-import { DebugStatus } from "@/components/DebugStatus";
 
 export default function Home() {
   return (
@@ -31,12 +29,6 @@ export default function Home() {
 
       {/* Dynamic Blog Section */}
       <DynamicBlogSection />
-
-      {/* Newsletter/CTA Section */}
-      <DynamicCTASection />
-
-      {/* Debug & Health Status Monitor */}
-      <DebugStatus />
     </div>
   );
 }

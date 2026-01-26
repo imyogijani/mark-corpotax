@@ -69,7 +69,7 @@ const getNestedValue = (obj: Record<string, unknown>, path: string): string => {
 const setNestedValue = (
   obj: Record<string, unknown>,
   path: string,
-  value: string
+  value: string,
 ): void => {
   const keys = path.split(".");
   let current: Record<string, unknown> = obj;
@@ -175,12 +175,12 @@ export function SiteEditor() {
           value.stats.forEach(
             (
               stat: { value?: string; label?: string; icon?: string },
-              index: number
+              index: number,
             ) => {
               if (stat.value) value[`stat_${index + 1}_value`] = stat.value;
               if (stat.label) value[`stat_${index + 1}_label`] = stat.label;
               if (stat.icon) value[`stat_${index + 1}_icon`] = stat.icon;
-            }
+            },
           );
         }
 
@@ -189,13 +189,13 @@ export function SiteEditor() {
           value.process_steps.forEach(
             (
               step: { title?: string; description?: string; icon?: string },
-              index: number
+              index: number,
             ) => {
               if (step.title) value[`step_${index + 1}_title`] = step.title;
               if (step.description)
                 value[`step_${index + 1}_description`] = step.description;
               if (step.icon) value[`step_${index + 1}_icon`] = step.icon;
-            }
+            },
           );
         }
 
@@ -210,13 +210,13 @@ export function SiteEditor() {
                 title?: string;
                 rating?: number;
               },
-              index: number
+              index: number,
             ) => {
               if (t.quote || t.content)
                 value[`testimonial_${index + 1}_quote`] = t.quote || t.content;
               if (t.name) value[`testimonial_${index + 1}_name`] = t.name;
               if (t.title) value[`testimonial_${index + 1}_title`] = t.title;
-            }
+            },
           );
         }
 
@@ -227,7 +227,7 @@ export function SiteEditor() {
               if (member.name) value[`member_${index + 1}_name`] = member.name;
               if (member.title)
                 value[`member_${index + 1}_title`] = member.title;
-            }
+            },
           );
         }
       }
@@ -261,7 +261,7 @@ export function SiteEditor() {
   const handleFieldChange = (
     sectionKey: string,
     fieldKey: string,
-    value: string
+    value: string,
   ) => {
     setContentData((prev) => {
       const newData = JSON.parse(JSON.stringify(prev));
@@ -271,7 +271,7 @@ export function SiteEditor() {
       setNestedValue(
         newData[sectionKey] as Record<string, unknown>,
         fieldKey,
-        value
+        value,
       );
       return newData;
     });
@@ -285,7 +285,7 @@ export function SiteEditor() {
 
       const flattenData = (
         obj: SectionData,
-        prefix = ""
+        prefix = "",
       ): Record<string, string> => {
         const result: Record<string, string> = {};
         for (const key in obj) {
@@ -312,7 +312,7 @@ export function SiteEditor() {
             key,
             value,
           }),
-        })
+        }),
       );
 
       await Promise.all(promises);
@@ -581,7 +581,7 @@ export function SiteEditor() {
               Sections
             </p>
           </div>
-          <ScrollArea className="flex-1 px-3 pb-3">
+          <ScrollArea className="flex-1 px-3 pb-3" data-lenis-prevent>
             <div className="space-y-1">
               {currentPageConfig.sections.map((section: SectionConfig) => {
                 const isSelected = selectedSection === section.id;
@@ -727,7 +727,7 @@ export function SiteEditor() {
                 <span className="text-sm text-slate-500">
                   {
                     currentPageConfig.sections.find(
-                      (s) => s.id === selectedSection
+                      (s) => s.id === selectedSection,
                     )?.name
                   }
                 </span>
@@ -819,7 +819,7 @@ export function SiteEditor() {
                       <h3 className="font-semibold text-slate-900 dark:text-white">
                         {
                           currentPageConfig.sections.find(
-                            (s) => s.id === selectedSection
+                            (s) => s.id === selectedSection,
                           )?.name
                         }
                       </h3>
@@ -828,7 +828,7 @@ export function SiteEditor() {
                           ? `${blogPosts.length} blog posts`
                           : `${
                               currentPageConfig.sections.find(
-                                (s) => s.id === selectedSection
+                                (s) => s.id === selectedSection,
                               )?.fields.length
                             } editable fields`}
                       </p>
@@ -846,7 +846,7 @@ export function SiteEditor() {
               </div>
 
               {/* Editor Fields or Blog Posts Panel */}
-              <ScrollArea className="flex-1">
+              <ScrollArea className="flex-1" data-lenis-prevent>
                 {selectedSection === "posts" && selectedPage === "blog" ? (
                   /* Blog Posts Management Panel */
                   <div className="p-4 space-y-4">
@@ -900,7 +900,7 @@ export function SiteEditor() {
                                   </Badge>
                                   <span className="text-[10px] text-slate-400">
                                     {new Date(
-                                      post.createdAt
+                                      post.createdAt,
                                     ).toLocaleDateString()}
                                   </span>
                                 </div>
@@ -956,7 +956,7 @@ export function SiteEditor() {
                     {currentPageConfig.sections
                       .find((s) => s.id === selectedSection)
                       ?.fields.map((field: FieldConfig) =>
-                        renderFieldEditor(field, selectedSection)
+                        renderFieldEditor(field, selectedSection),
                       )}
                   </div>
                 )}
@@ -1002,8 +1002,8 @@ export function SiteEditor() {
                     previewMode === "mobile"
                       ? "h-[700px]"
                       : previewMode === "tablet"
-                      ? "h-[900px]"
-                      : "min-h-[calc(100vh-180px)]"
+                        ? "h-[900px]"
+                        : "min-h-[calc(100vh-180px)]"
                   }`}
                 >
                   {loading ? (

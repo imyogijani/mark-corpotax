@@ -112,7 +112,8 @@ class ContentService {
 
     // Fetch fresh data
     try {
-      const response = await apiClient.getPageContent(page);
+      // Force nocache to ensure we get fresh data from server (bypassing browser/cdn cache)
+      const response = await apiClient.getPageContent(page, true);
 
       if (response.success && response.data) {
         // Store with current cache version
@@ -296,7 +297,7 @@ class ContentService {
     // Dispatch event so components can refresh
     if (typeof window !== "undefined") {
       window.dispatchEvent(
-        new CustomEvent(CACHE_INVALIDATION_EVENT, { detail: { page } })
+        new CustomEvent(CACHE_INVALIDATION_EVENT, { detail: { page } }),
       );
     }
   }
@@ -328,7 +329,7 @@ class ContentService {
   // Prefetch multiple pages at once - for faster initial load
   async prefetchPages(pages: string[]): Promise<void> {
     await Promise.all(
-      pages.map((page) => this.getFullPageContent(page).catch(() => ({})))
+      pages.map((page) => this.getFullPageContent(page).catch(() => ({}))),
     );
   }
 

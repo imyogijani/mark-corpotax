@@ -81,7 +81,7 @@
   body {
     @apply bg-background text-foreground;
   }
-  
+
   .gradient-text {
     @apply bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent;
   }
@@ -95,47 +95,47 @@
     transform: translateZ(0);
     backface-visibility: hidden;
   }
-  
+
   /* Responsive logo container */
   .logo-container {
     @apply flex items-center justify-center;
   }
-  
+
   /* Logo hover effects */
   .logo-hover {
     @apply transition-all duration-300 ease-in-out;
   }
-  
+
   .logo-hover:hover {
     @apply scale-105 brightness-110;
   }
-  
+
   /* Footer brand container */
   .brand-container {
     @apply flex items-center gap-3 transition-all duration-300 ease-in-out;
   }
-  
+
   .brand-container:hover {
     @apply scale-105;
   }
-  
+
   .brand-info {
     @apply flex flex-col justify-center;
   }
-  
+
   .brand-text {
     @apply font-bold text-gray-800 leading-tight text-lg sm:text-xl;
   }
-  
+
   .brand-subtitle {
     @apply text-gray-600 leading-tight text-xs sm:text-sm;
   }
-  
+
   /* Footer widget styling */
   .footer-widget {
     @apply space-y-4;
   }
-  
+
   /* Footer logo responsive sizing */
   @media (max-width: 640px) {
     .brand-container .logo-image {
@@ -143,12 +143,18 @@
       height: 36px !important;
     }
   }
-  
+
   @media (min-width: 641px) and (max-width: 1024px) {
     .brand-container .logo-image {
       width: 42px !important;
       height: 42px !important;
     }
   }
-
 }
+
+/* Hide default scrollbar but allow scrolling */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+

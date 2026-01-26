@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { motion, useInView } from "framer-motion";
 import { contentService } from "@/lib/content-service";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -11,7 +12,10 @@ import {
   Users,
   TrendingUp,
   Shield,
+  Briefcase,
+  Layers,
 } from "lucide-react";
+import { MotionWrapper } from "@/components/MotionWrapper";
 
 interface AboutSectionData {
   tagline?: string;
@@ -54,7 +58,7 @@ const FALLBACK_ABOUT: AboutSectionData = {
 function useCountAnimation(
   endValue: number,
   duration: number = 2000,
-  startOnView: boolean = true
+  startOnView: boolean = true,
 ) {
   const [count, setCount] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
@@ -74,7 +78,7 @@ function useCountAnimation(
       // Easing function for smooth animation (easeOutExpo)
       const easeOutExpo = 1 - Math.pow(2, -10 * progress);
       const currentValue = Math.floor(
-        startValue + (endValue - startValue) * easeOutExpo
+        startValue + (endValue - startValue) * easeOutExpo,
       );
 
       setCount(currentValue);
@@ -103,7 +107,7 @@ function useCountAnimation(
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
 
     const currentElement = elementRef.current;
@@ -169,57 +173,115 @@ function AnimatedStat({
   const { count, elementRef } = useCountAnimation(number, 2000);
 
   const getStatIcon = (iconName?: string, idx?: number) => {
+    // Icons without hardcoded colors to allow parent control
     const iconMap: { [key: string]: JSX.Element } = {
-      Award: <Award className="w-8 h-8" style={{ color: "#0b4c80" }} />,
-      Users: <Users className="w-8 h-8" style={{ color: "#0b4c80" }} />,
-      TrendingUp: (
-        <TrendingUp className="w-8 h-8" style={{ color: "#0b4c80" }} />
-      ),
-      Shield: <Shield className="w-8 h-8" style={{ color: "#0b4c80" }} />,
+      Award: <Award className="w-8 h-8" />,
+      Users: <Users className="w-8 h-8" />,
+      TrendingUp: <TrendingUp className="w-8 h-8" />,
+      Shield: <Shield className="w-8 h-8" />,
     };
     const defaultIcons = [
-      <Award key="award" className="w-8 h-8" style={{ color: "#0b4c80" }} />,
-      <Users key="users" className="w-8 h-8" style={{ color: "#0b4c80" }} />,
-      <TrendingUp
-        key="trending"
-        className="w-8 h-8"
-        style={{ color: "#0b4c80" }}
-      />,
-      <Shield key="shield" className="w-8 h-8" style={{ color: "#0b4c80" }} />,
+      <Award key="award" className="w-8 h-8" />,
+      <Users key="users" className="w-8 h-8" />,
+      <TrendingUp key="trending" className="w-8 h-8" />,
+      <Shield key="shield" className="w-8 h-8" />,
     ];
-    return iconName && iconMap[iconName]
+    
+    const iconElement = iconName && iconMap[iconName]
       ? iconMap[iconName]
       : defaultIcons[(idx || 0) % defaultIcons.length];
+
+    return (
+      <motion.div
+        initial={{ scale: 0.5, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 1 }}
+        viewport={{ once: false }}
+        transition={{ type: "spring", stiffness: 200, delay: (idx || 0) * 0.1 }}
+        variants={{
+           hover: { rotate: [0, -10, 10, -5, 5, 0], scale: 1.1, transition: { duration: 0.5 } }
+        }}
+      >
+        {iconElement}
+      </motion.div>
+    );
   };
 
   return (
-    <div
+    <motion.div
       ref={elementRef}
-      className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group hover:-translate-y-1"
+      initial={{ opacity: 0, y: 50, scale: 0.9 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: false, amount: 0.3 }} // Re-triggers animation on scroll up/down
+      transition={{
+        duration: 0.6,
+        delay: index * 0.1,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      whileHover="hover"
+      className="relative bg-white rounded-2xl p-7 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.05)] border border-slate-100 group h-full flex flex-col justify-between overflow-hidden transition-colors duration-300 hover:border-blue-100/50"
     >
-      <div
-        className="w-14 h-14 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110"
-        style={{ backgroundColor: "#0b4c8015" }}
+      {/* 
+         Minimal Glass/Glow Effect 
+         - A subtle gradient that fades in from the corner
+      */}
+      <motion.div
+        variants={{ hover: { opacity: 1 } }}
+        initial={{ opacity: 0 }}
+        className="absolute inset-0 bg-gradient-to-br from-blue-50/40 via-transparent to-transparent pointer-events-none"
+      />
+
+      {/* Clean Bottom Accent Line */}
+      <motion.div
+        variants={{ hover: { scaleX: 1, opacity: 1 } }}
+        initial={{ scaleX: 0, opacity: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="absolute bottom-0 left-0 w-full h-[3px] bg-[#0b4c80] origin-left"
+      />
+
+      {/* Floating Icon Container */}
+      <motion.div
+        variants={{
+          hover: {
+            y: -4,
+            backgroundColor: "#0b4c80",
+            color: "#ffffff",
+            boxShadow: "0 10px 25px -5px rgba(11, 76, 128, 0.25)",
+          },
+        }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 text-[#0b4c80] bg-slate-50 relative z-10"
       >
-        {getStatIcon(icon, index)}
+        <div className="[&>svg]:w-7 [&>svg]:h-7">
+          {getStatIcon(icon, index)}
+        </div>
+      </motion.div>
+
+      <div className="relative z-10">
+        <motion.div
+          variants={{ hover: { y: -2 } }}
+          transition={{ duration: 0.3 }}
+          className="text-4xl font-bold mb-2 tabular-nums tracking-tight text-slate-800"
+        >
+          {prefix}
+          {formatNumber(count, hasDecimal)}
+          {suffix}
+        </motion.div>
+
+        <div className="flex items-center gap-2">
+          <div className="h-[1px] w-4 bg-slate-200 group-hover:w-8 group-hover:bg-[#0b4c80] transition-all duration-300 mb-[2px]"></div>
+          <div className="text-slate-500 text-xs font-bold uppercase tracking-widest group-hover:text-[#0b4c80] transition-colors duration-300">
+            {label}
+          </div>
+        </div>
       </div>
-      <div
-        className="text-3xl md:text-4xl font-bold mb-2 tabular-nums"
-        style={{ color: "#0b4c80" }}
-      >
-        {prefix}
-        {formatNumber(count, hasDecimal)}
-        {suffix}
-      </div>
-      <div className="text-gray-600 text-sm font-medium">{label}</div>
-    </div>
+    </motion.div>
   );
 }
 
 // Helper to transform flat highlight/stat keys into arrays
 // This merges individual keys (highlight_1, stat_1_value) with existing arrays
 const transformAboutData = (
-  data: Record<string, unknown>
+  data: Record<string, unknown>,
 ): AboutSectionData => {
   if (!data) return {};
 
@@ -241,10 +303,10 @@ const transformAboutData = (
 
   // Start with existing stats array or empty
   let stats: { value: string; label: string; icon?: string }[] = Array.isArray(
-    data.stats
+    data.stats,
   )
     ? (data.stats as { value: string; label: string; icon?: string }[]).map(
-        (s) => ({ ...s })
+        (s) => ({ ...s }),
       )
     : [];
 
@@ -304,7 +366,7 @@ export function DynamicAboutSection() {
     try {
       const aboutContent = await contentService.getContentBySection(
         "home",
-        "about"
+        "about",
       );
       if (aboutContent?.about_section) {
         const transformed = transformAboutData(aboutContent.about_section);
@@ -332,25 +394,62 @@ export function DynamicAboutSection() {
   const displayContent = useMemo(() => aboutSection, [aboutSection]);
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-br from-slate-50 to-white overflow-hidden">
+    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+      {/* Background Decorative Pattern */}
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-slate-50/50 -skew-x-12 translate-x-32 -z-10"></div>
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-50/30 rounded-full blur-3xl -z-10"></div>
+
       <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left Content */}
-          <div className="order-2 lg:order-1">
+        {/* Section Header with Watermark */}
+        <div className="relative mb-20 md:mb-28 text-center max-w-5xl mx-auto">
+          {/* Animated Watermark Text */}
+          <motion.div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[6rem] md:text-[10rem] lg:text-[12rem] font-bold text-slate-100/60 whitespace-nowrap select-none pointer-events-none z-0 tracking-tighter"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            EXCELLENCE
+          </motion.div>
+
+          <div className="relative z-10">
             {displayContent.tagline && (
-              <span
-                className="inline-block text-sm font-semibold uppercase tracking-wider mb-4 px-4 py-1.5 rounded-full"
-                style={{ backgroundColor: "#0b4c8015", color: "#0b4c80" }}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false }}
+                className="inline-flex items-center justify-center gap-3 mb-6"
               >
-                {displayContent.tagline}
-              </span>
+                <span className="w-8 h-[2px] bg-blue-600"></span>
+                <span className="text-sm font-bold uppercase tracking-widest text-blue-600">
+                  {displayContent.tagline}
+                </span>
+                <span className="w-8 h-[2px] bg-blue-600"></span>
+              </motion.div>
             )}
 
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-              {displayContent.title || "About Our Company"}
-            </h2>
+            <motion.h2
+              className="text-4xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-tight"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              {displayContent.title ||
+                "Your Trusted Financial Partner Since 2012"}
+            </motion.h2>
+          </div>
+        </div>
 
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+          {/* Left Content */}
+          <MotionWrapper
+            className="order-2 lg:order-1 relative pt-8"
+            direction="right"
+            delay={0.1}
+          >
+            <p className="text-lg md:text-xl text-slate-600 mb-10 leading-relaxed">
               {displayContent.description ||
                 "We are committed to providing exceptional financial services."}
             </p>
@@ -358,17 +457,25 @@ export function DynamicAboutSection() {
             {/* Highlights */}
             {displayContent.highlights &&
               displayContent.highlights.length > 0 && (
-                <ul className="space-y-4 mb-8">
+                <div className="space-y-5 mb-10">
                   {displayContent.highlights.map((highlight, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <CheckCircle
-                        className="w-6 h-6 flex-shrink-0 mt-0.5"
-                        style={{ color: "#0b4c80" }}
-                      />
-                      <span className="text-gray-700">{highlight}</span>
-                    </li>
+                    <motion.div
+                      key={index}
+                      className="flex items-start gap-4"
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: false }}
+                      transition={{ delay: 0.2 + index * 0.1 }}
+                    >
+                      <div className="mt-1 bg-blue-50 p-1 rounded-full text-blue-600">
+                        <CheckCircle className="w-5 h-5" />
+                      </div>
+                      <span className="text-slate-700 font-medium text-lg border-b border-transparent hover:border-blue-100 transition-colors">
+                        {highlight}
+                      </span>
+                    </motion.div>
                   ))}
-                </ul>
+                </div>
               )}
 
             {/* CTA Button */}
@@ -376,49 +483,126 @@ export function DynamicAboutSection() {
               <Link href={displayContent.cta.link || "/about"}>
                 <Button
                   size="lg"
-                  className="group"
+                  className="group px-8 h-14 rounded-full text-base font-semibold shadow-lg shadow-blue-900/10 hover:shadow-blue-900/20"
                   style={{ backgroundColor: "#0b4c80" }}
                 >
                   {displayContent.cta.text || "Learn More"}
-                  <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </Button>
               </Link>
             )}
-          </div>
+          </MotionWrapper>
 
           {/* Right Stats Grid */}
-          <div className="order-1 lg:order-2">
+          <MotionWrapper
+            className="order-1 lg:order-2"
+            direction="left"
+            delay={0.2}
+          >
             {displayContent.stats && displayContent.stats.length > 0 ? (
-              <div className="grid grid-cols-2 gap-4 md:gap-6">
-                {displayContent.stats.map((stat, index) => (
-                  <AnimatedStat
-                    key={index}
-                    value={stat.value}
-                    label={stat.label}
-                    icon={stat.icon}
-                    index={index}
+              <div className="grid grid-cols-2 gap-6 relative">
+                {/* 
+                    Connecting Lines Illustration 
+                    We use an SVG overlay to draw dashed lines connecting the 'steps' or cards.
+                    Percentages are approximate centers based on the staggered grid layout.
+                 */}
+                <svg
+                  className="absolute inset-0 w-full h-full -z-10 pointer-events-none hidden md:block"
+                  style={{ overflow: "visible" }}
+                >
+                  {/* Define Gradient for the active line look */}
+                  <defs>
+                    <linearGradient
+                      id="connectGradient"
+                      x1="0"
+                      y1="0"
+                      x2="1"
+                      y2="1"
+                    >
+                      <stop offset="0%" stopColor="#e2e8f0" stopOpacity="0.2" />
+                      <stop
+                        offset="50%"
+                        stopColor="#3b82f6"
+                        stopOpacity="0.6"
+                      />
+                      <stop
+                        offset="100%"
+                        stopColor="#e2e8f0"
+                        stopOpacity="0.2"
+                      />
+                    </linearGradient>
+                  </defs>
+
+                  {/* 
+                       Path connecting: 
+                       Top-Left (25% 25%) -> Top-Right (75% 35%) -> Bottom-Right (75% 85%) -> Bottom-Left (25% 75%) -> Close 
+                       Adjusted Y values account for the lg:translate-y-12 stagger
+                    */}
+                  <motion.path
+                    d="M 25% 20% L 75% 30% L 75% 80% L 25% 70% Z"
+                    fill="none"
+                    stroke="url(#connectGradient)"
+                    strokeWidth="3"
+                    strokeDasharray="10 10"
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    whileInView={{ pathLength: 1, opacity: 1 }}
+                    transition={{ duration: 2.5, ease: "easeInOut" }}
                   />
+
+                  {/* Diagonal Cross Connectors for 'weaved' look */}
+                  <motion.path
+                    d="M 25% 20% L 75% 80%"
+                    fill="none"
+                    stroke="#slate-200"
+                    strokeWidth="1"
+                    className="text-slate-200"
+                    strokeDasharray="5 5"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    transition={{ duration: 2, delay: 1 }}
+                  />
+                </svg>
+
+                {/* Decorative background for the grid */}
+                <div className="absolute -inset-4 bg-slate-50 rounded-[2rem] -z-10 rotate-3 scale-95 opacity-50"></div>
+
+                {displayContent.stats.map((stat, index) => (
+                  <div
+                    key={index}
+                    className={index % 2 === 1 ? "lg:translate-y-12" : ""}
+                  >
+                    <AnimatedStat
+                      value={stat.value}
+                      label={stat.label}
+                      icon={stat.icon}
+                      index={index}
+                    />
+                  </div>
                 ))}
               </div>
             ) : (
               <div
-                className="relative rounded-2xl overflow-hidden h-80 lg:h-96"
-                style={{ backgroundColor: "#0b4c8015" }}
+                className="relative rounded-3xl overflow-hidden h-96 lg:h-[500px] shadow-2xl"
+                style={{ backgroundColor: "#0b4c80" }}
               >
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <Award
-                      className="w-20 h-20 mx-auto mb-4"
-                      style={{ color: "#0b4c80" }}
-                    />
-                    <p className="text-gray-600 font-medium">
-                      Excellence in Financial Services
-                    </p>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-8 text-center">
+                  <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mb-6 backdrop-blur-sm">
+                    <Award className="w-12 h-12" />
                   </div>
+                  <h3 className="text-2xl font-bold mb-2">
+                    Excellence in Finance
+                  </h3>
+                  <p className="text-white/80">
+                    Providing top-tier solutions for over a decade.
+                  </p>
                 </div>
+                {/* Abstract patterns */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
               </div>
             )}
-          </div>
+          </MotionWrapper>
         </div>
       </div>
     </section>

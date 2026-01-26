@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 import { contentService } from "@/lib/content-service";
+import { motion } from "framer-motion";
 
 interface FooterLink {
   label: string;
@@ -54,19 +55,19 @@ export function Footer() {
     try {
       const headerSettings = await contentService.getContentBySection(
         "settings",
-        "header"
+        "header",
       );
       const contactSettings = await contentService.getContentBySection(
         "settings",
-        "contact"
+        "contact",
       );
       const socialSettings = await contentService.getContentBySection(
         "settings",
-        "social"
+        "social",
       );
       const footer = await contentService.getContentBySection(
         "settings",
-        "footer"
+        "footer",
       );
       const footerLinksData: FooterLinksSettings =
         await contentService.getContentBySection("settings", "footer_links");
@@ -224,7 +225,9 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Facebook size={20} />
+                <motion.div whileHover={{ scale: 1.2, rotate: 10 }} transition={{ type: "spring", stiffness: 400 }}>
+                  <Facebook size={20} />
+                </motion.div>
               </Link>
               <Link
                 href={twitterUrl}
@@ -232,7 +235,9 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Twitter size={20} />
+                <motion.div whileHover={{ scale: 1.2, rotate: -10 }} transition={{ type: "spring", stiffness: 400 }}>
+                  <Twitter size={20} />
+                </motion.div>
               </Link>
               <Link
                 href={linkedinUrl}
@@ -240,7 +245,9 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Linkedin size={20} />
+                <motion.div whileHover={{ scale: 1.2, y: -3 }} transition={{ type: "spring", stiffness: 400 }}>
+                  <Linkedin size={20} />
+                </motion.div>
               </Link>
               <Link
                 href={instagramUrl}
@@ -248,7 +255,9 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Instagram size={20} />
+                <motion.div whileHover={{ scale: 1.2, rotate: 10 }} transition={{ type: "spring", stiffness: 400 }}>
+                  <Instagram size={20} />
+                </motion.div>
               </Link>
             </div>
           </div>
@@ -293,13 +302,19 @@ export function Footer() {
             <p className="text-gray-600 text-sm mb-4">
               {newsletterDescription}
             </p>
-            <form className="flex gap-2">
+            <form className="flex items-center gap-1 p-1 bg-white border border-gray-200 rounded-full shadow-sm focus-within:ring-2 focus-within:ring-primary/20 transition-shadow">
               <Input
                 type="email"
                 placeholder="Your email"
-                className="bg-white border-gray-300 text-gray-800 placeholder-gray-500"
+                className="flex-grow bg-transparent border-none shadow-none text-gray-800 placeholder:text-gray-400 focus-visible:ring-0 pl-4 h-9 min-w-0"
               />
-              <Button type="submit">Subscribe</Button>
+              <Button
+                type="submit"
+                size="sm"
+                className="rounded-full bg-[#0b4c80] hover:bg-[#093e69] text-white px-4 h-9 text-xs font-medium transition-colors"
+              >
+                Subscribe
+              </Button>
             </form>
           </div>
         </div>

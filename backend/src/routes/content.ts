@@ -167,8 +167,10 @@ router.get("/:page", async (req: Request, res: Response): Promise<void> => {
       timestamp: Date.now(),
     };
 
-    // Set cache headers for CDN/browser caching
-    res.set("Cache-Control", "public, max-age=300"); // 5 minutes
+    // Set cache headers - Disable browser caching to ensure fresh content
+    res.set("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.set("Pragma", "no-cache");
+    res.set("Expires", "0");
 
     res.status(200).json({
       success: true,

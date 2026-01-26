@@ -15,6 +15,7 @@ import {
 import { Menu, BookUser, Phone } from "lucide-react";
 import { Logo } from "./logo-image";
 import { contentService } from "@/lib/content-service";
+import { motion } from "framer-motion";
 
 interface NavLink {
   href: string;
@@ -173,7 +174,9 @@ export function Header() {
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
+                <motion.div whileTap={{ scale: 0.9 }}>
+                  <Menu className="h-6 w-6" />
+                </motion.div>
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
@@ -215,8 +218,14 @@ export function Header() {
                       asChild
                       className="w-full bg-primary hover:bg-primary/90 text-white rounded-full px-6 py-2 font-medium transition-colors"
                     >
-                      <Link href="/appointment">
-                        <BookUser className="mr-2" size={16} />
+                      <Link href="/appointment" className="flex items-center justify-center">
+                        <motion.div 
+                          className="mr-2"
+                          animate={{ scale: [1, 1.2, 1] }} 
+                          transition={{ repeat: Infinity, duration: 2, repeatDelay: 3 }}
+                        >
+                          <BookUser size={16} />
+                        </motion.div>
                         Book Appointment
                       </Link>
                     </Button>
@@ -230,9 +239,14 @@ export function Header() {
         <div className="hidden flex-1 items-center justify-end md:flex">
           <div className="hidden md:flex items-center gap-3 lg:gap-4">
             {showPhone && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 group cursor-default">
                 <div className="h-8 w-8 text-primary bg-primary/10 p-2 rounded-full flex items-center justify-center">
-                  <Phone size={16} />
+                  <motion.div
+                    whileHover={{ rotate: [0, -10, 10, -10, 10, 0] }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Phone size={16} />
+                  </motion.div>
                 </div>
                 <div className="hidden xl:block">
                   <p className="text-xs text-muted-foreground">
