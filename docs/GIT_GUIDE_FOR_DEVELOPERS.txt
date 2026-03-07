@@ -1,0 +1,270 @@
+================================================================
+  Git & GitHub Guide — Frontend Developers
+  Mark Corpotax Project | UI/UX Development
+================================================================
+
+Yeh guide un developers ke liye hai jo pehli baar Git use kar
+rahe hain. Is guide ko shuru karne se pehle poora padho —
+ek baar mein samajh aa jayega!
+
+================================================================
+  CONTENTS
+================================================================
+
+  1. Git kya hota hai?
+  2. Pehli baar ka Setup
+  3. Project Download karo (Clone)
+  4. Branch kya hoti hai?
+  5. Roz ka kaam — Daily Workflow
+  6. Important Rules
+  7. Problem aaye toh kya karo?
+  8. Commands Cheat Sheet
+
+================================================================
+  1. GIT KYA HOTA HAI?
+================================================================
+
+Git ek "version control system" hai. Isko aise samjho:
+
+  Jaise Microsoft Word mein "Track Changes" hota hai — Git
+  poore project ke liye wahi kaam karta hai.
+  Har change save hota hai, koi bhi file galti se delete
+  nahi hoti.
+
+GitHub ek website hai jahan Git projects online store hote hain.
+
+  GitHub = Git ka Google Drive jaisa hai —
+  sab kuch online safe rehta hai!
+
+================================================================
+  2. PEHLI BAAR KA SETUP
+================================================================
+
+STEP 1 — Git Install Karo
+--------------------------
+  Download link: https://git-scm.com/download/win
+
+  Install karte waqt sab options DEFAULT rakhna —
+  bas Next-Next-Finish karte raho.
+
+
+STEP 2 — Apna Naam aur Email Set Karo
+---------------------------------------
+  Git Bash kholo (Start Menu mein search karo "Git Bash")
+  aur yeh commands chalao:
+
+    git config --global user.name "Tumhara Naam"
+    git config --global user.email "tumhari@email.com"
+
+  [!] Yahan apna asli naam aur wahi email daalo jo tumhara
+      GitHub account pe hai.
+
+
+STEP 3 — GitHub Account
+------------------------
+  Agar GitHub account nahi hai toh yahan banao:
+  https://github.com
+
+  Account bana lo aur apni GitHub username owner ko bhejo —
+  woh tumhe project ka access denge.
+
+================================================================
+  3. PROJECT DOWNLOAD KARO (CLONE)
+================================================================
+
+Yeh sirf EK BAAR karna hai — pehli baar setup ke time.
+
+  1. Computer mein ek folder banao, jaise: C:\Projects\
+
+  2. Us folder mein jao
+     Right click karo > "Git Bash Here" click karo
+
+  3. Yeh ek command chalao — clone aur branch dono ek
+     saath ho jayenge:
+
+       git clone -b frontend-dev https://github.com/imyogijani/mark-corpotax.git
+
+  4. Project download ho jayega seedha frontend-dev branch
+     ke saath! Ab folder mein jao:
+
+       cd mark-corpotax
+
+  [OK] Bas! Tumhara project frontend-dev branch pe ready hai —
+       ab kaam shuru karo.
+
+================================================================
+  4. BRANCH KYA HOTI HAI?
+================================================================
+
+Branch ko ek alag copy ki tarah samjho jahan tum safely apna
+kaam kar sakte ho bina doosron ke kaam ko affect kiye.
+
+  GitHub Repository
+  |
+  +-- master (branch)       <-- Yeh OWNER ka branch hai
+  |                             tum yahan kaam NAHI karoge
+  |
+  +-- frontend-dev (branch) <-- Yeh TUMHARA branch hai
+                                sara UI/UX kaam yahan hoga
+
+  [!] RULE #1: Tum sirf frontend-dev branch pe kaam karoge.
+               master ko KABHI touch mat karo!
+
+================================================================
+  5. ROZ KA KAAM — DAILY WORKFLOW
+================================================================
+
+--- SUBAH — Kaam Shuru karne se Pehle (Pull Karo) ---
+
+  Sabse pehle latest code lo:
+
+    git pull origin frontend-dev
+
+  Yeh ensure karta hai ki tumhare paas sabse taza code hai.
+  Kabhi bhi bina pull kiye kaam mat shuru karo!
+
+
+--- KAAM KARTE RAHO ---
+
+  VS Code mein frontend/src/ folder mein changes karo.
+  Frontend files yahan hain:
+
+    mark-corpotax/
+    └── frontend/
+        └── src/
+            +-- components/    <-- Components yahan hain
+            +-- app/           <-- Pages yahan hain
+            +-- styles/        <-- CSS/Styling yahan hai
+
+
+--- SHAAM — Kaam Khatam Hone par (Push Karo) ---
+
+  Step 1 — Dekho kya-kya badla:
+
+    git status
+
+  Yeh batayega kaun-kaun si files change hui hain.
+
+  Step 2 — Apne changes Stage Karo (Add Karo):
+
+    git add .
+
+  "." (dot) matlab — saari changed files ek saath add karo.
+
+  Step 3 — Commit Karo (Save Karo):
+
+    git commit -m "yahan likho tumne kya badla"
+
+  Commit message examples:
+    git commit -m "Navbar ka color update kiya"
+    git commit -m "Services section card design theek kiya"
+    git commit -m "Mobile responsive fix for hero section"
+
+  Step 4 — GitHub pe Push Karo (Upload Karo):
+
+    git push origin frontend-dev
+
+  [OK] Ho gaya! Tumhara kaam GitHub pe save ho gaya.
+
+
+--- POORA DAILY WORKFLOW — EK JAGAH ---
+
+  # Subah — kaam shuru karne se pehle
+  git pull origin frontend-dev
+
+  # ... apna kaam karo frontend/ mein ...
+
+  # Shaam — kaam khatam hone par
+  git status
+  git add .
+  git commit -m "aaj kya kiya uska short description"
+  git push origin frontend-dev
+
+================================================================
+  6. IMPORTANT RULES
+================================================================
+
+  YEH KARO                              YEH MAT KARO
+  ------------------------------------  ----------------------------------
+  Hamesha frontend-dev branch pe raho  master branch pe kabhi mat jao
+  Roz subah git pull karke shuru karo  Bina pull kiye kaam mat shuro karo
+  Sirf frontend/ folder mein kaam karo backend/ folder ko touch mat karo
+  Chhote-chhote commits karo           Ek bade commit mein sab mat daalo
+  Commit message clear likho           Empty ya unclear message mat likho
+  Kaam khatam hone par push karo       Kai dino ka kaam ek saath mat karo
+
+
+  [X] YEH COMMANDS KABHI MAT CHALAO:
+
+    git checkout master      <-- KABHI NAHI!
+    git push origin master   <-- KABHI NAHI!
+    git merge master         <-- KABHI NAHI!
+    git reset --hard         <-- KABHI NAHI!
+
+================================================================
+  7. PROBLEM AAYE TOH KYA KARO?
+================================================================
+
+Problem: "Your branch is behind..."
+  >>> git pull origin frontend-dev
+
+Problem: Galti se master branch pe chale gaye
+  >>> git checkout -b frontend-dev
+
+Problem: Push nahi ho raha — Login maang raha hai
+  GitHub Desktop install karo: https://desktop.github.com
+  Yeh automatically login handle karta hai.
+  Baaki commands waise hi kaam karengi.
+
+Problem: Galti se koi file delete ho gayi
+  >>> git checkout -- filename.tsx
+
+Problem: Sab kuch gadbad ho gaya
+  GHABRAO MAT! Owner ko turant batao —
+  Git mein koi bhi cheez permanently delete nahi hoti,
+  sab fix ho sakta hai.
+
+================================================================
+  8. COMMANDS CHEAT SHEET
+================================================================
+
+  # Dekho kis branch pe ho
+  git branch
+
+  # Project clone karo (sirf pehli baar)
+  git clone -b frontend-dev https://github.com/imyogijani/mark-corpotax.git
+
+  # Latest code lo
+  git pull origin frontend-dev
+
+  # Changed files dekho
+  git status
+
+  # Saare changes add karo
+  git add .
+
+  # Save (commit) karo
+  git commit -m "message yahan"
+
+  # GitHub pe upload (push) karo
+  git push origin frontend-dev
+
+  # Pichle commits dekho
+  git log --oneline
+
+================================================================
+  HELP CHAHIYE?
+================================================================
+
+  Koi bhi problem aaye toh:
+
+  1. Pehle is guide ko dobara padho
+  2. Error message ka screenshot lo
+  3. Project owner ko WhatsApp/Call karo
+
+  YAAD RAKHO: Git mein koi bhi mistake permanent nahi hoti.
+              Ghabrao mat, owner ko batao!
+
+================================================================
+  Guide Version: 1.0 | Project: Mark Corpotax | Branch: frontend-dev
+================================================================
