@@ -120,7 +120,8 @@ router.get("/", async (req: Request, res: Response) => {
 router.get("/:page", async (req: Request, res: Response): Promise<void> => {
   try {
     const { page } = req.params;
-    const cacheKey = `page-${page}`;
+    const division = req.query.division as string;
+    const cacheKey = division ? `page-${page}-${division}` : `page-${page}`;
     const skipCache = req.query.nocache === "true";
 
     // Check cache first (unless skipCache is true)
@@ -134,16 +135,28 @@ router.get("/:page", async (req: Request, res: Response): Promise<void> => {
       res.set("Cache-Control", "no-cache");
       res.status(200).json({
         success: true,
-        message: `${page} content retrieved successfully (cached)`,
+        message: `${page} ${division || ""} content retrieved successfully (cached)`,
         data: contentCache[cacheKey].data,
       });
       return;
     }
 
-    const content = await PageContentService.findByFilter({
+    // Fetch all active content for this page
+    // We fetch everything and filter in memory to handle the logic of (specific division + global)
+    let content = await PageContentService.findByFilter({
       page,
       isActive: true,
     });
+
+    // Filter by division if specified
+    if (division) {
+      content = content.filter(
+        (item) =>
+          item.division === division ||
+          item.division === "global" ||
+          !item.division,
+      );
+    }
 
     // Sort by section and key
     content.sort((a, b) => {

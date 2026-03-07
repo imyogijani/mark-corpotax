@@ -13,44 +13,72 @@ import {
 
 const icons = [DollarSign, TrendingUp, PieChart, BarChart3, Coins, Wallet];
 
-export default function FloatingGraffiti() {
+import { animate, stagger } from "animejs";
+
+interface GraffitiElement {
+  text?: string;
+  Icon?: any;
+  top?: string;
+  left?: string;
+  right?: string;
+  bottom?: string;
+  size?: string;
+  opacity?: number;
+}
+
+interface FloatingGraffitiProps {
+  elements?: GraffitiElement[];
+}
+
+export default function FloatingGraffiti({ elements }: FloatingGraffitiProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+
+    animate(".floating-graffiti-item", {
+      translateY: [0, -20, 0],
+      rotate: [0, 5, 0],
+      duration: (el: any, i: number) => 3000 + i * 500,
+      easing: "easeInOutQuad",
+      loop: true,
+      delay: stagger(200),
+    });
   }, []);
 
   if (!mounted) return null;
 
+  // Use provided elements or default icons if none provided
+  const items: GraffitiElement[] = elements || icons.map((Icon) => ({ Icon }));
+
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      {icons.map((Icon, i) => (
-        <motion.div
+      {items.map((item, i) => (
+        <div
           key={i}
-          className="absolute text-slate-900/5 dark:text-white/5"
-          initial={{
-            x:
-              Math.random() *
-              (typeof window !== "undefined" ? window.innerWidth : 1000),
-            y:
-              Math.random() *
-              (typeof window !== "undefined" ? window.innerHeight : 800),
-            rotate: Math.random() * 360,
-            scale: 0.5 + Math.random(),
-          }}
-          animate={{
-            y: [null, Math.random() * -100],
-            rotate: [null, Math.random() * 360],
-          }}
-          transition={{
-            duration: 20 + Math.random() * 10,
-            repeat: Infinity,
-            repeatType: "reverse",
-            ease: "linear",
+          className="floating-graffiti-item absolute select-none pointer-events-none"
+          style={{
+            top: item.top || `${Math.random() * 100}%`,
+            left:
+              item.left || (item.right ? "auto" : `${Math.random() * 100}%`),
+            right: item.right || "auto",
+            bottom: item.bottom || "auto",
+            opacity: item.opacity || 0.05,
+            fontSize: item.size || "4rem",
+            transform: `rotate(${Math.random() * 20 - 10}deg)`,
           }}
         >
-          <Icon size={40 + Math.random() * 60} />
-        </motion.div>
+          {item.text ? (
+            <span className="font-black italic text-slate-900/10 dark:text-white/10 uppercase tracking-tighter">
+              {item.text}
+            </span>
+          ) : item.Icon ? (
+            <item.Icon
+              size={64}
+              className="text-slate-900/10 dark:text-white/10"
+            />
+          ) : null}
+        </div>
       ))}
     </div>
   );

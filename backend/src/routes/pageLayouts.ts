@@ -19,17 +19,49 @@ router.get(
   async (req: Request, res: Response): Promise<void> => {
     try {
       const { pageName } = req.params;
-      const snapshot = await firestore()
+      const division = req.query.division as string;
+
+      let query = firestore()
         .collection(COLLECTION_NAME)
         .where("pageName", "==", pageName)
-        .where("isPublished", "==", true)
-        .limit(1)
-        .get();
+        .where("isPublished", "==", true);
+
+      // If division is provided, filter by it.
+      // We also allow "global" or undefined division for backward compatibility or shared layouts.
+      if (division) {
+        // Note: Firestore doesn't support OR queries directly in where() easily without composite indexes or multiple queries.
+        // For simplicity, we'll assume division-specific layouts exist or fall back to global.
+        query = query.where("division", "==", division);
+      } else {
+        // If no division, look for global or undefined
+        query = query.where("division", "==", "global");
+      }
+
+      const snapshot = await query.limit(1).get();
 
       if (snapshot.empty) {
-        res.status(404).json({
-          success: false,
-          message: "Page layout not found",
+        // Fallback: If division-specific not found, try finding a global one
+        const globalSnapshot = await firestore()
+          .collection(COLLECTION_NAME)
+          .where("pageName", "==", pageName)
+          .where("isPublished", "==", true)
+          .where("division", "==", "global")
+          .limit(1)
+          .get();
+
+        if (globalSnapshot.empty) {
+          res.status(404).json({
+            success: false,
+            message: "Page layout not found",
+          });
+          return;
+        }
+
+        const doc = globalSnapshot.docs[0];
+        res.status(200).json({
+          success: true,
+          message: "Global page layout retrieved successfully",
+          data: { id: doc.id, ...doc.data() },
         });
         return;
       }
@@ -46,7 +78,7 @@ router.get(
         message: error.message || "Server error retrieving page layout",
       });
     }
-  }
+  },
 );
 
 // Apply authentication to all remaining routes
@@ -127,6 +159,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 
     const layoutData = {
       pageName,
+      division: req.body.division || "global",
       components: components || [],
       isPublished,
       createdAt: new Date().toISOString(),
@@ -175,6 +208,8 @@ router.put("/:id", async (req: Request, res: Response): Promise<void> => {
     };
 
     if (pageName !== undefined) updateData.pageName = pageName;
+    if (req.body.division !== undefined)
+      updateData.division = req.body.division;
     if (components !== undefined) updateData.components = components;
     if (isPublished !== undefined) updateData.isPublished = isPublished;
 
@@ -263,7 +298,7 @@ router.post(
         message: error.message || "Server error publishing page layout",
       });
     }
-  }
+  },
 );
 
 // @desc    Unpublish a page layout
@@ -303,7 +338,7 @@ router.post(
         message: error.message || "Server error unpublishing page layout",
       });
     }
-  }
+  },
 );
 
 // @desc    Sync page builder content to pageContent collection
@@ -375,7 +410,7 @@ router.post(
         message: error.message || "Server error syncing content",
       });
     }
-  }
+  },
 );
 
 // @desc    Bulk sync all sections from page builder
@@ -448,7 +483,7 @@ router.post(
         message: error.message || "Server error syncing content",
       });
     }
-  }
+  },
 );
 
 export default router;

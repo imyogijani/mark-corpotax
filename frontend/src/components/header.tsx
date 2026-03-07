@@ -128,13 +128,22 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-20 md:h-24 lg:h-28 max-w-screen-2xl items-center">
         <div className="mr-4 hidden md:flex">
-          <Link href="/" className="mr-48 flex items-center space-x-3">
-            <Logo className="object-contain" width={40} height={40} />
+          <Link
+            href="/"
+            className="mr-24 lg:mr-32 flex items-center space-x-3 group"
+          >
+            <Logo
+              className="object-contain transition-transform group-hover:scale-110"
+              width={40}
+              height={40}
+            />
             <div className="flex flex-col">
-              <span className="font-bold text-xl text-gray-800">
+              <span className="font-bold text-xl text-white tracking-tight">
                 {companyName}
               </span>
-              <span className="text-sm text-gray-600">{companyTagline}</span>
+              <span className="text-xs text-slate-400 font-medium uppercase tracking-wider">
+                {companyTagline}
+              </span>
             </div>
           </Link>
           <nav className="flex items-center gap-6 text-sm lg:gap-8 xl:gap-10">
@@ -163,10 +172,10 @@ export function Header() {
           <Link href="/" className="flex items-center space-x-2">
             <Logo className="object-contain" width={32} height={32} />
             <div className="flex flex-col">
-              <span className="font-bold text-base text-gray-800">
+              <span className="font-bold text-base text-white">
                 {companyName}
               </span>
-              <span className="text-xs text-gray-600 hidden sm:block">
+              <span className="text-[10px] text-slate-400 hidden sm:block uppercase tracking-wider">
                 {companyTagline}
               </span>
             </div>
@@ -188,10 +197,10 @@ export function Header() {
                 <div className="mb-4 flex flex-col items-center border-b pb-4 space-y-3">
                   <Logo className="object-contain" width={80} height={80} />
                   <div className="text-center">
-                    <span className="font-bold text-lg text-gray-800 block">
+                    <span className="font-bold text-lg text-white block">
                       {companyName}
                     </span>
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-slate-400">
                       {companyTagline}
                     </span>
                   </div>

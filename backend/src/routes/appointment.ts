@@ -4,6 +4,9 @@ import {
   AppointmentService,
   NotificationService,
   UserService,
+  SiteSettingsService,
+  MEET_ME_DB,
+  IStaffAppointment,
 } from "../services/firebaseService";
 import { protect, authorize } from "../middleware/auth";
 import nodemailer from "nodemailer";
@@ -188,7 +191,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     const { name, email, phone, serviceId, serviceName, date, time, message } =
       req.body;
 
-    // Create new appointment
+    // Create new appointment in local (default) DB for CMS records
     const appointment = await AppointmentService.create({
       name,
       email: email.toLowerCase(),
@@ -200,10 +203,53 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
       message: message || "",
       source: "website",
       status: "pending",
-      businessId: "website", // Simple identifier for website appointments
+      businessId: "website",
     });
 
-    // Send success response immediately to make UI snappy
+    // --- START BRIDGE LOGIC ---
+    // Try to sync with the Android App (Meet-Me) database
+    (async () => {
+      try {
+        const linkedBusinessId =
+          await SiteSettingsService.getLinkedBusinessId();
+
+        if (linkedBusinessId) {
+          console.log(
+            `Syncing appointment to Meet-Me DB for business: ${linkedBusinessId}`,
+          );
+
+          // Map to StaffAppointment schema found in Flutter app
+          const appAppointment: Partial<IStaffAppointment> = {
+            id: appointment.id,
+            businessId: linkedBusinessId,
+            staffId: "website_auto", // Default staff placeholder for website bookings
+            customerId: "website_visitor",
+            serviceId: serviceId || "general",
+            serviceIds: serviceId ? [serviceId] : [],
+            appointmentDate: date, // Already YYYY-MM-DD
+            appointmentTime: time, // Already HH:mm
+            durationMinutes: 60,
+            status: "scheduled", // App status
+            servicePrice: 0,
+            serviceName: serviceName || "General Consultation",
+            customerName: name,
+            customerPhone: phone || "",
+            notes: message || "Website Booking",
+            isRecurring: false,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+
+          await AppointmentService.createInMeetMe(appAppointment);
+          console.log("Successfully synced to Meet-Me DB");
+        }
+      } catch (syncError) {
+        console.error("Failed to sync with Meet-Me DB:", syncError);
+      }
+    })();
+    // --- END BRIDGE LOGIC ---
+
+    // Send success response immediately
     res.status(201).json({
       success: true,
       message:

@@ -26,6 +26,8 @@ import {
   MotionWrapper,
 } from "@/components/MotionWrapper";
 import { motion } from "framer-motion";
+import ScrollWatermark from "@/components/ScrollWatermark";
+import Magnetic from "@/components/Magnetic";
 
 interface ServiceItem {
   slug?: string;
@@ -128,20 +130,16 @@ export function DynamicServicesSection() {
   const displayServices = useMemo(() => services.slice(0, 3), [services]);
 
   return (
-    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
-      {/* Consistent Section Header */}
+    <section className="py-20 md:py-28 bg-slate-950 relative overflow-hidden">
+      <ScrollWatermark text="SOLUTIONS" className="top-20 left-10 opacity-20" />
+
       <div className="container mx-auto px-4 mb-20">
         <div className="relative text-center max-w-4xl mx-auto">
           {/* Animated Watermark */}
-          <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[5rem] md:text-[9rem] opacity-5 font-black text-slate-900 whitespace-nowrap select-none pointer-events-none tracking-tighter"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 0.05, scale: 1 }}
-            viewport={{ once: false }}
-            transition={{ duration: 1 }}
-          >
-            SERVICES
-          </motion.div>
+          <ScrollWatermark
+            text="SERVICES"
+            className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          />
 
           <div className="relative z-10">
             <motion.div
@@ -150,15 +148,15 @@ export function DynamicServicesSection() {
               viewport={{ once: false }}
               className="inline-flex items-center gap-2 mb-4"
             >
-              <span className="w-8 h-[2px] bg-blue-600"></span>
-              <span className="text-sm font-bold uppercase tracking-widest text-blue-600">
+              <span className="w-8 h-[2px] bg-blue-500"></span>
+              <span className="text-sm font-bold uppercase tracking-widest text-blue-400">
                 What We Offer
               </span>
-              <span className="w-8 h-[2px] bg-blue-600"></span>
+              <span className="w-8 h-[2px] bg-blue-500"></span>
             </motion.div>
 
             <motion.h2
-              className="text-4xl md:text-5xl font-bold mb-6 text-slate-900"
+              className="text-4xl md:text-5xl font-bold mb-6 text-white"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
@@ -168,7 +166,7 @@ export function DynamicServicesSection() {
             </motion.h2>
 
             <motion.p
-              className="text-lg text-slate-600 max-w-2xl mx-auto"
+              className="text-lg text-slate-400 max-w-2xl mx-auto"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: false }}
@@ -189,7 +187,7 @@ export function DynamicServicesSection() {
             <StaggerItem key={index} hoverEffect={false}>
               <Link
                 href={service.slug ? `/services/${service.slug}` : "/services"}
-                className="group relative block h-full w-full overflow-hidden rounded-2xl bg-slate-50 border border-slate-100 p-8 text-left no-underline transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-blue-100"
+                className="group relative block h-full w-full overflow-hidden rounded-2xl bg-slate-900/40 border border-slate-800 p-8 text-left no-underline transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:-translate-y-2 hover:border-blue-500/50"
               >
                 {/* Expanding Circle Background - Using Brand Blue */}
                 <div
@@ -211,13 +209,13 @@ export function DynamicServicesSection() {
 
                 <div className="relative z-10 flex h-full flex-col justify-between">
                   <div>
-                    <div className="mb-6 text-[#0b4c80] transition-colors duration-500 group-hover:text-white">
+                    <div className="mb-6 text-blue-400 transition-colors duration-500 group-hover:text-white">
                       {getIcon(service.icon || "")}
                     </div>
-                    <h3 className="mb-3 text-xl font-bold text-slate-900 transition-colors duration-500 group-hover:text-white">
+                    <h3 className="mb-3 text-xl font-bold text-white transition-colors duration-500 group-hover:text-white">
                       {service.title}
                     </h3>
-                    <p className="text-base text-slate-600 transition-colors duration-500 group-hover:text-white/90">
+                    <p className="text-base text-slate-400 transition-colors duration-500 group-hover:text-white/90">
                       {service.description}
                     </p>
                   </div>
@@ -230,13 +228,14 @@ export function DynamicServicesSection() {
           ))}
         </StaggerContainer>
         <div className="text-center mt-12">
-          <Button
-            asChild
-            className="text-white rounded-full px-8 py-3 h-12 font-medium transition-colors hover:opacity-90"
-            style={{ backgroundColor: "#0b4c80" }}
-          >
-            <Link href="/services">View All Services</Link>
-          </Button>
+          <Magnetic strength={0.3}>
+            <Button
+              asChild
+              className="text-white rounded-full px-8 py-3 h-12 font-medium transition-colors hover:opacity-90 border border-blue-600/20 bg-blue-600/10 hover:bg-blue-600/20 shadow-lg shadow-black/20"
+            >
+              <Link href="/services">View All Services</Link>
+            </Button>
+          </Magnetic>
         </div>
       </div>
     </section>

@@ -12,10 +12,12 @@ export const COLLECTIONS = {
   SITE_SETTINGS: "siteSettings",
 
   // Flutter app collections (meet-me)
-  BUSINESS: "business", // Businesses created by super admin
+  BUSINESS: "businesses", // Match app collection name (usually plural in this app)
   APPOINTMENTS: "appointments", // Appointments (synced with Flutter app)
   SERVICES: "services", // Services offered by businesses
 };
+
+export const MEET_ME_DB = "meet-me";
 
 // Interfaces
 export interface IUser {
@@ -42,6 +44,32 @@ export interface IContact {
   status: "new" | "read" | "replied";
   createdAt?: any;
   updatedAt?: any;
+}
+
+// StaffAppointment interface - EXACTLY matches Flutter app's entity
+export interface IStaffAppointment {
+  id: string;
+  staffId: string;
+  businessId: string;
+  customerId: string;
+  serviceId: string;
+  serviceIds: string[];
+  appointmentDate: string; // YYYY-MM-DD format
+  appointmentTime: string; // HH:mm format
+  durationMinutes: number;
+  status: string; // 'scheduled', 'confirmed', etc.
+  servicePrice: number;
+  serviceName: string;
+  customerName: string;
+  customerPhone?: string;
+  notes?: string;
+  customerRating?: number;
+  customerReview?: string;
+  recurrenceRule?: string;
+  isRecurring: boolean;
+  parentAppointmentId?: string;
+  createdAt: string | any; // Accept DateTime or string
+  updatedAt: string | any;
 }
 
 // Appointment interface - should match your Flutter app's data structure
@@ -136,6 +164,7 @@ export interface IPageContent {
   key: string;
   value: any;
   isActive: boolean;
+  division?: "finance" | "taxation" | "global"; // New field for division-specific content
   createdAt?: any;
   updatedAt?: any;
 }
@@ -429,6 +458,11 @@ export const AppointmentService = {
     return formatTimestamp(appointment);
   },
 
+  // Create appointment in the Meet-Me (Android) database
+  async createInMeetMe(data: Partial<IStaffAppointment>): Promise<string> {
+    return await db.create(COLLECTIONS.APPOINTMENTS, data, MEET_ME_DB);
+  },
+
   async update(
     id: string,
     data: Partial<IAppointment>,
@@ -693,6 +727,7 @@ export const PageContentService = {
     section?: string;
     key?: string;
     isActive?: boolean;
+    division?: string;
   }): Promise<IPageContent[]> {
     // Build Firestore query with proper filters for better performance
     const conditions: Array<{
@@ -709,6 +744,13 @@ export const PageContentService = {
         field: "isActive",
         operator: "==",
         value: filters.isActive,
+      });
+    }
+    if (filters.division) {
+      conditions.push({
+        field: "division",
+        operator: "==",
+        value: filters.division,
       });
     }
 

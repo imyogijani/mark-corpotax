@@ -93,9 +93,15 @@ class ContentService {
     return Date.now() - cached.timestamp < this.getCacheTimeout();
   }
 
+  private getDivision(): string | undefined {
+    if (typeof window === "undefined") return undefined;
+    return localStorage.getItem("user_division") || undefined;
+  }
+
   // Get full page content (cached) - optimized version
   private async getFullPageContent(page: string): Promise<any> {
-    const cacheKey = `page-${page}`;
+    const division = this.getDivision();
+    const cacheKey = division ? `page-${page}-${division}` : `page-${page}`;
 
     // Check URL for cache busting params
     if (typeof window !== "undefined") {
@@ -112,8 +118,8 @@ class ContentService {
 
     // Fetch fresh data
     try {
-      // Force nocache to ensure we get fresh data from server (bypassing browser/cdn cache)
-      const response = await apiClient.getPageContent(page, true);
+      // Pass division to API client
+      const response = await apiClient.getPageContent(page, true, division);
 
       if (response.success && response.data) {
         // Store with current cache version

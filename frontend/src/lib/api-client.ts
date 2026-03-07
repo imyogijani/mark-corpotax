@@ -563,9 +563,21 @@ class ApiClient {
   async getPageContent(
     page: string,
     nocache = false,
+    division?: string,
   ): Promise<ApiResponse<any>> {
-    const query = nocache ? `?nocache=true&t=${Date.now()}` : "";
+    let query = nocache ? `?nocache=true&t=${Date.now()}` : "";
+    if (division) {
+      query += query ? `&division=${division}` : `?division=${division}`;
+    }
     return this.request<any>(`/content/${page}${query}`);
+  }
+
+  async getPageLayout(
+    pageName: string,
+    division?: string,
+  ): Promise<ApiResponse<any>> {
+    let query = division ? `?division=${division}` : "";
+    return this.request<any>(`/page-layouts/page/${pageName}${query}`);
   }
 
   async getAdminContent(page?: string): Promise<ApiResponse<any>> {

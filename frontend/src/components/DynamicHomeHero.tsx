@@ -1,7 +1,14 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useSpring,
+  useScroll,
+} from "framer-motion";
+import { animate, stagger } from "animejs";
 import { contentService } from "@/lib/content-service";
 import { useLoading } from "@/contexts/LoadingContext";
 import { Button } from "@/components/ui/button";
@@ -11,6 +18,7 @@ import { Plus, Phone, TrendingUp, PieChart, ShieldCheck } from "lucide-react";
 import { MotionWrapper } from "@/components/MotionWrapper";
 import Counter from "@/components/Counter";
 import FloatingGraffiti from "@/components/FloatingGraffiti";
+import HeroClipart from "./HeroClipart";
 
 interface HeroMainData {
   tagline?: string;
@@ -52,364 +60,253 @@ const HeroTitle = ({
   text: string;
   trigger?: boolean;
 }) => {
-  const [displayText, setDisplayText] = useState("");
-
   useEffect(() => {
-    if (!trigger) {
-      setDisplayText("");
-      return;
-    }
+    if (!trigger) return;
 
-    let currentIndex = 0;
-    const interval = setInterval(() => {
-      if (currentIndex <= text.length) {
-        setDisplayText(text.slice(0, currentIndex));
-        currentIndex++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 70); // 70ms speed
-
-    return () => clearInterval(interval);
+    animate(".hero-char", {
+      opacity: [0, 1],
+      translateY: [20, 0],
+      rotateZ: [10, 0],
+      scale: [0.5, 1],
+      easing: "easeOutElastic(1, .8)",
+      duration: 800,
+      delay: stagger(40),
+    });
   }, [text, trigger]);
 
+  // Split text into characters including spaces
+  const characters = text.split("");
+
   return (
-    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-slate-800">
-      {displayText}
-      <motion.span
-        animate={{ opacity: [1, 0] }}
-        transition={{ repeat: Infinity, duration: 1.2, ease: "linear" }}
-        className="inline-block bg-blue-600 ml-1"
-        style={{ width: "4px", height: "0.8em", verticalAlign: "baseline" }}
-      ></motion.span>
+    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white overflow-hidden">
+      {characters.map((char, i) => (
+        <span
+          key={i}
+          className="hero-char inline-block whitespace-pre opacity-0"
+        >
+          {char}
+        </span>
+      ))}
     </h1>
   );
 };
 
-const InteractiveHeroImage = ({ heroMain }: { heroMain: HeroMainData }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const mouseX = useSpring(x, { stiffness: 40, damping: 25 });
-  const mouseY = useSpring(y, { stiffness: 40, damping: 25 });
-
-  function handleMouseMove({
-    currentTarget,
-    clientX,
-    clientY,
-  }: React.MouseEvent) {
-    if (!currentTarget) return;
-    const { left, top, width, height } = currentTarget.getBoundingClientRect();
-    x.set(clientX - left - width / 2);
-    y.set(clientY - top - height / 2);
-  }
-
-  function handleMouseLeave() {
-    x.set(0);
-    y.set(0);
-  }
-
-  const rotateX = useTransform(mouseY, [-300, 300], [8, -8]);
-  const rotateY = useTransform(mouseX, [-300, 300], [-8, 8]);
-
+const StaticHeroImage = ({
+  heroMain,
+  y3,
+}: {
+  heroMain: HeroMainData;
+  y3: any;
+}) => {
   return (
-    <motion.div
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        perspective: 1000,
-        transformStyle: "preserve-3d",
-      }}
-      className="relative w-full h-full flex items-center justify-center py-10"
-    >
-      <motion.div
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: "preserve-3d",
-        }}
-        className="relative z-10 w-full max-w-lg"
-      >
-        {/* Decorative Floating Elements */}
-        {/* Chart Icon */}
-        <motion.div
-          animate={{ y: [0, -12, 0] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -left-6 top-12 z-50 bg-white p-3 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-50 hidden md:block"
-          style={{ transform: "translateZ(50px)" }}
-        >
-          <PieChart className="w-8 h-8 text-blue-600" />
-        </motion.div>
+    <div className="relative w-full h-full flex items-center justify-center py-10">
+      <div className="relative z-10 w-full max-w-lg">
+        <div className="relative flex items-center justify-center min-h-[350px] w-full">
+          <HeroClipart />
 
-        {/* Trend Icon */}
-        <motion.div
-          animate={{ y: [0, 15, 0] }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-          className="absolute -right-8 bottom-40 z-50 bg-white p-3 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-50 hidden md:block"
-          style={{ transform: "translateZ(60px)" }}
-        >
-          <TrendingUp className="w-8 h-8 text-emerald-500" />
-        </motion.div>
-
-        {/* Shield Icon */}
-        <motion.div
-          animate={{ y: [0, -10, 0] }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2,
-          }}
-          className="absolute right-12 -top-12 z-20 bg-white p-3 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-50 hidden md:block"
-          style={{ transform: "translateZ(40px)" }}
-        >
-          <ShieldCheck className="w-8 h-8 text-orange-500" />
-        </motion.div>
-
-        {/* Existing Background Decorative Elements Refined */}
-        <div
-          className="absolute -top-6 -right-6 w-full h-full bg-gradient-to-br from-blue-100 to-indigo-100 rounded-[2rem] -z-10"
-          style={{ transform: "translateZ(-20px)" }}
-        ></div>
-
-        {/* Main Image Card */}
-        <div className="relative bg-white rounded-[2rem] shadow-2xl overflow-hidden border-4 border-white/50">
-          <div className="h-[450px] relative">
-            <Image
-              src={
-                heroMain?.hero_images?.image_1 ||
-                "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1926&q=80"
-              }
-              alt="Professional financial advisor team"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              priority
-            />
-            <div className="absolute inset-0 bg-black/10"></div>
-          </div>
-        </div>
-
-        {/* Experience Badge */}
-        <div
-          className="absolute -bottom-8 -left-8 z-30"
-          style={{ transform: "translateZ(30px)" }}
-        >
-          <div className="relative w-32 h-32">
-            <div className="w-32 h-32 rounded-full flex flex-col items-center justify-center shadow-xl relative overflow-hidden border-4 border-white bg-slate-800">
-              <div className="absolute inset-2 border-2 border-dashed border-slate-600 rounded-full opacity-50 animate-[spin_50s_linear_infinite]"></div>
-
-              <div className="relative z-10 text-center">
-                <div className="text-3xl font-bold text-white mb-0.5">
-                  <Counter
-                    to={parseInt(heroMain?.experience_badge?.years || "12")}
-                    duration={2.5}
-                  />
-                  <span>+</span>
-                </div>
-                <div className="text-[10px] text-slate-300 font-medium uppercase tracking-wider">
-                  Years Exp.
-                </div>
-              </div>
+          {/* Experience Badge */}
+          <motion.div
+            style={{ y: y3 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-xl px-6 py-4 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] border border-white/10 flex items-center gap-4 group hover:bg-white/20 transition-colors duration-500 z-50 text-white"
+          >
+            <div className="flex flex-col">
+              <span className="text-3xl font-black text-blue-400 tracking-tighter">
+                <Counter
+                  to={parseInt(heroMain.experience_badge?.years || "12")}
+                />
+                +
+              </span>
             </div>
-            {/* Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-500/20 rounded-full blur-xl -z-10"></div>
-          </div>
+            <div className="h-10 w-[1px] bg-white/20" />
+            <div className="flex flex-col justify-center">
+              <span className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] leading-none mb-1">
+                Since 2012
+              </span>
+              <span className="text-sm font-bold text-white/90 leading-tight">
+                {heroMain.experience_badge?.text || "Years Of Experience"}
+              </span>
+            </div>
+          </motion.div>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+
+      {/* Background Decorative Rings */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 pointer-events-none opacity-20">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-dashed border-slate-700 rounded-full"
+        />
+        <motion.div
+          animate={{ rotate: -360 }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] border border-dashed border-slate-800 rounded-full"
+        />
+      </div>
+    </div>
   );
 };
 
-export function DynamicHeroSection() {
+export const DynamicHeroSection = () => {
   const { isLoading } = useLoading();
-  const [content, setContent] = useState<HeroMainData>(FALLBACK_HERO);
+  const [heroMain, setHeroMain] = useState<HeroMainData>(FALLBACK_HERO);
 
-  const fetchContent = useCallback(async () => {
+  const fetchHeroContent = useCallback(async () => {
     try {
-      const heroContent = await contentService.getContentBySection(
-        "home",
-        "hero_main",
-      );
-      if (heroContent && Object.keys(heroContent).length > 0) {
-        setContent(() => ({ ...FALLBACK_HERO, ...heroContent }));
+      const data = await contentService.getContent("home", "hero_main");
+      if (data) {
+        setHeroMain(data);
+      } else {
+        setHeroMain(FALLBACK_HERO);
       }
     } catch (error) {
-      console.error("Error loading hero content:", error);
+      console.error("Error fetching hero content:", error);
+      setHeroMain(FALLBACK_HERO);
     }
   }, []);
 
   useEffect(() => {
-    fetchContent();
+    fetchHeroContent();
+  }, [fetchHeroContent]);
 
-    // Subscribe to cache invalidation events
-    const unsubscribe = contentService.onCacheInvalidated(() => {
-      fetchContent();
-    });
+  const graffitiElements = useMemo(
+    () => [
+      { text: "FINANCE", top: "15%", left: "5%", size: "8rem", opacity: 0.03 },
+      { text: "LEGAL", top: "70%", left: "8%", size: "10rem", opacity: 0.04 },
+      { text: "GROWTH", top: "10%", right: "10%", size: "7rem", opacity: 0.03 },
+      {
+        text: "TAXATION",
+        top: "40%",
+        right: "5%",
+        size: "6rem",
+        opacity: 0.02,
+      },
+      { text: "MARK", top: "80%", right: "15%", size: "8rem", opacity: 0.03 },
+      {
+        text: "SUCCESS",
+        bottom: "5%",
+        left: "40%",
+        size: "9rem",
+        opacity: 0.05,
+      },
+    ],
+    [],
+  );
 
-    return () => {
-      unsubscribe();
-    };
-  }, [fetchContent]);
+  const { scrollY } = useScroll();
 
-  // Memoize the hero content to prevent unnecessary re-renders
-  const heroMain = useMemo(() => content, [content]);
+  // Parallax offsets for different elements
+  const y1 = useTransform(scrollY, [0, 500], [0, -150]);
+  const y2 = useTransform(scrollY, [0, 500], [0, -80]);
+  const y3 = useTransform(scrollY, [0, 500], [0, 50]);
+
+  // Determine a 'division' for dynamic watermark text
+  const [division, setDivision] = useState<string>("finance");
+
+  useEffect(() => {
+    const savedDivision = localStorage.getItem("user_division");
+    if (savedDivision) setDivision(savedDivision);
+  }, []);
 
   return (
     <section
-      className="relative min-h-screen bg-gradient-to-br from-slate-50 via-slate-50/30 overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(to bottom right, #f8fafc, #f1f5f9, #0b4c8010)",
-      }}
+      className="relative min-h-[75vh] flex items-center overflow-hidden bg-slate-950 pt-16 md:pt-12"
+      id="home"
     >
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <FloatingGraffiti />
-        <div
-          className="absolute top-20 left-10 w-4 h-4 rounded-full opacity-60"
-          style={{ backgroundColor: "#0b4c80" }}
-        ></div>
-        <div
-          className="absolute top-32 left-20 w-2 h-2 rounded-full opacity-40"
-          style={{ backgroundColor: "#0b4c80" }}
-        ></div>
-        <div
-          className="absolute top-40 left-32 w-3 h-3 rounded-full opacity-50"
-          style={{ backgroundColor: "#0b4c80" }}
-        ></div>
-        <div
-          className="absolute bottom-40 left-16 w-5 h-5 rounded-full opacity-30"
-          style={{ backgroundColor: "#0b4c80" }}
-        ></div>
-        <div
-          className="absolute top-1/3 left-1/4 w-1 h-1 rounded-full opacity-70"
-          style={{ backgroundColor: "#0b4c80" }}
-        ></div>
+      {/* Background Gradients */}
+      <div className="absolute top-0 right-0 w-1/3 h-1/2 bg-blue-600/10 blur-[120px] rounded-full -z-10" />
+      <div className="absolute bottom-0 left-0 w-1/4 h-1/3 bg-emerald-600/10 blur-[100px] rounded-full -z-10" />
 
-        {/* Decorative grid pattern */}
-        <div className="absolute bottom-32 right-32 grid grid-cols-6 gap-1 opacity-20">
-          {[...Array(24)].map((_, i) => (
-            <div key={i} className="w-1 h-1 bg-slate-400 rounded-full"></div>
-          ))}
-        </div>
+      {/* Background Watermarks with Scroll Animation */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <motion.div
+          style={{ y: y1 }}
+          className="absolute -top-10 -left-10 text-[15vw] font-black text-white/[0.03] select-none leading-none"
+        >
+          {division?.toUpperCase() || "FINANCE"}
+        </motion.div>
+        <motion.div
+          style={{ y: y2 }}
+          className="absolute top-1/2 -right-20 text-[12vw] font-black text-white/[0.02] select-none leading-none"
+        >
+          GROWTH
+        </motion.div>
+        <motion.div
+          style={{ y: y3 }}
+          className="absolute bottom-0 -left-10 text-[18vw] font-black text-white/[0.03] select-none leading-none uppercase"
+        >
+          {division === "finance" ? "Capital" : "Legal"}
+        </motion.div>
+        <motion.div
+          style={{ y: y2 }}
+          className="absolute -bottom-10 right-0 text-[15vw] font-black text-white/[0.03] select-none leading-none"
+        >
+          MARK
+        </motion.div>
       </div>
 
-      <div className="container mx-auto px-4 py-20 relative">
-        <div className="grid lg:grid-cols-2 gap-16 items-center min-h-[80vh]">
-          {/* Left Content */}
-          <MotionWrapper
-            className="space-y-8"
-            direction="left"
-            delay={0.2}
-            trigger={!isLoading}
-          >
-            {/* Badge */}
-            <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-slate-200/50 shadow-sm">
-              <span className="text-sm font-medium text-slate-600 tracking-wide uppercase">
-                {heroMain?.tagline || "MARK GROUP"}
-              </span>
-            </div>
+      <div className="container mx-auto px-4 relative z-10 py-8 lg:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center h-full py-6">
+          {/* Left Content Side */}
+          <div className="flex flex-col space-y-8">
+            <MotionWrapper direction="left">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-100 rounded-full text-blue-700 font-semibold text-sm uppercase tracking-wider shadow-sm">
+                <Plus className="w-4 h-4" />
+                <span>{heroMain.tagline || "MARK GROUP"}</span>
+              </div>
+            </MotionWrapper>
 
-            {/* Main Heading */}
-            <div className="space-y-4 py-2">
-              <HeroTitle
-                text={
-                  heroMain?.title || "Shaping Financial Success in the AI Era"
-                }
-                trigger={!isLoading}
-              />
-            </div>
+            <HeroTitle text={heroMain.title || FALLBACK_HERO.title!} />
 
-            {/* Description */}
-            <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-lg">
-              {heroMain?.description ||
-                "Comprehensive financial and legal solutions for MSME financing, working capital, and taxation services. Trusted by 2500+ clients since 2012 with expert guidance and transparent communication."}
-            </p>
+            <MotionWrapper direction="left" delay={0.2}>
+              <p className="text-lg text-slate-400 leading-relaxed max-w-xl">
+                {heroMain.description || FALLBACK_HERO.description}
+              </p>
+            </MotionWrapper>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 pt-6">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button
-                  asChild
-                  size="lg"
-                  className="h-16 px-10 text-white text-lg rounded-full font-semibold relative overflow-hidden group shadow-[0_0_20px_rgba(11,76,128,0.3)] hover:shadow-[0_0_30px_rgba(11,76,128,0.5)] transition-all duration-300 border border-white/10"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #0b4c80 0%, #0d5ea0 100%)",
-                  }}
-                >
-                  <Link
-                    href={heroMain?.cta_primary?.link || "/appointment"}
-                    className="inline-flex items-center gap-3"
-                  >
-                    <span className="relative z-10 tracking-wide">
-                      {heroMain?.cta_primary?.text || "Get Started"}
-                    </span>
-                    <motion.div
-                      animate={{ x: [0, 4, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    >
-                      <Plus className="w-5 h-5 relative z-10" />
-                    </motion.div>
-
-                    {/* Shine effect */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-20deg]"
-                      initial={{ x: "-150%" }}
-                      whileHover={{ x: "150%" }}
-                      transition={{ duration: 0.8, ease: "easeInOut" }}
-                    />
-                  </Link>
+            <MotionWrapper
+              direction="left"
+              delay={0.4}
+              className="flex flex-wrap gap-6 items-center pt-4"
+            >
+              <Link href={heroMain.cta_primary?.link || "/appointment"}>
+                <Button className="h-14 px-10 rounded-2xl bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-bold text-lg shadow-lg hover:shadow-blue-200 transition-all duration-300 active:scale-95 group">
+                  {heroMain.cta_primary?.text || "Get Started"}
+                  <TrendingUp className="w-5 h-5 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </Button>
-              </motion.div>
-
-              {/* Contact Info */}
-              <Link href="tel:+919712067891" className="group">
-                <div className="flex items-center gap-4 px-2 py-1 rounded-full hover:bg-slate-100/50 transition-colors duration-300 cursor-pointer">
-                  <div className="flex items-center justify-center w-14 h-14 rounded-full group-hover:scale-110 transition-transform duration-300 shadow-md bg-white border border-slate-100">
-                    <motion.div
-                      animate={{ rotate: [0, -10, 10, -10, 10, 0] }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        repeatDelay: 1,
-                      }}
-                    >
-                      <Phone className="w-6 h-6" style={{ color: "#0b4c80" }} />
-                    </motion.div>
-                  </div>
-                  <div>
-                    <div className="text-sm text-slate-500 font-medium group-hover:text-blue-600 transition-colors">
-                      {heroMain?.phone?.help_text || "Need help?"}
-                    </div>
-                    <div className="font-bold text-slate-800 text-lg group-hover:text-[#0b4c80] transition-colors">
-                      {heroMain?.phone?.number || "+91 97120 67891"}
-                    </div>
-                  </div>
-                </div>
               </Link>
-            </div>
-          </MotionWrapper>
 
-          {/* Right Content - Image Section */}
-          <MotionWrapper
-            className="relative lg:pl-8 h-full flex items-center"
-            direction="right"
-            delay={0.4}
-            trigger={!isLoading}
-          >
-            <InteractiveHeroImage heroMain={heroMain} />
+              <div className="flex items-center gap-4">
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  className="w-12 h-12 rounded-2xl bg-white shadow-lg flex items-center justify-center border border-slate-100 text-blue-600"
+                >
+                  <Phone className="w-5 h-5" />
+                </motion.div>
+                <div className="flex flex-col">
+                  <span className="text-xs text-slate-400 font-medium">
+                    {heroMain.phone?.help_text || "Need help?"}
+                  </span>
+                  <Link
+                    href={`tel:${heroMain.phone?.number}`}
+                    className="text-lg font-bold text-white hover:text-blue-400 transition-colors"
+                  >
+                    {heroMain.phone?.number || "+91 97120 67891"}
+                  </Link>
+                </div>
+              </div>
+            </MotionWrapper>
+          </div>
+
+          {/* Right Image Side */}
+          <MotionWrapper direction="right" delay={0.3}>
+            <StaticHeroImage heroMain={heroMain} y3={y3} />
           </MotionWrapper>
         </div>
       </div>
     </section>
   );
-}
+};

@@ -225,10 +225,10 @@ export default function AppointmentPage() {
       {/* Hero Section */}
       <section className="relative py-16 md:py-24 bg-gradient-to-br from-[#eaf6fa] via-[#f7fbfd] to-[#f2f8fc] border-b">
         <div className="container mx-auto px-4 flex flex-col items-center text-center gap-4">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
             {hero.title}
           </h1>
-          <p className="max-w-2xl text-lg md:text-xl text-muted-foreground mb-6">
+          <p className="max-w-3xl text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
             {hero.subtitle}
           </p>
           <div className="flex flex-col md:flex-row items-center gap-8 w-full justify-center">
@@ -390,7 +390,7 @@ export default function AppointmentPage() {
                                   variant={"outline"}
                                   className={cn(
                                     "w-[240px] pl-3 text-left font-medium border-primary text-primary hover:bg-blue-50 rounded-full px-6 py-2 transition-colors",
-                                    !field.value && "text-muted-foreground"
+                                    !field.value && "text-muted-foreground",
                                   )}
                                 >
                                   {field.value ? (

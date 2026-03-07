@@ -16,6 +16,7 @@ import {
   Layers,
 } from "lucide-react";
 import { MotionWrapper } from "@/components/MotionWrapper";
+import ScrollWatermark from "@/components/ScrollWatermark";
 
 interface AboutSectionData {
   tagline?: string;
@@ -399,17 +400,19 @@ export function DynamicAboutSection() {
   const displayContent = useMemo(() => aboutSection, [aboutSection]);
 
   return (
-    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
-      {/* Background Decorative Pattern */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-slate-50/50 -skew-x-12 translate-x-32 -z-10"></div>
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-50/30 rounded-full blur-3xl -z-10"></div>
+    <section className="py-20 md:py-32 bg-slate-950 relative overflow-hidden">
+      <ScrollWatermark text="EXCELLENCE" className="top-20 left-10" />
 
-      <div className="container mx-auto px-4">
+      {/* Background Decorative Pattern */}
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-slate-900/10 -skew-x-12 translate-x-32 -z-10"></div>
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-900/10 rounded-full blur-3xl -z-10"></div>
+
+      <div className="container mx-auto px-6 relative z-10">
         {/* Section Header with Watermark */}
         <div className="relative mb-20 md:mb-28 text-center max-w-5xl mx-auto">
           {/* Animated Watermark Text */}
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[6rem] md:text-[10rem] lg:text-[12rem] font-bold text-slate-100/60 whitespace-nowrap select-none pointer-events-none z-0 tracking-tighter"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[6rem] md:text-[10rem] lg:text-[12rem] font-bold text-white/[0.03] whitespace-nowrap select-none pointer-events-none z-0 tracking-tighter"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: false }}
@@ -426,16 +429,16 @@ export function DynamicAboutSection() {
                 viewport={{ once: false }}
                 className="inline-flex items-center justify-center gap-3 mb-6"
               >
-                <span className="w-8 h-[2px] bg-blue-600"></span>
-                <span className="text-sm font-bold uppercase tracking-widest text-blue-600">
+                <span className="w-8 h-[2px] bg-blue-500"></span>
+                <span className="text-sm font-bold uppercase tracking-widest text-blue-500">
                   {displayContent.tagline}
                 </span>
-                <span className="w-8 h-[2px] bg-blue-600"></span>
+                <span className="w-8 h-[2px] bg-blue-500"></span>
               </motion.div>
             )}
 
             <motion.h2
-              className="text-4xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-tight"
+              className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
@@ -454,7 +457,7 @@ export function DynamicAboutSection() {
             direction="right"
             delay={0.1}
           >
-            <p className="text-lg md:text-xl text-slate-600 mb-10 leading-relaxed">
+            <p className="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed">
               {displayContent.description ||
                 "We are committed to providing exceptional financial services."}
             </p>
@@ -472,10 +475,10 @@ export function DynamicAboutSection() {
                       viewport={{ once: false }}
                       transition={{ delay: 0.2 + index * 0.1 }}
                     >
-                      <div className="mt-1 bg-blue-50 p-1 rounded-full text-blue-600">
+                      <div className="mt-1 bg-blue-900/20 p-1 rounded-full text-blue-400">
                         <CheckCircle className="w-5 h-5" />
                       </div>
-                      <span className="text-slate-700 font-medium text-lg border-b border-transparent hover:border-blue-100 transition-colors">
+                      <span className="text-slate-300 font-medium text-lg border-b border-transparent hover:border-blue-900 transition-colors">
                         {highlight}
                       </span>
                     </motion.div>
@@ -488,8 +491,7 @@ export function DynamicAboutSection() {
               <Link href={displayContent.cta.link || "/about"}>
                 <Button
                   size="lg"
-                  className="group px-8 h-14 rounded-full text-base font-semibold shadow-lg shadow-blue-900/10 hover:shadow-blue-900/20"
-                  style={{ backgroundColor: "#0b4c80" }}
+                  className="group px-8 h-14 rounded-full text-base font-semibold shadow-lg shadow-black/20 hover:shadow-black/40 border border-blue-600/20 bg-blue-600/10 hover:bg-blue-600/20 text-blue-400"
                 >
                   {displayContent.cta.text || "Learn More"}
                   <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -524,15 +526,15 @@ export function DynamicAboutSection() {
                       x2="1"
                       y2="1"
                     >
-                      <stop offset="0%" stopColor="#e2e8f0" stopOpacity="0.2" />
+                      <stop offset="0%" stopColor="#1e293b" stopOpacity="0.2" />
                       <stop
                         offset="50%"
                         stopColor="#3b82f6"
-                        stopOpacity="0.6"
+                        stopOpacity="0.3"
                       />
                       <stop
                         offset="100%"
-                        stopColor="#e2e8f0"
+                        stopColor="#1e293b"
                         stopOpacity="0.2"
                       />
                     </linearGradient>
@@ -559,9 +561,8 @@ export function DynamicAboutSection() {
                   <motion.path
                     d="M 25% 20% L 75% 80%"
                     fill="none"
-                    stroke="#slate-200"
+                    stroke="#1e293b"
                     strokeWidth="1"
-                    className="text-slate-200"
                     strokeDasharray="5 5"
                     initial={{ pathLength: 0 }}
                     whileInView={{ pathLength: 1 }}
@@ -570,7 +571,7 @@ export function DynamicAboutSection() {
                 </svg>
 
                 {/* Decorative background for the grid */}
-                <div className="absolute -inset-4 bg-slate-50 rounded-[2rem] -z-10 rotate-3 scale-95 opacity-50"></div>
+                <div className="absolute -inset-4 bg-slate-900/40 rounded-[2rem] -z-10 rotate-3 scale-95 opacity-50 border border-slate-800"></div>
 
                 {displayContent.stats.map((stat, index) => (
                   <div

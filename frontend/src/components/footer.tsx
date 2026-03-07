@@ -179,7 +179,7 @@ export function Footer() {
     serviceLinks.length > 0 ? serviceLinks : defaultServiceLinks;
 
   return (
-    <footer className="w-full border-t border-gray-200 bg-[#ffffff] text-gray-700">
+    <footer className="w-full border-t border-slate-800 bg-slate-950 text-slate-300">
       <div className="container max-w-screen-xl py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           <div className="footer-widget lg:col-span-2">
@@ -196,32 +196,32 @@ export function Footer() {
                 </div>
               </Link>
             </div>
-            <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+            <p className="text-slate-400 text-sm mb-4 leading-relaxed">
               {companyDescription}
             </p>
-            <div className="text-gray-600 text-sm space-y-2 mb-6">
+            <div className="text-slate-400 text-sm space-y-2 mb-6">
               <p>
-                <strong className="text-gray-800">Address:</strong> {address}
+                <strong className="text-white">Address:</strong> {address}
               </p>
               <p>
-                <strong className="text-gray-800">Finance Division:</strong>{" "}
+                <strong className="text-white">Finance Division:</strong>{" "}
                 {phoneFinance}
               </p>
               <p>
-                <strong className="text-gray-800">Taxation Division:</strong>{" "}
+                <strong className="text-white">Taxation Division:</strong>{" "}
                 {phoneTaxation}
               </p>
               <p>
-                <strong className="text-gray-800">Email:</strong> {email}
+                <strong className="text-white">Email:</strong> {email}
               </p>
               <p>
-                <strong className="text-gray-800">Website:</strong> {website}
+                <strong className="text-white">Website:</strong> {website}
               </p>
             </div>
             <div className="flex items-center gap-4">
               <Link
                 href={facebookUrl}
-                className="text-gray-600 hover:text-primary transition-colors"
+                className="text-slate-400 hover:text-blue-400 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -234,7 +234,7 @@ export function Footer() {
               </Link>
               <Link
                 href={twitterUrl}
-                className="text-gray-600 hover:text-primary transition-colors"
+                className="text-slate-400 hover:text-blue-400 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -247,7 +247,7 @@ export function Footer() {
               </Link>
               <Link
                 href={linkedinUrl}
-                className="text-gray-600 hover:text-primary transition-colors"
+                className="text-slate-400 hover:text-blue-400 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -260,7 +260,7 @@ export function Footer() {
               </Link>
               <Link
                 href={instagramUrl}
-                className="text-gray-600 hover:text-primary transition-colors"
+                className="text-slate-400 hover:text-blue-400 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -274,15 +274,13 @@ export function Footer() {
             </div>
           </div>
           <div className="footer-widget">
-            <h4 className="font-semibold text-gray-800 mb-4">
-              {quickLinksTitle}
-            </h4>
+            <h4 className="font-semibold text-white mb-4">{quickLinksTitle}</h4>
             <ul className="space-y-2 text-sm">
               {displayQuickLinks.map((link, index) => (
                 <li key={index}>
                   <Link
                     href={link.url}
-                    className="text-gray-600 hover:text-primary"
+                    className="text-slate-400 hover:text-blue-400 transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -291,15 +289,13 @@ export function Footer() {
             </ul>
           </div>
           <div className="footer-widget">
-            <h4 className="font-semibold text-gray-800 mb-4">
-              {servicesTitle}
-            </h4>
+            <h4 className="font-semibold text-white mb-4">{servicesTitle}</h4>
             <ul className="space-y-2 text-sm">
               {displayServiceLinks.map((link, index) => (
                 <li key={index}>
                   <Link
                     href={link.url}
-                    className="text-gray-600 hover:text-primary"
+                    className="text-slate-400 hover:text-blue-400 transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -308,22 +304,20 @@ export function Footer() {
             </ul>
           </div>
           <div className="footer-widget">
-            <h4 className="font-semibold text-gray-800 mb-4">
-              {newsletterTitle}
-            </h4>
-            <p className="text-gray-600 text-sm mb-4">
+            <h4 className="font-semibold text-white mb-4">{newsletterTitle}</h4>
+            <p className="text-slate-400 text-sm mb-4">
               {newsletterDescription}
             </p>
-            <form className="flex items-center gap-1 p-1 bg-white border border-gray-200 rounded-full shadow-sm focus-within:ring-2 focus-within:ring-primary/20 transition-shadow">
+            <form className="flex items-center gap-1 p-1 bg-slate-900 border border-slate-800 rounded-full shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 transition-shadow">
               <Input
                 type="email"
                 placeholder="Your email"
-                className="flex-grow bg-transparent border-none shadow-none text-gray-800 placeholder:text-gray-400 focus-visible:ring-0 pl-4 h-9 min-w-0"
+                className="flex-grow bg-transparent border-none shadow-none text-white placeholder:text-slate-500 focus-visible:ring-0 pl-4 h-9 min-w-0"
               />
               <Button
                 type="submit"
                 size="sm"
-                className="rounded-full bg-[#0b4c80] hover:bg-[#093e69] text-white px-4 h-9 text-xs font-medium transition-colors"
+                className="rounded-full bg-blue-600 hover:bg-blue-700 text-white px-4 h-9 text-xs font-medium transition-colors"
               >
                 Subscribe
               </Button>
@@ -331,13 +325,13 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500">
+        <div className="mt-8 pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-sm text-slate-500">
           <p>{copyrightText}</p>
           <div className="flex gap-4 mt-4 sm:mt-0">
-            <Link href="/privacy-policy" className="hover:text-primary">
+            <Link href="/privacy-policy" className="hover:text-blue-400">
               Privacy Policy
             </Link>
-            <Link href="/terms-of-service" className="hover:text-primary">
+            <Link href="/terms-of-service" className="hover:text-blue-400">
               Terms of Service
             </Link>
           </div>

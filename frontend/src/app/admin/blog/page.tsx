@@ -106,7 +106,7 @@ export default function BlogManagementPage() {
                 value={statusFilter}
                 onChange={(e) =>
                   setStatusFilter(
-                    e.target.value as "all" | "draft" | "published"
+                    e.target.value as "all" | "draft" | "published",
                   )
                 }
                 className="px-3 py-2 border border-input rounded-md bg-background"
@@ -138,8 +138,8 @@ export default function BlogManagementPage() {
                 </CardContent>
               </Card>
             ) : (
-              filteredBlogs.map((blog) => (
-                <Card key={blog._id}>
+              filteredBlogs.map((blog, index) => (
+                <Card key={blog._id || index}>
                   <CardContent className="p-6">
                     <div className="flex justify-between items-start gap-4">
                       <div className="flex-1">

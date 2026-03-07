@@ -30,7 +30,7 @@ export function DynamicCTASection() {
     try {
       const ctaContent = await contentService.getContentBySection(
         "home",
-        "cta"
+        "cta",
       );
       if (ctaContent?.cta_section) {
         setCtaSection(() => ({ ...FALLBACK_CTA, ...ctaContent.cta_section }));

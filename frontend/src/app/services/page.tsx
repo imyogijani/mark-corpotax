@@ -18,8 +18,14 @@ import {
   Calculator,
   CreditCard,
   TrendingUp,
+  Sparkles,
+  CheckCircle,
 } from "lucide-react";
 import { DynamicCTASection } from "@/components/DynamicCTASection";
+import { MotionWrapper } from "@/components/MotionWrapper";
+import Counter from "@/components/Counter";
+import FloatingGraffiti from "@/components/FloatingGraffiti";
+import { motion } from "framer-motion";
 
 // Default services fallback
 const defaultServices = [
@@ -69,23 +75,23 @@ const defaultServices = [
 
 // Icon mapping
 const iconComponents: Record<string, React.ReactNode> = {
-  Building2: <Building2 className="h-10 w-10 text-primary" />,
-  TrendingUp: <TrendingUp className="h-10 w-10 text-primary" />,
-  Landmark: <Landmark className="h-10 w-10 text-primary" />,
-  Calculator: <Calculator className="h-10 w-10 text-primary" />,
-  CreditCard: <CreditCard className="h-10 w-10 text-primary" />,
-  ShieldHalf: <ShieldHalf className="h-10 w-10 text-primary" />,
-  PiggyBank: <PiggyBank className="h-10 w-10 text-primary" />,
-  HandCoins: <HandCoins className="h-10 w-10 text-primary" />,
-  FileText: <FileText className="h-10 w-10 text-primary" />,
-  University: <University className="h-10 w-10 text-primary" />,
-  Briefcase: <Briefcase className="h-10 w-10 text-primary" />,
+  Building2: <Building2 className="h-10 w-10 text-blue-600" />,
+  TrendingUp: <TrendingUp className="h-10 w-10 text-blue-600" />,
+  Landmark: <Landmark className="h-10 w-10 text-blue-600" />,
+  Calculator: <Calculator className="h-10 w-10 text-blue-600" />,
+  CreditCard: <CreditCard className="h-10 w-10 text-blue-600" />,
+  ShieldHalf: <ShieldHalf className="h-10 w-10 text-blue-600" />,
+  PiggyBank: <PiggyBank className="h-10 w-10 text-blue-600" />,
+  HandCoins: <HandCoins className="h-10 w-10 text-blue-600" />,
+  FileText: <FileText className="h-10 w-10 text-blue-600" />,
+  University: <University className="h-10 w-10 text-blue-600" />,
+  Briefcase: <Briefcase className="h-10 w-10 text-blue-600" />,
 };
 
 const largeIconComponents: Record<string, React.ReactNode> = {
-  Briefcase: <Briefcase className="text-primary" size={64} />,
-  HandCoins: <HandCoins className="text-primary" size={64} />,
-  ShieldHalf: <ShieldHalf className="text-primary" size={64} />,
+  Briefcase: <Briefcase className="text-blue-600" size={48} />,
+  HandCoins: <HandCoins className="text-emerald-500" size={48} />,
+  ShieldHalf: <ShieldHalf className="text-purple-500" size={48} />,
 };
 
 export default function ServicesPage() {
@@ -94,7 +100,7 @@ export default function ServicesPage() {
   const [servicesIntro, setServicesIntro] = useState<Record<string, any>>({});
   const [services, setServices] = useState(defaultServices);
   const [whyChooseContent, setWhyChooseContent] = useState<Record<string, any>>(
-    {}
+    {},
   );
   const [isLoading, setIsLoading] = useState(true);
 
@@ -147,59 +153,97 @@ export default function ServicesPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      <div className="flex items-center justify-center min-h-screen bg-slate-50">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-slate-500 font-medium">Loading Services...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="services-page-container animate-fade-in">
+    <div className="services-page-wrapper overflow-hidden bg-slate-50">
       {/* Hero Section */}
-      <section className="relative py-16 md:py-24 bg-gradient-to-br from-[#eaf6fa] via-[#f7fbfd] to-[#f2f8fc] border-b">
-        <div className="container mx-auto px-4 flex flex-col items-center text-center gap-4">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
-            {heroContent.title || "Our Financial Services"}
-          </h1>
-          <p className="max-w-2xl text-lg md:text-xl text-muted-foreground mb-6">
-            {heroContent.subtitle ||
-              "A complete suite of financial solutions designed to help you achieve your goals at every stage of life."}
-          </p>
-          <div className="flex flex-col md:flex-row items-center gap-8 w-full justify-center">
-            <div className="flex flex-col items-center bg-white rounded-xl shadow-lg p-8 gap-4 w-full max-w-xs">
-              {largeIconComponents[statsContent.stat_1_icon || "Briefcase"]}
-              <div>
-                <span className="block text-3xl font-bold text-primary">
-                  {statsContent.stat_1_value || "500+"}
-                </span>
-                <span className="block text-muted-foreground">
-                  {statsContent.stat_1_label || "Projects Funded"}
-                </span>
-              </div>
+      <section
+        className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-slate-50/30"
+        style={{
+          background:
+            "linear-gradient(to bottom right, #f8fafc, #f1f5f9, #eff6ff)",
+        }}
+      >
+        {/* Animated Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <FloatingGraffiti />
+          <div className="absolute top-20 right-10 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl mix-blend-multiply animate-pulse"></div>
+          <div className="absolute bottom-20 left-10 w-72 h-72 bg-indigo-500/5 rounded-full blur-3xl mix-blend-multiply animate-pulse delay-700"></div>
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10 text-center pt-20 pb-32">
+          <MotionWrapper direction="up" delay={0.1}>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-blue-600 text-sm font-medium mb-6 backdrop-blur-sm shadow-sm">
+              <Sparkles className="w-4 h-4" />
+              <span>Comprehensive Financial Solutions</span>
             </div>
-            <div className="flex flex-col items-center bg-white rounded-xl shadow-lg p-8 gap-4 w-full max-w-xs">
-              {largeIconComponents[statsContent.stat_2_icon || "HandCoins"]}
-              <div>
-                <span className="block text-3xl font-bold text-primary">
-                  {statsContent.stat_2_value || "₹50Cr+"}
-                </span>
-                <span className="block text-muted-foreground">
-                  {statsContent.stat_2_label || "Loans Facilitated"}
-                </span>
-              </div>
+          </MotionWrapper>
+
+          <MotionWrapper direction="up" delay={0.2}>
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight text-slate-900">
+              {heroContent.title || "Our Financial Services"}
+            </h1>
+          </MotionWrapper>
+
+          <MotionWrapper direction="up" delay={0.3}>
+            <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
+              {heroContent.subtitle ||
+                "A complete suite of financial solutions designed to help you achieve your goals at every stage of life."}
+            </p>
+          </MotionWrapper>
+        </div>
+      </section>
+
+      {/* Stats as Cards Overlaying Hero */}
+      <section className="relative -mt-24 z-20 pb-20">
+        <div className="container mx-auto px-4">
+          <MotionWrapper direction="up" delay={0.4}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: statsContent.stat_1_icon || "Briefcase",
+                  value: statsContent.stat_1_value || "500+",
+                  label: statsContent.stat_1_label || "Projects Funded",
+                  color: "blue",
+                },
+                {
+                  icon: statsContent.stat_2_icon || "HandCoins",
+                  value: statsContent.stat_2_value || "₹50Cr+",
+                  label: statsContent.stat_2_label || "Loans Facilitated",
+                  color: "emerald",
+                },
+                {
+                  icon: statsContent.stat_3_icon || "ShieldHalf",
+                  value: statsContent.stat_3_value || "100%",
+                  label: statsContent.stat_3_label || "Client Satisfaction",
+                  color: "purple",
+                },
+              ].map((stat, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center justify-center text-center group hover:-translate-y-1 transition-transform duration-300"
+                >
+                  <div
+                    className={`mb-4 p-4 rounded-xl bg-${stat.color}-50 group-hover:scale-110 transition-transform duration-300`}
+                  >
+                    {largeIconComponents[stat.icon]}
+                  </div>
+                  <h3 className="text-3xl font-bold text-slate-900 mb-2">
+                    {stat.value}
+                  </h3>
+                  <p className="text-slate-500 font-medium">{stat.label}</p>
+                </div>
+              ))}
             </div>
-            <div className="flex flex-col items-center bg-white rounded-xl shadow-lg p-8 gap-4 w-full max-w-xs">
-              {largeIconComponents[statsContent.stat_3_icon || "ShieldHalf"]}
-              <div>
-                <span className="block text-3xl font-bold text-primary">
-                  {statsContent.stat_3_value || "100%"}
-                </span>
-                <span className="block text-muted-foreground">
-                  {statsContent.stat_3_label || "Client Satisfaction"}
-                </span>
-              </div>
-            </div>
-          </div>
+          </MotionWrapper>
         </div>
       </section>
 
@@ -207,100 +251,123 @@ export default function ServicesPage() {
       {(servicesIntro.tagline ||
         servicesIntro.title ||
         servicesIntro.description) && (
-        <section className="py-12 md:py-16 bg-background">
+        <section className="py-12 md:py-20 bg-slate-50">
           <div className="container mx-auto px-4 text-center">
-            {servicesIntro.tagline && (
-              <span className="text-primary font-semibold uppercase tracking-wider">
-                {servicesIntro.tagline}
-              </span>
-            )}
-            {servicesIntro.title && (
-              <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">
-                {servicesIntro.title}
-              </h2>
-            )}
-            {servicesIntro.description && (
-              <p className="max-w-3xl mx-auto text-lg text-muted-foreground">
-                {servicesIntro.description}
-              </p>
-            )}
+            <MotionWrapper direction="up" delay={0.1}>
+              {servicesIntro.tagline && (
+                <span className="text-blue-600 font-semibold uppercase tracking-wider text-sm mb-2 block">
+                  {servicesIntro.tagline}
+                </span>
+              )}
+              {servicesIntro.title && (
+                <h2 className="text-3xl md:text-5xl font-bold mb-6 text-slate-900">
+                  {servicesIntro.title}
+                </h2>
+              )}
+              {servicesIntro.description && (
+                <p className="max-w-3xl mx-auto text-lg text-slate-600 leading-relaxed">
+                  {servicesIntro.description}
+                </p>
+              )}
+            </MotionWrapper>
           </div>
         </section>
       )}
 
       {/* Services Grid Section */}
-      <section className="services-grid-section py-16 md:py-20">
+      <section className="services-grid-section py-16 md:py-20 bg-white relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service) => (
-              <Card
+            {services.map((service, index) => (
+              <MotionWrapper
                 key={service.slug}
-                className="service-card flex flex-col text-center bg-secondary/20 border-border/40 hover:bg-secondary/40 hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                direction="up"
+                delay={0.1 * index}
               >
-                <div className="flex items-center justify-center h-32 w-full bg-primary/10">
-                  {iconComponents[service.icon] || (
-                    <Briefcase className="h-10 w-10 text-primary" />
-                  )}
-                </div>
-                <CardHeader className="items-center">
-                  <div className="service-icon-wrapper mx-auto p-4 rounded-full w-fit -mt-12 bg-card border-4 border-card z-10">
-                    {iconComponents[service.icon] || (
-                      <Briefcase className="h-10 w-10 text-primary" />
-                    )}
-                  </div>
-                  <CardTitle>{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <p className="text-muted-foreground">{service.description}</p>
-                </CardContent>
-                <div className="p-6 pt-0">
-                  <Button
-                    asChild
-                    className="bg-primary hover:bg-primary/90 text-white rounded-full px-6 py-2 font-medium transition-colors"
-                  >
-                    <Link href={`/services/${service.slug}`}>
-                      Read More <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </Card>
+                <Card className="flex flex-col h-full border-slate-100 shadow-lg shadow-slate-100/50 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 group overflow-hidden bg-white">
+                  <div className="h-2 bg-gradient-to-r from-blue-500 to-indigo-500 w-0 group-hover:w-full transition-all duration-500"></div>
+                  <CardHeader className="items-center pb-2 pt-8">
+                    <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center mb-4 group-hover:bg-blue-50 transition-colors duration-300">
+                      <div className="transform group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300">
+                        {iconComponents[service.icon] || (
+                          <Briefcase className="h-8 w-8 text-blue-600" />
+                        )}
+                      </div>
+                    </div>
+                    <CardTitle className="text-xl font-bold text-slate-900 text-center">
+                      {service.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-grow flex flex-col items-center text-center">
+                    <p className="text-slate-500 mb-6 leading-relaxed line-clamp-3">
+                      {service.description}
+                    </p>
+                    <div className="mt-auto">
+                      <Button
+                        asChild
+                        variant="ghost"
+                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-full font-medium"
+                      >
+                        <Link
+                          href={`/services/${service.slug}`}
+                          className="flex items-center gap-2"
+                        >
+                          Read More <ArrowRight className="w-4 h-4" />
+                        </Link>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </MotionWrapper>
             ))}
           </div>
         </div>
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-16 md:py-20 bg-secondary/10">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <span className="text-primary font-semibold uppercase tracking-wider">
-              {whyChooseContent.tagline || "Why Choose Us"}
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">
-              {whyChooseContent.title || "Benefits of Working With Us"}
-            </h2>
-            <p className="max-w-3xl mx-auto text-lg text-muted-foreground">
-              {whyChooseContent.description ||
-                "We provide exceptional financial services with a commitment to your success."}
-            </p>
+      <section className="py-20 md:py-32 bg-slate-50 relative overflow-hidden">
+        {/* Decorative blobs */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl mix-blend-multiply opacity-50"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-100/30 rounded-full blur-3xl mix-blend-multiply opacity-50"></div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <MotionWrapper direction="up" delay={0.1}>
+              <span className="text-blue-600 font-semibold uppercase tracking-wider text-sm">
+                {whyChooseContent.tagline || "Why Choose Us"}
+              </span>
+              <h2 className="text-3xl md:text-5xl font-bold mt-2 mb-6 text-slate-900">
+                {whyChooseContent.title || "Benefits of Working With Us"}
+              </h2>
+              <p className="max-w-3xl mx-auto text-lg text-slate-600">
+                {whyChooseContent.description ||
+                  "We provide exceptional financial services with a commitment to your success."}
+              </p>
+            </MotionWrapper>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[1, 2, 3, 4].map((i) => (
-              <div
+              <MotionWrapper
                 key={i}
-                className="bg-card rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-shadow"
+                direction="up"
+                delay={0.1 * i}
+                className="h-full"
               >
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-primary">{i}</span>
+                <div className="group bg-white rounded-3xl p-8 shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 h-full text-center hover:-translate-y-1">
+                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-slate-50 text-blue-600 font-bold text-xl mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm">
+                    {i}
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
+                    {whyChooseContent[`benefit_${i}_title`] || `Benefit ${i}`}
+                  </h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">
+                    {whyChooseContent[`benefit_${i}_description`] ||
+                      "Description of this benefit."}
+                  </p>
                 </div>
-                <h3 className="font-semibold text-lg mb-2">
-                  {whyChooseContent[`benefit_${i}_title`] || `Benefit ${i}`}
-                </h3>
-                <p className="text-muted-foreground text-sm">
-                  {whyChooseContent[`benefit_${i}_description`] ||
-                    "Description of this benefit."}
-                </p>
-              </div>
+              </MotionWrapper>
             ))}
           </div>
         </div>

@@ -1,487 +1,266 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import {
   Calendar,
   User,
   ArrowRight,
-  MessageSquare,
+  ArrowLeft,
+  Clock,
+  Tag,
+  Share2,
   Facebook,
   Twitter,
   Linkedin,
-  Instagram,
-  BarChart2,
-  PieChart,
-  DollarSign,
 } from "lucide-react";
-import type { Metadata } from "next";
+import { apiClient } from "@/lib/api-client";
 import { SubscribeCta } from "@/components/subscribe-cta";
 
-interface BlogDetailProps {
-  params: Promise<{ id: string }>;
+// Interface for Blog Post
+interface BlogPost {
+  id: string;
+  _id?: string;
+  title: string;
+  content: string;
+  excerpt: string;
+  author?: string;
+  category?: string;
+  createdAt: string;
+  updatedAt?: string;
+  featuredImage?: string; // Optional image URL
+  slug?: string;
+  tags?: string[];
+  readTime?: string;
 }
 
-export const metadata: Metadata = {
-  title: "Blog Details",
-  description:
-    "Read the full article and insights about financial planning and business strategies.",
-};
+export default function BlogDetailPage() {
+  const params = useParams();
+  const idOrSlug = params.id as string;
 
-const categories = [
-  { name: "Agency", count: 12 },
-  { name: "E-commerce", count: 8 },
-  { name: "Business", count: 15 },
-];
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-const recentPosts = [
-  {
-    title: "Revolutionizing businesses for the digital age",
-    date: "October 31, 2023",
-    icon: <DollarSign className="w-12 h-12 text-primary" />,
-  },
-  {
-    title: "Unlocking the potential of your business data",
-    date: "October 28, 2023",
-    icon: <BarChart2 className="w-12 h-12 text-primary" />,
-  },
-  {
-    title: "Navigating challenges in each business growth",
-    date: "October 25, 2023",
-    icon: <PieChart className="w-12 h-12 text-primary" />,
-  },
-];
+  useEffect(() => {
+    const fetchPost = async () => {
+      if (!idOrSlug) return;
 
-const tags = ["Best Blogs", "Consultation", "Legal", "Services", "Strategy"];
+      try {
+        setLoading(true);
+        // Use apiClient to fetch the blog post
+        const response = await apiClient.getBlog(idOrSlug);
 
-const comments = [
-  {
-    id: 1,
-    name: "Suara Isbita",
-    date: "January 10, 2023",
-    message:
-      "When first time I headed the direction and then how heart he turned a game. Within about have chance because.",
-    avatar: <User className="w-10 h-10 text-primary" />,
-    replies: [
-      {
-        id: 2,
-        name: "Nick Jonas",
-        date: "January 15, 2023",
-        message:
-          "When first time I headed the direction and then how heart he turned a game. Within about have chance because.",
-        avatar: <User className="w-10 h-10 text-primary" />,
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "Dan etnuk",
-    date: "January 20, 2023",
-    message:
-      "When first time I headed the direction and then how heart he turned a game. Within about have chance because.",
-    avatar: <User className="w-10 h-10 text-primary" />,
-    replies: [],
-  },
-];
+        if (response.success && response.data) {
+          const data: any = response.data;
+          setPost({
+            ...data,
+            id: data.id || data._id, // Normalize ID
+          });
+          setError(null);
+        } else {
+          // Fallback or error if not found
+          setError(response.message || "Blog post not found");
+        }
+      } catch (err: any) {
+        console.error("Error fetching blog post:", err);
+        setError("Failed to load blog post. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-export default async function BlogDetailPage({ params }: BlogDetailProps) {
-  // Await params to extract id for future use if needed
-  const resolvedParams = await params;
-  void resolvedParams.id;
-  return (
-    <div className="blog-detail-page-container animate-fade-in">
-      {/* Page Header */}
-      <section className="page-header-section py-16 md:py-24 bg-gradient-to-br from-[#2c3e50] to-[#34495e] text-white relative overflow-hidden">
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-            Blog Details
-          </h1>
-          <nav className="flex items-center justify-center space-x-2 text-sm">
-            <Link href="/" className="hover:text-primary transition-colors">
-              Home
-            </Link>
-            <span>&gt;</span>
-            <Link href="/blog" className="hover:text-primary transition-colors">
-              Blog
-            </Link>
-            <span>&gt;</span>
-            <span>Blog Details</span>
-          </nav>
+    fetchPost();
+  }, [idOrSlug]);
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "";
+    try {
+      const date = new Date(dateString);
+      return new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }).format(date);
+    } catch (e) {
+      return dateString;
+    }
+  };
+
+  // Estimate read time if not provided
+  const getReadTime = (content: string) => {
+    if (!content) return "1 min read";
+    const wpm = 200;
+    const words = content.trim().split(/\s+/).length;
+    const time = Math.ceil(words / wpm);
+    return `${time} min read`;
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error || !post) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          <h2 className="text-2xl font-bold text-slate-800 mb-4">
+            Article Not Found
+          </h2>
+          <p className="text-slate-600 mb-8">
+            {error ||
+              "The article you are looking for does not exist or has been removed."}
+          </p>
+          <Button asChild>
+            <Link href="/blog">Back to Blog</Link>
+          </Button>
         </div>
-        {/* Decorative elements */}
-        <div className="absolute top-1/4 right-8 w-4 h-4 bg-white rounded-full opacity-20"></div>
-        <div className="absolute bottom-1/3 left-16 w-6 h-6 bg-white rounded-full opacity-30"></div>
-        <div className="absolute top-1/2 right-1/4 w-3 h-3 bg-primary rounded-full"></div>
-      </section>
+      </div>
+    );
+  }
 
-      {/* Main Content */}
-      <section className="py-16 md:py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-3 gap-12">
-            {/* Blog Content */}
-            <div className="lg:col-span-2">
-              <Card className="bg-white overflow-hidden">
-                {/* Featured Image */}
-                <div className="flex items-center justify-center h-80 w-full bg-primary/10">
-                  <BarChart2 className="w-32 h-32 text-primary" />
+  return (
+    <div className="min-h-screen bg-slate-50 pb-20">
+      {/* Hero Section */}
+      <div className="bg-slate-900 text-white relative overflow-hidden py-20 lg:py-24">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-20 -right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-slate-50 to-transparent z-10"></div>
+        </div>
+
+        <div className="container mx-auto px-4 relative z-20">
+          <Link
+            href="/blog"
+            className="inline-flex items-center text-slate-300 hover:text-white mb-8 transition-colors group text-sm font-medium"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+            Back to Articles
+          </Link>
+
+          <div className="max-w-4xl">
+            {post.category && (
+              <span className="inline-block px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full uppercase tracking-wider mb-6">
+                {post.category}
+              </span>
+            )}
+
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+              {post.title}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-6 text-slate-300 text-sm md:text-base">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-slate-700/50 rounded-full flex items-center justify-center border border-slate-600">
+                  <User className="w-4 h-4" />
                 </div>
-
-                <CardContent className="p-8">
-                  {/* Meta Info */}
-                  <div className="flex items-center gap-6 text-sm text-muted-foreground mb-6">
-                    <div className="flex items-center gap-2">
-                      <User className="w-4 h-4" />
-                      <span>By Admin</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
-                      <span>October 31, 2023</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MessageSquare className="w-4 h-4" />
-                      <span>Comments (5)</span>
-                    </div>
-                  </div>
-
-                  {/* Article Title */}
-                  <h1 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
-                    Industry slam Women We make small
-                  </h1>
-
-                  {/* Article Content */}
-                  <div className="prose prose-lg max-w-none">
-                    <p className="text-muted-foreground leading-relaxed mb-6">
-                      Aliquam erat elit, pretium vitae ligula nec, pellentesque
-                      aliquam dui. Proin venenatis purus pretium accumsan. Donec
-                      tincidunt fermentum gravida accumsan cursus interdum
-                      luctus eget dapibus lorem. Mauris luctus ligula sed elit
-                      rutrum rutrum. Donec at molestie mi, at rutrum mauris. Sed
-                      convallis ipsum quis mi rutrum.
-                    </p>
-
-                    <p className="text-muted-foreground leading-relaxed mb-8">
-                      Aliquam erat elit, pretium vitae ligula nec, pellentesque
-                      aliquam dui. Proin venenatis purus pretium accumsan. Donec
-                      tincidunt fermentum gravida accumsan cursus interdum
-                      luctus eget dapibus lorem.
-                    </p>
-
-                    {/* Two Column Section */}
-                    <div className="grid md:grid-cols-2 gap-8 mb-8">
-                      <div>
-                        <h3 className="text-xl font-bold mb-4 text-primary">
-                          Best Implementation
-                        </h3>
-                        <p className="text-muted-foreground leading-relaxed">
-                          Proin enim diam, blandit sit amet metus mollis, maxim
-                          pretium libero. Vivamus volutpat lorem lectus, eget
-                          dictum neque molestie eu. Praesent mollis ante eu
-                          magna in euismod.
-                        </p>
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold mb-4 text-primary">
-                          Follow Your Concept
-                        </h3>
-                        <p className="text-muted-foreground leading-relaxed">
-                          Donec accumsan velit id odio congue porta. Vestibulum
-                          consequat dolor quis odio. Mauris eleifend lorem non
-                          mauris blandit, et rutrum libero molestie.
-                        </p>
-                      </div>
-                    </div>
-
-                    <p className="text-muted-foreground leading-relaxed mb-6">
-                      Aliquam erat elit, pretium vitae ligula nec, pellentesque
-                      aliquam dui. Proin venenatis purus pretium accumsan. Donec
-                      tincidunt fermentum gravida accumsan cursus interdum
-                      luctus eget dapibus lorem. Mauris luctus ligula sed elit
-                      rutrum rutrum. Donec at molestie mi, at rutrum mauris. Sed
-                      convallis ipsum quis mi rutrum.
-                    </p>
-
-                    <p className="text-muted-foreground leading-relaxed mb-8">
-                      Aliquam erat elit, pretium vitae ligula nec, pellentesque
-                      aliquam dui. Proin venenatis purus pretium accumsan. Donec
-                      tincidunt fermentum gravida accumsan cursus interdum
-                      luctus eget dapibus lorem. Mauris luctus ligula sed elit
-                      rutrum rutrum. Donec at molestie mi, at rutrum mauris. Sed
-                      convallis ipsum quis mi rutrum.
-                    </p>
-                  </div>
-
-                  {/* Tags and Social Share */}
-                  <div className="flex flex-wrap items-center justify-between gap-4 pt-8 border-t border-gray-200">
-                    <div className="flex items-center gap-3">
-                      <span className="font-semibold">Tags:</span>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" className="text-xs">
-                          Best Blogs
-                        </Button>
-                        <Button variant="outline" size="sm" className="text-xs">
-                          Consultation
-                        </Button>
-                        <Button variant="outline" size="sm" className="text-xs">
-                          Legal
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-semibold">Share:</span>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="w-8 h-8 p-0"
-                        >
-                          <Facebook className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="w-8 h-8 p-0"
-                        >
-                          <Twitter className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="w-8 h-8 p-0"
-                        >
-                          <Linkedin className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="w-8 h-8 p-0"
-                        >
-                          <Instagram className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Comments Section */}
-              <Card className="bg-white mt-8">
-                <CardHeader>
-                  <CardTitle className="text-2xl font-bold">
-                    Comments ({comments.length + 1})
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {comments.map((comment) => (
-                    <div key={comment.id} className="space-y-4">
-                      <div className="flex gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                          {comment.avatar}
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-4 mb-2">
-                            <h4 className="font-semibold">{comment.name}</h4>
-                            <span className="text-sm text-muted-foreground">
-                              {comment.date}
-                            </span>
-                            <Button
-                              variant="link"
-                              size="sm"
-                              className="text-primary p-0 h-auto"
-                            >
-                              REPLY
-                            </Button>
-                          </div>
-                          <p className="text-muted-foreground leading-relaxed">
-                            {comment.message}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Replies */}
-                      {comment.replies.map((reply) => (
-                        <div key={reply.id} className="ml-16 flex gap-4">
-                          <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                            {reply.avatar}
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-4 mb-2">
-                              <h4 className="font-semibold">{reply.name}</h4>
-                              <span className="text-sm text-muted-foreground">
-                                {reply.date}
-                              </span>
-                              <Button
-                                variant="link"
-                                size="sm"
-                                className="text-primary p-0 h-auto"
-                              >
-                                REPLY
-                              </Button>
-                            </div>
-                            <p className="text-muted-foreground leading-relaxed">
-                              {reply.message}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              {/* Comment Form */}
-              <Card className="bg-white mt-8">
-                <CardHeader>
-                  <CardTitle className="text-2xl font-bold">
-                    Leave a comment
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <form className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <Input placeholder="Your Name*" className="w-full" />
-                      </div>
-                      <div>
-                        <Input
-                          placeholder="Your Email*"
-                          type="email"
-                          className="w-full"
-                        />
-                      </div>
-                    </div>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <Input placeholder="Phone number" className="w-full" />
-                      </div>
-                      <div>
-                        <Input placeholder="Subject" className="w-full" />
-                      </div>
-                    </div>
-                    <div>
-                      <Textarea
-                        placeholder="Message"
-                        rows={6}
-                        className="w-full"
-                      />
-                    </div>
-                    <Button className="bg-primary hover:bg-primary/90 text-white px-8">
-                      Submit Now
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Sidebar */}
-            <div className="space-y-8">
-              {/* Search */}
-              <Card className="bg-white">
-                <CardContent className="p-6">
-                  <div className="flex gap-2">
-                    <Input placeholder="Search..." className="flex-1" />
-                    <Button size="sm" className="px-4">
-                      <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Categories */}
-              <Card className="bg-white">
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold">
-                    Categories
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {categories.map((category) => (
-                    <div
-                      key={category.name}
-                      className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0"
-                    >
-                      <span className="hover:text-primary transition-colors cursor-pointer">
-                        {category.name}
-                      </span>
-                      <span className="text-muted-foreground text-sm">
-                        ({category.count})
-                      </span>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              {/* Recent Posts */}
-              <Card className="bg-white">
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold">
-                    Recent Post
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {recentPosts.map((post, index) => (
-                    <div
-                      key={index}
-                      className="flex gap-3 pb-4 border-b border-gray-100 last:border-b-0"
-                    >
-                      <div className="flex-shrink-0 w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center">
-                        {post.icon}
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-sm leading-tight mb-2 hover:text-primary transition-colors cursor-pointer">
-                          {post.title}
-                        </h4>
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <Calendar className="w-3 h-3" />
-                          <span>{post.date}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              {/* Work with us CTA */}
-              <Card className="bg-primary text-white overflow-hidden relative">
-                <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-bold mb-2">Work with us</h3>
-                  <p className="text-sm mb-4 opacity-90">
-                    All your business solutions and consulting needs in one
-                    convenient, accessible place
-                  </p>
-                  <Button variant="secondary" size="sm">
-                    Contact us
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Tags */}
-              <Card className="bg-white">
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold">Tags</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map((tag) => (
-                      <Button
-                        key={tag}
-                        variant="outline"
-                        size="sm"
-                        className="text-xs h-8 hover:bg-primary hover:text-white transition-colors"
-                      >
-                        {tag}
-                      </Button>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+                <span>{post.author || "Admin"}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                <span>{formatDate(post.createdAt)}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4" />
+                <span>{post.readTime || getReadTime(post.content || "")}</span>
+              </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* CTA Section */}
-      <SubscribeCta />
+      <div className="container mx-auto px-4 -mt-20 relative z-30">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-2">
+            <Card className="border-0 shadow-xl rounded-2xl overflow-hidden mb-12 bg-white">
+              {post.featuredImage && (
+                <div className="h-64 md:h-96 w-full relative">
+                  {/* Standard img tag for external urls usually easier than Image for dynamics */}
+                  <img
+                    src={post.featuredImage}
+                    alt={post.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <CardContent className="p-8 md:p-12">
+                <div className="prose prose-lg prose-slate max-w-none prose-headings:text-slate-900 prose-p:text-slate-700 prose-a:text-blue-600">
+                  {/* 
+                               Rendering HTML content. 
+                            */}
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: post.content || "<p>No content available.</p>",
+                    }}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Tags */}
+            {post.tags && post.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-12">
+                {post.tags.map((tag, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-1 px-3 py-1 bg-white border border-slate-200 rounded-full text-sm text-slate-600 hover:border-blue-300 hover:text-blue-600 transition-colors cursor-default"
+                  >
+                    <Tag className="w-3 h-3" />
+                    {tag}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <SubscribeCta />
+          </div>
+
+          {/* Sidebar */}
+          <div className="hidden lg:block space-y-8">
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 sticky top-24">
+              <h3 className="text-lg font-bold text-slate-900 mb-4">
+                Share this article
+              </h3>
+              <div className="flex flex-col gap-3">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-3 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-colors"
+                >
+                  <Facebook className="w-4 h-4" /> Share on Facebook
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-3 hover:bg-sky-50 hover:text-sky-500 hover:border-sky-200 transition-colors"
+                >
+                  <Twitter className="w-4 h-4" /> Share on Twitter
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-3 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-colors"
+                >
+                  <Linkedin className="w-4 h-4" /> Share on LinkedIn
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-3 hover:bg-slate-50 hover:text-slate-600 hover:border-slate-300 transition-colors"
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                  }}
+                >
+                  <Share2 className="w-4 h-4" /> Copy Link
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
