@@ -99,7 +99,7 @@ GitHub Repository
 Clone ke baad **ek baar** yeh command chalao:
 
 ```bash
-git checkout frontend-dev
+git checkout -b frontend-dev
 ```
 
 Verify karne ke liye:
@@ -234,7 +234,7 @@ git pull origin frontend-dev
 ### Problem: Galti se master branch pe chale gaye
 
 ```bash
-git checkout frontend-dev
+git checkout -b frontend-dev
 ```
 
 ### Problem: Push nahi ho raha — Login maang raha hai
@@ -261,7 +261,7 @@ git checkout -- filename.tsx
 git branch
 
 # frontend-dev pe jao
-git checkout frontend-dev
+git checkout -b frontend-dev
 
 # Latest code lo
 git pull origin frontend-dev
