@@ -2,30 +2,32 @@
 
 ## Branch Structure
 
-| Branch         | Owner               | Purpose                             |
-| -------------- | ------------------- | ----------------------------------- |
-| `master`       | Project Owner only  | Production-ready code, full project |
-| `frontend-dev` | Frontend Developers | UI/UX changes only                  |
+| Branch         | Kaun use kare       | Kaam kya hai                         |
+| -------------- | ------------------- | ------------------------------------ |
+| `master`       | Sirf Project Owner  | Production-ready code, poora project |
+| `frontend-dev` | Frontend Developers | Sirf UI/UX changes                   |
 
-## Rules for Frontend Developers
+## Frontend Developers ke liye Rules
 
-- ✅ **Work ONLY on `frontend-dev` branch**
-- ✅ **Modify ONLY files inside `frontend/` directory**
-- ✅ Pull latest code before starting each day
-- ✅ Write clear commit messages describing what you changed
-- ❌ **Never push to `master` branch**
-- ❌ **Never touch `backend/` directory**
+- ✅ **Sirf `frontend-dev` branch pe kaam karo**
+- ✅ **Sirf `frontend/` directory ki files badlo**
+- ✅ Roz subah kaam shuru karne se pehle latest code pull karo
+- ✅ Commit message clear likho — kya badla woh describe karo
+- ❌ **`master` branch pe kabhi push mat karo**
+- ❌ **`backend/` folder ko kabhi touch mat karo**
 
-## Getting Started
+## Shuru kaise kare?
 
-Refer to the full guide: [`docs/GIT_GUIDE_FOR_DEVELOPERS.md`](../docs/GIT_GUIDE_FOR_DEVELOPERS.md)
+Poora guide yahan padho: [`docs/GIT_GUIDE_FOR_DEVELOPERS.md`](../docs/GIT_GUIDE_FOR_DEVELOPERS.md)
 
-## Daily Workflow
+## Roz ka Workflow (Daily Steps)
 
 ```bash
-git pull origin frontend-dev   # Start of day
-# ... make your changes in frontend/ folder ...
+git pull origin frontend-dev   # Subah — latest code lo
+
+# ... frontend/ folder mein apna kaam karo ...
+
 git add .
-git commit -m "describe your changes"
-git push origin frontend-dev   # End of day
+git commit -m "kya kiya uska description"
+git push origin frontend-dev   # Shaam — apna kaam upload karo
 ```

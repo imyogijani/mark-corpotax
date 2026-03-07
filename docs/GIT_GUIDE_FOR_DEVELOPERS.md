@@ -2,76 +2,77 @@
 
 ### Mark Corpotax Project | UI/UX Development
 
-> **यह guide उन developers के लिए है जो Git पहली बार use कर रहे हैं।**
-> This guide is for developers who are new to Git. Read it completely before starting work.
+> **Yeh guide un developers ke liye hai jo pehli baar Git use kar rahe hain.**
+> Is guide ko shuru karne se pehle poora padho — ek baar mein samajh aa jayega!
 
 ---
 
 ## 📋 Table of Contents
 
-1. [Git क्या है? (What is Git?)](#1-git-क्या-है)
-2. [Setup — पहली बार क्या करना है](#2-setup--पहली-बार-क्या-करना-है)
-3. [Project Download करो (Clone)](#3-project-download-करो-clone)
-4. [Branch समझो](#4-branch-समझो)
-5. [Daily Workflow — हर रोज का काम](#5-daily-workflow--हर-रोज-का-काम)
+1. [Git kya hota hai?](#1-git-kya-hota-hai)
+2. [Pehli baar ka Setup](#2-pehli-baar-ka-setup)
+3. [Project Download karo (Clone)](#3-project-download-karo-clone)
+4. [Branch kya hoti hai?](#4-branch-kya-hoti-hai)
+5. [Roz ka kaam — Daily Workflow](#5-roz-ka-kaam--daily-workflow)
 6. [Important Rules ⚠️](#6-important-rules-)
-7. [अगर कोई Problem आए (Troubleshooting)](#7-अगर-कोई-problem-आए)
-8. [Useful Commands Cheat Sheet](#8-useful-commands-cheat-sheet)
+7. [Problem aaye toh kya karo?](#7-problem-aaye-toh-kya-karo)
+8. [Commands Cheat Sheet](#8-commands-cheat-sheet)
 
 ---
 
-## 1. Git क्या है?
+## 1. Git kya hota hai?
 
-**Git** एक version control system है। इसे ऐसे समझो:
+**Git** ek **version control system** hai. Isko aise samjho:
 
-> जैसे Microsoft Word में "Track Changes" होता है — Git पूरे project के लिए वही काम करता है।
-> हर change save होता है, कोई भी change गलती से delete नहीं होता।
+> Jaise Microsoft Word mein "Track Changes" hota hai — Git poore project ke liye wahi kaam karta hai.
+> Har change save hota hai, koi bhi file galti se delete nahi hoti.
 
-**GitHub** एक website है जहाँ Git projects online store होते हैं।
+**GitHub** ek website hai jahan Git projects online store hote hain.
 
-- GitHub = Git का Google Drive की तरह है।
+> GitHub = Git ka **Google Drive** jaisa hai — sab kuch online safe rehta hai!
 
 ---
 
-## 2. Setup — पहली बार क्या करना है
+## 2. Pehli baar ka Setup
 
-### Step 1: Git Install करो
+### Step 1 — Git Install Karo
 
-👉 Download: https://git-scm.com/download/win
+👉 Yahan se download karo: https://git-scm.com/download/win
 
-Install करते वक्त सब options **default** रखो, बस Next-Next-Next करते रहो।
+Install karte waqt sab options **default** rakhna — bas Next-Next-Finish karte raho.
 
-### Step 2: Git Configure करो
+### Step 2 — Apna Naam aur Email Set Karo
 
-**Git Bash** खोलो (Start Menu में search करो) और ये commands चलाओ:
+**Git Bash** kholo (Start Menu mein search karo "Git Bash") aur yeh commands chalao:
 
 ```bash
 git config --global user.name "Tumhara Naam"
-git config --global user.email "tumhara@email.com"
+git config --global user.email "tumhari@email.com"
 ```
 
-> ⚠️ यहाँ अपना असली नाम और वही email डालो जो GitHub account पर है।
+> ⚠️ Yahan apna asli naam aur wahi email daalo jo tumhara **GitHub account** pe hai.
 
-### Step 3: GitHub Account
+### Step 3 — GitHub Account
 
-अगर GitHub account नहीं है तो बनाओ: https://github.com
-Account ID owner को दो ताकि वो तुम्हें project access दे सके।
+Agar GitHub account nahi hai toh yahan banao: https://github.com
+
+Account bana lo aur apni **GitHub username** owner ko bhejo — woh tumhe project ka access denge.
 
 ---
 
-## 3. Project Download करो (Clone)
+## 3. Project Download Karo (Clone)
 
-**एक बार ही करना है — पहली बार setup के समय।**
+**Yeh sirf ek baar karna hai — pehli baar setup ke time.**
 
-1. Computer में एक folder बनाओ, जैसे: `C:\Projects\`
-2. उस folder में जाओ → Right click → "Git Bash Here"
-3. ये command चलाओ:
+1. Computer mein ek folder banao, jaise: `C:\Projects\`
+2. Us folder mein jao → Right click karo → **"Git Bash Here"** click karo
+3. Yeh command chalao:
 
 ```bash
 git clone https://github.com/imyogijani/mark-corpotax.git
 ```
 
-4. Project download हो जाएगा। अब इस folder में जाओ:
+4. Project download ho jayega! Ab us folder mein jao:
 
 ```bash
 cd mark-corpotax
@@ -79,122 +80,122 @@ cd mark-corpotax
 
 ---
 
-## 4. Branch समझो
+## 4. Branch kya hoti hai?
 
-Branch को एक **अलग copy** की तरह समझो जहाँ तुम safely काम कर सकते हो।
+Branch ko ek **alag copy** ki tarah samjho jahan tum safely apna kaam kar sakte ho bina doosron ke kaam ko affect kiye.
 
 ```
 GitHub Repository
 │
-├── master (branch)  ← यह OWNER का branch है — तुम यहाँ काम नहीं करोगे
+├── master (branch)       ← Yeh OWNER ka branch hai — tum yahan kaam NAHI karoge
 │
-└── frontend-dev (branch)  ← यह TUMHARA branch है — सारा काम यहीं होगा
+└── frontend-dev (branch) ← Yeh TUMHARA branch hai — sara UI/UX kaam yahan hoga
 ```
 
-> **Rule #1:** तुम सिर्फ `frontend-dev` branch पर काम करोगे। `master` को कभी touch मत करो।
+> **Rule #1:** Tum sirf `frontend-dev` branch pe kaam karoge. `master` ko kabhi touch mat karo!
 
-### Frontend-dev Branch पर Switch करो
+### Frontend-dev Branch pe Switch Karo
 
-Clone के बाद **एक बार** यह command चलाओ:
+Clone ke baad **ek baar** yeh command chalao:
 
 ```bash
 git checkout frontend-dev
 ```
 
-Check करने के लिए:
+Verify karne ke liye:
 
 ```bash
 git branch
 ```
 
-Output में `* frontend-dev` दिखना चाहिए। `*` means currently इसी branch पर हो।
+Output mein `* frontend-dev` dikhna chahiye. `*` matlab — abhi is branch pe ho.
 
 ---
 
-## 5. Daily Workflow — हर रोज का काम
+## 5. Roz ka Kaam — Daily Workflow
 
-### 🌅 काम शुरू करते वक्त (Morning — Pull करो)
+### 🌅 Subah — Kaam Shuru karne se Pehle (Pull Karo)
 
-**सबसे पहले latest code लो:**
+**Sabse pehle latest code lo:**
 
 ```bash
 git pull origin frontend-dev
 ```
 
-> यह ensure करता है कि तुम्हारे पास सबसे ताज़ा code है।
+> Yeh ensure karta hai ki tumhare paas sabse taza code hai. Kabhi bhi bina pull kiye kaam mat shuru karo!
 
 ---
 
-### 💻 काम करते रहो
+### 💻 Kaam Karte Raho
 
-VS Code में `frontend/src/` folder में changes करो।
-Frontend files यहाँ हैं:
+VS Code mein `frontend/src/` folder mein changes karo.
+Frontend files yahan hain:
 
 ```
 mark-corpotax/
 └── frontend/
     └── src/
-        ├── components/    ← Components यहाँ
-        ├── app/           ← Pages यहाँ
-        └── styles/        ← CSS/Styling यहाँ
+        ├── components/    ← Components yahan hain
+        ├── app/           ← Pages yahan hain
+        └── styles/        ← CSS/Styling yahan hai
 ```
 
 ---
 
-### 🌇 काम खत्म होने पर (Evening — Push करो)
+### 🌇 Shaam — Kaam Khatam Hone par (Push Karo)
 
-**Step 1: देखो क्या-क्या बदला**
+**Step 1 — Dekho kya-kya badla:**
 
 ```bash
 git status
 ```
 
-यह बताएगा कौन-कौन सी files change हुई हैं (लाल रंग में दिखेंगी)।
+Yeh batayega kaun-kaun si files change hui hain (laal rang mein dikhenge).
 
-**Step 2: अपने changes stage करो (Add करो)**
+**Step 2 — Apne changes Stage Karo (Add Karo):**
 
 ```bash
 git add .
 ```
 
-> `.` (dot) means — सारी changed files को add करो।
+> `.` (dot) matlab — saari changed files ek saath add karo.
 
-**Step 3: Commit करो (Save करो)**
+**Step 3 — Commit Karo (Save Karo):**
 
 ```bash
-git commit -m "यहाँ लिखो तुमने क्या बदला"
+git commit -m "yahan likho tumne kya badla"
 ```
 
-Commit message examples:
+Commit message ke examples:
 
 ```bash
-git commit -m "Navbar ka color purple se blue kiya"
-git commit -m "Services section card design update"
+git commit -m "Navbar ka color update kiya"
+git commit -m "Services section card design theek kiya"
 git commit -m "Mobile responsive fix for hero section"
 ```
 
-**Step 4: GitHub पर Push करो (Upload करो)**
+**Step 4 — GitHub pe Push Karo (Upload Karo):**
 
 ```bash
 git push origin frontend-dev
 ```
 
-✅ **Done! तुम्हारा काम GitHub पर save हो गया।**
+✅ **Ho gaya! Tumhara kaam GitHub pe save ho gaya.**
 
 ---
 
-### पूरा Daily Workflow एक जगह:
+### Poora Daily Workflow — Ek Jagah:
 
 ```bash
-# सुबह — काम शुरू करने से पहले
+# Subah — kaam shuru karne se pehle
 git pull origin frontend-dev
 
-# काम करो...
+# ... apna kaam karo frontend/ mein ...
 
-# शाम — काम खत्म होने पर
+# Shaam — kaam khatam hone par
 git status
 git add .
-git commit -m "aaj kya kiya uska description"
+git commit -m "aaj kya kiya uska short description"
 git push origin frontend-dev
 ```
 
@@ -202,28 +203,27 @@ git push origin frontend-dev
 
 ## 6. Important Rules ⚠️
 
-| ✅ करो                             | ❌ मत करो                               |
-| ---------------------------------- | --------------------------------------- |
-| हमेशा `frontend-dev` branch पर रहो | `master` branch पर जाने की कोशिश मत करो |
-| हर रोज pull करके शुरू करो          | बिना pull किए काम मत शुरू करो           |
-| `frontend/` folder में ही काम करो  | `backend/` folder को touch मत करो       |
-| छोटे-छोटे commits करो              | एक बड़ा commit में सब कुछ मत डालो       |
-| Commit message clear लिखो          | Empty या vague message मत लिखो          |
-| काम खत्म होने पर push करो          | कई दिनों का काम एक साथ push मत करो      |
+| ✅ Yeh Karo                            | ❌ Yeh Mat Karo                         |
+| -------------------------------------- | --------------------------------------- |
+| Hamesha `frontend-dev` branch pe raho  | `master` branch pe kabhi mat jao        |
+| Roz subah `git pull` karke shuru karo  | Bina pull kiye kaam mat shuro karo      |
+| Sirf `frontend/` folder mein kaam karo | `backend/` folder ko touch mat karo     |
+| Chhote-chhote commits karo             | Ek bade commit mein sab kuch mat daalo  |
+| Commit message clear likho             | Empty ya unclear message mat likho      |
+| Kaam khatam hone par push karo         | Kai dino ka kaam ek saath push mat karo |
 
-### ⛔ NEVER RUN THESE COMMANDS:
+### ⛔ Yeh Commands KABHI Mat Chalao:
 
 ```bash
-# इन्हें कभी मत चलाओ:
-git checkout master      # ❌
-git push origin master   # ❌
-git merge master         # ❌
-git reset --hard         # ❌
+git checkout master      # ❌ Kabhi nahi!
+git push origin master   # ❌ Kabhi nahi!
+git merge master         # ❌ Kabhi nahi!
+git reset --hard         # ❌ Kabhi nahi!
 ```
 
 ---
 
-## 7. अगर कोई Problem आए
+## 7. Problem Aaye Toh Kya Karo?
 
 ### Problem: "Your branch is behind..."
 
@@ -231,70 +231,70 @@ git reset --hard         # ❌
 git pull origin frontend-dev
 ```
 
-### Problem: Accidentally master branch पर चले गए
+### Problem: Galti se master branch pe chale gaye
 
 ```bash
 git checkout frontend-dev
 ```
 
-### Problem: Push नहीं हो रहा — Login माँग रहा है
+### Problem: Push nahi ho raha — Login maang raha hai
 
-GitHub Desktop install करो: https://desktop.github.com
-यह automatically login handle करता है। बाकी commands वैसे ही काम करेंगी।
+GitHub Desktop install karo: https://desktop.github.com
+Yeh automatically login handle karta hai. Baaki commands waise hi kaam karengi.
 
-### Problem: गलती से कोई file delete हो गई
+### Problem: Galti se koi file delete ho gayi
 
 ```bash
 git checkout -- filename.tsx
 ```
 
-### Problem: सब कुछ गड़बड़ हो गया
+### Problem: Sab kuch gadbad ho gaya
 
-Owner को immediately बताओ — कुछ भी permanently delete नहीं होता, fix हो सकता है।
+**Ghabrao mat!** Owner ko turant batao — Git mein koi bhi cheez permanently delete nahi hoti, sab fix ho sakta hai.
 
 ---
 
-## 8. Useful Commands Cheat Sheet
+## 8. Commands Cheat Sheet
 
 ```bash
-# देखो किस branch पर हो
+# Dekho kis branch pe ho
 git branch
 
-# frontend-dev पर जाओ
+# frontend-dev pe jao
 git checkout frontend-dev
 
 # Latest code lo
 git pull origin frontend-dev
 
-# Changed files देखो
+# Changed files dekho
 git status
 
-# सारे changes add करो
+# Saare changes add karo
 git add .
 
-# Save (commit) करो
+# Save (commit) karo
 git commit -m "message yahan"
 
-# GitHub पर upload (push) करो
+# GitHub pe upload (push) karo
 git push origin frontend-dev
 
-# पिछले commits देखो
+# Pichle commits dekho
 git log --oneline
 ```
 
 ---
 
-## 📞 Help चाहिए?
+## 📞 Help Chahiye?
 
-कोई भी problem आए तो:
+Koi bhi problem aaye toh:
 
-1. पहले इस guide को दोबारा पढ़ो
-2. Error message का screenshot लो
-3. Project owner को WhatsApp/Call करो
+1. Pehle is guide ko dobara padho
+2. Error message ka screenshot lo
+3. Project owner ko WhatsApp/Call karo
 
 ---
 
-> **Remember:** Git में कोई भी mistake permanent नहीं होती। घबराओ मत, owner को बताओ। 😊
+> **Yaad rakho:** Git mein koi bhi mistake permanent nahi hoti. Ghabrao mat, owner ko batao! 😊
 
 ---
 
