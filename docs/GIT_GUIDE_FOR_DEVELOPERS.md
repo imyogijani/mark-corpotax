@@ -66,21 +66,19 @@ Account bana lo aur apni **GitHub username** owner ko bhejo — woh tumhe projec
 
 1. Computer mein ek folder banao, jaise: `C:\Projects\`
 2. Us folder mein jao → Right click karo → **"Git Bash Here"** click karo
-3. Yeh commands ek-ek karke chalao:
+3. Yeh ek command chalao — clone aur branch dono ek saath ho jayenge:
 
 ```bash
-git clone https://github.com/imyogijani/mark-corpotax.git
+git clone -b frontend-dev https://github.com/imyogijani/mark-corpotax.git
 ```
+
+4. Project download ho jayega seedha `frontend-dev` branch ke saath! Ab folder mein jao:
 
 ```bash
 cd mark-corpotax
 ```
 
-```bash
-git checkout -b frontend-dev
-```
-
-> ✅ Bas! Ab tum `frontend-dev` branch pe ho — yahan se apna kaam shuru karo.
+> ✅ Bas! Tumhara project `frontend-dev` branch pe ready hai — ab kaam shuru karo.
 
 ---
 
