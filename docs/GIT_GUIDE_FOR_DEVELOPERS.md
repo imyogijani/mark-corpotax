@@ -66,17 +66,21 @@ Account bana lo aur apni **GitHub username** owner ko bhejo — woh tumhe projec
 
 1. Computer mein ek folder banao, jaise: `C:\Projects\`
 2. Us folder mein jao → Right click karo → **"Git Bash Here"** click karo
-3. Yeh command chalao:
+3. Yeh commands ek-ek karke chalao:
 
 ```bash
 git clone https://github.com/imyogijani/mark-corpotax.git
 ```
 
-4. Project download ho jayega! Ab us folder mein jao:
-
 ```bash
 cd mark-corpotax
 ```
+
+```bash
+git checkout -b frontend-dev
+```
+
+> ✅ Bas! Ab tum `frontend-dev` branch pe ho — yahan se apna kaam shuru karo.
 
 ---
 
@@ -93,22 +97,6 @@ GitHub Repository
 ```
 
 > **Rule #1:** Tum sirf `frontend-dev` branch pe kaam karoge. `master` ko kabhi touch mat karo!
-
-### Frontend-dev Branch pe Switch Karo
-
-Clone ke baad **ek baar** yeh command chalao:
-
-```bash
-git checkout -b frontend-dev
-```
-
-Verify karne ke liye:
-
-```bash
-git branch
-```
-
-Output mein `* frontend-dev` dikhna chahiye. `*` matlab — abhi is branch pe ho.
 
 ---
 
