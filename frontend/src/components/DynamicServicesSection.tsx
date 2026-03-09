@@ -62,11 +62,44 @@ const FALLBACK_SERVICES: ServiceItem[] = [
   },
 ];
 
+const TAXATION_FALLBACK: ServiceItem[] = [
+  {
+    title: "GST Filing & Compliance",
+    description:
+      "Expert GST registration, monthly returns, and audit support for businesses.",
+    icon: "FileText",
+    slug: "gst-compliance",
+  },
+  {
+    title: "Income Tax Advisory",
+    description:
+      "Strategic tax planning and return filing for individuals and corporate entities.",
+    icon: "Landmark",
+    slug: "tax-advisory",
+  },
+  {
+    title: "Company Registration",
+    description:
+      "End-to-end support for PVT LTD, LLP, and NGO formations and MCA filings.",
+    icon: "Building2",
+    slug: "company-registration",
+  },
+];
+
 export function DynamicServicesSection() {
   const [services, setServices] = useState<ServiceItem[]>(FALLBACK_SERVICES);
+  const [division, setDivision] = useState<string>("finance");
 
   const fetchContent = useCallback(async () => {
     try {
+      const savedDivision = localStorage.getItem("user_division");
+      if (savedDivision) {
+        setDivision(savedDivision);
+        if (savedDivision === "taxation") {
+          setServices(TAXATION_FALLBACK);
+        }
+      }
+
       const servicesContent = await contentService.getContentBySection(
         "services",
         "services_list",
@@ -130,15 +163,15 @@ export function DynamicServicesSection() {
   const displayServices = useMemo(() => services.slice(0, 3), [services]);
 
   return (
-    <section className="py-20 md:py-28 bg-slate-950 relative overflow-hidden">
-      <ScrollWatermark text="SOLUTIONS" className="top-20 left-10 opacity-20" />
+    <section className="py-20 md:py-28 bg-slate-50 relative overflow-hidden">
+      <ScrollWatermark text="SOLUTIONS" className="top-20 left-10 opacity-70 text-slate-200" />
 
       <div className="container mx-auto px-4 mb-20">
         <div className="relative text-center max-w-4xl mx-auto">
-          {/* Animated Watermark */}
+          {/* Animated Watermark - Light Theme */}
           <ScrollWatermark
             text="SERVICES"
-            className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-50 text-slate-200 uppercase"
           />
 
           <div className="relative z-10">
@@ -148,25 +181,25 @@ export function DynamicServicesSection() {
               viewport={{ once: false }}
               className="inline-flex items-center gap-2 mb-4"
             >
-              <span className="w-8 h-[2px] bg-blue-500"></span>
-              <span className="text-sm font-bold uppercase tracking-widest text-blue-400">
+              <span className="w-8 h-[2px] bg-blue-600"></span>
+              <span className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-600">
                 What We Offer
               </span>
-              <span className="w-8 h-[2px] bg-blue-500"></span>
+              <span className="w-8 h-[2px] bg-blue-600"></span>
             </motion.div>
 
             <motion.h2
-              className="text-4xl md:text-5xl font-bold mb-6 text-white"
+              className="text-4xl md:text-5xl font-black mb-6 text-slate-900 uppercase tracking-tighter"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
               transition={{ delay: 0.1 }}
             >
-              Comprehensive Financial Solutions
+              {division === "taxation" ? "Expert Advisory" : "Financial Solutions"}
             </motion.h2>
 
             <motion.p
-              className="text-lg text-slate-400 max-w-2xl mx-auto"
+              className="text-lg text-slate-600 max-w-2xl mx-auto font-medium"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: false }}
@@ -187,32 +220,32 @@ export function DynamicServicesSection() {
             <div key={index} className="relative group">
               <Link
                 href={service.slug ? `/services/${service.slug}` : "/services"}
-                className="relative block h-full w-full overflow-hidden rounded-[2.5rem] bg-slate-900/40 border border-white/5 p-10 text-left no-underline transition-all duration-700 hover:shadow-[0_30px_60px_rgba(0,0,0,0.6)] hover:-translate-y-4 hover:border-blue-500/30 group"
+                className="relative block h-full w-full overflow-hidden rounded-[2.5rem] bg-white border border-slate-100 p-10 text-left no-underline transition-all duration-700 shadow-[0_15px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_30px_70px_rgba(37,99,235,0.15)] hover:-translate-y-4 hover:border-blue-400 group"
               >
-                {/* Brand Gradient Background Reveal */}
+                {/* Brand Gradient Background Reveal - Light Theme */}
                 <div
                   className="absolute -right-24 -top-24 -z-0 h-48 w-48 rounded-full transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[15] opacity-0 group-hover:opacity-100"
-                  style={{ background: "linear-gradient(135deg, #0b4c80 0%, #1e40af 100%)" }}
+                  style={{ background: "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)" }}
                 ></div>
 
                 <div className="relative z-10 flex h-full flex-col justify-between">
                   <div>
                     <motion.div
-                      className="mb-8 p-4 w-20 h-20 rounded-2xl bg-white/5 border border-white/10 text-blue-400 transition-all duration-500 group-hover:bg-white/10 group-hover:text-white group-hover:border-white/20 group-hover:scale-110"
+                      className="mb-8 p-4 w-20 h-20 rounded-2xl bg-blue-50 border border-blue-100 text-blue-600 transition-all duration-500 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 group-hover:scale-110 shadow-inner"
                     >
                       {getIcon(service.icon || "")}
                     </motion.div>
 
-                    <h3 className="mb-4 text-2xl font-black text-white transition-colors duration-500 group-hover:text-white tracking-tight">
+                    <h3 className="mb-4 text-2xl font-black text-slate-800 transition-colors duration-500 group-hover:text-slate-900 tracking-tight uppercase">
                       {service.title}
                     </h3>
 
-                    <p className="text-lg text-slate-400 transition-colors duration-500 group-hover:text-blue-50/90 leading-relaxed font-medium">
+                    <p className="text-lg text-slate-600 transition-colors duration-500 group-hover:text-slate-700 leading-relaxed font-medium">
                       {service.description}
                     </p>
                   </div>
 
-                  <div className="mt-10 flex items-center text-sm font-bold uppercase tracking-widest text-blue-400 group-hover:text-white transition-all duration-500">
+                  <div className="mt-10 flex items-center text-sm font-bold uppercase tracking-widest text-blue-600 group-hover:text-blue-700 transition-all duration-500">
                     <span className="relative overflow-hidden inline-block">
                       <span className="inline-block transition-transform duration-500 group-hover:-translate-y-full">Explore Service</span>
                       <span className="absolute top-full left-0 inline-block transition-transform duration-500 group-hover:-translate-y-full">Explore Service</span>
@@ -221,8 +254,8 @@ export function DynamicServicesSection() {
                   </div>
                 </div>
 
-                {/* Decorative Pattern overlay */}
-                <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] group-hover:opacity-[0.05] transition-opacity" />
+                {/* Decorative Pattern overlay - Light Theme */}
+                <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] group-hover:opacity-[0.04] transition-opacity" />
               </Link>
             </div>
           ))}
@@ -231,7 +264,7 @@ export function DynamicServicesSection() {
           <Magnetic strength={0.3}>
             <Button
               asChild
-              className="text-white rounded-full px-8 py-3 h-12 font-medium transition-colors hover:opacity-90 border border-blue-600/20 bg-blue-600/10 hover:bg-blue-600/20 shadow-lg shadow-black/20"
+              className="text-white rounded-full px-8 py-3 h-12 font-bold transition-all hover:bg-blue-700 bg-blue-600 shadow-xl shadow-blue-500/20 active:scale-95"
             >
               <Link href="/services">View All Services</Link>
             </Button>

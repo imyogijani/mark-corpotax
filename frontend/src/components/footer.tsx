@@ -179,108 +179,101 @@ export function Footer() {
     serviceLinks.length > 0 ? serviceLinks : defaultServiceLinks;
 
   return (
-    <footer className="w-full border-t border-slate-800 bg-slate-950 text-slate-300">
-      <div className="container max-w-screen-xl py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+    <footer className="w-full border-t border-white/5 bg-slate-950 text-slate-400">
+      <div className="container max-w-screen-xl py-16 px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           <div className="footer-widget lg:col-span-2">
-            <div className="mb-6">
-              <Link href="/" className="brand-container inline-flex">
+            <div className="mb-8">
+              <Link href="/" className="brand-container inline-flex items-center gap-3 group">
                 <Logo
-                  className="object-contain flex-shrink-0"
+                  className="object-contain flex-shrink-0 transition-transform group-hover:scale-110 invert brightness-0"
                   width={48}
                   height={48}
                 />
                 <div className="brand-info">
-                  <span className="brand-text">{companyName}</span>
-                  <span className="brand-subtitle">{companyTagline}</span>
+                  <span className="text-xl font-black text-white tracking-tight block leading-tight uppercase">
+                    {companyName}
+                  </span>
+                  <span className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] block">
+                    {companyTagline}
+                  </span>
                 </div>
               </Link>
             </div>
-            <p className="text-slate-400 text-sm mb-4 leading-relaxed">
+            <p className="text-slate-400 text-sm mb-6 leading-relaxed max-w-sm font-medium">
               {companyDescription}
             </p>
-            <div className="text-slate-400 text-sm space-y-2 mb-6">
-              <p>
-                <strong className="text-white">Address:</strong> {address}
+            <div className="text-slate-400 text-sm space-y-3 mb-8">
+              <p className="flex items-start gap-2">
+                <strong className="text-white font-black min-w-[70px] uppercase text-[10px] tracking-widest">Address:</strong>
+                <span className="leading-relaxed opacity-80">{address}</span>
               </p>
-              <p>
-                <strong className="text-white">Finance Division:</strong>{" "}
-                {phoneFinance}
+              <p className="flex items-center gap-2">
+                <strong className="text-white font-black min-w-[70px] uppercase text-[10px] tracking-widest">Finance:</strong>
+                <Link href={`tel:${phoneFinance}`} className="hover:text-blue-400 transition-colors opacity-80">{phoneFinance}</Link>
               </p>
-              <p>
-                <strong className="text-white">Taxation Division:</strong>{" "}
-                {phoneTaxation}
+              <p className="flex items-center gap-2">
+                <strong className="text-white font-black min-w-[70px] uppercase text-[10px] tracking-widest">Taxation:</strong>
+                <Link href={`tel:${phoneTaxation}`} className="hover:text-blue-400 transition-colors opacity-80">{phoneTaxation}</Link>
               </p>
-              <p>
-                <strong className="text-white">Email:</strong> {email}
-              </p>
-              <p>
-                <strong className="text-white">Website:</strong> {website}
+              <p className="flex items-center gap-2">
+                <strong className="text-white font-black min-w-[70px] uppercase text-[10px] tracking-widest">Email:</strong>
+                <Link href={`mailto:${email}`} className="hover:text-blue-400 transition-colors uppercase tracking-wider text-[10px] font-bold opacity-80">{email}</Link>
               </p>
             </div>
             <div className="flex items-center gap-4">
               <Link
                 href={facebookUrl}
-                className="text-slate-400 hover:text-blue-400 transition-colors"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-blue-500/50 transition-all duration-300 shadow-xl group"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <motion.div
-                  whileHover={{ scale: 1.2, rotate: 10 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <Facebook size={20} />
+                <motion.div whileHover={{ scale: 1.2, rotate: 10 }}>
+                  <Facebook size={18} />
                 </motion.div>
               </Link>
               <Link
                 href={twitterUrl}
-                className="text-slate-400 hover:text-blue-400 transition-colors"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-blue-500/50 transition-all duration-300 shadow-xl group"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <motion.div
-                  whileHover={{ scale: 1.2, rotate: -10 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <Twitter size={20} />
+                <motion.div whileHover={{ scale: 1.2, rotate: -10 }}>
+                  <Twitter size={18} />
                 </motion.div>
               </Link>
               <Link
                 href={linkedinUrl}
-                className="text-slate-400 hover:text-blue-400 transition-colors"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-blue-500/50 transition-all duration-300 shadow-xl group"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <motion.div
-                  whileHover={{ scale: 1.2, y: -3 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <Linkedin size={20} />
+                <motion.div whileHover={{ scale: 1.2, y: -3 }}>
+                  <Linkedin size={18} />
                 </motion.div>
               </Link>
               <Link
                 href={instagramUrl}
-                className="text-slate-400 hover:text-blue-400 transition-colors"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-blue-500/50 transition-all duration-300 shadow-xl group"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <motion.div
-                  whileHover={{ scale: 1.2, rotate: 10 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <Instagram size={20} />
+                <motion.div whileHover={{ scale: 1.2, rotate: 10 }}>
+                  <Instagram size={18} />
                 </motion.div>
               </Link>
             </div>
           </div>
           <div className="footer-widget">
-            <h4 className="font-semibold text-white mb-4">{quickLinksTitle}</h4>
-            <ul className="space-y-2 text-sm">
+            <h4 className="font-black text-white mb-6 uppercase tracking-[0.3em] text-[10px]">
+              {quickLinksTitle}
+            </h4>
+            <ul className="space-y-3 text-sm font-bold uppercase tracking-widest text-[10px]">
               {displayQuickLinks.map((link, index) => (
                 <li key={index}>
                   <Link
                     href={link.url}
-                    className="text-slate-400 hover:text-blue-400 transition-colors"
+                    className="text-slate-500 hover:text-blue-400 transition-colors inline-block hover:translate-x-1 transition-transform"
                   >
                     {link.label}
                   </Link>
@@ -289,13 +282,15 @@ export function Footer() {
             </ul>
           </div>
           <div className="footer-widget">
-            <h4 className="font-semibold text-white mb-4">{servicesTitle}</h4>
-            <ul className="space-y-2 text-sm">
+            <h4 className="font-black text-white mb-6 uppercase tracking-[0.3em] text-[10px]">
+              {servicesTitle}
+            </h4>
+            <ul className="space-y-3 text-sm font-bold uppercase tracking-widest text-[10px]">
               {displayServiceLinks.map((link, index) => (
                 <li key={index}>
                   <Link
                     href={link.url}
-                    className="text-slate-400 hover:text-blue-400 transition-colors"
+                    className="text-slate-500 hover:text-blue-400 transition-colors inline-block hover:translate-x-1 transition-transform"
                   >
                     {link.label}
                   </Link>
@@ -304,34 +299,36 @@ export function Footer() {
             </ul>
           </div>
           <div className="footer-widget">
-            <h4 className="font-semibold text-white mb-4">{newsletterTitle}</h4>
-            <p className="text-slate-400 text-sm mb-4">
+            <h4 className="font-black text-white mb-6 uppercase tracking-[0.3em] text-[10px]">
+              {newsletterTitle}
+            </h4>
+            <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-6 leading-relaxed">
               {newsletterDescription}
             </p>
-            <form className="flex items-center gap-1 p-1 bg-slate-900 border border-slate-800 rounded-full shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 transition-shadow">
+            <form className="flex items-center gap-1 p-1 bg-white/5 border border-white/10 rounded-3xl shadow-2xl focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
               <Input
                 type="email"
-                placeholder="Your email"
-                className="flex-grow bg-transparent border-none shadow-none text-white placeholder:text-slate-500 focus-visible:ring-0 pl-4 h-9 min-w-0"
+                placeholder="EMAIL ADDRESS"
+                className="flex-grow bg-transparent border-none shadow-none text-white placeholder:text-slate-600 focus-visible:ring-0 pl-4 h-10 min-w-0 font-black text-[10px] tracking-widest"
               />
               <Button
                 type="submit"
                 size="sm"
-                className="rounded-full bg-blue-600 hover:bg-blue-700 text-white px-4 h-9 text-xs font-medium transition-colors"
+                className="rounded-2xl bg-blue-600 hover:bg-white hover:text-slate-950 text-white px-5 h-10 text-[10px] font-black uppercase tracking-widest transition-all"
               >
-                Subscribe
+                Join
               </Button>
             </form>
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-sm text-slate-500">
-          <p>{copyrightText}</p>
-          <div className="flex gap-4 mt-4 sm:mt-0">
-            <Link href="/privacy-policy" className="hover:text-blue-400">
+        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center text-[9px] font-black uppercase tracking-[0.3em] text-slate-600 text-center gap-6">
+          <p className="hover:text-slate-400 transition-colors cursor-default">{copyrightText}</p>
+          <div className="flex gap-8">
+            <Link href="/privacy-policy" className="hover:text-blue-400 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms-of-service" className="hover:text-blue-400">
+            <Link href="/terms-of-service" className="hover:text-blue-400 transition-colors">
               Terms of Service
             </Link>
           </div>

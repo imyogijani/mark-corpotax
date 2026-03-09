@@ -5,10 +5,12 @@ import LandingChoice from "@/components/LandingChoice";
 import { ComponentRenderer } from "@/components/ComponentRenderer";
 import CurtainTransition from "@/components/CurtainTransition";
 import { apiClient } from "@/lib/api-client";
+import { ChangeDivisionButton } from "@/components/ChangeDivisionButton";
 
 // Default fallback components if layout fetch fails
 const FALLBACK_COMPONENTS = [
   { id: "hero-1", type: "HomeHero", props: {} },
+  { id: "honeycomb-1", type: "Honeycomb", props: {} },
   { id: "about-1", type: "About", props: {} },
   { id: "features-1", type: "Features", props: {} },
   { id: "services-1", type: "Services", props: {} },
@@ -86,17 +88,10 @@ export default function Home() {
         <ComponentRenderer components={layoutComponents} />
       )}
 
-      {/* Reset Choice Button (Floating for Dev/Testing) */}
-      <button
-        onClick={() => {
-          localStorage.removeItem("user_division");
-          setDivision(null);
-          setShowTransition(false);
-        }}
-        className="fixed bottom-4 right-4 z-50 p-2 bg-slate-800 text-white text-xs rounded-full opacity-50 hover:opacity-100 transition-opacity"
-      >
-        Reset Choice
-      </button>
+      {/* Reset Choice Button */}
+      <div className="fixed bottom-8 right-8 z-[100]">
+        <ChangeDivisionButton />
+      </div>
     </div>
   );
 }

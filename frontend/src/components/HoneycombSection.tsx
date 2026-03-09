@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { animate, stagger } from "animejs";
 import {
@@ -15,115 +15,136 @@ import {
   Cpu,
   Gavel,
   LineChart,
+  ShieldCheck,
 } from "lucide-react";
+import { ChangeDivisionButton } from "./ChangeDivisionButton";
 
 interface HoneycombItem {
   icon: React.ElementType;
   title: string;
 }
 
-const defaultItems: HoneycombItem[] = [
-  { icon: ClipboardCheck, title: "Registration & Licensing" },
+const financeItems: HoneycombItem[] = [
   { icon: Briefcase, title: "Project Management" },
   { icon: Factory, title: "MSME Consultancy" },
   { icon: Banknote, title: "Subsidy Consultancy" },
   { icon: Building2, title: "Industrial Liaisoning" },
-  { icon: Scale, title: "Taxation Services" },
   { icon: BarChart3, title: "Credit Monitoring" },
-  { icon: FileSearch, title: "Valuation Services" },
-  { icon: Cpu, title: "Digital Solutions" },
-  { icon: Gavel, title: "Legal Support" },
   { icon: LineChart, title: "Financial Analysis" },
+  { icon: Scale, title: "Legal Support" },
+  { icon: ClipboardCheck, title: "Registration" },
+  { icon: Building2, title: "Business Setup" },
+  { icon: Cpu, title: "Digital Solutions" },
+  { icon: FileSearch, title: "Valuation" },
+];
+
+const taxationItems: HoneycombItem[] = [
+  { icon: Scale, title: "Income Tax filing" },
+  { icon: FileSearch, title: "GST Compliance" },
+  { icon: ClipboardCheck, title: "Audit & Assurance" },
+  { icon: Building2, title: "Company Formation" },
+  { icon: Banknote, title: "Tax Planning" },
+  { icon: Gavel, title: "Legal Advisory" },
+  { icon: FileSearch, title: "TDS Compliance" },
+  { icon: ShieldCheck, title: "IPR Registration" },
+  { icon: Building2, title: "NGO Registration" },
+  { icon: Factory, title: "Import Export" },
+  { icon: ClipboardCheck, title: "FSSAI License" },
 ];
 
 export default function HoneycombSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [items, setItems] = React.useState<HoneycombItem[]>(financeItems);
+  const [division, setDivision] = React.useState<string>("finance");
 
   useEffect(() => {
+    const savedDivision = localStorage.getItem("user_division");
+    if (savedDivision) {
+      setDivision(savedDivision);
+      setItems(savedDivision === "taxation" ? taxationItems : financeItems);
+    }
+
+    // High-end reveal animation
     animate(".honeycomb-tile", {
-      scale: [0, 1],
       opacity: [0, 1],
-      translateY: [20, 0],
-      easing: "easeOutElastic(1, .8)",
-      duration: 1000,
-      delay: stagger(100),
+      scale: [0.7, 1],
+      translateY: [40, 0],
+      duration: 1200,
+      delay: stagger(80),
+      easing: "easeOutQuart",
     });
   }, []);
 
   return (
-    <section className="py-24 bg-[#0b4c80] relative overflow-hidden text-white">
-      {/* Background Honeycomb Pattern */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern
-              id="hexagons"
-              width="100"
-              height="173.2"
-              patternUnits="userSpaceOnUse"
-              patternTransform="scale(0.5)"
-            >
-              <polygon
-                points="50,0 100,25 100,75 50,100 0,75 0,25"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-              />
-              <polygon
-                points="50,86.6 100,111.6 100,161.6 50,186.6 0,161.6 0,111.6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-              />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#hexagons)" />
+    <section className="py-24 md:py-32 bg-[#0074E4] relative overflow-hidden font-sans">
+      {/* Structural Pattern Background - Dashboard Style */}
+      <div className="absolute inset-0 opacity-[0.2] pointer-events-none">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
+            backgroundSize: '40px 40px'
+          }}
+        />
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M0 40 Q 50 30 100 40" stroke="white" fill="none" strokeWidth="0.1" className="animate-pulse" />
+          <path d="M0 70 Q 50 60 100 70" stroke="white" fill="none" strokeWidth="0.1" className="animate-pulse" style={{ animationDelay: '2s' }} />
         </svg>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">The Mark Edge</h2>
-          <p className="text-blue-100/70 max-w-2xl mx-auto">
-            Comprehensive solutions tailored for your business excellence.
-          </p>
-        </div>
+        <header className="text-center mb-16 md:mb-24 flex flex-col items-center">
+          <ChangeDivisionButton
+            shouldAnimate={true}
+            className="mb-10 bg-white/10 border-white/20 hover:bg-white/20 shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+          />
 
-        {/* Honeycomb Grid Container */}
-        <div className="flex flex-col items-center justify-center space-y-[-20px] md:space-y-[-40px]">
-          {/* Row 1: 1 hex */}
-          <div className="flex justify-center">
-            <HexTile item={defaultItems[0]} />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="text-white flex flex-col items-center"
+          >
+            <span className="text-white/50 text-[10px] font-black uppercase tracking-[0.5em] mb-4">
+              Comprehensive Solutions
+            </span>
+            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight mb-4">
+              {division === "finance" ? "Finance Ecosystem" : "Taxation Interface"}
+            </h2>
+            <div className="w-24 h-1.5 bg-white rounded-full shadow-lg" />
+          </motion.div>
+        </header>
+
+        {/* 1-2-3-2-3 Dashboard Interlocking Grid matches reference image */}
+        <div className="flex flex-col items-center justify-center space-y-[-24px] md:space-y-[-42px]">
+          {/* Row 1 (Center Top) */}
+          <div className="flex justify-center z-50">
+            <HexTile item={items[0]} delay={0.1} />
           </div>
 
-          {/* Row 2: 2 hexes */}
-          <div className="flex justify-center space-x-[-15px] md:space-x-[-30px]">
-            <HexTile item={defaultItems[1]} />
-            <HexTile item={defaultItems[2]} />
+          {/* Row 2 (Sides) */}
+          <div className="flex justify-center space-x-[8px] md:space-x-[15px] z-40">
+            <HexTile item={items[1]} delay={0.2} />
+            <HexTile item={items[2]} delay={0.2} />
           </div>
 
-          {/* Row 3: 3 hexes */}
-          <div className="flex justify-center space-x-[-15px] md:space-x-[-30px]">
-            <HexTile item={defaultItems[3]} />
-            <HexTile item={defaultItems[4]} />
-            <HexTile item={defaultItems[5]} />
+          {/* Row 3 (Main Row) */}
+          <div className="flex justify-center space-x-[8px] md:space-x-[15px] z-30">
+            <HexTile item={items[3]} delay={0.3} />
+            <HexTile item={items[4]} delay={0.3} />
+            <HexTile item={items[5]} delay={0.3} />
           </div>
 
-          {/* Row 4: 2 hexes */}
-          <div className="flex justify-center space-x-[-15px] md:space-x-[-30px]">
-            <HexTile item={defaultItems[6]} />
-            <HexTile item={defaultItems[7]} />
+          {/* Row 4 (Lower Sides) */}
+          <div className="flex justify-center space-x-[8px] md:space-x-[15px] z-20">
+            <HexTile item={items[6]} delay={0.4} />
+            <HexTile item={items[7]} delay={0.4} />
           </div>
 
-          {/* Row 5: 2 hexes */}
-          <div className="flex justify-center space-x-[-15px] md:space-x-[-30px]">
-            <HexTile item={defaultItems[8]} />
-            <HexTile item={defaultItems[9]} />
-          </div>
-
-          {/* Row 6: 1 hex */}
-          <div className="flex justify-center">
-            <HexTile item={defaultItems[10]} />
+          {/* Row 5 (Base) */}
+          <div className="flex justify-center space-x-[8px] md:space-x-[15px] z-10">
+            <HexTile item={items[8]} delay={0.5} />
+            <HexTile item={items[9]} delay={0.5} />
+            <HexTile item={items[10]} delay={0.5} />
           </div>
         </div>
       </div>
@@ -131,35 +152,66 @@ export default function HoneycombSection() {
   );
 }
 
-function HexTile({ item }: { item: HoneycombItem }) {
+function HexTile({ item, delay }: { item: HoneycombItem; delay: number }) {
   const Icon = item.icon;
 
   return (
     <motion.div
-      whileHover={{ scale: 1.1, zIndex: 20 }}
-      className="honeycomb-tile relative w-[140px] h-[160px] md:w-[180px] md:h-[200px] flex items-center justify-center transition-all duration-300 opacity-0 group"
+      whileHover={{
+        scale: 1.05,
+        zIndex: 100,
+        transition: { type: "spring", stiffness: 400, damping: 25 }
+      }}
+      className="honeycomb-tile relative w-[100px] h-[115px] md:w-[180px] md:h-[208px] flex items-center justify-center transition-all duration-300 opacity-0 group isolate"
     >
-      {/* SVG Hexagon Shape */}
+      {/* Precise White Dashboard Hexagon Shape */}
       <svg
-        className="absolute inset-0 w-full h-full drop-shadow-xl"
+        className="absolute inset-0 w-full h-full drop-shadow-[0_4px_10px_rgba(0,0,0,0.1)] transition-all duration-300 group-hover:drop-shadow-[0_10px_30px_rgba(0,0,0,0.2)]"
         viewBox="0 0 100 115"
       >
+        {/* Shadow/Outline */}
         <polygon
-          points="50,5 95,30 95,85 50,110 5,85 5,30"
-          className="fill-white group-hover:fill-blue-50 transition-colors duration-300 pointer-events-auto"
+          points="50,2 98,30 98,85 50,113 2,85 2,30"
+          className="fill-white"
         />
+
+        {/* Precise Blue Border - matches image blue */}
         <polygon
-          points="50,5 95,30 95,85 50,110 5,85 5,30"
-          className="fill-none stroke-blue-200 group-hover:stroke-blue-400 stroke-[2] transition-colors duration-300"
+          points="50,2 98,30 98,85 50,113 2,85 2,30"
+          className="fill-none stroke-[#0074E4] stroke-[1.2] opacity-80"
+        />
+
+        {/* Origami Focal Geometry Highlight (matches reference) */}
+        <polygon
+          points="50,2 98,30 50,57.5 2,30"
+          className="fill-slate-100 opacity-20 pointer-events-none"
+        />
+
+        {/* Reflective Glossy Top Overlay */}
+        <polygon
+          points="50,2 98,30 80,45 50,57.5 20,45 2,30"
+          className="fill-white opacity-40 pointer-events-none"
         />
       </svg>
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center p-4 text-center pointer-events-none">
-        <Icon className="w-8 h-8 md:w-10 md:h-10 text-[#0b4c80] mb-2 group-hover:scale-110 transition-transform duration-300" />
-        <span className="text-[10px] md:text-sm font-bold text-slate-800 leading-tight">
+      {/* Content Layout per Image style */}
+      <div className="relative z-10 flex flex-col items-center justify-center p-3 md:p-6 text-center w-full h-full group-hover:scale-105 transition-transform duration-500">
+        <div className="mb-2 md:mb-5">
+          <Icon className="w-7 h-7 md:w-12 md:h-12 text-[#0074E4]" strokeWidth={1.5} />
+        </div>
+
+        <h3 className="text-[8px] md:text-[13px] font-bold text-slate-800 leading-tight md:leading-snug max-w-[85%] mx-auto">
           {item.title}
-        </span>
+        </h3>
+      </div>
+
+      {/* Shine Sweep animation on hover */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000">
+        <motion.div
+          animate={{ x: [-200, 200] }}
+          transition={{ duration: 1.2, repeat: Infinity, repeatDelay: 1 }}
+          className="w-[200px] h-[300px] bg-white/20 blur-xl rotate-[45deg] origin-center"
+        />
       </div>
     </motion.div>
   );
