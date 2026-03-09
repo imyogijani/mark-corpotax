@@ -176,25 +176,46 @@ export function DynamicTeamSection() {
       </div>
 
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap justify-center gap-8">
+        <div className="flex flex-wrap justify-center gap-10">
           {teamMembers.map((member, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
-              transition={{ delay: index * 0.1 }}
-              className="w-full sm:w-72"
+              transition={{
+                duration: 0.6,
+                delay: index * 0.1,
+                ease: "easeOut"
+              }}
+              className="w-full sm:w-80 group"
             >
-              <Card className="text-center p-8 border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 rounded-2xl bg-white overflow-hidden group">
-                <div className="mb-6 relative">
-                  <div className="absolute inset-0 bg-[#0b4c80] opacity-0 group-hover:opacity-10 rounded-full transition-opacity duration-300 transform scale-125"></div>
-                  <FinanceAvatar />
+              <Card className="relative text-center p-10 border-0 shadow-xl transition-all duration-500 rounded-[2rem] bg-white overflow-hidden group-hover:-translate-y-4 group-hover:shadow-[0_40px_80px_rgba(0,0,0,0.1)]">
+                {/* Decorative Gradient Background */}
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-600 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                <div className="mb-8 relative">
+                  <div className="absolute inset-0 bg-blue-600 opacity-0 group-hover:opacity-10 rounded-full transition-all duration-500 transform group-hover:scale-150"></div>
+                  <div className="relative z-10 transition-transform duration-500 group-hover:scale-110">
+                    <FinanceAvatar />
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-1 text-slate-800 group-hover:text-[#0b4c80] transition-colors">
+
+                <h3 className="text-2xl font-black mb-2 text-slate-900 group-hover:text-blue-600 transition-colors tracking-tight">
                   {member?.name}
                 </h3>
-                <p className="text-slate-500 font-medium">{member?.title}</p>
+                <p className="text-blue-500 font-bold uppercase tracking-widest text-xs">
+                  {member?.title}
+                </p>
+
+                {/* Social Placeholder Dots */}
+                <div className="flex justify-center gap-3 mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors cursor-pointer">
+                      <div className="w-4 h-4 rounded-full bg-current opacity-20" />
+                    </div>
+                  ))}
+                </div>
               </Card>
             </motion.div>
           ))}

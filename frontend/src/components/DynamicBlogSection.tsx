@@ -104,14 +104,17 @@ export function DynamicBlogSection() {
   const blogPosts = useMemo(() => blogSection?.blog_posts || [], [blogSection]);
 
   return (
-    <section className="py-20 md:py-28 bg-slate-50 relative overflow-hidden">
+    <section className="py-24 md:py-32 bg-slate-950 relative overflow-hidden">
+      {/* Background flair */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-600/5 blur-[120px] rounded-full -z-10" />
+
       <div className="container mx-auto px-4 mb-20">
         <div className="relative text-center max-w-4xl mx-auto">
           {/* Animated Watermark */}
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[5rem] md:text-[9rem] opacity-5 font-black text-slate-900 whitespace-nowrap select-none pointer-events-none tracking-tighter"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 0.05, scale: 1 }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10vw] font-black text-white/[0.02] select-none pointer-events-none tracking-tighter"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: false }}
             transition={{ duration: 1 }}
           >
@@ -123,18 +126,18 @@ export function DynamicBlogSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
-              className="inline-flex items-center gap-2 mb-4"
+              className="inline-flex items-center gap-3 mb-6"
             >
-              <span className="w-8 h-[2px] bg-blue-600"></span>
-              <span className="text-sm font-bold uppercase tracking-widest text-blue-600">
-                Latest Updates
+              <span className="w-8 h-[2px] bg-blue-500"></span>
+              <span className="text-sm font-bold uppercase tracking-widest text-blue-400">
+                Knowledge Hub
               </span>
-              <span className="w-8 h-[2px] bg-blue-600"></span>
+              <span className="w-8 h-[2px] bg-blue-500"></span>
             </motion.div>
 
             <motion.h2
-              className="text-4xl md:text-5xl font-bold mb-6 text-slate-900"
-              initial={{ opacity: 0, y: 20 }}
+              className="text-4xl md:text-6xl font-black mb-8 text-white tracking-tighter"
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
               transition={{ delay: 0.1 }}
@@ -143,7 +146,7 @@ export function DynamicBlogSection() {
             </motion.h2>
 
             <motion.p
-              className="text-lg text-slate-600 max-w-2xl mx-auto"
+              className="text-xl text-slate-400 max-w-2xl mx-auto font-medium"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: false }}
@@ -157,55 +160,55 @@ export function DynamicBlogSection() {
       </div>
 
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
           {blogPosts.map((post, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
-              transition={{ delay: index * 0.1 }}
+              transition={{
+                duration: 0.8,
+                delay: index * 0.15,
+                ease: "easeOut"
+              }}
             >
-              <Card className="group overflow-hidden hover:shadow-2xl transition-all duration-300 border-0 rounded-2xl h-full flex flex-col bg-white">
-                <div className="h-56 relative overflow-hidden bg-blue-50/50 flex items-center justify-center">
-                  <div className="transform transition-transform duration-700 group-hover:scale-110 opacity-60">
+              <Card className="group relative overflow-hidden bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] h-full flex flex-col transition-all duration-500 hover:border-blue-500/30 hover:-translate-y-4 hover:shadow-[0_40px_80px_rgba(0,0,0,0.4)]">
+                <div className="h-64 relative overflow-hidden bg-slate-900 flex items-center justify-center p-8">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="relative z-10 transform transition-all duration-700 group-hover:scale-125 group-hover:rotate-6">
                     {getIcon(index)}
                   </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
                 </div>
-                <CardContent className="p-8 flex-1 flex flex-col">
-                  <div className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-3">
+
+                <CardContent className="p-10 flex-1 flex flex-col">
+                  <div className="text-xs font-black text-blue-400 uppercase tracking-[0.2em] mb-4">
                     {post?.category}
                   </div>
-                  <h3 className="text-xl font-bold mb-4 text-slate-900 leading-tight group-hover:text-blue-700 transition-colors">
+                  <h3 className="text-2xl font-black mb-6 text-white leading-tight group-hover:text-blue-400 transition-colors tracking-tight">
                     {post?.title}
                   </h3>
-                  <div className="mt-auto pt-4">
-                    <Button
-                      variant="link"
-                      className="p-0 h-auto text-slate-500 group-hover:text-blue-600 transition-colors font-semibold"
-                      asChild
-                    >
-                      <Link href="/blog" className="flex items-center gap-2">
-                        Read Article{" "}
-                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                      </Link>
-                    </Button>
+                  <div className="mt-auto">
+                    <button className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-slate-500 group-hover:text-white transition-all duration-300">
+                      Read Details
+                      <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" />
+                    </button>
                   </div>
                 </CardContent>
               </Card>
             </motion.div>
           ))}
         </div>
-        <div className="text-center mt-16">
-          <Button
-            asChild
-            size="lg"
-            className="rounded-full px-8 py-6 text-base font-semibold shadow-lg shadow-blue-900/10 hover:shadow-blue-900/20"
-            style={{ backgroundColor: "#0b4c80" }}
-          >
-            <Link href="/blog">View All Articles</Link>
-          </Button>
+
+        <div className="text-center mt-20">
+          <Link href="/blog">
+            <button className="h-16 px-12 rounded-2xl bg-white/5 border border-white/10 text-white font-bold text-lg hover:bg-blue-600 hover:border-blue-600 transition-all duration-300 shadow-xl group">
+              <span className="flex items-center gap-3">
+                Explore All Articles
+                <TrendingUp className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </span>
+            </button>
+          </Link>
         </div>
       </div>
     </section>

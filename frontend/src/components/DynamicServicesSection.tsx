@@ -180,51 +180,51 @@ export function DynamicServicesSection() {
 
       <div className="container mx-auto px-4">
         <StaggerContainer
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-10"
           viewport={{ once: false, amount: 0.1 }}
         >
           {displayServices.map((service, index) => (
-            <StaggerItem key={index} hoverEffect={false}>
+            <div key={index} className="relative group">
               <Link
                 href={service.slug ? `/services/${service.slug}` : "/services"}
-                className="group relative block h-full w-full overflow-hidden rounded-2xl bg-slate-900/40 border border-slate-800 p-8 text-left no-underline transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:-translate-y-2 hover:border-blue-500/50"
+                className="relative block h-full w-full overflow-hidden rounded-[2.5rem] bg-slate-900/40 border border-white/5 p-10 text-left no-underline transition-all duration-700 hover:shadow-[0_30px_60px_rgba(0,0,0,0.6)] hover:-translate-y-4 hover:border-blue-500/30 group"
               >
-                {/* Expanding Circle Background - Using Brand Blue */}
+                {/* Brand Gradient Background Reveal */}
                 <div
-                  className="absolute -right-20 -top-20 -z-0 h-40 w-40 rounded-full transition-transform duration-700 ease-in-out group-hover:scale-[20]"
-                  style={{ backgroundColor: "#0b4c80" }}
+                  className="absolute -right-24 -top-24 -z-0 h-48 w-48 rounded-full transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[15] opacity-0 group-hover:opacity-100"
+                  style={{ background: "linear-gradient(135deg, #0b4c80 0%, #1e40af 100%)" }}
                 ></div>
-
-                {/* Go Corner */}
-                <div
-                  className="absolute right-0 top-0 flex h-16 w-16 items-center justify-center overflow-hidden rounded-bl-[50px] z-10 transition-opacity duration-300 group-hover:opacity-0"
-                  style={{
-                    background: "linear-gradient(135deg, #6293c8, #0b4c80)",
-                  }}
-                >
-                  <div className="absolute top-4 right-4 font-mono text-xl text-white">
-                    →
-                  </div>
-                </div>
 
                 <div className="relative z-10 flex h-full flex-col justify-between">
                   <div>
-                    <div className="mb-6 text-blue-400 transition-colors duration-500 group-hover:text-white">
+                    <motion.div
+                      className="mb-8 p-4 w-20 h-20 rounded-2xl bg-white/5 border border-white/10 text-blue-400 transition-all duration-500 group-hover:bg-white/10 group-hover:text-white group-hover:border-white/20 group-hover:scale-110"
+                    >
                       {getIcon(service.icon || "")}
-                    </div>
-                    <h3 className="mb-3 text-xl font-bold text-white transition-colors duration-500 group-hover:text-white">
+                    </motion.div>
+
+                    <h3 className="mb-4 text-2xl font-black text-white transition-colors duration-500 group-hover:text-white tracking-tight">
                       {service.title}
                     </h3>
-                    <p className="text-base text-slate-400 transition-colors duration-500 group-hover:text-white/90">
+
+                    <p className="text-lg text-slate-400 transition-colors duration-500 group-hover:text-blue-50/90 leading-relaxed font-medium">
                       {service.description}
                     </p>
                   </div>
-                  <div className="mt-8 flex items-center text-sm font-bold text-[#0b4c80] opacity-0 transition-all duration-500 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 group-hover:text-white">
-                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
+
+                  <div className="mt-10 flex items-center text-sm font-bold uppercase tracking-widest text-blue-400 group-hover:text-white transition-all duration-500">
+                    <span className="relative overflow-hidden inline-block">
+                      <span className="inline-block transition-transform duration-500 group-hover:-translate-y-full">Explore Service</span>
+                      <span className="absolute top-full left-0 inline-block transition-transform duration-500 group-hover:-translate-y-full">Explore Service</span>
+                    </span>
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-500 group-hover:translate-x-2" />
                   </div>
                 </div>
+
+                {/* Decorative Pattern overlay */}
+                <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] group-hover:opacity-[0.05] transition-opacity" />
               </Link>
-            </StaggerItem>
+            </div>
           ))}
         </StaggerContainer>
         <div className="text-center mt-12">

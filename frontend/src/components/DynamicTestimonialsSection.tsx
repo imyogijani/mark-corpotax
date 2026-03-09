@@ -299,20 +299,22 @@ export function DynamicTestimonialsSection() {
           {/* Testimonial Card with Animation */}
           <div className="overflow-hidden px-4 md:px-0">
             <div
-              className={`transition-all duration-700 ease-in-out transform ${
-                isAnimating
+              className={`transition-all duration-700 ease-in-out transform ${isAnimating
                   ? slideDirection === "right"
                     ? "-translate-x-8 opacity-0"
                     : "translate-x-8 opacity-0"
                   : "translate-x-0 opacity-100"
-              }`}
+                }`}
             >
-              <Card className="p-10 md:p-14 text-center shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border-0 bg-white rounded-3xl relative">
+              <Card className="p-10 md:p-16 text-center shadow-[0_40px_100px_rgba(0,0,0,0.1)] border-0 bg-white/5 backdrop-blur-2xl rounded-[3rem] relative overflow-hidden group">
+                {/* Glass Glow */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2" />
+
                 <motion.div
-                  className="absolute top-10 left-10 opacity-10"
+                  className="absolute top-12 left-12 opacity-10 group-hover:opacity-20 transition-opacity"
                   animate={{
                     scale: [1, 1.1, 1],
-                    opacity: [0.1, 0.15, 0.1],
+                    y: [0, -5, 0],
                   }}
                   transition={{
                     duration: 4,
@@ -320,46 +322,44 @@ export function DynamicTestimonialsSection() {
                     ease: "easeInOut",
                   }}
                 >
-                  <Quote className="w-16 h-16 text-[#0b4c80]" />
+                  <Quote className="w-20 h-20 text-blue-400" />
                 </motion.div>
 
-                {/* Stars */}
-                <div className="flex justify-center mb-8 gap-1">
-                  {[...Array(currentTestimonial?.rating || 5)].map((_, i) => (
+                {/* Stars - Animated */}
+                <div className="flex justify-center mb-10 gap-2">
+                  {[...Array(5)].map((_, i) => (
                     <motion.span
                       key={i}
                       initial={{ opacity: 0, scale: 0 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.3 + i * 0.1 }}
-                      className="text-yellow-400 text-xl"
+                      transition={{ delay: 0.3 + i * 0.1, type: "spring" }}
+                      className="text-yellow-400 text-2xl drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]"
                     >
                       ★
                     </motion.span>
                   ))}
                 </div>
 
-                {/* Quote */}
-                <blockquote className="text-xl md:text-2xl text-slate-700 mb-10 leading-relaxed font-medium">
-                  &quot;
-                  {currentTestimonial?.quote || currentTestimonial?.content}
-                  &quot;
-                </blockquote>
-
-                {/* Author */}
-                <div className="flex flex-col items-center justify-center gap-4">
-                  <div className="mb-2">
+                {/* Author Info First - Modern Layout */}
+                <div className="flex flex-col items-center justify-center gap-6 mb-12">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-blue-600 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity" />
                     <FinanceAvatar />
                   </div>
                   <div className="text-center">
-                    <div className="font-bold text-slate-900 text-xl mb-1">
+                    <div className="font-black text-white text-2xl mb-1 tracking-tight">
                       {currentTestimonial?.name}
                     </div>
-                    <div className="text-sm font-semibold uppercase tracking-wide text-[#0b4c80]">
-                      {currentTestimonial?.title ||
-                        currentTestimonial?.designation}
+                    <div className="text-xs font-bold uppercase tracking-[0.2em] text-blue-400">
+                      {currentTestimonial?.title || currentTestimonial?.designation}
                     </div>
                   </div>
                 </div>
+
+                {/* Quote with Better Typography */}
+                <blockquote className="text-xl md:text-3xl text-slate-300 mb-6 leading-snug font-bold tracking-tight max-w-2xl mx-auto italic">
+                  &quot;{currentTestimonial?.quote || currentTestimonial?.content}&quot;
+                </blockquote>
               </Card>
             </div>
           </div>
@@ -371,11 +371,10 @@ export function DynamicTestimonialsSection() {
                 <button
                   key={index}
                   onClick={() => goToSlide(index)}
-                  className={`h-2 rounded-full transition-all duration-500 ${
-                    index === currentIndex
+                  className={`h-2 rounded-full transition-all duration-500 ${index === currentIndex
                       ? "w-8 bg-[#0b4c80]"
                       : "w-2 bg-slate-300 hover:bg-slate-400"
-                  }`}
+                    }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
               ))}

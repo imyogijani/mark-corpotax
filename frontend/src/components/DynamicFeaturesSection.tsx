@@ -221,31 +221,46 @@ export function DynamicFeaturesSection() {
       </div>
 
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
-              transition={{ delay: index * 0.1 }}
+              transition={{
+                duration: 0.8,
+                delay: index * 0.15,
+                ease: [0.21, 1.11, 0.81, 0.99]
+              }}
             >
-              <Card className="text-center p-8 border border-slate-100 shadow-[0_5px_30px_-5px_rgba(0,0,0,0.05)] hover:shadow-xl transition-all duration-300 h-full group bg-white hover:-translate-y-2 rounded-2xl">
-                <div
-                  className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 transition-all duration-300 group-hover:bg-[#0b4c80] group-hover:rotate-3"
-                  style={{ backgroundColor: "#0b4c8010" }}
-                >
-                  <div className="[&>svg]:w-10 [&>svg]:h-10 transition-colors group-hover:text-white text-[#0b4c80]">
-                    {getIcon(feature.icon || "", index)}
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-slate-800">
-                  {feature.title}
-                </h3>
-                <p className="text-slate-500 leading-relaxed">
-                  {feature.description}
-                </p>
-              </Card>
+              <div className="relative group h-full">
+                {/* Card Glow Effect */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-3xl blur opacity-0 group-hover:opacity-20 transition duration-1000 group-hover:duration-200" />
+
+                <Card className="relative h-full text-center p-10 border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl transition-all duration-500 rounded-3xl overflow-hidden group-hover:-translate-y-4">
+                  {/* Icon Container with Floating Animation */}
+                  <motion.div
+                    animate={{ y: [0, -10, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }}
+                    className="w-24 h-24 rounded-[2rem] flex items-center justify-center mx-auto mb-8 bg-blue-500/10 text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500"
+                  >
+                    <div className="[&>svg]:w-12 [&>svg]:h-12">
+                      {getIcon(feature.icon || "", index)}
+                    </div>
+                  </motion.div>
+
+                  <h3 className="text-2xl font-black mb-4 text-white tracking-tight group-hover:text-blue-400 transition-colors">
+                    {feature.title}
+                  </h3>
+                  <p className="text-slate-400 leading-relaxed font-medium">
+                    {feature.description}
+                  </p>
+
+                  {/* Corner Accent */}
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-blue-600/20 to-transparent -translate-x-full -translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-500" />
+                </Card>
+              </div>
             </motion.div>
           ))}
         </div>
