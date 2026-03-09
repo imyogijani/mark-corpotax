@@ -37,12 +37,20 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "api.dicebear.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
     // Use only webp for better transparency support (avif can have issues with alpha channel)
     formats: ["image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days cache
     // Disable optimization for local images to preserve transparency
     unoptimized: false,
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "attachment",
   },
 
   // Enable React strict mode for better development

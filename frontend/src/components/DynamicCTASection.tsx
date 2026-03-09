@@ -54,39 +54,43 @@ export function DynamicCTASection() {
   }, [fetchContent]);
 
   return (
-    <section
-      className="subscribe-cta-section py-16 md:py-20"
-      style={{ backgroundColor: "#fbfbfc" }}
-    >
-      <div className="container mx-auto px-4 text-center text-gray-900">
+    <section className="py-20 bg-slate-50 relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100/20 rounded-full blur-[120px] -z-10" />
+
+      <div className="container mx-auto px-6 text-center">
         <Link
           href="/"
-          className="flex items-center justify-center space-x-2 mb-4"
+          className="flex items-center justify-center gap-4 mb-8 group"
         >
-          <Logo className="h-10 w-10 text-primary" />
-          <span className="text-2xl font-bold">
-            {ctaSection?.logoText || "Mark Corpotax"}
-          </span>
+          <Logo className="h-12 w-12 transition-transform group-hover:scale-110" />
+          <div className="text-left">
+            <span className="text-2xl font-black text-slate-900 tracking-tight block leading-tight uppercase">
+              {ctaSection?.logoText || "Mark Corpotax"}
+            </span>
+            <span className="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em]">
+              Premium Excellence
+            </span>
+          </div>
         </Link>
-        <h2 className="text-3xl md:text-4xl font-bold">
+        <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 uppercase tracking-tighter">
           {ctaSection?.title || "A financial partner you can trust"}
         </h2>
-        <p className="mt-2 text-lg opacity-70">
+        <p className="mb-12 text-lg font-bold text-slate-400 uppercase tracking-widest max-w-2xl mx-auto">
           {ctaSection?.description ||
             ctaSection?.websiteUrl ||
             "www.markcorpotax.com"}
         </p>
 
-        <form className="mt-8 max-w-lg mx-auto flex items-center gap-4 p-2 bg-white border border-gray-200 rounded-full shadow-sm focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 transition-shadow">
+        <form className="max-w-xl mx-auto flex items-center gap-2 p-2 bg-white border border-slate-200 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] focus-within:ring-2 focus-within:ring-blue-500/10 focus-within:border-blue-500/50 transition-all">
           <Input
             type="email"
-            placeholder="Your email address"
-            className="flex-grow bg-transparent border-none text-gray-900 placeholder:text-gray-500 focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
+            placeholder="Enter your email for updates"
+            className="flex-grow bg-transparent border-none text-slate-900 placeholder:text-slate-400 focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 h-14 pl-6 text-sm font-bold uppercase tracking-wider"
           />
           <Button
             type="submit"
-            size="lg"
-            className="rounded-full bg-primary hover:bg-primary/90 text-white px-6 py-2 font-medium transition-colors"
+            className="rounded-2xl h-14 bg-blue-600 hover:bg-slate-900 text-white px-10 font-black uppercase tracking-widest text-[11px] transition-all shadow-lg active:scale-95"
           >
             {ctaSection?.buttonText || "Subscribe"}
           </Button>
