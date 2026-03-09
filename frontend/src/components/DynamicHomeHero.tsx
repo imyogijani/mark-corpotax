@@ -9,7 +9,7 @@ import {
   useScroll,
   useInView,
 } from "framer-motion";
-import { animate, stagger } from "animejs";
+import anime from "animejs";
 import { contentService } from "@/lib/content-service";
 import { useLoading } from "@/contexts/LoadingContext";
 import { Button } from "@/components/ui/button";
@@ -64,14 +64,15 @@ const HeroTitle = ({
   useEffect(() => {
     if (!trigger) return;
 
-    animate(".hero-char", {
+    anime({
+      targets: ".hero-char",
       opacity: [0, 1],
       translateY: [20, 0],
       rotateZ: [10, 0],
       scale: [0.5, 1],
       easing: "easeOutElastic(1, .8)",
       duration: 800,
-      delay: stagger(40),
+      delay: anime.stagger(40),
     });
   }, [text, trigger]);
 

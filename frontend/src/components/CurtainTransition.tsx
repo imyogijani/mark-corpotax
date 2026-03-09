@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { animate, stagger } from "animejs";
+import anime from "animejs";
 
 interface CurtainTransitionProps {
   onComplete?: () => void;
@@ -17,11 +17,12 @@ export default function CurtainTransition({
     const cols = 10;
 
     // Animate the curtain panels
-    animate(".curtain-panel", {
+    anime({
+      targets: ".curtain-panel",
       scaleY: [1, 0],
       duration: 1000,
       easing: "easeInOutQuart",
-      delay: stagger(100, { from: "center" }),
+      delay: anime.stagger(100, { from: "center" }),
       complete: () => {
         if (onComplete) onComplete();
       },

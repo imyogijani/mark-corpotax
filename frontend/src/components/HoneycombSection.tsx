@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
-import { animate, stagger } from "animejs";
+import anime from "animejs";
 import {
   ClipboardCheck,
   Briefcase,
@@ -57,20 +57,13 @@ export default function HoneycombSection() {
   const [division, setDivision] = React.useState<string>("finance");
 
   useEffect(() => {
-    const savedDivision = localStorage.getItem("user_division");
-    if (savedDivision) {
-      setDivision(savedDivision);
-      setItems(savedDivision === "taxation" ? taxationItems : financeItems);
-    }
-
-    // High-end reveal animation
     animate(".honeycomb-tile", {
+      scale: [0, 1],
       opacity: [0, 1],
-      scale: [0.7, 1],
-      translateY: [40, 0],
-      duration: 1200,
-      delay: stagger(80),
-      easing: "easeOutQuart",
+      translateY: [20, 0],
+      easing: "easeOutElastic(1, .8)",
+      duration: 1000,
+      delay: stagger(100),
     });
   }, []);
 
