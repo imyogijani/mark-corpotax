@@ -295,9 +295,9 @@ export function Header() {
                   <div className="p-6 border-b dark:border-slate-800 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Logo width={32} height={32} />
-                      <span className="font-bold text-lg">{companyName}</span>
+                      <span className="font-bold text-lg text-slate-900">{companyName}</span>
                     </div>
-                    <SheetClose className="rounded-full p-2 hover:bg-slate-100 dark:hover:bg-slate-900">
+                    <SheetClose className="rounded-full p-2 hover:bg-slate-100 text-slate-700">
                       <X className="w-6 h-6" />
                     </SheetClose>
                   </div>
@@ -311,8 +311,8 @@ export function Header() {
                             className={cn(
                               "flex items-center justify-between p-4 rounded-2xl transition-all",
                               isActive(link.href)
-                                ? "bg-blue-50 dark:bg-blue-900/10 text-blue-600"
-                                : "hover:bg-slate-50 dark:hover:bg-slate-900"
+                                ? "bg-blue-50 text-blue-600"
+                                : "text-slate-800 hover:bg-slate-50 hover:text-blue-600"
                             )}
                           >
                             <span className="font-semibold">{link.label}</span>
@@ -324,7 +324,7 @@ export function Header() {
                   </div>
 
                   <div className="p-6 border-t dark:border-slate-800">
-                    <Button asChild className="w-full bg-slate-900 dark:bg-white py-6 rounded-2xl text-lg">
+                    <Button asChild className="w-full bg-slate-900 text-white py-5 rounded-2xl text-base font-bold">
                       <Link href={ctaLink} className="flex items-center justify-center gap-2">
                         <span>{ctaText}</span>
                         <ArrowRight className="w-5 h-5" />

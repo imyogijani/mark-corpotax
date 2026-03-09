@@ -79,7 +79,7 @@ const HeroTitle = ({
   const characters = text.split("");
 
   return (
-    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white overflow-hidden">
+    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-slate-900 overflow-hidden">
       {characters.map((char, i) => (
         <span
           key={i}
@@ -111,7 +111,7 @@ const StaticHeroImage = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-xl px-6 py-4 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] border border-white/10 flex items-center gap-4 group hover:bg-white/20 transition-colors duration-500 z-50 text-white"
+            className="absolute bottom-4 right-4 bg-white/80 backdrop-blur-xl px-6 py-4 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] border border-slate-100 flex items-center gap-4 group hover:bg-white transition-colors duration-500 z-50 text-slate-900"
           >
             <div className="flex flex-col">
               <span className="text-3xl font-black text-blue-400 tracking-tighter">
@@ -121,12 +121,12 @@ const StaticHeroImage = ({
                 +
               </span>
             </div>
-            <div className="h-10 w-[1px] bg-white/20" />
+            <div className="h-10 w-[1px] bg-slate-200" />
             <div className="flex flex-col justify-center">
-              <span className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] leading-none mb-1">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] leading-none mb-1">
                 Since 2012
               </span>
-              <span className="text-sm font-bold text-white/90 leading-tight">
+              <span className="text-sm font-bold text-slate-700 leading-tight">
                 {heroMain.experience_badge?.text || "Years Of Experience"}
               </span>
             </div>
@@ -139,12 +139,12 @@ const StaticHeroImage = ({
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-dashed border-slate-700 rounded-full"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-dashed border-blue-100 rounded-full"
         />
         <motion.div
           animate={{ rotate: -360 }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] border border-dashed border-slate-800 rounded-full"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] border border-dashed border-slate-200 rounded-full"
         />
       </div>
     </div>
@@ -214,36 +214,36 @@ export const DynamicHeroSection = () => {
 
   return (
     <section
-      className="relative min-h-[75vh] flex items-center overflow-hidden bg-slate-950 pt-16 md:pt-12"
+      className="relative min-h-[75vh] flex items-center overflow-hidden bg-slate-50 pt-16 md:pt-12"
       id="home"
     >
       {/* Background Gradients */}
-      <div className="absolute top-0 right-0 w-1/3 h-1/2 bg-blue-600/10 blur-[120px] rounded-full -z-10" />
-      <div className="absolute bottom-0 left-0 w-1/4 h-1/3 bg-emerald-600/10 blur-[100px] rounded-full -z-10" />
+      <div className="absolute top-0 right-0 w-1/3 h-1/2 bg-blue-100/60 blur-[120px] rounded-full -z-10" />
+      <div className="absolute bottom-0 left-0 w-1/4 h-1/3 bg-emerald-50/80 blur-[100px] rounded-full -z-10" />
 
       {/* Background Watermarks with Scroll Animation */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <motion.div
           style={{ y: y1 }}
-          className="absolute -top-10 -left-10 text-[15vw] font-black text-white/[0.03] select-none leading-none"
+          className="absolute -top-10 -left-10 text-[15vw] font-black text-slate-900/[0.03] select-none leading-none"
         >
           {division?.toUpperCase() || "FINANCE"}
         </motion.div>
         <motion.div
           style={{ y: y2 }}
-          className="absolute top-1/2 -right-20 text-[12vw] font-black text-white/[0.02] select-none leading-none"
+          className="absolute top-1/2 -right-20 text-[12vw] font-black text-slate-900/[0.02] select-none leading-none"
         >
           GROWTH
         </motion.div>
         <motion.div
           style={{ y: y3 }}
-          className="absolute bottom-0 -left-10 text-[18vw] font-black text-white/[0.03] select-none leading-none uppercase"
+          className="absolute bottom-0 -left-10 text-[18vw] font-black text-slate-900/[0.03] select-none leading-none uppercase"
         >
           {division === "finance" ? "Capital" : "Legal"}
         </motion.div>
         <motion.div
           style={{ y: y2 }}
-          className="absolute -bottom-10 right-0 text-[15vw] font-black text-white/[0.03] select-none leading-none"
+          className="absolute -bottom-10 right-0 text-[15vw] font-black text-slate-900/[0.03] select-none leading-none"
         >
           MARK
         </motion.div>
@@ -263,7 +263,7 @@ export const DynamicHeroSection = () => {
             <HeroTitle text={heroMain.title || FALLBACK_HERO.title!} />
 
             <MotionWrapper direction="left" delay={0.2}>
-              <p className="text-lg text-slate-400 leading-relaxed max-w-xl">
+              <p className="text-lg text-slate-600 leading-relaxed max-w-xl">
                 {heroMain.description || FALLBACK_HERO.description}
               </p>
             </MotionWrapper>
@@ -293,7 +293,7 @@ export const DynamicHeroSection = () => {
                   </span>
                   <Link
                     href={`tel:${heroMain.phone?.number}`}
-                    className="text-lg font-bold text-white hover:text-blue-400 transition-colors"
+                    className="text-lg font-bold text-slate-800 hover:text-blue-600 transition-colors"
                   >
                     {heroMain.phone?.number || "+91 97120 67891"}
                   </Link>

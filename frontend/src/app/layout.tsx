@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
-import { PointerEffect } from "@/components/pointer-effect";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LoadingProvider } from "@/contexts/LoadingContext";
 import { ConditionalLayout } from "@/components/ConditionalLayout";
@@ -40,7 +39,6 @@ export default function RootLayout({
         <AuthProvider>
           <LoadingProvider>
             <ConditionalLayout>
-              <PointerEffect />
               {children}
             </ConditionalLayout>
             <Toaster />

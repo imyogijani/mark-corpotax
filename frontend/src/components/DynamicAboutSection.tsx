@@ -400,19 +400,19 @@ export function DynamicAboutSection() {
   const displayContent = useMemo(() => aboutSection, [aboutSection]);
 
   return (
-    <section className="py-20 md:py-32 bg-slate-950 relative overflow-hidden">
+    <section className="py-20 md:py-32 bg-white relative overflow-hidden">
       <ScrollWatermark text="EXCELLENCE" className="top-20 left-10" />
 
       {/* Background Decorative Pattern */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-slate-900/10 -skew-x-12 translate-x-32 -z-10"></div>
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-900/10 rounded-full blur-3xl -z-10"></div>
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-slate-50 -skew-x-12 translate-x-32 -z-10"></div>
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-50 rounded-full blur-3xl -z-10"></div>
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Header with Watermark */}
         <div className="relative mb-20 md:mb-28 text-center max-w-5xl mx-auto">
           {/* Animated Watermark Text */}
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[6rem] md:text-[10rem] lg:text-[12rem] font-bold text-white/[0.03] whitespace-nowrap select-none pointer-events-none z-0 tracking-tighter"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[6rem] md:text-[10rem] lg:text-[12rem] font-bold text-slate-900/[0.03] whitespace-nowrap select-none pointer-events-none z-0 tracking-tighter"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: false }}
@@ -438,7 +438,7 @@ export function DynamicAboutSection() {
             )}
 
             <motion.h2
-              className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
+              className="text-4xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-tight"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
@@ -457,7 +457,7 @@ export function DynamicAboutSection() {
             direction="right"
             delay={0.1}
           >
-            <p className="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed">
+            <p className="text-lg md:text-xl text-slate-500 mb-10 leading-relaxed">
               {displayContent.description ||
                 "We are committed to providing exceptional financial services."}
             </p>
@@ -475,10 +475,10 @@ export function DynamicAboutSection() {
                       viewport={{ once: false }}
                       transition={{ delay: 0.2 + index * 0.1 }}
                     >
-                      <div className="mt-1 bg-blue-900/20 p-1 rounded-full text-blue-400">
+                      <div className="mt-1 bg-blue-50 p-1 rounded-full text-blue-600">
                         <CheckCircle className="w-5 h-5" />
                       </div>
-                      <span className="text-slate-300 font-medium text-lg border-b border-transparent hover:border-blue-900 transition-colors">
+                      <span className="text-lg font-bold text-slate-700 border-b border-transparent hover:border-blue-200 transition-colors">
                         {highlight}
                       </span>
                     </motion.div>
@@ -491,7 +491,7 @@ export function DynamicAboutSection() {
               <Link href={displayContent.cta.link || "/about"}>
                 <Button
                   size="lg"
-                  className="group px-8 h-14 rounded-full text-base font-semibold shadow-lg shadow-black/20 hover:shadow-black/40 border border-blue-600/20 bg-blue-600/10 hover:bg-blue-600/20 text-blue-400"
+                  className="group px-8 h-14 rounded-full text-base font-semibold shadow-lg shadow-blue-100 hover:shadow-blue-200 border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700"
                 >
                   {displayContent.cta.text || "Learn More"}
                   <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -526,7 +526,7 @@ export function DynamicAboutSection() {
                       x2="1"
                       y2="1"
                     >
-                      <stop offset="0%" stopColor="#1e293b" stopOpacity="0.2" />
+                      <stop offset="0%" stopColor="#e2e8f0" stopOpacity="0.4" />
                       <stop
                         offset="50%"
                         stopColor="#3b82f6"
@@ -534,8 +534,8 @@ export function DynamicAboutSection() {
                       />
                       <stop
                         offset="100%"
-                        stopColor="#1e293b"
-                        stopOpacity="0.2"
+                        stopColor="#e2e8f0"
+                        stopOpacity="0.4"
                       />
                     </linearGradient>
                   </defs>
@@ -561,7 +561,7 @@ export function DynamicAboutSection() {
                   <motion.path
                     d="M 25% 20% L 75% 80%"
                     fill="none"
-                    stroke="#1e293b"
+                    stroke="#e2e8f0"
                     strokeWidth="1"
                     strokeDasharray="5 5"
                     initial={{ pathLength: 0 }}
@@ -571,7 +571,7 @@ export function DynamicAboutSection() {
                 </svg>
 
                 {/* Decorative background for the grid */}
-                <div className="absolute -inset-4 bg-slate-900/40 rounded-[2rem] -z-10 rotate-3 scale-95 opacity-50 border border-slate-800"></div>
+                <div className="absolute -inset-4 bg-blue-50/50 rounded-[2rem] -z-10 rotate-3 scale-95 opacity-50 border border-blue-100"></div>
 
                 {displayContent.stats.map((stat, index) => (
                   <div
