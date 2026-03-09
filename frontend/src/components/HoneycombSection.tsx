@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { animate, stagger } from "animejs";
+import anime from "animejs";
 import {
   ClipboardCheck,
   Briefcase,
@@ -40,13 +40,14 @@ export default function HoneycombSection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    animate(".honeycomb-tile", {
+    anime({
+      targets: ".honeycomb-tile",
       scale: [0, 1],
       opacity: [0, 1],
       translateY: [20, 0],
       easing: "easeOutElastic(1, .8)",
       duration: 1000,
-      delay: stagger(100),
+      delay: anime.stagger(100),
     });
   }, []);
 

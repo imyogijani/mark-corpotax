@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { animate } from "animejs";
+import anime from "animejs";
 
 interface ScrollWatermarkProps {
   text: string;
@@ -20,7 +20,8 @@ export default function ScrollWatermark({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && textRef.current) {
-            animate(textRef.current, {
+            anime({
+              targets: textRef.current,
               strokeDashoffset: [
                 (el: any) => {
                   try {

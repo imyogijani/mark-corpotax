@@ -10,13 +10,13 @@ import {
   SheetClose,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { 
-  Menu, 
-  ArrowRight, 
-  ChevronDown, 
-  ShoppingBag, 
-  Building2, 
-  Zap, 
+import {
+  Menu,
+  ArrowRight,
+  ChevronDown,
+  ShoppingBag,
+  Building2,
+  Zap,
   Receipt,
   X,
   Phone
@@ -68,40 +68,43 @@ const serviceCategories = [
     title: "Retail / Mortgage",
     icon: <ShoppingBag className="w-5 h-5 text-blue-500" />,
     services: [
-      { name: "Home Loan", href: "/services/home-loan" },
-      { name: "LAP / Mortgage", href: "/services/mortgage" },
-      { name: "Personal Loan", href: "/services/personal-loan" },
-      { name: "Car / Vehicle Loan", href: "/services/car-loan" },
+      { name: "Home Loans", href: "/services/home-loan" },
+      { name: "Loan Against Property", href: "/services/lap" },
+      { name: "Commercial Loans", href: "/services/commercial-loan" },
+      { name: "Industrial Loans", href: "/services/industrial-loan" },
+      { name: "Balance Transfer & Top Up", href: "/services/balance-transfer" },
+      { name: "Education Loan", href: "/services/education-loan" },
+      { name: "Lease Rental Discounting (LRD)", href: "/services/lrd" },
     ],
   },
   {
-    title: "SME / MSME",
+    title: "SME / MSME Loans",
     icon: <Building2 className="w-5 h-5 text-indigo-500" />,
     services: [
-      { name: "Business Loan", href: "/services/business-loan" },
-      { name: "Working Capital", href: "/services/working-capital" },
-      { name: "Machinery Loan", href: "/services/machinery-loan" },
-      { name: "Project Finance", href: "/services/project-finance" },
+      { name: "Project Finance", href: "/services/msme-project-finance" },
+      { name: "Working Capital (CC/OD)", href: "/services/working-capital" },
+      { name: "Letter of Credit (LC)", href: "/services/lc" },
+      { name: "Bank Guarantee (BG)", href: "/services/bg" },
+      { name: "Government Subsidies", href: "/services/subsidies" },
+      { name: "Machinery Term Loan", href: "/services/machinery-loan" },
     ],
   },
   {
-    title: "Unsecured / Limit",
+    title: "Unsecured Loans",
     icon: <Zap className="w-5 h-5 text-orange-500" />,
     services: [
-      { name: "Overdraft (OD)", href: "/services/overdraft" },
-      { name: "Cash Credit (CC)", href: "/services/cash-credit" },
-      { name: "Dropline OD", href: "/services/dropline-od" },
-      { name: "PMEGP / CMEGP", href: "/services/government-loan" },
+      { name: "Personal Loans", href: "/services/personal-loan" },
+      { name: "Business Loans", href: "/services/business-loan" },
     ],
   },
   {
-    title: "Taxation / Legal",
+    title: "Taxation Division",
     icon: <Receipt className="w-5 h-5 text-emerald-500" />,
     services: [
-      { name: "GST Registration", href: "/taxation/gst" },
-      { name: "Income Tax Audit", href: "/taxation/income-tax" },
-      { name: "Private Limited Inc.", href: "/taxation/incorporation" },
-      { name: "Trademark / ISO", href: "/taxation/legal" },
+      { name: "Audit & Assurance", href: "/services/audit-assurance" },
+      { name: "Direct & Indirect Tax", href: "/services/income-tax" },
+      { name: "GST Compliance", href: "/services/gst-compliance" },
+      { name: "Corporate ROC Services", href: "/services/roc" },
     ],
   },
 ];
@@ -112,7 +115,7 @@ export function Header() {
   const [navLinks, setNavLinks] = useState<NavLink[]>(defaultNavLinks);
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  
+
   const megaMenuRef = useRef<HTMLDivElement>(null);
 
   const loadSettings = useCallback(async () => {
@@ -155,12 +158,12 @@ export function Header() {
     const unsubscribe = contentService.onCacheInvalidated(() => {
       loadSettings();
     });
-    
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
-    
+
     return () => {
       unsubscribe();
       window.removeEventListener("scroll", handleScroll);
@@ -171,8 +174,8 @@ export function Header() {
   const companyTagline = settings.company_tagline || "Financial & Legal Solutions";
   const phoneNumber = settings.phone_display || settings.phone_finance || "97120 67891";
   const showPhone = settings.show_phone !== "false";
-  const ctaText = settings.cta_text || "Inquiry";
-  const ctaLink = settings.cta_link || "/appointment";
+  const ctaText = settings.cta_text || "Choose Division";
+  const ctaLink = settings.cta_link || "/services";
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -200,7 +203,7 @@ export function Header() {
           isScrolled ? "pt-4" : "pt-6"
         )}
       >
-        <div 
+        <div
           className={cn(
             "mx-auto max-w-7xl transition-all duration-500",
             "bg-white/75 dark:bg-slate-900/75 backdrop-blur-xl",
@@ -211,10 +214,10 @@ export function Header() {
         >
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0 group">
-            <Logo 
-              className="object-contain transition-transform duration-300 group-hover:scale-110" 
-              width={38} 
-              height={38} 
+            <Logo
+              className="object-contain transition-transform duration-300 group-hover:scale-110"
+              width={38}
+              height={38}
             />
             <div className="flex flex-col leading-none">
               <span className="font-bold text-lg dark:text-white text-slate-900 tracking-tight">
@@ -235,14 +238,14 @@ export function Header() {
                   key={link.href}
                   className="relative flex items-center h-full group"
                   onMouseEnter={() => isServices && setIsMegaMenuOpen(true)}
-                  onMouseLeave={() => {}}
+                  onMouseLeave={() => { }}
                 >
                   <Link
                     href={link.href}
                     className={cn(
                       "px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-1",
-                      isActive(link.href) 
-                        ? "text-blue-600 bg-blue-50 dark:bg-blue-900/20" 
+                      isActive(link.href)
+                        ? "text-blue-600 bg-blue-50 dark:bg-blue-900/20"
                         : "text-slate-600 dark:text-slate-300 hover:text-blue-600 hover:bg-slate-50 dark:hover:bg-slate-800"
                     )}
                   >
@@ -269,8 +272,8 @@ export function Header() {
                 <span className="text-sm font-bold text-slate-700 dark:text-slate-300">{phoneNumber}</span>
               </div>
             )}
-            
-            <Button 
+
+            <Button
               asChild
               className="bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 rounded-full px-5 py-2 hidden sm:flex items-center gap-2 group transition-all duration-300"
             >
@@ -298,7 +301,7 @@ export function Header() {
                       <X className="w-6 h-6" />
                     </SheetClose>
                   </div>
-                  
+
                   <div className="flex-1 overflow-y-auto py-6 px-4">
                     <nav className="flex flex-col gap-2">
                       {navLinks.map((link) => (
@@ -349,8 +352,8 @@ export function Header() {
               <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden">
                 <div className="grid grid-cols-4 p-8 gap-8">
                   {serviceCategories.map((category, idx) => (
-                    <div 
-                      key={idx} 
+                    <div
+                      key={idx}
                       className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-2 duration-300"
                       style={{ animationDelay: `${idx * 50}ms` }}
                     >
@@ -362,7 +365,7 @@ export function Header() {
                           {category.title}
                         </h3>
                       </div>
-                      
+
                       <div className="flex flex-col gap-1">
                         {category.services.map((service, sIdx) => (
                           <Link
@@ -380,7 +383,7 @@ export function Header() {
                     </div>
                   ))}
                 </div>
-                
+
                 <div className="bg-slate-50/50 dark:bg-slate-800/50 px-8 py-4 flex items-center justify-between border-t dark:border-slate-800">
                   <div className="flex items-center gap-6">
                     <p className="text-xs text-slate-500 dark:text-slate-400">Need expert consultation?</p>
@@ -389,8 +392,8 @@ export function Header() {
                       <Link href="/blog" className="text-xs font-bold text-blue-600 hover:underline">Latest Updates</Link>
                     </div>
                   </div>
-                  <Link 
-                    href="/services" 
+                  <Link
+                    href="/services"
                     className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white hover:gap-3 transition-all"
                   >
                     View All Services <ArrowRight className="w-3.5 h-3.5" />
