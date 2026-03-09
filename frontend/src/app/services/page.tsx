@@ -68,12 +68,12 @@ export default function ServicesPage() {
           
           <h1 
             ref={headerRef}
-            className="text-5xl md:text-7xl lg:text-8xl font-black text-slate-900 tracking-tighter leading-none uppercase mb-8"
+            className="text-4xl md:text-6xl lg:text-7xl font-black text-slate-900 tracking-tighter leading-none uppercase mb-8"
           >
             Solutions for Every Scale
           </h1>
           
-          <p className="js-reveal text-xl text-slate-700 font-medium max-w-2xl mx-auto leading-relaxed">
+          <p className="js-reveal text-lg text-slate-700 font-medium max-w-2xl mx-auto leading-relaxed">
             From individual home dreams to enterprise-level taxation, our multi-division experts provide the precision your financial future demands.
           </p>
         </div>
@@ -120,7 +120,7 @@ export default function ServicesPage() {
                 className="space-y-12 scroll-mt-32"
               >
                 <div className="js-reveal flex items-center gap-6">
-                  <h2 className={`text-3xl md:text-5xl font-black uppercase tracking-tighter ${cat === 'Taxation Division' ? 'decoration-tax text-emerald-900' : 'decoration-finance text-slate-900'}`}>
+                  <h2 className={`text-2xl md:text-4xl font-black uppercase tracking-tighter ${cat === 'Taxation Division' ? 'decoration-tax text-emerald-900' : 'decoration-finance text-slate-900'}`}>
                     {cat}
                   </h2>
                   <div className="h-[2px] flex-1 bg-slate-200" />
@@ -178,10 +178,10 @@ export default function ServicesPage() {
               <div className="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-8 mx-auto md:mx-0">
                 <HelpCircle className="w-8 h-8 text-blue-400" />
               </div>
-              <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase mb-6 leading-none">
+              <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter uppercase mb-6 leading-none">
                 Can't Decide?
               </h2>
-              <p className="text-xl text-slate-400 font-medium leading-relaxed">
+              <p className="text-lg text-slate-400 font-medium leading-relaxed">
                 Our strategic advisors are ready to help you navigate through our complex financial landscape to find the perfect solution for you.
               </p>
             </div>
