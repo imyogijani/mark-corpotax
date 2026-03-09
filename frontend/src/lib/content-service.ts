@@ -131,10 +131,11 @@ class ContentService {
         return response.data;
       }
       return {};
-    } catch (error) {
-      console.error("Error fetching page content:", error);
+    } catch {
+      // Backend unavailable - silently return empty (fallback content will be used)
       return {};
     }
+
   }
 
   // Generic method to get content by page and key
