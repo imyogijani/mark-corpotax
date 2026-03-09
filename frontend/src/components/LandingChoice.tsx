@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { animate, stagger } from "animejs";
+import anime from "animejs";
 import { ArrowRight, TrendingUp, ShieldCheck } from "lucide-react";
 
 interface LandingChoiceProps {
@@ -14,15 +14,17 @@ export default function LandingChoice({ onChoice }: LandingChoiceProps) {
 
   // Anime.js for entry animation
   useEffect(() => {
-    animate(".choice-panel", {
+    anime({
+      targets: ".choice-panel",
       scaleX: [0, 1],
       opacity: [0, 1],
       easing: "easeInOutQuart",
       duration: 1200,
-      delay: stagger(200),
+      delay: anime.stagger(200),
     });
 
-    animate(".choice-content", {
+    anime({
+      targets: ".choice-content",
       translateY: [50, 0],
       opacity: [0, 1],
       easing: "easeOutExpo",

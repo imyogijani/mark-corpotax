@@ -13,7 +13,7 @@ import {
 
 const icons = [DollarSign, TrendingUp, PieChart, BarChart3, Coins, Wallet];
 
-import { animate, stagger } from "animejs";
+import anime from "animejs";
 
 interface GraffitiElement {
   text?: string;
@@ -36,13 +36,14 @@ export default function FloatingGraffiti({ elements }: FloatingGraffitiProps) {
   useEffect(() => {
     setMounted(true);
 
-    animate(".floating-graffiti-item", {
+    anime({
+      targets: ".floating-graffiti-item",
       translateY: [0, -20, 0],
       rotate: [0, 5, 0],
       duration: (el: any, i: number) => 3000 + i * 500,
       easing: "easeInOutQuad",
       loop: true,
-      delay: stagger(200),
+      delay: anime.stagger(200),
     });
   }, []);
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { animate } from "animejs";
+import anime from "animejs";
 
 interface MagneticProps {
   children: React.ReactNode;
@@ -26,16 +26,18 @@ export default function Magnetic({ children, strength = 0.5 }: MagneticProps) {
       const maxDistance = width * 1.5;
 
       if (distance < maxDistance) {
-        animate(magneticRef.current, {
-          x: x * strength,
-          y: y * strength,
+        anime({
+          targets: magneticRef.current,
+          translateX: x * strength,
+          translateY: y * strength,
           duration: 800,
           easing: "easeOutElastic(1, .8)",
         });
       } else {
-        animate(magneticRef.current, {
-          x: 0,
-          y: 0,
+        anime({
+          targets: magneticRef.current,
+          translateX: 0,
+          translateY: 0,
           duration: 1000,
           easing: "easeOutElastic(1, .5)",
         });
