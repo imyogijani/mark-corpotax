@@ -19,6 +19,19 @@ import {
   Zap,
   Receipt,
   Phone,
+  RefreshCw,
+  GraduationCap,
+  Key,
+  PieChart,
+  FileEdit,
+  ShieldCheck,
+  TrendingUp,
+  Settings,
+  User,
+  ClipboardCheck,
+  Calculator,
+  Gavel,
+  Factory,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./logo-image";
@@ -34,12 +47,11 @@ interface NavLink {
 interface ServiceItem {
   name: string;
   href: string;
-  description: string;
+  icon: React.ElementType;
 }
 
 interface ServiceCategory {
   title: string;
-  icon: React.ElementType;
   services: ServiceItem[];
 }
 
@@ -54,38 +66,42 @@ const navLinks: NavLink[] = [
 
 const serviceCategories: ServiceCategory[] = [
   {
-    title: "Retail / Mortgage",
-    icon: ShoppingBag,
+    title: "Retail & Mortgage",
     services: [
-      { name: "Home Loans", href: "/services/home-loan", description: "Your dream home, financed." },
-      { name: "LAP", href: "/services/lap", description: "Unlock value from property." },
-      { name: "Commercial Loans", href: "/services/commercial-loan", description: "Business space funding." },
+      { name: "Home Loans", href: "/services/home-loan", icon: Home },
+      { name: "Loan Against Property", href: "/services/lap", icon: Building2 },
+      { name: "Commercial Loans", href: "/services/commercial-loan", icon: ShoppingBag },
+      { name: "Industrial Loans", href: "/services/industrial-loan", icon: Factory },
+      { name: "Balance Transfer & Top Up", href: "/services/balance-transfer", icon: RefreshCw },
+      { name: "Education Loan", href: "/services/education-loan", icon: GraduationCap },
+      { name: "Lease Rental Discounting (LRD)", href: "/services/lrd", icon: Key },
     ],
   },
   {
-    title: "SME / MSME Loans",
-    icon: Building2,
+    title: "SME/MSME LOANS",
     services: [
-      { name: "Project Finance", href: "/services/msme-project-finance", description: "Large scale expansion." },
-      { name: "Working Capital", href: "/services/working-capital", description: "Daily operations cashflow." },
-      { name: "Subsidies", href: "/services/subsidies", description: "Govt. benefit advisory." },
+      { name: "Project Finance", href: "/services/msme-project-finance", icon: PieChart },
+      { name: "Working Capital (CC/OD)", href: "/services/working-capital", icon: Zap },
+      { name: "Letter of Credit (LC)", href: "/services/lc", icon: FileEdit },
+      { name: "Bank Guarantee (BG)", href: "/services/bg", icon: ShieldCheck },
+      { name: "Government Subsidies", href: "/services/subsidies", icon: TrendingUp },
+      { name: "Machinery Term Loan", href: "/services/machinery-loan", icon: Settings },
     ],
   },
   {
-    title: "Unsecured Loans",
-    icon: Zap,
+    title: "UNSECURED LOANS",
     services: [
-      { name: "Personal Loans", href: "/services/personal-loan", description: "Instant personal credit." },
-      { name: "Business Loans", href: "/services/business-loan", description: "Growth capital, no collateral." },
+      { name: "Personal Loans", href: "/services/personal-loan", icon: User },
+      { name: "Business Loans", href: "/services/business-loan", icon: Briefcase },
     ],
   },
   {
-    title: "Taxation Division",
-    icon: Receipt,
+    title: "TAXATION DIVISION",
     services: [
-      { name: "GST Compliance", href: "/services/gst-compliance", description: "Returns & registrations." },
-      { name: "Income Tax", href: "/services/income-tax", description: "Strategic tax planning." },
-      { name: "Audit Services", href: "/services/audit-assurance", description: "Assurance & compliance." },
+      { name: "Audit & Assurance", href: "/services/audit-assurance", icon: ClipboardCheck },
+      { name: "Direct & Indirect Tax", href: "/services/income-tax", icon: Calculator },
+      { name: "GST Compliance", href: "/services/gst-compliance", icon: FileText },
+      { name: "Corporate ROC Services", href: "/services/roc", icon: Gavel },
     ],
   },
 ];
@@ -98,6 +114,18 @@ export function Header() {
   const [settings, setSettings] = useState<any>({});
 
   const megaMenuRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const openMegaMenu = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setActiveMegaMenu(true);
+  };
+
+  const closeMegaMenu = () => {
+    timeoutRef.current = setTimeout(() => {
+      setActiveMegaMenu(false);
+    }, 200);
+  };
 
   // Load Settings
   const loadSettings = useCallback(async () => {
@@ -113,7 +141,10 @@ export function Header() {
     loadSettings();
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, [loadSettings]);
 
   const companyName = settings?.company_name || "Mark Corpotax";
@@ -154,11 +185,11 @@ export function Header() {
               <Logo width={36} height={36} />
             </div>
             <div className="flex flex-col">
-              <span className="text-[18px] font-black uppercase italic tracking-tighter text-slate-900 leading-none">
+              <span className="text-[20px] font-black uppercase italic tracking-tighter text-slate-900 leading-none">
                 {companyName}
               </span>
-              <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-600/70 leading-normal mt-0.5">
-                Financial Services
+              <span className="text-[7px] font-black uppercase tracking-[0.4em] text-blue-600/70 leading-normal mt-1">
+                SURAT REGIONAL HQ
               </span>
             </div>
           </Link>
@@ -173,17 +204,17 @@ export function Header() {
                 <li
                   key={link.href}
                   className="relative"
-                  onMouseEnter={() => isServices && setActiveMegaMenu(true)}
-                  onMouseLeave={() => isServices && setActiveMegaMenu(false)}
+                  onMouseEnter={() => isServices && openMegaMenu()}
+                  onMouseLeave={() => isServices && closeMegaMenu()}
                 >
                   <Link
                     href={link.href}
-                    className={`group flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-500 text-[11px] font-black uppercase tracking-[0.15em] relative z-10 ${
-                      pathname === link.href ? "text-blue-600 bg-blue-50" : "text-slate-600 hover:text-slate-900"
+                    className={`group flex items-center gap-2 px-5 py-3 rounded-full transition-all duration-500 text-[12px] font-black uppercase tracking-[0.15em] relative z-10 ${
+                      pathname === link.href || (isServices && activeMegaMenu) ? "text-blue-600 bg-blue-50" : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
                     <Icon className={`w-3.5 h-3.5 transition-transform duration-500 group-hover:scale-110 ${
-                      pathname === link.href ? "text-blue-600" : "text-slate-400 group-hover:text-blue-500"
+                      pathname === link.href || (isServices && activeMegaMenu) ? "text-blue-600" : "text-slate-400 group-hover:text-blue-500"
                     }`} />
                     {link.label}
                     {isServices && (
@@ -193,70 +224,78 @@ export function Header() {
                     {/* Pill Hover Effect */}
                     <div className="absolute inset-0 bg-slate-100 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 -z-10 origin-center opacity-0 group-hover:opacity-100" />
                   </Link>
-
-                  {/* Mega Menu Container */}
-                  {isServices && (
-                    <AnimatePresence>
-                      {activeMegaMenu && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 15, scale: 0.98 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 10, scale: 0.98 }}
-                          className="absolute left-1/2 -translate-x-1/2 top-full pt-4 z-50 w-[850px]"
-                        >
-                          <div className="bg-white/95 backdrop-blur-2xl border border-white/60 p-10 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.12)] overflow-hidden">
-                            {/* Glow behind grid */}
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
-                            
-                            <div className="grid grid-cols-4 gap-8">
-                              {serviceCategories.map((cat, idx) => {
-                                const CatIcon = cat.icon;
-                                return (
-                                  <div key={idx} className="flex flex-col gap-6">
-                                    <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-                                      <div className="p-2 bg-blue-50 rounded-lg text-blue-600">
-                                        <CatIcon className="w-5 h-5" />
-                                      </div>
-                                      <span className="text-[12px] font-black uppercase tracking-widest text-slate-800">{cat.title}</span>
-                                    </div>
-                                    <div className="flex flex-col gap-4">
-                                      {cat.services.map((svc, sIdx) => (
-                                        <Link
-                                          key={sIdx}
-                                          href={svc.href}
-                                          className="group/svc flex flex-col gap-1 transition-all"
-                                        >
-                                          <span className="text-[13px] font-bold text-slate-700 group-hover/svc:text-blue-600 flex items-center gap-2">
-                                            {svc.name}
-                                            <ArrowRight className="w-3 h-3 opacity-0 group-hover/svc:opacity-100 -translate-x-2 group-hover/svc:translate-x-0 transition-all" />
-                                          </span>
-                                          <span className="text-[10px] text-slate-400 font-medium leading-tight">{svc.description}</span>
-                                        </Link>
-                                      ))}
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                            </div>
-
-                            {/* bottom cta */}
-                            <div className="mt-10 p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
-                              <span className="text-[11px] font-bold text-slate-500 px-4 uppercase tracking-[0.1em]">Need personalized consultation?</span>
-                              <Link href="/appointment">
-                                <Button size="sm" className="bg-slate-900 hover:bg-blue-600 text-white rounded-full px-6 transition-all duration-500">
-                                  Book Appointment
-                                </Button>
-                              </Link>
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  )}
                 </li>
               );
             })}
           </ul>
+
+          {/* Mega Menu Container - Moved outside the loop for centered alignment relative to nav */}
+          <AnimatePresence>
+            {activeMegaMenu && (
+              <motion.div
+                initial={{ opacity: 0, y: 15, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                onMouseEnter={openMegaMenu}
+                onMouseLeave={closeMegaMenu}
+                className="absolute left-1/2 -translate-x-1/2 top-full pt-2 z-50 w-screen max-w-[1100px] px-6"
+              >
+                <div className="bg-white/98 backdrop-blur-3xl border border-white/80 p-0 rounded-[48px] shadow-[0_40px_100px_rgba(0,0,0,0.15)] overflow-hidden relative group/menu">
+                  {/* Bridge to prevent hover loss */}
+                  <div className="absolute -top-8 left-0 right-0 h-8 bg-transparent" />
+                  
+                  <div className="p-12">
+                    <div className="grid grid-cols-4 gap-12 relative z-10">
+                      {serviceCategories.map((cat, idx) => (
+                        <div key={idx} className={`flex flex-col gap-8 ${idx === 3 ? 'bg-emerald-50/30 p-8 -m-8 rounded-[40px] border border-emerald-100/50' : ''}`}>
+                          <div className="flex flex-col gap-2">
+                            <div className={`inline-flex px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] w-fit ${idx === 3 ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-50 text-blue-600'}`}>
+                              {cat.title}
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-5">
+                            {cat.services.map((svc, sIdx) => {
+                              const SvcIcon = svc.icon;
+                              return (
+                                <Link
+                                  key={sIdx}
+                                  href={svc.href}
+                                  className="group/svc flex items-center gap-4 transition-all hover:translate-x-1"
+                                >
+                                  <div className={`p-2 rounded-xl transition-all duration-300 ${idx === 3 ? 'bg-emerald-100/50 text-emerald-600 group-hover/svc:bg-emerald-600 group-hover/svc:text-white' : 'bg-blue-50/50 text-blue-600 group-hover/svc:bg-blue-600 group-hover/svc:text-white'}`}>
+                                    <SvcIcon className="w-5 h-5" />
+                                  </div>
+                                  <span className="text-[14px] font-bold text-slate-800 group-hover/svc:text-blue-600 transition-colors">
+                                    {svc.name}
+                                  </span>
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* bottom cta bar */}
+                  <div className="bg-slate-50/80 backdrop-blur-md px-12 py-6 border-t border-slate-100 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
+                        <ShieldCheck className="w-3 h-3 text-blue-600" />
+                      </div>
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Shaping successful corporate landscapes since 2012</span>
+                    </div>
+                    <Link href="/services">
+                      <Button className="bg-white hover:bg-blue-50 text-blue-600 border border-blue-100 rounded-full px-8 py-2.5 h-auto text-[11px] font-black uppercase tracking-[0.15em] shadow-sm flex items-center gap-3 transition-all">
+                        Explore All Services
+                        <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Right: CTA Button */}
           <div className="hidden lg:flex items-center gap-6">
