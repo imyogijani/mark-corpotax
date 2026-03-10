@@ -2,25 +2,34 @@
 import type { NextConfig } from "next";
 import path from "path";
 
-const nextConfig: any = {
+const nextConfig: NextConfig = {
   // Set the workspace root explicitly to avoid lockfile detection warnings
   // This tells Next.js where the monorepo root is located
-  outputFileTracingRoot: path.join(__dirname, "../"),
+  outputFileTracingRoot: path.resolve(process.cwd(), ".."),
 
   // Performance optimizations
   poweredByHeader: false,
   compress: true,
+  
+  // Turbopack optimization for Windows
+  turbo: {
+    // Reduce memory pressure on Windows
+    memoryLimit: 1024,
+    // Optimize CSS/PostCSS processing
+    loaders: {
+      '.css': ['postcss-loader'],
+    },
+  },
+
+  // SWC compiler optimizations
+  swcMinify: true,
 
   // Production build settings
   typescript: {
     // Enable type checking in production for better quality
     ignoreBuildErrors: false,
   },
-  eslint: {
-    // Temporarily ignore @typescript-eslint/no-explicit-any warnings during builds
-    // These are not runtime errors, just type annotations
-    ignoreDuringBuilds: true,
-  },
+
 
   // Image optimization
   images: {
