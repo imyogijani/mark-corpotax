@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { contentService } from "@/lib/content-service";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import {
@@ -20,11 +19,7 @@ import {
   GraduationCap,
   Factory,
 } from "lucide-react";
-import {
-  StaggerContainer,
-  StaggerItem,
-  MotionWrapper,
-} from "@/components/MotionWrapper";
+import { StaggerContainer, StaggerItem, MotionWrapper } from "@/components/MotionWrapper";
 import { motion } from "framer-motion";
 import ScrollWatermark from "@/components/ScrollWatermark";
 import Magnetic from "@/components/Magnetic";
@@ -37,53 +32,16 @@ interface ServiceItem {
   features?: string[];
 }
 
-// Static fallback content
 const FALLBACK_SERVICES: ServiceItem[] = [
-  {
-    title: "MSME Machinery Loan",
-    description:
-      "Get financing for machinery and equipment with government subsidy benefits",
-    icon: "Building2",
-    slug: "msme-loan",
-  },
-  {
-    title: "Working Capital Finance",
-    description:
-      "Flexible working capital solutions to manage your business operations",
-    icon: "HandCoins",
-    slug: "working-capital",
-  },
-  {
-    title: "Project Finance",
-    description:
-      "Complete project financing solutions for your business expansion",
-    icon: "Briefcase",
-    slug: "project-finance",
-  },
+  { title: "MSME Machinery Loan", description: "Get financing for machinery and equipment with government subsidy benefits", icon: "Building2", slug: "msme-loan" },
+  { title: "Working Capital Finance", description: "Flexible working capital solutions to manage your business operations", icon: "HandCoins", slug: "working-capital" },
+  { title: "Project Finance", description: "Complete project financing solutions for your business expansion", icon: "Briefcase", slug: "project-finance" },
 ];
 
 const TAXATION_FALLBACK: ServiceItem[] = [
-  {
-    title: "GST Filing & Compliance",
-    description:
-      "Expert GST registration, monthly returns, and audit support for businesses.",
-    icon: "FileText",
-    slug: "gst-compliance",
-  },
-  {
-    title: "Income Tax Advisory",
-    description:
-      "Strategic tax planning and return filing for individuals and corporate entities.",
-    icon: "Landmark",
-    slug: "tax-advisory",
-  },
-  {
-    title: "Company Registration",
-    description:
-      "End-to-end support for PVT LTD, LLP, and NGO formations and MCA filings.",
-    icon: "Building2",
-    slug: "company-registration",
-  },
+  { title: "GST Filing & Compliance", description: "Expert GST registration, monthly returns, and audit support for businesses.", icon: "FileText", slug: "gst-compliance" },
+  { title: "Income Tax Advisory", description: "Strategic tax planning and return filing for individuals and corporate entities.", icon: "Landmark", slug: "tax-advisory" },
+  { title: "Company Registration", description: "End-to-end support for PVT LTD, LLP, and NGO formations and MCA filings.", icon: "Building2", slug: "company-registration" },
 ];
 
 export function DynamicServicesSection() {
@@ -95,19 +53,11 @@ export function DynamicServicesSection() {
       const savedDivision = localStorage.getItem("user_division");
       if (savedDivision) {
         setDivision(savedDivision);
-        if (savedDivision === "taxation") {
-          setServices(TAXATION_FALLBACK);
-        }
+        if (savedDivision === "taxation") setServices(TAXATION_FALLBACK);
       }
 
-      const servicesContent = await contentService.getContentBySection(
-        "services",
-        "services_list",
-      );
-      if (
-        servicesContent?.services_list &&
-        Array.isArray(servicesContent.services_list)
-      ) {
+      const servicesContent = await contentService.getContentBySection("services", "services_list");
+      if (servicesContent?.services_list && Array.isArray(servicesContent.services_list)) {
         setServices(servicesContent.services_list);
       }
     } catch (error) {
@@ -117,15 +67,9 @@ export function DynamicServicesSection() {
 
   useEffect(() => {
     fetchContent();
-
     // Subscribe to cache invalidation events
-    const unsubscribe = contentService.onCacheInvalidated(() => {
-      fetchContent();
-    });
-
-    return () => {
-      unsubscribe();
-    };
+    const unsubscribe = contentService.onCacheInvalidated(() => { fetchContent(); });
+    return () => { unsubscribe(); };
   }, [fetchContent]);
 
   const getIcon = (iconName: string) => {
@@ -143,23 +87,14 @@ export function DynamicServicesSection() {
       University: <GraduationCap className="w-12 h-12" />,
       Factory: <Factory className="w-12 h-12" />,
     };
-
-    const iconElement = iconMap[iconName] || (
-      <Briefcase className="w-12 h-12" />
-    );
-
+    const iconElement = iconMap[iconName] || <Briefcase className="w-12 h-12" />;
     return (
-      <motion.div
-        whileHover={{ rotateY: 180, scale: 1.1 }}
-        transition={{ duration: 0.6 }}
-        className="origin-center"
-      >
+      <motion.div whileHover={{ rotateY: 180, scale: 1.1 }} transition={{ duration: 0.6 }} className="origin-center">
         {iconElement}
       </motion.div>
     );
   };
 
-  // Show only first 3 services on homepage
   const displayServices = useMemo(() => services.slice(0, 3), [services]);
 
   return (
@@ -168,24 +103,13 @@ export function DynamicServicesSection() {
 
       <div className="container mx-auto px-4 mb-20">
         <div className="relative text-center max-w-4xl mx-auto">
-          {/* Animated Watermark - Light Theme */}
-          <ScrollWatermark
-            text="SERVICES"
-            className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-50 text-slate-200 uppercase"
-          />
+          <ScrollWatermark text="SERVICES" className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-50 text-slate-200 uppercase" />
 
           <div className="relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
-              className="inline-flex items-center gap-2 mb-4"
-            >
-              <span className="w-8 h-[2px] bg-blue-600"></span>
-              <span className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-600">
-                What We Offer
-              </span>
-              <span className="w-8 h-[2px] bg-blue-600"></span>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} className="inline-flex items-center gap-2 mb-4">
+              <span className="w-8 h-[2px] bg-blue-600" />
+              <span className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-600">What We Offer</span>
+              <span className="w-8 h-[2px] bg-blue-600" />
             </motion.div>
 
             <motion.h2
@@ -212,60 +136,56 @@ export function DynamicServicesSection() {
       </div>
 
       <div className="container mx-auto px-4">
-        <StaggerContainer
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-10"
-          viewport={{ once: false, amount: 0.1 }}
-        >
+        <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-10" viewport={{ once: false, amount: 0.1 }}>
           {displayServices.map((service, index) => (
             <div key={index} className="relative group">
               <Link
                 href={service.slug ? `/services/${service.slug}` : "/services"}
-                className="relative block h-full w-full overflow-hidden rounded-[2.5rem] bg-white border border-slate-100 p-10 text-left no-underline transition-all duration-700 shadow-[0_15px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_30px_70px_rgba(37,99,235,0.15)] hover:-translate-y-4 hover:border-blue-400 group"
+                className="relative block h-full w-full overflow-hidden rounded-[3rem] bg-white border border-slate-100 p-10 text-left no-underline transition-all duration-700 shadow-[0_20px_50px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_80px_rgba(37,99,235,0.12)] hover:-translate-y-4 hover:border-blue-200 group"
               >
-                {/* Brand Gradient Background Reveal - Light Theme */}
+                {/* Refined Background Pulse */}
                 <div
-                  className="absolute -right-24 -top-24 -z-0 h-48 w-48 rounded-full transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[15] opacity-0 group-hover:opacity-100"
-                  style={{ background: "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)" }}
-                ></div>
+                  className="absolute -right-16 -top-16 -z-0 h-64 w-64 rounded-full transition-all duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[10] opacity-0 group-hover:opacity-100"
+                  style={{ background: "radial-gradient(circle at center, #eff6ff 0%, #dbeafe 100%)" }}
+                />
 
-                <div className="relative z-10 flex h-full flex-col justify-between">
-                  <div>
-                    <motion.div
-                      className="mb-8 p-4 w-20 h-20 rounded-2xl bg-blue-50 border border-blue-100 text-blue-600 transition-all duration-500 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 group-hover:scale-110 shadow-inner"
-                    >
-                      {getIcon(service.icon || "")}
+                <div className="relative z-10 flex h-full flex-col">
+                  <div className="flex-1">
+                    <motion.div className="mb-10 w-20 h-20 rounded-[2rem] bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center transition-all duration-700 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 group-hover:rotate-[360deg] shadow-inner relative overflow-hidden">
+                       <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                       <div className="relative z-10 scale-75 group-hover:scale-100 transition-transform duration-700">
+                          {getIcon(service.icon || "")}
+                       </div>
                     </motion.div>
 
-                    <h3 className="mb-4 text-2xl font-black text-slate-800 transition-colors duration-500 group-hover:text-slate-900 tracking-tight uppercase">
+                    <h3 className="mb-4 text-2xl font-black text-slate-900 transition-colors duration-500 group-hover:text-blue-600 tracking-tight uppercase leading-tight">
                       {service.title}
                     </h3>
 
-                    <p className="text-lg text-slate-600 transition-colors duration-500 group-hover:text-slate-700 leading-relaxed font-medium">
+                    <p className="text-[15px] text-slate-600 transition-colors duration-500 group-hover:text-slate-700 leading-relaxed font-medium">
                       {service.description}
                     </p>
                   </div>
 
-                  <div className="mt-10 flex items-center text-sm font-bold uppercase tracking-widest text-blue-600 group-hover:text-blue-700 transition-all duration-500">
-                    <span className="relative overflow-hidden inline-block">
-                      <span className="inline-block transition-transform duration-500 group-hover:-translate-y-full">Explore Service</span>
-                      <span className="absolute top-full left-0 inline-block transition-transform duration-500 group-hover:-translate-y-full">Explore Service</span>
+                  <div className="mt-12 flex items-center text-[10px] font-black uppercase tracking-[0.25em] text-blue-600 group-hover:text-blue-700 transition-all duration-500">
+                    <span className="relative overflow-hidden inline-block h-4">
+                      <span className="inline-block transition-transform duration-500 group-hover:-translate-y-full">Explore Solutions</span>
+                      <span className="absolute top-full left-0 inline-block transition-transform duration-500 group-hover:-translate-y-full font-black">Explore Solutions</span>
                     </span>
-                    <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-500 group-hover:translate-x-2" />
+                    <ArrowRight className="ml-3 h-4 w-4 transition-transform duration-500 group-hover:translate-x-3" />
                   </div>
                 </div>
 
-                {/* Decorative Pattern overlay - Light Theme */}
+                {/* Decorative Pattern overlay */}
                 <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] group-hover:opacity-[0.04] transition-opacity" />
               </Link>
             </div>
           ))}
         </StaggerContainer>
+
         <div className="text-center mt-12">
           <Magnetic strength={0.3}>
-            <Button
-              asChild
-              className="text-white rounded-full px-8 py-3 h-12 font-bold transition-all hover:bg-blue-700 bg-blue-600 shadow-xl shadow-blue-500/20 active:scale-95"
-            >
+            <Button asChild className="text-white rounded-full px-8 py-3 h-12 font-bold transition-all hover:bg-blue-700 bg-blue-600 shadow-xl shadow-blue-500/20 active:scale-95">
               <Link href="/services">View All Services</Link>
             </Button>
           </Magnetic>

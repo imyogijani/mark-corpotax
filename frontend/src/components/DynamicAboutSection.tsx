@@ -12,7 +12,6 @@ import {
   Users,
   TrendingUp,
   Shield,
-  Briefcase,
   Layers,
 } from "lucide-react";
 import { MotionWrapper } from "@/components/MotionWrapper";
@@ -23,18 +22,10 @@ interface AboutSectionData {
   title?: string;
   description?: string;
   highlights?: string[];
-  stats?: {
-    label: string;
-    value: string;
-    icon?: string;
-  }[];
-  cta?: {
-    text: string;
-    link: string;
-  };
+  stats?: { label: string; value: string; icon?: string }[];
+  cta?: { text: string; link: string };
 }
 
-// Static fallback content - renders immediately
 const FALLBACK_ABOUT: AboutSectionData = {
   tagline: "About Us",
   title: "Your Trusted Financial Partner Since 2012",
@@ -55,12 +46,7 @@ const FALLBACK_ABOUT: AboutSectionData = {
   cta: { text: "Learn More", link: "/about" },
 };
 
-// Custom hook for counting animation
-function useCountAnimation(
-  endValue: number,
-  duration: number = 2000,
-  startOnView: boolean = true,
-) {
+function useCountAnimation(endValue: number, duration: number = 2000, startOnView: boolean = true) {
   const [count, setCount] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
   const elementRef = useRef<HTMLDivElement>(null);
@@ -68,107 +54,48 @@ function useCountAnimation(
   const startAnimation = useCallback(() => {
     if (hasStarted) return;
     setHasStarted(true);
-
     const startTime = Date.now();
-    const startValue = 0;
 
     const animate = () => {
-      const now = Date.now();
-      const progress = Math.min((now - startTime) / duration, 1);
-
+      const progress = Math.min((Date.now() - startTime) / duration, 1);
       // Easing function for smooth animation (easeOutExpo)
       const easeOutExpo = 1 - Math.pow(2, -10 * progress);
-      const currentValue = Math.floor(
-        startValue + (endValue - startValue) * easeOutExpo,
-      );
-
-      setCount(currentValue);
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        setCount(endValue);
-      }
+      setCount(Math.floor(endValue * easeOutExpo));
+      if (progress < 1) requestAnimationFrame(animate);
+      else setCount(endValue);
     };
-
     requestAnimationFrame(animate);
   }, [endValue, duration, hasStarted]);
 
   useEffect(() => {
-    if (!startOnView) {
-      startAnimation();
-      return;
-    }
-
+    if (!startOnView) { startAnimation(); return; }
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasStarted) {
-            startAnimation();
-          }
-        });
-      },
-      { threshold: 0.3 },
+      (entries) => { entries.forEach((e) => { if (e.isIntersecting && !hasStarted) startAnimation(); }); },
+      { threshold: 0.3 }
     );
-
-    const currentElement = elementRef.current;
-    if (currentElement) {
-      observer.observe(currentElement);
-    }
-
-    return () => {
-      if (currentElement) {
-        observer.unobserve(currentElement);
-      }
-    };
+    const el = elementRef.current;
+    if (el) observer.observe(el);
+    return () => { if (el) observer.unobserve(el); };
   }, [startOnView, startAnimation, hasStarted]);
 
   return { count, elementRef };
 }
 
-// Parse stat value to extract number and suffix
-function parseStatValue(value: string): {
-  number: number;
-  prefix: string;
-  suffix: string;
-} {
+function parseStatValue(value: string) {
   const match = value.match(/^([^\d]*)([\d,]+\.?\d*)(.*)$/);
   if (match) {
-    const prefix = match[1] || "";
-    const numStr = match[2].replace(/,/g, "");
-    const suffix = match[3] || "";
-    return {
-      number: parseFloat(numStr) || 0,
-      prefix,
-      suffix,
-    };
+    return { number: parseFloat(match[2].replace(/,/g, "")) || 0, prefix: match[1] || "", suffix: match[3] || "" };
   }
   return { number: 0, prefix: "", suffix: value };
 }
 
-// Format number with commas
 function formatNumber(num: number, hasDecimal: boolean = false): string {
-  if (hasDecimal) {
-    return num.toLocaleString("en-US", {
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 1,
-    });
-  }
+  if (hasDecimal) return num.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   return num.toLocaleString("en-US");
 }
 
 // Animated Stat Component
-function AnimatedStat({
-  value,
-  label,
-  icon,
-  index,
-}: {
-  value: string;
-  label: string;
-  icon?: string;
-  index: number;
-}) {
+function AnimatedStat({ value, label, icon, index }: { value: string; label: string; icon?: string; index: number }) {
   const { number, prefix, suffix } = parseStatValue(value);
   const hasDecimal = value.includes(".");
   const { count, elementRef } = useCountAnimation(number, 2000);
@@ -187,12 +114,7 @@ function AnimatedStat({
       <TrendingUp key="trending" className="w-8 h-8" />,
       <Shield key="shield" className="w-8 h-8" />,
     ];
-
-    const iconElement =
-      iconName && iconMap[iconName]
-        ? iconMap[iconName]
-        : defaultIcons[(idx || 0) % defaultIcons.length];
-
+    const iconElement = iconName && iconMap[iconName] ? iconMap[iconName] : defaultIcons[(idx || 0) % defaultIcons.length];
     return (
       <motion.div
         initial={{ scale: 0.5, opacity: 0 }}
@@ -200,11 +122,7 @@ function AnimatedStat({
         viewport={{ once: false }}
         transition={{ type: "spring", stiffness: 200, delay: (idx || 0) * 0.1 }}
         variants={{
-          hover: {
-            rotate: [0, -10, 10, -5, 5, 0],
-            scale: 1.1,
-            transition: { duration: 0.5 },
-          },
+          hover: { rotate: [0, -10, 10, -5, 5, 0], scale: 1.1, transition: { duration: 0.5 } },
         }}
       >
         {iconElement}
@@ -218,77 +136,40 @@ function AnimatedStat({
       initial={{ opacity: 0, y: 50, scale: 0.9 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: false, amount: 0.3 }}
-      transition={{
-        duration: 0.6,
-        delay: index * 0.1,
-        ease: [0.22, 1, 0.36, 1],
-      }}
+      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
       whileHover="hover"
       className="relative bg-transparent group h-full flex flex-col justify-between transition-colors duration-300"
     >
-      <motion.div
-        variants={{ hover: { opacity: 1 } }}
-        initial={{ opacity: 0 }}
-        className="absolute inset-0 bg-gradient-to-br from-blue-50/10 via-transparent to-transparent pointer-events-none"
-      />
+      <motion.div variants={{ hover: { opacity: 1 } }} initial={{ opacity: 0 }} className="absolute inset-0 bg-gradient-to-br from-blue-50/10 via-transparent to-transparent pointer-events-none" />
+      <motion.div variants={{ hover: { scaleX: 1, opacity: 1 } }} initial={{ scaleX: 0, opacity: 0 }} transition={{ duration: 0.4, ease: "easeOut" }} className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 origin-left" />
 
       <motion.div
-        variants={{ hover: { scaleX: 1, opacity: 1 } }}
-        initial={{ scaleX: 0, opacity: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 origin-left"
-      />
-
-      <motion.div
-        variants={{
-          hover: {
-            y: -4,
-            backgroundColor: "rgba(59, 130, 246, 0.2)",
-            color: "#60a5fa",
-            boxShadow: "0 10px 25px -5px rgba(59, 130, 246, 0.2)",
-          },
-        }}
+        variants={{ hover: { y: -4, backgroundColor: "rgba(59,130,246,0.2)", color: "#60a5fa", boxShadow: "0 10px 25px -5px rgba(59,130,246,0.2)" } }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 text-blue-400 bg-white/5 relative z-10"
+        className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 text-blue-600 bg-blue-50 border border-blue-100 relative z-10"
       >
-        <div className="[&>svg]:w-7 [&>svg]:h-7">
-          {getStatIcon(icon, index)}
-        </div>
+        <div className="[&>svg]:w-7 [&>svg]:h-7">{getStatIcon(icon, index)}</div>
       </motion.div>
 
       <div className="relative z-10">
-        <motion.div
-          variants={{ hover: { y: -2 } }}
-          transition={{ duration: 0.3 }}
-          className="text-4xl font-black mb-2 tabular-nums tracking-tight text-white"
-        >
-          {prefix}
-          {formatNumber(count, hasDecimal)}
-          {suffix}
+        <motion.div variants={{ hover: { y: -2 } }} transition={{ duration: 0.3 }} className="text-4xl font-black mb-2 tabular-nums tracking-tight text-slate-900">
+          {prefix}{formatNumber(count, hasDecimal)}{suffix}
         </motion.div>
-
         <div className="flex items-center gap-2">
-          <div className="h-[1px] w-4 bg-white/10 group-hover:w-8 group-hover:bg-blue-500 transition-all duration-300 mb-[2px]"></div>
-          <div className="text-slate-400 text-xs font-bold uppercase tracking-widest group-hover:text-blue-400 transition-colors duration-300">
-            {label}
-          </div>
+          <div className="h-[1px] w-4 bg-blue-200 group-hover:w-8 group-hover:bg-blue-500 transition-all duration-300 mb-[2px]" />
+          <div className="text-slate-500 text-xs font-bold uppercase tracking-widest group-hover:text-blue-600 transition-colors duration-300">{label}</div>
         </div>
       </div>
     </motion.div>
   );
 }
 
-// Helper to transform flat highlight/stat keys into arrays
 // This merges individual keys (highlight_1, stat_1_value) with existing arrays
-const transformAboutData = (
-  data: Record<string, unknown>,
-): AboutSectionData => {
+const transformAboutData = (data: Record<string, unknown>): AboutSectionData => {
   if (!data) return {};
 
   // Start with existing highlights array or empty
-  let highlights: string[] = Array.isArray(data.highlights)
-    ? [...(data.highlights as string[])]
-    : [];
+  let highlights: string[] = Array.isArray(data.highlights) ? [...(data.highlights as string[])] : [];
 
   // Override with individual keys if they exist (editor saves these)
   for (let i = 1; i <= 10; i++) {
@@ -302,12 +183,8 @@ const transformAboutData = (
   highlights = highlights.filter((h) => h !== undefined && h !== "");
 
   // Start with existing stats array or empty
-  let stats: { value: string; label: string; icon?: string }[] = Array.isArray(
-    data.stats,
-  )
-    ? (data.stats as { value: string; label: string; icon?: string }[]).map(
-      (s) => ({ ...s }),
-    )
+  let stats: { value: string; label: string; icon?: string }[] = Array.isArray(data.stats)
+    ? (data.stats as { value: string; label: string; icon?: string }[]).map((s) => ({ ...s }))
     : [];
 
   // Override with individual keys if they exist (editor saves these)
@@ -319,19 +196,11 @@ const transformAboutData = (
     // If either value or label exists for this index, update that stat
     if (data[valueKey] !== undefined || data[labelKey] !== undefined) {
       // Ensure the array has enough elements
-      while (stats.length < i) {
-        stats.push({ value: "", label: "" });
-      }
+      while (stats.length < i) stats.push({ value: "", label: "" });
       // Update the stat at position i-1
-      if (data[valueKey] !== undefined && data[valueKey] !== "") {
-        stats[i - 1].value = data[valueKey] as string;
-      }
-      if (data[labelKey] !== undefined && data[labelKey] !== "") {
-        stats[i - 1].label = data[labelKey] as string;
-      }
-      if (data[iconKey] !== undefined) {
-        stats[i - 1].icon = data[iconKey] as string;
-      }
+      if (data[valueKey] !== undefined && data[valueKey] !== "") stats[i - 1].value = data[valueKey] as string;
+      if (data[labelKey] !== undefined && data[labelKey] !== "") stats[i - 1].label = data[labelKey] as string;
+      if (data[iconKey] !== undefined) stats[i - 1].icon = data[iconKey] as string;
     }
   }
   // Remove any stats with empty value and label
@@ -343,9 +212,7 @@ const transformAboutData = (
     const ctaObj = data.cta as Record<string, unknown>;
     const text = (ctaObj.text as string) || "";
     const link = (ctaObj.link as string) || (ctaObj.href as string) || "";
-    if (text && link) {
-      ctaData = { text, link };
-    }
+    if (text && link) ctaData = { text, link };
   }
 
   return {
@@ -359,15 +226,11 @@ const transformAboutData = (
 };
 
 export function DynamicAboutSection() {
-  const [aboutSection, setAboutSection] =
-    useState<AboutSectionData>(FALLBACK_ABOUT);
+  const [aboutSection, setAboutSection] = useState<AboutSectionData>(FALLBACK_ABOUT);
 
   const fetchContent = useCallback(async () => {
     try {
-      const aboutContent = await contentService.getContentBySection(
-        "home",
-        "about",
-      );
+      const aboutContent = await contentService.getContentBySection("home", "about");
       if (aboutContent?.about_section) {
         const transformed = transformAboutData(aboutContent.about_section);
         setAboutSection(() => ({ ...FALLBACK_ABOUT, ...transformed }));
@@ -379,18 +242,11 @@ export function DynamicAboutSection() {
 
   useEffect(() => {
     fetchContent();
-    const unsubscribe = contentService.onCacheInvalidated(() => {
-      fetchContent();
-    });
-    return () => {
-      unsubscribe();
-    };
+    const unsubscribe = contentService.onCacheInvalidated(() => { fetchContent(); });
+    return () => { unsubscribe(); };
   }, [fetchContent]);
 
   const displayContent = useMemo(() => aboutSection, [aboutSection]);
-
-  const { scrollYProgress } = useScroll();
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
 
   return (
     <section className="py-24 md:py-32 bg-white relative overflow-hidden">
@@ -412,18 +268,11 @@ export function DynamicAboutSection() {
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           {/* Left Content */}
           <div className="relative">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8 }}
-            >
+            <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false }} transition={{ duration: 0.8 }}>
               {displayContent.tagline && (
                 <div className="inline-flex items-center gap-3 mb-8 px-4 py-1.5 bg-blue-50 border border-blue-100 rounded-full">
-                  <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">
-                    {displayContent.tagline}
-                  </span>
+                  <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">{displayContent.tagline}</span>
                 </div>
               )}
 
@@ -450,28 +299,28 @@ export function DynamicAboutSection() {
                       <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm border border-blue-100">
                         <CheckCircle className="w-5 h-5" />
                       </div>
-                      <span className="text-lg text-slate-700 font-bold tracking-tight">
-                        {highlight}
-                      </span>
+                      <span className="text-lg text-slate-700 font-bold tracking-tight">{highlight}</span>
                     </motion.div>
                   ))}
                 </div>
               )}
 
-              <Link href={displayContent.cta?.link || "/about"}>
-                <button className="group relative h-14 px-8 rounded-2xl bg-slate-900 text-white font-bold hover:bg-blue-600 transition-all duration-300 overflow-hidden shadow-xl">
-                  <span className="relative z-10 flex items-center gap-2">
-                    {displayContent.cta?.text || "Learn More"}
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                </button>
-              </Link>
+              {/* CTA Button */}
+              {displayContent.cta && (
+                <Link href={displayContent.cta?.link || "/about"}>
+                  <button className="group relative h-14 px-8 rounded-2xl bg-slate-900 text-white font-bold hover:bg-blue-600 transition-all duration-300 overflow-hidden shadow-xl">
+                    <span className="relative z-10 flex items-center gap-2">
+                      {displayContent.cta?.text || "Learn More"}
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </button>
+                </Link>
+              )}
             </motion.div>
           </div>
 
-          {/* Right Stats Grid - Light Theme */}
+          {/* Right Stats Grid */}
           <div className="relative">
-            {/* Watermark Behind Stats */}
             <motion.div
               animate={{ y: [0, -20, 0] }}
               transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
@@ -493,20 +342,13 @@ export function DynamicAboutSection() {
                   <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
                     <Layers className="w-12 h-12 text-blue-600" />
                   </div>
-
                   <div className="relative z-10">
-                    <AnimatedStat
-                      value={stat.value}
-                      label={stat.label}
-                      icon={stat.icon}
-                      index={index}
-                    />
+                    <AnimatedStat value={stat.value} label={stat.label} icon={stat.icon} index={index} />
                   </div>
                 </motion.div>
               ))}
             </div>
 
-            {/* Connecting Decorative Line */}
             <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-200 to-transparent rotate-[35deg]" />
           </div>
         </div>

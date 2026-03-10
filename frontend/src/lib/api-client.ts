@@ -188,7 +188,6 @@ class ApiClient {
 
       return data;
     } catch (error: any) {
-      console.error("API request error:", error);
       throw error;
     }
   }

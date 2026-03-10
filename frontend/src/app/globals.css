@@ -174,6 +174,18 @@
   animation: blob 20s infinite alternate linear;
   filter: blur(40px);
 }
+
+@keyframes wave {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-25%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-wave {
+  animation: wave 15s ease-in-out infinite;
+  will-change: transform;
+}
+
 .js-reveal { opacity: 0; }
 
 /* Category Decorations */

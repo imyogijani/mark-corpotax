@@ -25,25 +25,12 @@ interface HeroMainData {
   tagline?: string;
   title?: string;
   description?: string;
-  cta_primary?: {
-    text?: string;
-    link?: string;
-  };
-  phone?: {
-    number?: string;
-    help_text?: string;
-  };
-  hero_images?: {
-    image_1?: string;
-    image_2?: string;
-  };
-  experience_badge?: {
-    years?: string;
-    text?: string;
-  };
+  cta_primary?: { text?: string; link?: string };
+  phone?: { number?: string; help_text?: string };
+  hero_images?: { image_1?: string; image_2?: string };
+  experience_badge?: { years?: string; text?: string };
 }
 
-// Static fallback content - renders immediately without loading
 const FALLBACK_HERO: HeroMainData = {
   tagline: "MARK GROUP",
   title: "Shaping Financial Success in the AI Era",
@@ -54,16 +41,9 @@ const FALLBACK_HERO: HeroMainData = {
   experience_badge: { years: "12", text: "Years Of experience" },
 };
 
-const HeroTitle = ({
-  text,
-  trigger = true,
-}: {
-  text: string;
-  trigger?: boolean;
-}) => {
+const HeroTitle = ({ text, trigger = true }: { text: string; trigger?: boolean }) => {
   useEffect(() => {
     if (!trigger) return;
-
     anime({
       targets: ".hero-char",
       opacity: [0, 1],
@@ -81,10 +61,7 @@ const HeroTitle = ({
   return (
     <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-slate-900 tracking-tight overflow-hidden">
       {characters.map((char, i) => (
-        <span
-          key={i}
-          className="hero-char inline-block whitespace-pre opacity-0"
-        >
+        <span key={i} className="hero-char inline-block whitespace-pre opacity-0">
           {char}
         </span>
       ))}
@@ -92,13 +69,7 @@ const HeroTitle = ({
   );
 };
 
-const StaticHeroImage = ({
-  heroMain,
-  y3,
-}: {
-  heroMain: HeroMainData;
-  y3: any;
-}) => {
+const StaticHeroImage = ({ heroMain, y3 }: { heroMain: HeroMainData; y3: any }) => {
   return (
     <div className="relative w-full h-full flex items-center justify-center py-10">
       <div className="relative z-10 w-full max-w-lg">
@@ -121,17 +92,10 @@ const StaticHeroImage = ({
             transition={{ delay: 0.8, type: "spring", damping: 15 }}
             className="absolute bottom-4 right-0 md:-right-8 bg-white/90 backdrop-blur-xl px-6 py-5 rounded-[2rem] shadow-[0_20px_50px_rgba(37,99,235,0.1)] border border-blue-100 flex items-center gap-4 group hover:bg-white transition-all duration-500 z-50 text-slate-900 overflow-hidden"
           >
-            {/* Inner Shine Effect */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
-            />
-
+            <motion.div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
             <div className="flex flex-col relative z-10">
               <span className="text-4xl font-black text-blue-600 tracking-tighter">
-                <Counter
-                  to={parseInt(heroMain.experience_badge?.years || "12")}
-                />
-                +
+                <Counter to={parseInt(heroMain.experience_badge?.years || "12")} />+
               </span>
             </div>
             <div className="h-12 w-[1px] bg-slate-200 relative z-10" />
@@ -145,7 +109,7 @@ const StaticHeroImage = ({
             </div>
           </motion.div>
 
-          {/* Floating Element 1 - MSME Fin */}
+          {/* Floating Element 1 */}
           <motion.div
             animate={{ y: [0, -15, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -154,7 +118,7 @@ const StaticHeroImage = ({
             <PieChart className="w-6 h-6 text-blue-600" />
           </motion.div>
 
-          {/* Floating Element 2 - Growth */}
+          {/* Floating Element 2 */}
           <motion.div
             animate={{ y: [0, 15, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
@@ -165,7 +129,7 @@ const StaticHeroImage = ({
         </motion.div>
       </div>
 
-      {/* Background Decorative Rings - Light Theme */}
+      {/* Background Decorative Rings */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 pointer-events-none opacity-40">
         <motion.div
           animate={{ rotate: 360 }}
@@ -189,21 +153,16 @@ export const DynamicHeroSection = () => {
   const mouseY = useMotionValue(0);
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    const { clientX, clientY } = e;
-    mouseX.set(clientX);
-    mouseY.set(clientY);
+    mouseX.set(e.clientX);
+    mouseY.set(e.clientY);
   };
 
   const fetchHeroContent = useCallback(async () => {
     try {
       const data = await contentService.getContent("home", "hero_main");
-      if (data) {
-        setHeroMain(data);
-      } else {
-        setHeroMain(FALLBACK_HERO);
-      }
-    } catch (error) {
-      console.error("Error fetching hero content:", error);
+      if (data) setHeroMain(data);
+      else setHeroMain(FALLBACK_HERO);
+    } catch {
       setHeroMain(FALLBACK_HERO);
     }
   }, []);
@@ -213,16 +172,14 @@ export const DynamicHeroSection = () => {
   }, [fetchHeroContent]);
 
   const { scrollY } = useScroll();
-
   const y1 = useTransform(scrollY, [0, 500], [0, -200]);
   const y2 = useTransform(scrollY, [0, 500], [0, -120]);
   const y3 = useTransform(scrollY, [0, 500], [0, 80]);
 
   const [division, setDivision] = useState<string>("finance");
-
   useEffect(() => {
-    const savedDivision = localStorage.getItem("user_division");
-    if (savedDivision) setDivision(savedDivision);
+    const saved = localStorage.getItem("user_division");
+    if (saved) setDivision(saved);
   }, []);
 
   return (
@@ -231,32 +188,22 @@ export const DynamicHeroSection = () => {
       id="home"
       onMouseMove={handleMouseMove}
     >
-      {/* Interactive Spotlight Background - Light Theme */}
+      {/* Interactive Spotlight */}
       <motion.div
         className="absolute inset-0 z-0 pointer-events-none opacity-[0.4]"
-        style={{
-          background: "radial-gradient(800px circle at center, rgba(37, 99, 235, 0.08), transparent 80%)"
-        }}
-        animate={{
-          x: [0, 100, -100, 0],
-          y: [0, 50, -50, 0]
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear"
-        }}
+        style={{ background: "radial-gradient(800px circle at center, rgba(37,99,235,0.08), transparent 80%)" }}
+        animate={{ x: [0, 100, -100, 0], y: [0, 50, -50, 0] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* Grid Pattern Overlay - Light Theme */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] z-0 pointer-events-none" />
+      {/* Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:40px_40px] z-0 pointer-events-none" />
 
-      {/* Background Gradients - Light Theme */}
+      {/* Background Gradients */}
       <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[50%] bg-blue-100 blur-[150px] rounded-full -z-10" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[50%] bg-emerald-100/60 blur-[150px] rounded-full -z-10" />
 
-      {/* Background Watermarks - Light Theme */}
+      {/* Background Watermarks */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <motion.div
           style={{ y: y1 }}
@@ -280,7 +227,7 @@ export const DynamicHeroSection = () => {
 
       <div className="container mx-auto px-6 relative z-10 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center h-full">
-          {/* Left Content Side */}
+          {/* Left Content */}
           <div className="flex flex-col space-y-10">
             <MotionWrapper direction="left">
               <div className="inline-flex items-center gap-2 px-1 py-1 pr-4 bg-white border border-blue-100 rounded-full text-blue-600 font-semibold text-xs md:text-sm uppercase tracking-wider shadow-sm group">
@@ -291,7 +238,13 @@ export const DynamicHeroSection = () => {
               </div>
             </MotionWrapper>
 
-            <HeroTitle text={division === "taxation" ? "Expert Taxation & Legal Compliance" : (heroMain.title || FALLBACK_HERO.title!)} />
+            <HeroTitle
+              text={
+                division === "taxation"
+                  ? "Expert Taxation & Legal Compliance"
+                  : (heroMain.title || FALLBACK_HERO.title!)
+              }
+            />
 
             <MotionWrapper direction="left" delay={0.2}>
               <p className="text-xl text-slate-600 leading-relaxed max-w-xl font-medium">
@@ -301,11 +254,7 @@ export const DynamicHeroSection = () => {
               </p>
             </MotionWrapper>
 
-            <MotionWrapper
-              direction="left"
-              delay={0.4}
-              className="flex flex-wrap gap-8 items-center pt-4"
-            >
+            <MotionWrapper direction="left" delay={0.4} className="flex flex-wrap gap-8 items-center pt-4">
               <Link href={heroMain.cta_primary?.link || "/appointment"}>
                 <button className="group relative h-16 px-10 rounded-2xl bg-blue-600 font-bold text-white text-lg overflow-hidden shadow-[0_15px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_20px_40px_rgba(37,99,235,0.4)] transition-all duration-300 active:scale-95">
                   <span className="relative z-10 flex items-center gap-2">
@@ -319,9 +268,9 @@ export const DynamicHeroSection = () => {
               <div className="flex items-center gap-5">
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 10 }}
-                  className="w-14 h-14 rounded-2xl bg-white shadow-md flex items-center justify-center border border-blue-50 text-blue-600 group cursor-pointer"
+                  className="w-14 h-14 rounded-2xl bg-white shadow-md flex items-center justify-center border border-blue-50 text-blue-600 cursor-pointer"
                 >
-                  <Phone className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                  <Phone className="w-6 h-6" />
                 </motion.div>
                 <div className="flex flex-col">
                   <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
@@ -337,7 +286,7 @@ export const DynamicHeroSection = () => {
               </div>
             </MotionWrapper>
 
-            {/* Trusted By - Light Theme */}
+            {/* Trusted By */}
             <MotionWrapper direction="up" delay={0.6} className="pt-8 border-t border-slate-100 max-w-md">
               <div className="flex items-center gap-6">
                 <div className="flex -space-x-4">
@@ -363,7 +312,7 @@ export const DynamicHeroSection = () => {
             </MotionWrapper>
           </div>
 
-          {/* Right Image Side */}
+          {/* Right Image */}
           <MotionWrapper direction="right" delay={0.3}>
             <StaticHeroImage heroMain={heroMain} y3={y3} />
           </MotionWrapper>
