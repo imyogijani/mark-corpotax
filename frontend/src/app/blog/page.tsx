@@ -19,6 +19,7 @@ import {
 import { DynamicCTASection } from "@/components/DynamicCTASection";
 import FloatingGraffiti from "@/components/FloatingGraffiti";
 import { MotionWrapper } from "@/components/MotionWrapper";
+import { AskExpertSection } from "@/components/AskExpertSection";
 
 interface BlogPost {
   id: string;
@@ -447,6 +448,10 @@ export default function BlogPage() {
           </div>
         </div>
       </section>
+
+      <div className="container mx-auto px-4 pb-20">
+        <AskExpertSection />
+      </div>
 
       {/* CTA Section */}
       <DynamicCTASection />

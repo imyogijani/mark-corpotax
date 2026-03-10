@@ -5,7 +5,7 @@ import path from "path";
 const nextConfig: NextConfig = {
   // Set the workspace root explicitly to avoid lockfile detection warnings
   // This tells Next.js where the monorepo root is located
-  outputFileTracingRoot: path.join(__dirname, "../"),
+  outputFileTracingRoot: path.resolve(process.cwd(), ".."),
 
   // Performance optimizations
   poweredByHeader: false,
@@ -16,11 +16,7 @@ const nextConfig: NextConfig = {
     // Enable type checking in production for better quality
     ignoreBuildErrors: false,
   },
-  eslint: {
-    // Temporarily ignore @typescript-eslint/no-explicit-any warnings during builds
-    // These are not runtime errors, just type annotations
-    ignoreDuringBuilds: true,
-  },
+
 
   // Image optimization
   images: {

@@ -7,6 +7,7 @@ import { LoadingProvider } from "@/contexts/LoadingContext";
 import { ConditionalLayout } from "@/components/ConditionalLayout";
 import { Inter } from "next/font/google";
 import { DebugStatus } from "@/components/DebugStatus";
+import { WaveWatermark } from "@/components/WaveWatermark";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,9 +34,10 @@ export default function RootLayout({
         className={cn(
           "font-sans antialiased",
           inter.variable,
-          "min-h-screen bg-background flex flex-col",
+          "min-h-screen bg-background flex flex-col relative",
         )}
       >
+        <WaveWatermark />
         <AuthProvider>
           <LoadingProvider>
             <ConditionalLayout>

@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { apiClient } from "@/lib/api-client";
 import { SubscribeCta } from "@/components/subscribe-cta";
+import { AskExpertSection } from "@/components/AskExpertSection";
 
 // Interface for Blog Post
 interface BlogPost {
@@ -127,135 +128,187 @@ export default function BlogDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-20">
-      {/* Hero Section */}
-      <div className="bg-slate-900 text-white relative overflow-hidden py-20 lg:py-24">
+    <div className="min-h-screen bg-white pb-32">
+      {/* Premium Hero Section */}
+      <div className="bg-slate-900 border-b border-white/5 text-white relative overflow-hidden pt-40 pb-32">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-20 -right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-slate-50 to-transparent z-10"></div>
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-600/10 rounded-full blur-[120px] -mr-64 -mt-64" />
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-600/5 rounded-full blur-[100px] -ml-48 -mb-48" />
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
         </div>
 
-        <div className="container mx-auto px-4 relative z-20">
-          <Link
-            href="/blog"
-            className="inline-flex items-center text-slate-300 hover:text-white mb-8 transition-colors group text-sm font-medium"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-            Back to Articles
-          </Link>
-
+        <div className="container mx-auto px-6 relative z-20">
           <div className="max-w-4xl">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 mb-8 transition-all group text-[10px] font-black uppercase tracking-[0.3em]"
+            >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform" />
+              Back to Knowledge Hub
+            </Link>
+
             {post.category && (
-              <span className="inline-block px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full uppercase tracking-wider mb-6">
-                {post.category}
-              </span>
+              <div className="flex items-center gap-3 mb-6">
+                <span className="w-8 h-[2px] bg-blue-500" />
+                <span className="px-4 py-1.5 bg-blue-600/20 backdrop-blur-md border border-blue-500/20 text-blue-400 text-[10px] font-black rounded-full uppercase tracking-[0.25em]">
+                  {post.category}
+                </span>
+              </div>
             )}
 
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-8 leading-[1.1] tracking-tighter uppercase">
               {post.title}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-6 text-slate-300 text-sm md:text-base">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-slate-700/50 rounded-full flex items-center justify-center border border-slate-600">
-                  <User className="w-4 h-4" />
+            <div className="flex flex-wrap items-center gap-8 text-slate-400 text-xs font-bold uppercase tracking-[0.15em]">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-slate-800 rounded-xl flex items-center justify-center border border-slate-700 shadow-inner">
+                  <User className="w-5 h-5 text-blue-400" />
                 </div>
-                <span>{post.author || "Admin"}</span>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-slate-500 text-[9px] font-black">Author</span>
+                  <span className="text-white">{post.author || "Admin"}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                <span>{formatDate(post.createdAt)}</span>
+              
+              <div className="h-10 w-px bg-slate-800 hidden md:block" />
+
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-slate-800 rounded-xl flex items-center justify-center border border-slate-700 shadow-inner">
+                  <Calendar className="w-5 h-5 text-blue-400" />
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-slate-500 text-[9px] font-black">Published</span>
+                  <span className="text-white">{formatDate(post.createdAt)}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                <span>{post.readTime || getReadTime(post.content || "")}</span>
+
+              <div className="h-10 w-px bg-slate-800 hidden md:block" />
+
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-slate-800 rounded-xl flex items-center justify-center border border-slate-700 shadow-inner">
+                  <Clock className="w-5 h-5 text-blue-400" />
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-slate-500 text-[9px] font-black">Reading Time</span>
+                  <span className="text-white">{post.readTime || getReadTime(post.content || "")}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 -mt-20 relative z-30">
-        <div className="grid lg:grid-cols-3 gap-8">
+      <div className="container mx-auto px-6 -mt-16 relative z-30">
+        <div className="grid lg:grid-cols-12 gap-12">
           {/* Main Content */}
-          <div className="lg:col-span-2">
-            <Card className="border-0 shadow-xl rounded-2xl overflow-hidden mb-12 bg-white">
+          <div className="lg:col-span-8">
+            <Card className="border border-slate-100 shadow-[0_40px_80px_rgba(0,0,0,0.06)] rounded-[3rem] overflow-hidden mb-12 bg-white">
               {post.featuredImage && (
-                <div className="h-64 md:h-96 w-full relative">
-                  {/* Standard img tag for external urls usually easier than Image for dynamics */}
+                <div className="aspect-video w-full relative">
                   <img
                     src={post.featuredImage}
                     alt={post.title}
                     className="w-full h-full object-cover"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-40" />
                 </div>
               )}
-              <CardContent className="p-8 md:p-12">
-                <div className="prose prose-lg prose-slate max-w-none prose-headings:text-slate-900 prose-p:text-slate-700 prose-a:text-blue-600">
-                  {/* 
-                               Rendering HTML content. 
-                            */}
+              <CardContent className="p-8 md:p-16">
+                <div className="prose prose-xl prose-slate max-w-none prose-headings:text-slate-900 prose-headings:font-black prose-headings:tracking-tight prose-headings:uppercase prose-p:text-slate-600 prose-p:leading-relaxed prose-p:font-medium prose-a:text-blue-600 prose-strong:text-slate-900">
                   <div
                     dangerouslySetInnerHTML={{
                       __html: post.content || "<p>No content available.</p>",
                     }}
                   />
                 </div>
+
+                {/* Tags Integrated */}
+                {post.tags && post.tags.length > 0 && (
+                  <div className="mt-16 pt-10 border-t border-slate-50 flex flex-wrap gap-3">
+                    {post.tags.map((tag, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-2 px-4 py-2 bg-slate-50 text-[10px] font-black uppercase tracking-widest text-slate-500 rounded-full border border-slate-100 transition-all hover:bg-blue-50 hover:text-blue-600 hover:border-blue-100"
+                      >
+                        <Tag className="w-3 h-3" />
+                        {tag}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
 
-            {/* Tags */}
-            {post.tags && post.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-12">
-                {post.tags.map((tag, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-1 px-3 py-1 bg-white border border-slate-200 rounded-full text-sm text-slate-600 hover:border-blue-300 hover:text-blue-600 transition-colors cursor-default"
-                  >
-                    <Tag className="w-3 h-3" />
-                    {tag}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <SubscribeCta />
+            <AskExpertSection />
+            <div className="mb-20">
+              <SubscribeCta />
+            </div>
           </div>
 
           {/* Sidebar */}
-          <div className="hidden lg:block space-y-8">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 sticky top-24">
-              <h3 className="text-lg font-bold text-slate-900 mb-4">
-                Share this article
-              </h3>
-              <div className="flex flex-col gap-3">
+          <div className="lg:col-span-4 space-y-8">
+            <div className="bg-white p-8 rounded-[2.5rem] shadow-[0_30px_60px_rgba(0,0,0,0.04)] border border-slate-50 sticky top-32">
+              <div className="flex flex-col gap-2 mb-8">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">Spread Knowledge</span>
+                <h3 className="text-xl font-bold text-slate-900 tracking-tight">Share Article</h3>
+                <div className="h-1 w-8 bg-blue-100 rounded-full" />
+              </div>
+              
+              <div className="flex flex-col gap-4">
                 <Button
                   variant="outline"
-                  className="w-full justify-start gap-3 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-colors"
+                  className="w-full justify-start gap-4 h-14 rounded-2xl hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-all border-slate-100 group shadow-sm"
                 >
-                  <Facebook className="w-4 h-4" /> Share on Facebook
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                    <Facebook className="w-4 h-4" />
+                  </div>
+                  <span className="font-bold text-sm">Facebook</span>
                 </Button>
+                
                 <Button
                   variant="outline"
-                  className="w-full justify-start gap-3 hover:bg-sky-50 hover:text-sky-500 hover:border-sky-200 transition-colors"
+                  className="w-full justify-start gap-4 h-14 rounded-2xl hover:bg-sky-50 hover:text-sky-500 hover:border-sky-200 transition-all border-slate-100 group shadow-sm"
                 >
-                  <Twitter className="w-4 h-4" /> Share on Twitter
+                  <div className="w-8 h-8 rounded-lg bg-sky-50 flex items-center justify-center group-hover:bg-sky-500 group-hover:text-white transition-colors">
+                    <Twitter className="w-4 h-4" />
+                  </div>
+                  <span className="font-bold text-sm">Twitter</span>
                 </Button>
+
                 <Button
                   variant="outline"
-                  className="w-full justify-start gap-3 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-colors"
+                  className="w-full justify-start gap-4 h-14 rounded-2xl hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-all border-slate-100 group shadow-sm"
                 >
-                  <Linkedin className="w-4 h-4" /> Share on LinkedIn
+                  <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                    <Linkedin className="w-4 h-4" />
+                  </div>
+                  <span className="font-bold text-sm">LinkedIn</span>
                 </Button>
+
                 <Button
                   variant="outline"
-                  className="w-full justify-start gap-3 hover:bg-slate-50 hover:text-slate-600 hover:border-slate-300 transition-colors"
+                  className="w-full justify-start gap-4 h-14 rounded-2xl hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 transition-all border-slate-100 group shadow-sm"
                   onClick={() => {
                     navigator.clipboard.writeText(window.location.href);
                   }}
                 >
-                  <Share2 className="w-4 h-4" /> Copy Link
+                  <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-colors">
+                    <Share2 className="w-4 h-4" />
+                  </div>
+                  <span className="font-bold text-sm">Copy Link</span>
                 </Button>
+              </div>
+
+              {/* Sidebar Helper */}
+              <div className="mt-10 pt-10 border-t border-slate-50">
+                 <div className="bg-blue-50/50 p-6 rounded-3xl border border-blue-100/50">
+                    <h4 className="text-sm font-black uppercase tracking-widest text-blue-700 mb-2">Need Help?</h4>
+                    <p className="text-[13px] text-slate-600 font-medium mb-4">Contact our support for direct financial assistance.</p>
+                    <Link href="/contact" className="text-xs font-black text-blue-600 flex items-center gap-2 hover:gap-3 transition-all">
+                      CONTACT US <ArrowRight className="w-3 h-3" />
+                    </Link>
+                 </div>
               </div>
             </div>
           </div>
