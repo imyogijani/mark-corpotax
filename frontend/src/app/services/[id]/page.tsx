@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { 
-  ArrowLeft, 
-  CheckCircle, 
-  ShieldCheck, 
-  Zap, 
-  Sparkles, 
-  Phone, 
+import {
+  ArrowLeft,
+  CheckCircle,
+  ShieldCheck,
+  Zap,
+  Sparkles,
+  Phone,
   ArrowRight,
   TrendingUp,
   Award,
@@ -58,8 +58,8 @@ export default function ServiceDetailPage() {
 
       <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
         {/* Navigation */}
-        <Link 
-          href="/services" 
+        <Link
+          href="/services"
           className="js-reveal inline-flex items-center gap-3 text-sm font-black uppercase tracking-widest text-slate-400 hover:text-blue-600 transition-all group mb-12"
         >
           <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center group-hover:border-blue-600 group-hover:bg-blue-50 transition-all">
@@ -98,21 +98,21 @@ export default function ServiceDetailPage() {
 
           <div className="js-reveal relative">
             <div className="glass-card p-4 border-white bg-white/40 shadow-2xl backdrop-blur-3xl overflow-hidden group h-[500px] relative">
-              <img 
-                src={service.image} 
+              <img
+                src={service.image}
                 alt={service.name}
                 className="w-full h-full object-cover rounded-[2rem] transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent p-12 flex flex-col justify-end">
                 <div className="space-y-4">
-                   <div className="flex items-center gap-4 py-2 border-b border-white/10">
-                      <TrendingUp className="w-5 h-5 text-blue-400" />
-                      <span className="text-white font-bold uppercase tracking-tight">Rapid Scaling</span>
-                   </div>
-                   <div className="flex items-center gap-4 py-2 border-b border-white/10">
-                      <ShieldCheck className="w-5 h-5 text-emerald-400" />
-                      <span className="text-white font-bold uppercase tracking-tight">Full Compliance</span>
-                   </div>
+                  <div className="flex items-center gap-4 py-2 border-b border-white/10">
+                    <TrendingUp className="w-5 h-5 text-blue-400" />
+                    <span className="text-white font-bold uppercase tracking-tight">Rapid Scaling</span>
+                  </div>
+                  <div className="flex items-center gap-4 py-2 border-b border-white/10">
+                    <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                    <span className="text-white font-bold uppercase tracking-tight">Full Compliance</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -124,7 +124,7 @@ export default function ServiceDetailPage() {
           {/* Key Features Column */}
           <div className="js-reveal bg-white rounded-[2rem] md:rounded-[3rem] p-8 md:p-16 border border-slate-100 shadow-xl shadow-slate-200/40 relative overflow-hidden h-full">
             <div className="absolute top-0 right-0 w-64 h-64 bg-slate-50 rounded-full blur-3xl -mr-32 -mt-32" />
-            
+
             <div className="relative z-10">
               <div className="flex items-center gap-4 mb-10">
                 <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center">
@@ -149,7 +149,7 @@ export default function ServiceDetailPage() {
           {/* Core Benefits Column */}
           <div className="js-reveal bg-slate-900 rounded-[2rem] md:rounded-[3rem] p-8 md:p-16 text-white border border-slate-800 shadow-2xl relative overflow-hidden h-full">
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -mr-32 -mb-32" />
-            
+
             <div className="relative z-10">
               <div className="flex items-center gap-4 mb-10">
                 <div className="w-12 h-12 bg-white/10 text-white rounded-2xl flex items-center justify-center border border-white/10">

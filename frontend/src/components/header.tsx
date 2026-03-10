@@ -382,6 +382,7 @@ export function Header() {
                   })}
                 </nav>
 
+
                 <div className="mt-12 p-8 bg-blue-50 rounded-[40px] relative overflow-hidden group">
                   <div className="relative z-10">
                     <h4 className="text-blue-600 text-xs font-black uppercase tracking-widest mb-4">Dedicated Support</h4>

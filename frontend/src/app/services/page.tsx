@@ -90,14 +90,13 @@ export default function ServicesPage() {
             <Sparkles className="w-4 h-4" />
             <span>Our Expertise</span>
           </div>
-          
-          <h1 
+
+          <h1
             ref={headerRef}
             className="text-3xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tighter leading-none uppercase mb-6"
           >
             Solutions for Every Scale
           </h1>
-          
           <p className="js-reveal text-base md:text-lg text-slate-700 font-medium max-w-2xl mx-auto leading-relaxed">
             From individual home dreams to enterprise-level taxation, our multi-division experts provide the precision your financial future demands.
           </p>
@@ -106,6 +105,7 @@ export default function ServicesPage() {
         {/* Division Selection Hub */}
         <div className="js-reveal flex flex-wrap justify-center gap-6 md:gap-10 mt-16 mb-32 max-w-6xl mx-auto px-4">
           <button 
+
             onClick={() => document.getElementById('retail-mortgage')?.scrollIntoView({ behavior: 'smooth' })}
             className="group/hub flex-1 min-w-[280px] bg-white border border-slate-100 p-12 rounded-[3rem] shadow-[0_30px_60px_rgba(0,0,0,0.04)] hover:shadow-[0_40px_90px_rgba(37,99,235,0.12)] transition-all duration-700 hover:-translate-y-2 relative overflow-hidden"
           >
@@ -121,7 +121,7 @@ export default function ServicesPage() {
             </div>
           </button>
 
-          <button 
+          <button
             onClick={() => document.getElementById('taxation-division')?.scrollIntoView({ behavior: 'smooth' })}
             className="group/hub flex-1 min-w-[280px] bg-white border border-slate-100 p-12 rounded-[3rem] shadow-[0_30px_60px_rgba(0,0,0,0.04)] hover:shadow-[0_40px_90px_rgba(16,185,129,0.12)] transition-all duration-700 hover:-translate-y-2 relative overflow-hidden"
           >
@@ -145,9 +145,9 @@ export default function ServicesPage() {
             if (filteredServices.length === 0) return null;
 
             return (
-              <div 
-                key={cat} 
-                id={cat.toLowerCase().replace(/[^a-z0-t]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')} 
+              <div
+                key={cat}
+                id={cat.toLowerCase().replace(/[^a-z0-t]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')}
                 className="space-y-12 scroll-mt-32"
               >
                 <div className="js-reveal flex items-center gap-6">
@@ -161,16 +161,16 @@ export default function ServicesPage() {
                   {filteredServices.map((service) => {
                     const Icon = service.icon;
                     return (
-                      <Link 
-                        href={`/services/${service.id}`} 
+                      <Link
+                        href={`/services/${service.id}`}
                         key={service.id}
                         className="group"
                       >
                         <div className="js-reveal glass-card overflow-hidden h-full flex flex-col transition-all duration-500 border border-white hover:border-blue-100 shadow-xl hover:shadow-2xl">
                           {/* Service Image Section */}
                           <div className="relative h-64 w-full overflow-hidden">
-                            <img 
-                              src={service.image} 
+                            <img
+                              src={service.image}
                               alt={service.name}
                               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
@@ -192,8 +192,8 @@ export default function ServicesPage() {
                       </div>
                     </div>
                   </Link>
-                    );
-                  })}
+                );
+              })}
                 </div>
               </div>
             );

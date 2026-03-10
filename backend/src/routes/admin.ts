@@ -24,7 +24,7 @@ router.get("/content", async (req: Request, res: Response) => {
   try {
     const { page, section, includeInactive } = req.query;
 
-    let filter: any = {};
+    const filter: any = {};
     if (page) filter.page = page as string;
     if (section) filter.section = section as string;
 

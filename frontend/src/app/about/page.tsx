@@ -140,12 +140,12 @@ export default function AboutPage() {
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Established 2012</span>
               </div>
-              
+
               <h1 className="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter leading-[0.85] uppercase">
                 The Mark <br />
                 <span className="italic text-blue-600">Legacy.</span>
               </h1>
-              
+
               <p className="text-xl text-slate-600 font-medium leading-relaxed max-w-lg">
                 Dedicated to delivering comprehensive financial and legal solutions designed to address the unique requirements of our clients across India.
               </p>
@@ -153,22 +153,22 @@ export default function AboutPage() {
 
             {/* Right Column - Stats Grid */}
             <div className="js-reveal grid grid-cols-2 gap-6 md:gap-8">
-              <StatCard 
+              <StatCard
                 icon={<Clock className="w-8 h-8 text-blue-600" />}
                 value="12+"
                 label="years experience"
               />
-              <StatCard 
+              <StatCard
                 icon={<Users className="w-8 h-8 text-emerald-500" />}
                 value="2500+"
                 label="satisfied clients"
               />
-              <StatCard 
+              <StatCard
                 icon={<Award className="w-8 h-8 text-amber-500" />}
                 value="Lowest"
                 label="interest rates"
               />
-              <StatCard 
+              <StatCard
                 icon={<Globe className="w-8 h-8 text-purple-500" />}
                 value="Hassle-free"
                 label="process"
