@@ -201,7 +201,7 @@ export function DynamicFeaturesSection() {
             </motion.div>
 
             <motion.h2
-              className="text-4xl md:text-5xl font-black mb-6 text-slate-900 uppercase tracking-tighter"
+              className="text-3xl md:text-4xl font-black mb-6 text-slate-900 uppercase tracking-tighter"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
@@ -211,7 +211,7 @@ export function DynamicFeaturesSection() {
             </motion.h2>
 
             <motion.p
-              className="text-lg text-slate-600 max-w-2xl mx-auto font-medium"
+              className="text-base text-slate-600 max-w-2xl mx-auto font-medium"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: false }}
@@ -255,7 +255,7 @@ export function DynamicFeaturesSection() {
                     </div>
                   </motion.div>
 
-                  <h3 className="text-xl font-black mb-4 text-slate-800 tracking-tight group-hover:text-blue-600 transition-colors uppercase">
+                  <h3 className="text-lg font-black mb-4 text-slate-800 tracking-tight group-hover:text-blue-600 transition-colors uppercase">
                     {feature.title}
                   </h3>
                   <p className="text-slate-500 leading-relaxed font-medium text-sm">

@@ -152,7 +152,7 @@ function AnimatedStat({ value, label, icon, index }: { value: string; label: str
       </motion.div>
 
       <div className="relative z-10">
-        <motion.div variants={{ hover: { y: -2 } }} transition={{ duration: 0.3 }} className="text-4xl font-black mb-2 tabular-nums tracking-tight text-slate-900">
+        <motion.div variants={{ hover: { y: -2 } }} transition={{ duration: 0.3 }} className="text-3xl font-black mb-2 tabular-nums tracking-tight text-slate-900">
           {prefix}{formatNumber(count, hasDecimal)}{suffix}
         </motion.div>
         <div className="flex items-center gap-2">
@@ -276,11 +276,11 @@ export function DynamicAboutSection() {
                 </div>
               )}
 
-              <h2 className="text-4xl md:text-6xl font-black text-slate-900 leading-[1.1] mb-8 tracking-tighter">
+              <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-[1.1] mb-8 tracking-tighter">
                 {displayContent.title || "Your Trusted Financial Partner Since 2012"}
               </h2>
 
-              <p className="text-xl text-slate-600 mb-12 leading-relaxed font-medium max-w-xl">
+              <p className="text-lg text-slate-600 mb-12 leading-relaxed font-medium max-w-xl">
                 {displayContent.description || "We are committed to providing exceptional financial services."}
               </p>
 
@@ -299,7 +299,7 @@ export function DynamicAboutSection() {
                       <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm border border-blue-100">
                         <CheckCircle className="w-5 h-5" />
                       </div>
-                      <span className="text-lg text-slate-700 font-bold tracking-tight">{highlight}</span>
+                      <span className="text-base text-slate-700 font-bold tracking-tight">{highlight}</span>
                     </motion.div>
                   ))}
                 </div>

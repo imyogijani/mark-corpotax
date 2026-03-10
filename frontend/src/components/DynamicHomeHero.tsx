@@ -59,12 +59,16 @@ const HeroTitle = ({ text, trigger = true }: { text: string; trigger?: boolean }
   const characters = text.split("");
 
   return (
-    <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-slate-900 tracking-tight overflow-hidden">
-      {characters.map((char, i) => (
-        <span key={i} className="hero-char inline-block whitespace-pre opacity-0">
-          {char}
-        </span>
-      ))}
+    <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-slate-900 tracking-tight overflow-hidden">
+      {characters.map((char, i) =>
+        char === "\n" ? (
+          <br key={i} />
+        ) : (
+          <span key={i} className="hero-char inline-block whitespace-pre opacity-0">
+            {char}
+          </span>
+        )
+      )}
     </h1>
   );
 };
@@ -241,13 +245,13 @@ export const DynamicHeroSection = () => {
             <HeroTitle
               text={
                 division === "taxation"
-                  ? "Expert Taxation & Legal Compliance"
-                  : (heroMain.title || FALLBACK_HERO.title!)
+                  ? "Expert Taxation &\nLegal Compliance"
+                  : (heroMain.title?.replace("Financial Solutions", "Financial\nSolutions").replace("Business Growth", "\nBusiness Growth") || FALLBACK_HERO.title!)
               }
             />
 
             <MotionWrapper direction="left" delay={0.2}>
-              <p className="text-xl text-slate-600 leading-relaxed max-w-xl font-medium">
+              <p className="text-lg text-slate-600 leading-relaxed max-w-xl font-medium">
                 {division === "taxation"
                   ? "Strategic legal advisory and comprehensive tax solutions designed for sustainable business growth and compliance in a changing landscape."
                   : (heroMain.description || FALLBACK_HERO.description)}
@@ -256,7 +260,7 @@ export const DynamicHeroSection = () => {
 
             <MotionWrapper direction="left" delay={0.4} className="flex flex-wrap gap-8 items-center pt-4">
               <Link href={heroMain.cta_primary?.link || "/appointment"}>
-                <button className="group relative h-16 px-10 rounded-2xl bg-blue-600 font-bold text-white text-lg overflow-hidden shadow-[0_15px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_20px_40px_rgba(37,99,235,0.4)] transition-all duration-300 active:scale-95">
+                <button className="group relative h-16 px-10 rounded-2xl bg-blue-600 font-bold text-white text-base overflow-hidden shadow-[0_15px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_20px_40px_rgba(37,99,235,0.4)] transition-all duration-300 active:scale-95">
                   <span className="relative z-10 flex items-center gap-2">
                     {heroMain.cta_primary?.text || "Get Started"}
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -278,7 +282,7 @@ export const DynamicHeroSection = () => {
                   </span>
                   <Link
                     href={`tel:${heroMain.phone?.number}`}
-                    className="text-xl font-black text-slate-900 hover:text-blue-600 transition-colors tracking-tight"
+                    className="text-lg font-black text-slate-900 hover:text-blue-600 transition-colors tracking-tight"
                   >
                     {heroMain.phone?.number || "+91 97120 67891"}
                   </Link>

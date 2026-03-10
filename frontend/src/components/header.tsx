@@ -185,7 +185,7 @@ export function Header() {
               <Logo width={36} height={36} />
             </div>
             <div className="flex flex-col">
-              <span className="text-[20px] font-black uppercase italic tracking-tighter text-slate-900 leading-none">
+              <span className="text-[18px] font-black uppercase italic tracking-tighter text-slate-900 leading-none">
                 {companyName}
               </span>
               <span className="text-[7px] font-black uppercase tracking-[0.4em] text-blue-600/70 leading-normal mt-1">
@@ -385,7 +385,7 @@ export function Header() {
 
                 <div className="mt-12 p-8 bg-blue-50 rounded-[40px] relative overflow-hidden group">
                   <div className="relative z-10">
-                    <h4 className="text-blue-600 text-xs font-black uppercase tracking-widest mb-4">Dedicated Support</h4>
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-slate-900 tracking-tight overflow-hidden">Dedicated Support</h1>
                     <p className="text-slate-700 text-sm font-bold mb-6">Expert help is just a call away for your financial needs.</p>
                     <Link href="tel:+919712067891" className="flex items-center gap-3 text-blue-600 font-extrabold group-hover:gap-5 transition-all">
                       <Phone className="w-5 h-5" />

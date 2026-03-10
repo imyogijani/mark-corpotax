@@ -113,7 +113,7 @@ export function DynamicServicesSection() {
             </motion.div>
 
             <motion.h2
-              className="text-4xl md:text-5xl font-black mb-6 text-slate-900 uppercase tracking-tighter"
+              className="text-3xl md:text-4xl font-black mb-6 text-slate-900 uppercase tracking-tighter"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
@@ -123,7 +123,7 @@ export function DynamicServicesSection() {
             </motion.h2>
 
             <motion.p
-              className="text-lg text-slate-600 max-w-2xl mx-auto font-medium"
+              className="text-base text-slate-600 max-w-2xl mx-auto font-medium"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: false }}
@@ -152,17 +152,17 @@ export function DynamicServicesSection() {
                 <div className="relative z-10 flex h-full flex-col">
                   <div className="flex-1">
                     <motion.div className="mb-10 w-20 h-20 rounded-[2rem] bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center transition-all duration-700 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 group-hover:rotate-[360deg] shadow-inner relative overflow-hidden">
-                       <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                       <div className="relative z-10 scale-75 group-hover:scale-100 transition-transform duration-700">
-                          {getIcon(service.icon || "")}
-                       </div>
+                      <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                      <div className="relative z-10 scale-75 group-hover:scale-100 transition-transform duration-700">
+                        {getIcon(service.icon || "")}
+                      </div>
                     </motion.div>
 
-                    <h3 className="mb-4 text-2xl font-black text-slate-900 transition-colors duration-500 group-hover:text-blue-600 tracking-tight uppercase leading-tight">
+                    <h3 className="mb-4 text-xl font-black text-slate-900 transition-colors duration-500 group-hover:text-blue-600 tracking-tight uppercase leading-tight">
                       {service.title}
                     </h3>
 
-                    <p className="text-[15px] text-slate-600 transition-colors duration-500 group-hover:text-slate-700 leading-relaxed font-medium">
+                    <p className="text-[14px] text-slate-600 transition-colors duration-500 group-hover:text-slate-700 leading-relaxed font-medium">
                       {service.description}
                     </p>
                   </div>

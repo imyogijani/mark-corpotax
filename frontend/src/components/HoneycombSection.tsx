@@ -57,6 +57,15 @@ export default function HoneycombSection() {
   const [division, setDivision] = React.useState<string>("finance");
 
   useEffect(() => {
+    const handleSync = () => {
+      const savedDivision = localStorage.getItem("user_division") || "finance";
+      setDivision(savedDivision);
+      setItems(savedDivision === "finance" ? financeItems : taxationItems);
+    };
+
+    handleSync();
+    
+    // Initial animation
     anime({
       targets: ".honeycomb-tile",
       scale: [0, 1],
@@ -66,6 +75,9 @@ export default function HoneycombSection() {
       duration: 1000,
       delay: anime.stagger(100),
     });
+
+    window.addEventListener("storage", handleSync);
+    return () => window.removeEventListener("storage", handleSync);
   }, []);
 
   return (
@@ -101,7 +113,7 @@ export default function HoneycombSection() {
             <span className="text-white/50 text-[10px] font-black uppercase tracking-[0.5em] mb-4">
               Comprehensive Solutions
             </span>
-            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight mb-4">
+            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-4">
               {division === "finance" ? "Finance Ecosystem" : "Taxation Interface"}
             </h2>
             <div className="w-24 h-1.5 bg-white rounded-full shadow-lg" />
@@ -194,7 +206,7 @@ function HexTile({ item, delay }: { item: HoneycombItem; delay: number }) {
           <Icon className="w-7 h-7 md:w-12 md:h-12 text-[#0074E4]" strokeWidth={1.5} />
         </div>
 
-        <h3 className="text-[8px] md:text-[13px] font-bold text-slate-800 leading-tight md:leading-snug max-w-[85%] mx-auto">
+        <h3 className="text-[7px] md:text-[12px] font-bold text-slate-800 leading-tight md:leading-snug max-w-[85%] mx-auto">
           {item.title}
         </h3>
       </div>
