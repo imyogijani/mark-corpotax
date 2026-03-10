@@ -86,7 +86,7 @@ export const protect = async (
       }
 
       // Remove password from user object
-      const { password, ...userWithoutPassword } = user;
+      const { password: _, ...userWithoutPassword } = user;
       req.user = userWithoutPassword as IUser;
 
       next();

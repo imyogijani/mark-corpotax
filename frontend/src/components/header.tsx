@@ -9,6 +9,8 @@ import {
   SheetContent,
   SheetClose,
   SheetTrigger,
+  SheetHeader,
+  SheetTitle,
 } from "@/components/ui/sheet";
 import {
   Menu,
@@ -19,7 +21,8 @@ import {
   Zap,
   Receipt,
   X,
-  Phone
+  Phone,
+  BookUser
 } from "lucide-react";
 import { Logo } from "./logo-image";
 import { contentService } from "@/lib/content-service";
@@ -208,15 +211,13 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative transition-all duration-300 font-medium ${
-                  isActive(link.href)
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground/80"
-                } after:absolute after:bottom-[-8px] after:left-0 after:h-0.5 after:w-full after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 ${
-                  isActive(link.href)
+                className={`relative transition-all duration-300 font-medium ${isActive(link.href)
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground/80"
+                  } after:absolute after:bottom-[-8px] after:left-0 after:h-0.5 after:w-full after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 ${isActive(link.href)
                     ? "after:scale-x-100"
                     : "hover:after:scale-x-100"
-                }`}
+                  }`}
               >
                 {link.label}
               </Link>
@@ -267,11 +268,10 @@ export function Header() {
                     <SheetClose asChild key={link.href}>
                       <Link
                         href={link.href}
-                        className={`rounded-lg p-2 text-lg transition-colors ${
-                          isActive(link.href)
-                            ? "bg-primary/10 text-primary font-semibold"
-                            : "hover:bg-muted"
-                        }`}
+                        className={`rounded-lg p-2 text-lg transition-colors ${isActive(link.href)
+                          ? "bg-primary/10 text-primary font-semibold"
+                          : "hover:bg-muted"
+                          }`}
                       >
                         {link.label}
                       </Link>
@@ -302,11 +302,11 @@ export function Header() {
                         Book Appointment
                       </Link>
                     </Button>
-                  </div>
+                  </SheetClose>
                 </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
 
         <div className="hidden flex-1 items-center justify-end md:flex">

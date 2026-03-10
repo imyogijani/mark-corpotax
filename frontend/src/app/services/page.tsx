@@ -52,9 +52,9 @@ export default function ServicesPage() {
       {/* Background Orbs */}
       <div className="fixed inset-0 pointer-events-none -z-10">
         <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-100 rounded-full animate-blob opacity-40" />
-        <div 
-          className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-emerald-50 rounded-full animate-blob opacity-40" 
-          style={{ animationDelay: "-5s" }} 
+        <div
+          className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-emerald-50 rounded-full animate-blob opacity-40"
+          style={{ animationDelay: "-5s" }}
         />
       </div>
 
@@ -65,14 +65,14 @@ export default function ServicesPage() {
             <Sparkles className="w-4 h-4" />
             <span>Our Expertise</span>
           </div>
-          
-          <h1 
+
+          <h1
             ref={headerRef}
             className="text-5xl md:text-7xl lg:text-8xl font-black text-slate-900 tracking-tighter leading-none uppercase mb-8"
           >
             Solutions for Every Scale
           </h1>
-          
+
           <p className="js-reveal text-xl text-slate-700 font-medium max-w-2xl mx-auto leading-relaxed">
             From individual home dreams to enterprise-level taxation, our multi-division experts provide the precision your financial future demands.
           </p>
@@ -80,7 +80,7 @@ export default function ServicesPage() {
 
         {/* Division Selection Hub */}
         <div className="js-reveal flex flex-wrap justify-center gap-4 md:gap-8 mt-16 mb-24 max-w-5xl mx-auto group">
-          <button 
+          <button
             onClick={() => document.getElementById('retail-mortgage')?.scrollIntoView({ behavior: 'smooth' })}
             className="flex-1 min-w-[220px] glass-card p-10 flex flex-col items-center gap-6 group/btn hover:scale-105 active:scale-95 transition-all duration-500 border-white shadow-2xl bg-white/40 backdrop-blur-3xl hover:bg-white"
           >
@@ -93,7 +93,7 @@ export default function ServicesPage() {
             </div>
           </button>
 
-          <button 
+          <button
             onClick={() => document.getElementById('taxation-division')?.scrollIntoView({ behavior: 'smooth' })}
             className="flex-1 min-w-[220px] glass-card p-10 flex flex-col items-center gap-6 group/btn hover:scale-105 active:scale-95 transition-all duration-500 border-white shadow-2xl bg-white/40 backdrop-blur-3xl hover:bg-white"
           >
@@ -114,9 +114,9 @@ export default function ServicesPage() {
             if (filteredServices.length === 0) return null;
 
             return (
-              <div 
-                key={cat} 
-                id={cat.toLowerCase().replace(/[^a-z0-t]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')} 
+              <div
+                key={cat}
+                id={cat.toLowerCase().replace(/[^a-z0-t]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')}
                 className="space-y-12 scroll-mt-32"
               >
                 <div className="js-reveal flex items-center gap-6">
@@ -130,16 +130,16 @@ export default function ServicesPage() {
                   {filteredServices.map((service) => {
                     const Icon = service.icon;
                     return (
-                      <Link 
-                        href={`/services/${service.id}`} 
+                      <Link
+                        href={`/services/${service.id}`}
                         key={service.id}
                         className="group"
                       >
                         <div className="js-reveal glass-card overflow-hidden h-full flex flex-col transition-all duration-500 border border-white hover:border-blue-100 shadow-xl hover:shadow-2xl">
                           {/* Service Image Section */}
                           <div className="relative h-64 w-full overflow-hidden">
-                            <img 
-                              src={service.image} 
+                            <img
+                              src={service.image}
                               alt={service.name}
                               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
@@ -150,17 +150,17 @@ export default function ServicesPage() {
                             <h3 className="text-2xl font-black text-slate-900 mb-4 group-hover:text-blue-600 transition-colors uppercase tracking-tight">
                               {service.name}
                             </h3>
-                        
-                        <p className="text-slate-500 font-medium leading-relaxed mb-8 line-clamp-3">
-                          {service.description}
-                        </p>
-                        
-                        <div className="mt-auto flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-slate-500 group-hover:text-blue-600 transition-all font-black">
-                          Learn More <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+
+                            <p className="text-slate-500 font-medium leading-relaxed mb-8 line-clamp-3">
+                              {service.description}
+                            </p>
+
+                            <div className="mt-auto flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-slate-500 group-hover:text-blue-600 transition-all font-black">
+                              Learn More <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </Link>
+                      </Link>
                     );
                   })}
                 </div>
@@ -172,7 +172,7 @@ export default function ServicesPage() {
         {/* Can't Decide CTA */}
         <div className="js-reveal mt-40 relative bg-slate-900 rounded-[3rem] p-12 md:p-24 overflow-hidden group">
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/20 rounded-full blur-[100px] -mr-48 -mt-48 transition-all group-hover:scale-110" />
-          
+
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="max-w-xl text-center md:text-left">
               <div className="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-8 mx-auto md:mx-0">
@@ -185,7 +185,7 @@ export default function ServicesPage() {
                 Our strategic advisors are ready to help you navigate through our complex financial landscape to find the perfect solution for you.
               </p>
             </div>
-            
+
             <Link href="/appointment">
               <button className="px-12 py-6 bg-white text-slate-900 rounded-full font-black text-xl hover:scale-105 transition-transform flex items-center gap-3">
                 Free Consultation <ArrowRight className="w-6 h-6" />

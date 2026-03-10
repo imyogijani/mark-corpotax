@@ -2,7 +2,7 @@
 import type { NextConfig } from "next";
 import path from "path";
 
-const nextConfig: NextConfig = {
+const nextConfig: any = {
   // Set the workspace root explicitly to avoid lockfile detection warnings
   // This tells Next.js where the monorepo root is located
   outputFileTracingRoot: path.join(__dirname, "../"),
