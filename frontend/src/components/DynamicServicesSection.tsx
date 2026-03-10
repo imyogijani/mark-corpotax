@@ -141,35 +141,38 @@ export function DynamicServicesSection() {
             <div key={index} className="relative group">
               <Link
                 href={service.slug ? `/services/${service.slug}` : "/services"}
-                className="relative block h-full w-full overflow-hidden rounded-[2.5rem] bg-white border border-slate-100 p-10 text-left no-underline transition-all duration-700 shadow-[0_15px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_30px_70px_rgba(37,99,235,0.15)] hover:-translate-y-4 hover:border-blue-400 group"
+                className="relative block h-full w-full overflow-hidden rounded-[3rem] bg-white border border-slate-100 p-10 text-left no-underline transition-all duration-700 shadow-[0_20px_50px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_80px_rgba(37,99,235,0.12)] hover:-translate-y-4 hover:border-blue-200 group"
               >
-                {/* Blue reveal on hover */}
+                {/* Refined Background Pulse */}
                 <div
-                  className="absolute -right-24 -top-24 -z-0 h-48 w-48 rounded-full transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[15] opacity-0 group-hover:opacity-100"
-                  style={{ background: "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)" }}
+                  className="absolute -right-16 -top-16 -z-0 h-64 w-64 rounded-full transition-all duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[10] opacity-0 group-hover:opacity-100"
+                  style={{ background: "radial-gradient(circle at center, #eff6ff 0%, #dbeafe 100%)" }}
                 />
 
-                <div className="relative z-10 flex h-full flex-col justify-between">
-                  <div>
-                    <motion.div className="mb-8 p-4 w-20 h-20 rounded-2xl bg-blue-50 border border-blue-100 text-blue-600 transition-all duration-500 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 group-hover:scale-110 shadow-inner">
-                      {getIcon(service.icon || "")}
+                <div className="relative z-10 flex h-full flex-col">
+                  <div className="flex-1">
+                    <motion.div className="mb-10 w-20 h-20 rounded-[2rem] bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center transition-all duration-700 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 group-hover:rotate-[360deg] shadow-inner relative overflow-hidden">
+                       <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                       <div className="relative z-10 scale-75 group-hover:scale-100 transition-transform duration-700">
+                          {getIcon(service.icon || "")}
+                       </div>
                     </motion.div>
 
-                    <h3 className="mb-4 text-2xl font-black text-slate-800 transition-colors duration-500 group-hover:text-slate-900 tracking-tight uppercase">
+                    <h3 className="mb-4 text-2xl font-black text-slate-900 transition-colors duration-500 group-hover:text-blue-600 tracking-tight uppercase leading-tight">
                       {service.title}
                     </h3>
 
-                    <p className="text-lg text-slate-600 transition-colors duration-500 group-hover:text-slate-700 leading-relaxed font-medium">
+                    <p className="text-[15px] text-slate-600 transition-colors duration-500 group-hover:text-slate-700 leading-relaxed font-medium">
                       {service.description}
                     </p>
                   </div>
 
-                  <div className="mt-10 flex items-center text-sm font-bold uppercase tracking-widest text-blue-600 group-hover:text-blue-700 transition-all duration-500">
-                    <span className="relative overflow-hidden inline-block">
-                      <span className="inline-block transition-transform duration-500 group-hover:-translate-y-full">Explore Service</span>
-                      <span className="absolute top-full left-0 inline-block transition-transform duration-500 group-hover:-translate-y-full">Explore Service</span>
+                  <div className="mt-12 flex items-center text-[10px] font-black uppercase tracking-[0.25em] text-blue-600 group-hover:text-blue-700 transition-all duration-500">
+                    <span className="relative overflow-hidden inline-block h-4">
+                      <span className="inline-block transition-transform duration-500 group-hover:-translate-y-full">Explore Solutions</span>
+                      <span className="absolute top-full left-0 inline-block transition-transform duration-500 group-hover:-translate-y-full font-black">Explore Solutions</span>
                     </span>
-                    <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-500 group-hover:translate-x-2" />
+                    <ArrowRight className="ml-3 h-4 w-4 transition-transform duration-500 group-hover:translate-x-3" />
                   </div>
                 </div>
 

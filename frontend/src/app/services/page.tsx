@@ -104,30 +104,36 @@ export default function ServicesPage() {
         </div>
 
         {/* Division Selection Hub */}
-        <div className="js-reveal flex flex-wrap justify-center gap-4 md:gap-8 mt-16 mb-24 max-w-5xl mx-auto group">
+        <div className="js-reveal flex flex-wrap justify-center gap-6 md:gap-10 mt-16 mb-32 max-w-6xl mx-auto px-4">
           <button 
             onClick={() => document.getElementById('retail-mortgage')?.scrollIntoView({ behavior: 'smooth' })}
-            className="flex-1 min-w-[220px] glass-card p-10 flex flex-col items-center gap-6 group/btn hover:scale-105 active:scale-95 transition-all duration-500 border-white shadow-2xl bg-white/40 backdrop-blur-3xl hover:bg-white"
+            className="group/hub flex-1 min-w-[280px] bg-white border border-slate-100 p-12 rounded-[3rem] shadow-[0_30px_60px_rgba(0,0,0,0.04)] hover:shadow-[0_40px_90px_rgba(37,99,235,0.12)] transition-all duration-700 hover:-translate-y-2 relative overflow-hidden"
           >
-            <div className="w-16 h-16 rounded-[1.5rem] bg-blue-50 text-blue-600 flex items-center justify-center group-hover/btn:bg-blue-600 group-hover/btn:text-white transition-all duration-500 shadow-inner">
-              <ShoppingBag className="w-8 h-8" />
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <span className="font-black uppercase tracking-widest text-sm text-slate-900 mb-1">Finance Hub</span>
-              <span className="text-xs text-slate-500 font-bold">Loans & Mortgages</span>
+            <div className="absolute inset-0 bg-blue-50/30 opacity-0 group-hover/hub:opacity-100 transition-opacity duration-700" />
+            <div className="relative z-10 flex flex-col items-center gap-8">
+              <div className="w-20 h-20 rounded-[2.5rem] bg-blue-50 text-blue-600 flex items-center justify-center group-hover/hub:bg-blue-600 group-hover/hub:text-white transition-all duration-700 shadow-inner group-hover/hub:rotate-[360deg]">
+                <ShoppingBag className="w-10 h-10" />
+              </div>
+              <div className="flex flex-col items-center text-center gap-2">
+                <span className="font-black uppercase tracking-[0.3em] text-xs text-blue-600">Finance Hub</span>
+                <h3 className="text-xl font-bold text-slate-900 leading-tight">Loans & Mortgages</h3>
+              </div>
             </div>
           </button>
 
           <button 
             onClick={() => document.getElementById('taxation-division')?.scrollIntoView({ behavior: 'smooth' })}
-            className="flex-1 min-w-[220px] glass-card p-10 flex flex-col items-center gap-6 group/btn hover:scale-105 active:scale-95 transition-all duration-500 border-white shadow-2xl bg-white/40 backdrop-blur-3xl hover:bg-white"
+            className="group/hub flex-1 min-w-[280px] bg-white border border-slate-100 p-12 rounded-[3rem] shadow-[0_30px_60px_rgba(0,0,0,0.04)] hover:shadow-[0_40px_90px_rgba(16,185,129,0.12)] transition-all duration-700 hover:-translate-y-2 relative overflow-hidden"
           >
-            <div className="w-16 h-16 rounded-[1.5rem] bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover/btn:bg-emerald-600 group-hover/btn:text-white transition-all duration-500 shadow-inner">
-              <Receipt className="w-8 h-8" />
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <span className="font-black uppercase tracking-widest text-sm text-slate-900 mb-1">Taxation Hub</span>
-              <span className="text-xs text-slate-500 font-bold">Legal & Compliance</span>
+            <div className="absolute inset-0 bg-emerald-50/30 opacity-0 group-hover/hub:opacity-100 transition-opacity duration-700" />
+            <div className="relative z-10 flex flex-col items-center gap-8">
+              <div className="w-20 h-20 rounded-[2.5rem] bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover/hub:bg-emerald-600 group-hover/hub:text-white transition-all duration-700 shadow-inner group-hover/hub:rotate-[360deg]">
+                <Receipt className="w-10 h-10" />
+              </div>
+              <div className="flex flex-col items-center text-center gap-2">
+                <span className="font-black uppercase tracking-[0.3em] text-xs text-emerald-600">Taxation Hub</span>
+                <h3 className="text-xl font-bold text-slate-900 leading-tight">Legal & Compliance</h3>
+              </div>
             </div>
           </button>
         </div>

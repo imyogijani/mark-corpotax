@@ -209,20 +209,21 @@ export function Header() {
                 >
                   <Link
                     href={link.href}
-                    className={`group flex items-center gap-2 px-5 py-3 rounded-full transition-all duration-500 text-[12px] font-black uppercase tracking-[0.15em] relative z-10 ${
-                      pathname === link.href || (isServices && activeMegaMenu) ? "text-blue-600 bg-blue-50" : "text-slate-600 hover:text-slate-900"
+                    className={`group flex items-center gap-2.5 px-6 py-2.5 rounded-full transition-all duration-500 text-[11px] font-bold uppercase tracking-[0.2em] relative z-20 ${
+                      pathname === link.href || (isServices && activeMegaMenu) 
+                        ? "text-blue-600 bg-white shadow-[0_4px_20px_rgba(37,99,235,0.15)] border border-blue-100" 
+                        : "text-slate-600 hover:text-slate-900 border border-transparent"
                     }`}
                   >
-                    <Icon className={`w-3.5 h-3.5 transition-transform duration-500 group-hover:scale-110 ${
-                      pathname === link.href || (isServices && activeMegaMenu) ? "text-blue-600" : "text-slate-400 group-hover:text-blue-500"
+                    <Icon className={`w-3.5 h-3.5 transition-all duration-500 ${
+                      pathname === link.href || (isServices && activeMegaMenu) ? "text-blue-600" : "text-slate-400 group-hover:text-blue-500 group-hover:scale-110"
                     }`} />
                     {link.label}
                     {isServices && (
-                      <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-500 ${activeMegaMenu ? 'rotate-180 text-blue-600' : 'text-slate-400'}`} />
+                      <ChevronDown className={`w-3.5 h-3.5 transition-all duration-500 ${activeMegaMenu ? 'rotate-180 text-blue-600' : 'text-slate-400 group-hover:text-blue-500'}`} />
                     )}
 
-                    {/* Pill Hover Effect */}
-                    <div className="absolute inset-0 bg-slate-100 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 -z-10 origin-center opacity-0 group-hover:opacity-100" />
+                    <div className="absolute inset-0 bg-blue-50/50 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 -z-10 origin-center opacity-0 group-hover:opacity-100 blur-sm" />
                   </Link>
                 </li>
               );
@@ -238,42 +239,47 @@ export function Header() {
                 exit={{ opacity: 0, y: 10, scale: 0.98 }}
                 onMouseEnter={openMegaMenu}
                 onMouseLeave={closeMegaMenu}
-                className="absolute left-1/2 -translate-x-1/2 top-full pt-2 z-50 w-screen max-w-[1100px] px-6"
+                className="absolute left-[38%] -translate-x-1/2 -ml-[200px] top-full pt-3 z-50 w-[calc(100vw-64px)] max-w-4xl"
               >
-                <div className="bg-white/98 backdrop-blur-3xl border border-white/80 p-0 rounded-[48px] shadow-[0_40px_100px_rgba(0,0,0,0.15)] overflow-hidden relative group/menu">
-                  {/* Bridge to prevent hover loss */}
+                <div className="bg-white border border-slate-200 p-0 rounded-[28px] shadow-[0_25px_50px_rgba(0,0,0,0.1)] relative group/menu overflow-hidden">
                   <div className="absolute -top-8 left-0 right-0 h-8 bg-transparent" />
                   
-                  <div className="p-12">
-                    <div className="grid grid-cols-4 gap-12 relative z-10">
-                      {serviceCategories.map((cat, idx) => (
-                        <div key={idx} className={`flex flex-col gap-8 ${idx === 3 ? 'bg-emerald-50/30 p-8 -m-8 rounded-[40px] border border-emerald-100/50' : ''}`}>
-                          <div className="flex flex-col gap-2">
-                            <div className={`inline-flex px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] w-fit ${idx === 3 ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-50 text-blue-600'}`}>
-                              {cat.title}
+                  <div className="p-5 relative max-h-[75vh] overflow-y-auto custom-scrollbar bg-white">
+                    <div className="grid grid-cols-4 gap-4 relative z-10">
+                      {serviceCategories.map((cat, idx) => {
+                        const isTaxation = idx === 3;
+                        
+                        return (
+                          <div key={idx} className={`flex flex-col gap-4 ${isTaxation ? 'bg-emerald-50/30 p-4 rounded-[22px] border border-emerald-100/50' : idx < 3 ? 'border-r border-slate-100/60 pr-2' : ''}`}>
+                            <div className="flex flex-col gap-1 px-1">
+                              <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${isTaxation ? 'text-emerald-700' : 'text-blue-600'}`}>
+                                {cat.title}
+                              </span>
+                              <div className={`h-[1px] w-6 ${isTaxation ? 'bg-emerald-200' : 'bg-blue-200'}`} />
+                            </div>
+                            
+                            <div className="flex flex-col gap-0.5">
+                              {cat.services.map((svc, sIdx) => {
+                                const SvcIcon = svc.icon;
+                                return (
+                                  <Link
+                                    key={sIdx}
+                                    href={svc.href}
+                                    className="group/svc flex items-center gap-3 p-1.5 rounded-lg transition-all duration-300 hover:bg-slate-50 border border-transparent hover:border-slate-100"
+                                  >
+                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-500 flex-shrink-0 ${isTaxation ? 'bg-white shadow-sm text-emerald-600 group-hover/svc:bg-emerald-600 group-hover/svc:text-white' : 'bg-blue-50 text-blue-600 group-hover/svc:bg-blue-600 group-hover/svc:text-white'}`}>
+                                      <SvcIcon className="w-3.5 h-3.5" />
+                                    </div>
+                                    <span className="text-[13px] font-bold text-slate-700 group-hover/svc:text-blue-600 transition-colors leading-tight">
+                                      {svc.name}
+                                    </span>
+                                  </Link>
+                                );
+                              })}
                             </div>
                           </div>
-                          <div className="flex flex-col gap-5">
-                            {cat.services.map((svc, sIdx) => {
-                              const SvcIcon = svc.icon;
-                              return (
-                                <Link
-                                  key={sIdx}
-                                  href={svc.href}
-                                  className="group/svc flex items-center gap-4 transition-all hover:translate-x-1"
-                                >
-                                  <div className={`p-2 rounded-xl transition-all duration-300 ${idx === 3 ? 'bg-emerald-100/50 text-emerald-600 group-hover/svc:bg-emerald-600 group-hover/svc:text-white' : 'bg-blue-50/50 text-blue-600 group-hover/svc:bg-blue-600 group-hover/svc:text-white'}`}>
-                                    <SvcIcon className="w-5 h-5" />
-                                  </div>
-                                  <span className="text-[14px] font-bold text-slate-800 group-hover/svc:text-blue-600 transition-colors">
-                                    {svc.name}
-                                  </span>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
 
