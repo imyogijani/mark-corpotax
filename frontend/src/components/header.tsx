@@ -174,10 +174,10 @@ export function Header() {
       >
 
         <nav
-          className={`relative w-full max-w-7xl flex items-center justify-between px-8 py-3 transition-all duration-500 shadow-2xl ${
+          className={`relative w-full max-w-[95%] lg:max-w-7xl flex items-center justify-between px-8 py-2 transition-all duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.1)] ${
             isScrolled
-              ? "bg-white/90 backdrop-blur-xl border-white/60 rounded-[32px] py-3 mt-2"
-              : "bg-white/70 backdrop-blur-md border border-white/40 rounded-[28px] py-4"
+              ? "bg-white/95 backdrop-blur-xl border border-white/60 rounded-full py-2 shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
+              : "bg-white/90 backdrop-blur-md border border-white/20 rounded-full py-3 lg:py-5"
           }`}
         >
           {/* Left: Logo & Brand */}
@@ -210,10 +210,10 @@ export function Header() {
                 >
                   <Link
                     href={link.href}
-                    className={`group flex items-center gap-2.5 px-6 py-2.5 rounded-full transition-all duration-500 text-[11px] font-bold uppercase tracking-[0.2em] relative z-20 ${
+                    className={`group flex items-center gap-2.5 px-6 py-2.5 rounded-full transition-all duration-500 text-[12px] font-black uppercase tracking-[0.2em] relative z-20 ${
                       pathname === link.href || (isServices && activeMegaMenu) 
-                        ? "text-blue-600 bg-white shadow-[0_4px_20px_rgba(37,99,235,0.15)] border border-blue-100" 
-                        : "text-slate-600 hover:text-slate-900 border border-transparent"
+                        ? "text-blue-600 bg-white shadow-[0_4px_20px_rgba(37,99,235,0.15)] border border-blue-50" 
+                        : "text-slate-900/80 hover:text-blue-600 border border-transparent"
                     }`}
                   >
                     <Icon className={`w-3.5 h-3.5 transition-all duration-500 ${
@@ -266,9 +266,10 @@ export function Header() {
                                   <Link
                                     key={sIdx}
                                     href={svc.href}
+                                    onClick={() => setActiveMegaMenu(false)}
                                     className="group/svc flex items-center gap-3 p-1.5 rounded-lg transition-all duration-300 hover:bg-slate-50 border border-transparent hover:border-slate-100"
                                   >
-                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-500 flex-shrink-0 ${isTaxation ? 'bg-white shadow-sm text-emerald-600 group-hover/svc:bg-emerald-600 group-hover/svc:text-white' : 'bg-blue-50 text-blue-600 group-hover/svc:bg-blue-600 group-hover/svc:text-white'}`}>
+                                    <div className={`w-7 h-7 rounded-full flex items-center justify-center transition-all duration-500 flex-shrink-0 ${isTaxation ? 'bg-white shadow-sm text-emerald-600 group-hover/svc:bg-emerald-600 group-hover/svc:text-white' : 'bg-blue-50 text-blue-600 group-hover/svc:bg-blue-600 group-hover/svc:text-white'}`}>
                                       <SvcIcon className="w-3.5 h-3.5" />
                                     </div>
                                     <span className="text-[13px] font-bold text-slate-700 group-hover/svc:text-blue-600 transition-colors leading-tight">
@@ -308,7 +309,7 @@ export function Header() {
           <div className="hidden lg:flex items-center gap-6">
             <Link href="/appointment" className="group">
               <Button
-                className="bg-slate-900 hover:bg-blue-600 text-white font-black text-[11px] uppercase tracking-[0.2em] rounded-full px-8 py-6 h-auto shadow-lg hover:shadow-blue-500/20 transition-all duration-500 relative overflow-hidden group"
+                className="bg-slate-900 hover:bg-blue-600 text-white font-black text-[12px] uppercase tracking-[0.2em] rounded-full px-10 py-6 h-auto shadow-lg hover:shadow-blue-500/20 transition-all duration-500 relative overflow-hidden group"
               >
                 <span className="relative z-10 flex items-center gap-2">
                   Get Started

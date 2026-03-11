@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { contentService } from "@/lib/content-service";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import {
@@ -15,11 +15,14 @@ import {
   DollarSign,
   TrendingUp,
   Sparkles,
+  Search,
+  ChevronRight,
 } from "lucide-react";
 import { DynamicCTASection } from "@/components/DynamicCTASection";
 import FloatingGraffiti from "@/components/FloatingGraffiti";
 import { MotionWrapper } from "@/components/MotionWrapper";
 import { AskExpertSection } from "@/components/AskExpertSection";
+import { Input } from "@/components/ui/input";
 
 interface BlogPost {
   id: string;
@@ -33,13 +36,12 @@ interface BlogPost {
   featuredImage?: string;
 }
 
-// Icon mapping for blog posts
 const categoryIcons: Record<string, React.ReactNode> = {
-  Business: <BarChart2 className="w-full h-full text-blue-100 p-8" />,
-  Analytics: <TrendingUp className="w-full h-full text-blue-100 p-8" />,
-  Finance: <DollarSign className="w-full h-full text-blue-100 p-8" />,
-  Strategy: <PieChart className="w-full h-full text-blue-100 p-8" />,
-  Default: <FileText className="w-full h-full text-blue-100 p-8" />,
+  Business: <BarChart2 className="w-12 h-12 text-blue-600" />,
+  Analytics: <TrendingUp className="w-12 h-12 text-blue-600" />,
+  Finance: <DollarSign className="w-12 h-12 text-blue-600" />,
+  Strategy: <PieChart className="w-12 h-12 text-blue-600" />,
+  Default: <FileText className="w-12 h-12 text-blue-600" />,
 };
 
 const defaultCategories = [
@@ -69,14 +71,11 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // Fetch page content
         const data = await contentService.getPageContent("blog");
-
         if (data.hero) setHeroContent(data.hero);
         if (data.stats) setStatsContent(data.stats);
         if (data.sidebar) setSidebarContent(data.sidebar);
 
-        // Transform categories from flat keys
         if (data.categories) {
           const transformedCategories = [];
           for (let i = 1; i <= 5; i++) {
@@ -86,11 +85,9 @@ export default function BlogPage() {
             };
             if (cat.name) transformedCategories.push(cat);
           }
-          if (transformedCategories.length > 0)
-            setCategories(transformedCategories);
+          if (transformedCategories.length > 0) setCategories(transformedCategories);
         }
 
-        // Transform tags from flat keys
         if (data.tags) {
           const transformedTags = [];
           for (let i = 1; i <= 8; i++) {
@@ -100,23 +97,18 @@ export default function BlogPage() {
           if (transformedTags.length > 0) setTags(transformedTags);
         }
 
-        // Fetch actual blog posts from backend
         try {
-          const API_BASE =
-            typeof process !== "undefined" && process.env?.NEXT_PUBLIC_API_URL
-              ? process.env.NEXT_PUBLIC_API_URL
-              : "http://localhost:5000/api";
+          const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
           const response = await fetch(`${API_BASE}/blog?status=published`);
           if (response.ok) {
             const blogData = await response.json();
-            // Backend returns { data: { blogs: [...], pagination: {...} } }
             const blogs = blogData.data?.blogs || blogData.data || [];
             if (Array.isArray(blogs)) {
               const mappedBlogs = blogs.map((b: any) => ({
                 ...b,
-                id: b.id || b._id, // Ensure id is present
+                id: b.id || b._id,
               }));
-              setBlogPosts(mappedBlogs.slice(0, 6)); // Show max 6 posts
+              setBlogPosts(mappedBlogs.slice(0, 6));
             }
           }
         } catch (blogError) {
@@ -132,10 +124,7 @@ export default function BlogPage() {
     fetchContent();
   }, []);
 
-  // Get recent posts (last 3)
   const recentPosts = blogPosts.slice(0, 3);
-
-  // Format date
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -156,96 +145,78 @@ export default function BlogPage() {
   }
 
   return (
-    <div className="blog-page-wrapper overflow-hidden bg-slate-50">
-      {/* Hero Section */}
-      <section
-        className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-slate-50/30"
-        style={{
-          background:
-            "linear-gradient(to bottom right, #f8fafc, #f1f5f9, #eff6ff)",
-        }}
-      >
-        {/* Animated Background */}
-        <div className="absolute inset-0 overflow-hidden">
+    <div className="blog-page-wrapper overflow-hidden bg-white">
+      {/* Premium Hero Section */}
+      <section className="relative pt-48 pb-32 overflow-hidden bg-slate-50">
+        <div className="absolute inset-0 z-0">
           <FloatingGraffiti />
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl mix-blend-multiply animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-72 h-72 bg-purple-500/5 rounded-full blur-3xl mix-blend-multiply animate-pulse delay-700"></div>
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100/30 rounded-full blur-[120px] -mr-64 -mt-64" />
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-50/30 rounded-full blur-[100px] -ml-48 -mb-48" />
         </div>
 
-        <div className="container mx-auto px-4 relative z-10 text-center pt-20 pb-20">
-          <MotionWrapper direction="up" delay={0.1}>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-blue-600 text-sm font-medium mb-6 backdrop-blur-sm shadow-sm">
-              <Sparkles className="w-4 h-4" />
-              <span>Insights & Updates</span>
-            </div>
-          </MotionWrapper>
-
-          <MotionWrapper direction="up" delay={0.2}>
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight text-slate-900">
-              {heroContent.title || "Blog & Insights"}
-            </h1>
-          </MotionWrapper>
-
-          <MotionWrapper direction="up" delay={0.3}>
-            <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
-              {heroContent.subtitle ||
-                "Stay updated with the latest insights, trends, and news in the world of finance and business."}
-            </p>
-          </MotionWrapper>
-
-          <MotionWrapper direction="up" delay={0.4}>
-            <div className="flex flex-col md:flex-row items-center gap-6 w-full justify-center max-w-4xl mx-auto mt-12">
-              <div className="flex flex-1 items-center bg-white rounded-2xl shadow-lg shadow-slate-200/50 p-6 gap-4 border border-slate-100 hover:-translate-y-1 transition-transform cursor-default w-full">
-                <div className="bg-blue-50 p-3 rounded-xl">
-                  <FileText className="text-blue-600 w-8 h-8" />
-                </div>
-                <div className="text-left">
-                  <span className="block text-2xl font-bold text-slate-900">
-                    {statsContent.stat_1_value || "50+"}
-                  </span>
-                  <span className="block text-slate-500 text-sm font-medium">
-                    {statsContent.stat_1_label || "Articles Published"}
-                  </span>
-                </div>
+        <div className="container mx-auto px-4 lg:px-8 relative z-10 text-center">
+          <div className="max-w-4xl mx-auto">
+            <MotionWrapper direction="up" delay={0.1}>
+              <div className="inline-flex items-center gap-2 px-6 py-2 bg-white rounded-full border border-blue-100 shadow-[0_10px_30px_rgba(37,99,235,0.08)] text-blue-600 text-[10px] font-black uppercase tracking-[0.4em] mb-10">
+                <Sparkles className="w-4 h-4" />
+                <span>Knowledge Hub</span>
               </div>
-              <div className="flex flex-1 items-center bg-white rounded-2xl shadow-lg shadow-slate-200/50 p-6 gap-4 border border-slate-100 hover:-translate-y-1 transition-transform cursor-default w-full">
-                <div className="bg-emerald-50 p-3 rounded-xl">
-                  <TrendingUp className="text-emerald-500 w-8 h-8" />
-                </div>
-                <div className="text-left">
-                  <span className="block text-2xl font-bold text-slate-900">
-                    {statsContent.stat_2_value || "10K+"}
-                  </span>
-                  <span className="block text-slate-500 text-sm font-medium">
-                    {statsContent.stat_2_label || "Monthly Readers"}
-                  </span>
-                </div>
+            </MotionWrapper>
+
+            <MotionWrapper direction="up" delay={0.2}>
+              <h1 className="text-4xl md:text-6xl lg:text-8xl font-black text-slate-900 tracking-tighter leading-[0.9] uppercase mb-10">
+                Financial <br />
+                <span className="text-blue-600">Insights.</span>
+              </h1>
+            </MotionWrapper>
+
+            <MotionWrapper direction="up" delay={0.3}>
+              <p className="text-base md:text-xl text-slate-600 font-medium max-w-2xl mx-auto leading-relaxed mb-20 italic-none">
+                {heroContent.subtitle ||
+                  "Stay updated with the latest insights, trends, and news in the world of finance and business."}
+              </p>
+            </MotionWrapper>
+
+            <MotionWrapper direction="up" delay={0.4}>
+              <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                {[
+                  { label: "Articles Published", value: statsContent.stat_1_value || "50+", icon: FileText, color: "blue" },
+                  { label: "Active Readers", value: statsContent.stat_2_value || "10K+", icon: TrendingUp, color: "blue" },
+                  { label: "Fresh Content", value: statsContent.stat_3_value || "Weekly", icon: BarChart2, color: "blue" }
+                ].map((stat, i) => (
+                  <div key={i} className="flex flex-col items-center bg-white rounded-[3rem] p-10 border border-slate-100 shadow-[0_20px_50px_rgba(37,99,235,0.03)] group hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500">
+                    <div className="w-16 h-16 rounded-2xl bg-slate-50 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
+                      <stat.icon className="w-8 h-8" />
+                    </div>
+                    <span className="text-4xl font-black text-slate-900 tracking-tighter mb-1 uppercase">
+                      {stat.value}
+                    </span>
+                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                      {stat.label}
+                    </span>
+                  </div>
+                ))}
               </div>
-              <div className="flex flex-1 items-center bg-white rounded-2xl shadow-lg shadow-slate-200/50 p-6 gap-4 border border-slate-100 hover:-translate-y-1 transition-transform cursor-default w-full">
-                <div className="bg-purple-50 p-3 rounded-xl">
-                  <BarChart2 className="text-purple-500 w-8 h-8" />
-                </div>
-                <div className="text-left">
-                  <span className="block text-2xl font-bold text-slate-900">
-                    {statsContent.stat_3_value || "Weekly"}
-                  </span>
-                  <span className="block text-slate-500 text-sm font-medium">
-                    {statsContent.stat_3_label || "Fresh Content"}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </MotionWrapper>
+            </MotionWrapper>
+          </div>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="py-16 md:py-24 bg-white relative">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-3 gap-12">
-            {/* Blog Posts */}
-            <div className="lg:col-span-2 space-y-8">
+      {/* Main Content Area */}
+      <section className="py-32 bg-white relative">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="grid lg:grid-cols-12 gap-16">
+            
+            {/* Blog Post List */}
+            <div className="lg:col-span-8 space-y-12">
+              <div className="flex items-center justify-between mb-16 border-b border-slate-50 pb-8">
+                <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Latests Insights</h2>
+                <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                   <div className="w-2 h-2 rounded-full bg-blue-500" />
+                   <span>{blogPosts.length} total articles</span>
+                </div>
+              </div>
+
               {blogPosts.length > 0 ? (
                 blogPosts.map((post, index) => (
                   <MotionWrapper
@@ -253,207 +224,145 @@ export default function BlogPage() {
                     direction="up"
                     delay={0.1 * index}
                   >
-                    <Card className="blog-post-card bg-white overflow-hidden shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border-slate-100 group">
-                      <div className="relative h-64 w-full bg-slate-50 overflow-hidden">
-                        <div className="absolute inset-0 flex items-center justify-center transform group-hover:scale-105 transition-transform duration-500">
-                          {categoryIcons[post.category] ||
-                            categoryIcons.Default}
-                        </div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
-                        <div className="absolute bottom-4 left-4">
-                          <span className="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full uppercase tracking-wider">
-                            {post.category || "General"}
-                          </span>
-                        </div>
-                      </div>
-                      <CardContent className="p-8">
-                        <div className="flex items-center gap-4 text-sm text-slate-500 mb-4">
-                          <div className="flex items-center gap-1">
-                            <User className="w-4 h-4 text-blue-500" />
-                            <span className="font-medium text-slate-700">
-                              {post.author || "Admin"}
+                    <Card className="group bg-white border-0 rounded-[3.5rem] shadow-[0_30px_70px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_100px_rgba(37,99,235,0.12)] transition-all duration-700 overflow-hidden relative">
+                      <div className="flex flex-col md:flex-row min-h-[380px]">
+                        {/* Visual Area */}
+                        <div className="md:w-[40%] relative bg-[#111827] overflow-hidden flex items-center justify-center border-r border-[#111827]">
+                          <div className="transition-all duration-700 group-hover:scale-110 opacity-60">
+                            {categoryIcons[post.category] || categoryIcons.Default}
+                          </div>
+                          <div className="absolute top-10 left-10">
+                            <span className="px-6 py-2 bg-white/10 backdrop-blur-md text-blue-400 text-[10px] font-black uppercase tracking-[0.3em] rounded-full shadow-lg border border-white/10">
+                              {post.category || "General"}
                             </span>
                           </div>
-                          <div className="w-1 h-1 bg-slate-300 rounded-full"></div>
-                          <div className="flex items-center gap-1">
-                            <Calendar className="w-4 h-4 text-blue-500" />
-                            <span>{formatDate(post.createdAt)}</span>
-                          </div>
+                          <div className="absolute inset-0 bg-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
-                        <h2 className="text-2xl font-bold mb-4 text-slate-900 group-hover:text-blue-600 transition-colors leading-tight">
-                          <Link href={`/blog/${post.slug || post.id || post._id}`}>
-                            {post.title}
-                          </Link>
-                        </h2>
-                        <p className="text-slate-600 mb-6 leading-relaxed line-clamp-3">
-                          {post.excerpt}
-                        </p>
-                        <Button
-                          asChild
-                          variant="ghost"
-                          className="p-0 h-auto text-blue-600 hover:text-blue-700 hover:bg-transparent font-semibold group/btn"
-                        >
-                          <Link
-                            href={`/blog/${post.slug || post.id || post._id}`}
-                            className="flex items-center gap-2"
+
+                        {/* Content Area */}
+                        <div className="md:w-[60%] p-10 lg:p-14 flex flex-col justify-between italic-none">
+                          <div>
+                            <div className="flex items-center gap-6 mb-8 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                              <div className="flex items-center gap-2">
+                                <User className="w-3.5 h-3.5 text-blue-500" /> 
+                                <span>{post.author || "Global Head"}</span>
+                              </div>
+                              <div className="w-1.5 h-1.5 bg-slate-200 rounded-full" />
+                              <div className="flex items-center gap-2">
+                                <Calendar className="w-3.5 h-3.5 text-blue-500" />
+                                <span>{formatDate(post.createdAt)}</span>
+                              </div>
+                            </div>
+
+                            <Link href={`/blog/${post.slug || post.id || post._id}`}>
+                              <h3 className="text-3xl lg:text-4xl font-black text-slate-900 leading-[1.05] uppercase tracking-tighter mb-6 group-hover:text-blue-600 transition-colors">
+                                {post.title}
+                              </h3>
+                            </Link>
+
+                            <p className="text-slate-700 font-medium leading-relaxed mb-10 line-clamp-3">
+                              {post.excerpt}
+                            </p>
+                          </div>
+
+                          <Button
+                            asChild
+                            variant="link"
+                            className="p-0 h-auto text-blue-600 text-[11px] font-black uppercase tracking-[0.3em] flex items-center gap-4 w-fit no-underline hover:no-underline group/btn transition-colors"
                           >
-                            Read Article{" "}
-                            <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
-                          </Link>
-                        </Button>
-                      </CardContent>
+                            <Link href={`/blog/${post.slug || post.id || post._id}`}>
+                              Open Investigation
+                              <div className="w-12 h-12 rounded-full border border-blue-100 flex items-center justify-center transition-all group-hover/btn:bg-blue-600 group-hover/btn:text-white group-hover/btn:border-blue-600 group-hover/btn:translate-x-2">
+                                <ArrowRight className="w-5 h-5" />
+                              </div>
+                            </Link>
+                          </Button>
+                        </div>
+                      </div>
                     </Card>
                   </MotionWrapper>
                 ))
               ) : (
-                <div className="text-center py-20 bg-slate-50 rounded-3xl border border-dashed border-slate-300">
-                  <div className="bg-white p-4 rounded-full inline-block mb-4 shadow-sm">
-                    <FileText className="w-12 h-12 text-slate-400" />
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">
-                    No Posts Yet
-                  </h3>
-                  <p className="text-slate-500 max-w-sm mx-auto">
-                    We are crafting amazing content for you. Check back soon for
-                    new articles and insights.
-                  </p>
+                <div className="text-center py-32 bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-100 italic-none">
+                  <FileText className="w-16 h-16 text-slate-200 mx-auto mb-6" />
+                  <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Under Construction</h3>
+                  <p className="text-slate-400 font-medium mt-2 tracking-tight uppercase text-xs">Awaiting fresh market intelligence</p>
                 </div>
               )}
+
+              {/* Consultation Section - Aligned with sidebar */}
+              <div className="mt-12">
+                <AskExpertSection />
+              </div>
             </div>
 
-            {/* Sidebar */}
-            <div className="space-y-8">
-              {/* Categories */}
-              <MotionWrapper direction="left" delay={0.2}>
-                <Card className="bg-white border-slate-100 shadow-sm">
-                  <CardHeader className="pb-4 border-b border-slate-50">
-                    <CardTitle className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                      <PieChart className="w-5 h-5 text-blue-600" />
-                      {sidebarContent.categories_title || "Categories"}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-1 pt-4">
-                    {categories.map((category, index) => (
-                      <div
-                        key={`${category.name}-${index}`}
-                        className="flex items-center justify-between py-2 px-2 hover:bg-slate-50 rounded-lg transition-colors group cursor-pointer"
-                      >
-                        <span className="text-slate-600 group-hover:text-blue-600 font-medium transition-colors">
-                          {category.name}
-                        </span>
-                        <span className="bg-slate-100 text-slate-500 text-xs font-bold px-2 py-1 rounded-full group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
-                          {category.count}
-                        </span>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </MotionWrapper>
+            {/* Premium Sidebar */}
+            <div className="lg:col-span-4 space-y-12">
+              
+              {/* Search Widget */}
+              <div className="bg-slate-50 p-10 rounded-[3rem] relative overflow-hidden group">
+                <div className="relative z-10 space-y-6">
+                  <h4 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em]">Intel Search</h4>
+                  <div className="relative">
+                    <Input 
+                      placeholder="Keyword Investigation..." 
+                      className="bg-white border-0 rounded-2xl h-14 pl-12 shadow-sm placeholder:text-slate-300 font-bold text-sm focus-visible:ring-blue-500/20"
+                    />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
+                  </div>
+                </div>
+              </div>
 
-              {/* Recent Posts */}
-              <MotionWrapper direction="left" delay={0.3}>
-                <Card className="bg-white border-slate-100 shadow-sm">
-                  <CardHeader className="pb-4 border-b border-slate-50">
-                    <CardTitle className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                      <Sparkles className="w-5 h-5 text-blue-600" />
-                      {sidebarContent.recent_posts_title || "Recent Posts"}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6 pt-6">
-                    {recentPosts.length > 0 ? (
-                      recentPosts.map((post) => (
-                        <div
-                          key={post._id}
-                          className="flex gap-4 group cursor-pointer"
-                        >
-                          <div className="flex-shrink-0 w-20 h-20 bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden">
-                            {/* Placeholder or Image */}
-                            <DollarSign className="w-8 h-8 text-blue-300 group-hover:text-blue-500 transition-colors" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <Link href={`/blog/${post._id}`}>
-                              <h4 className="font-bold text-slate-900 text-sm leading-snug mb-2 hover:text-blue-600 transition-colors line-clamp-2">
-                                {post.title}
-                              </h4>
-                            </Link>
-                            <div className="flex items-center gap-2 text-xs text-slate-500">
-                              <Calendar className="w-3 h-3" />
-                              <span>{formatDate(post.createdAt)}</span>
-                            </div>
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-slate-500 text-sm italic text-center py-4">
-                        No recent posts available.
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
-              </MotionWrapper>
-
-              {/* Work with us CTA */}
-              <MotionWrapper direction="left" delay={0.4}>
-                <Card className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white overflow-hidden relative border-none shadow-xl shadow-blue-500/20">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-16 -mt-16"></div>
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-black/10 rounded-full blur-2xl -ml-16 -mb-16"></div>
-
-                  <CardContent className="p-8 text-center relative z-10">
-                    <h3 className="text-2xl font-bold mb-3">
-                      {sidebarContent.cta_title || "Work with us"}
-                    </h3>
-                    <p className="text-blue-100 mb-6 leading-relaxed">
-                      {sidebarContent.cta_description ||
-                        "All your business solutions and consulting needs in one convenient, accessible place"}
-                    </p>
-                    <Button
-                      size="lg"
-                      asChild
-                      className="bg-white text-blue-600 hover:bg-blue-50 border-none font-bold shadow-lg shadow-black/10 w-full"
-                    >
-                      <Link href="/contact">
-                        {sidebarContent.cta_button || "Contact us"}
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              </MotionWrapper>
-
-              {/* Tags */}
-              <MotionWrapper direction="left" delay={0.5}>
-                <Card className="bg-white border-slate-100 shadow-sm">
-                  <CardHeader className="pb-4 border-b border-slate-50">
-                    <CardTitle className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                      <TrendingUp className="w-5 h-5 text-blue-600" />
-                      {sidebarContent.tags_title || "Tags"}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="flex flex-wrap gap-2">
-                      {tags.map((tag, index) => (
-                        <Button
-                          key={`${tag}-${index}`}
-                          variant="outline"
-                          size="sm"
-                          className="text-xs h-8 bg-slate-50 border-slate-200 text-slate-600 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all rounded-lg"
-                        >
-                          {tag}
-                        </Button>
-                      ))}
+              {/* Categories Navigation */}
+              <div className="bg-white border border-slate-50 p-10 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
+                <h4 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em] mb-10 flex items-center gap-3">
+                  <PieChart className="w-5 h-5 text-blue-600" />
+                  Divisions
+                </h4>
+                <div className="space-y-3">
+                  {categories.map((cat, i) => (
+                    <div key={i} className="group flex items-center justify-between p-5 bg-slate-50 rounded-2xl cursor-pointer hover:bg-blue-600 hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300">
+                      <span className="text-[11px] font-black uppercase tracking-widest text-slate-600 group-hover:text-white">{cat.name}</span>
+                      <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-white transition-transform group-hover:translate-x-1" />
                     </div>
-                  </CardContent>
-                </Card>
-              </MotionWrapper>
+                  ))}
+                </div>
+              </div>
+
+              {/* Recruitment / Expert CTA */}
+              <div className="bg-[#111827] p-12 rounded-[3.5rem] text-white relative overflow-hidden text-center">
+                 <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[80px] -mr-32 -mt-32" />
+                 <div className="relative z-10">
+                    <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-8 backdrop-blur-sm">
+                       <Sparkles className="w-8 h-8 text-blue-400" />
+                    </div>
+                    <h3 className="text-3xl font-black uppercase tracking-tighter leading-none mb-6">Expert <br /> Clarity</h3>
+                    <p className="text-slate-400 font-medium text-sm leading-relaxed mb-10 italic-none">Direct connection to senior chartered accountants.</p>
+                    <Button asChild className="w-full bg-white text-slate-900 hover:bg-blue-600 hover:text-white rounded-2xl h-14 font-black uppercase tracking-widest text-[10px] transition-all">
+                       <Link href="/contact">Initial Connection</Link>
+                    </Button>
+                 </div>
+              </div>
+
+              {/* Recent Briefs */}
+              <div className="bg-white p-10 items-start">
+                <h4 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em] mb-10">Recent Briefs</h4>
+                <div className="space-y-8">
+                  {recentPosts.map((post, i) => (
+                    <Link key={i} href={`/blog/${post.slug || post.id}`} className="group block">
+                       <span className="text-[9px] font-black text-blue-600 uppercase tracking-widest mb-2 block">{formatDate(post.createdAt)}</span>
+                       <h5 className="font-black text-slate-900 uppercase text-sm leading-snug group-hover:text-blue-600 transition-colors line-clamp-2 underline-offset-4 decoration-blue-100 group-hover:underline">{post.title}</h5>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 pb-20">
-        <AskExpertSection />
-      </div>
 
-      {/* CTA Section */}
       <DynamicCTASection />
     </div>
   );
