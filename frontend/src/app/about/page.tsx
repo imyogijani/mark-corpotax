@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import anime from "animejs";
 import Image from "next/image";
+import CompanyTimeline from "@/components/CompanyTimeline";
 
 interface HeroData {
   title?: string;
@@ -225,6 +226,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Company Timeline Section */}
+      <CompanyTimeline />
 
       {/* Background Decorative Blobs */}
       <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden opacity-40">
