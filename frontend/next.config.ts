@@ -10,20 +10,6 @@ const nextConfig: NextConfig = {
   // Performance optimizations
   poweredByHeader: false,
   compress: true,
-  
-  // Turbopack optimization for Windows
-  turbo: {
-    // Reduce memory pressure on Windows
-    memoryLimit: 1024,
-    // Optimize CSS/PostCSS processing
-    loaders: {
-      '.css': ['postcss-loader'],
-    },
-  },
-
-  // SWC compiler optimizations
-  swcMinify: true,
-
   // Production build settings
   typescript: {
     // Enable type checking in production for better quality
@@ -68,7 +54,7 @@ const nextConfig: NextConfig = {
   // Experimental features for better performance
   experimental: {
     // Optimize package imports
-    optimizePackageImports: ["lucide-react", "@radix-ui/react-icons"],
+    optimizePackageImports: ["lucide-react"],
   },
 
   // Headers for security and caching
