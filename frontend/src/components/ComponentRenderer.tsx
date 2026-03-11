@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { DynamicHeroSection } from "./DynamicHomeHero";
 import { DynamicAboutSection } from "./DynamicAboutSection";
 import { DynamicFeaturesSection } from "./DynamicFeaturesSection";
@@ -42,16 +43,30 @@ export function ComponentRenderer({ components }: ComponentRendererProps) {
   }
 
   return (
-    <>
-      {components.map((comp) => {
+    <div className="flex flex-col">
+      {components.map((comp, index) => {
         const Component = COMPONENT_MAP[comp.type];
         if (!Component) {
           console.warn(`Component type "${comp.type}" not found in registry.`);
           return null;
         }
 
-        return <Component key={comp.id} {...(comp.props || {})} />;
+        return (
+          <motion.div
+            key={comp.id}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ 
+              duration: 0.8, 
+              delay: index * 0.1,
+              ease: [0.22, 1, 0.36, 1]
+            }}
+          >
+            <Component {...(comp.props || {})} />
+          </motion.div>
+        );
       })}
-    </>
+    </div>
   );
 }
