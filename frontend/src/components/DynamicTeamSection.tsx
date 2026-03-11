@@ -68,22 +68,153 @@ function transformTeamData(data: Record<string, unknown>): TeamSectionData {
   };
 }
 
-const FinanceAvatar = () => (
-  <motion.div
-    className="flex items-center justify-center w-20 h-20 rounded-full mx-auto"
-    style={{ backgroundColor: "#0b4c8020" }}
-    whileHover={{ scale: 1.15, rotate: 5 }}
-    transition={{ type: "spring", stiffness: 300 }}
-  >
+const IllustratedAvatar = ({ index, type }: { index: number; type: string }) => {
+  const variant = index % 3;
+  const isTax = type.toLowerCase().includes("tax");
+  
+  // High-end color palette
+  const primary = isTax ? "#059669" : "#0b4c80";
+  const accent = isTax ? "#10b981" : "#2563eb";
+  const bgGradient = isTax ? "from-emerald-50 to-white" : "from-blue-50 to-white";
+
+  return (
     <motion.div
-      initial={{ y: 0 }}
-      whileInView={{ y: [0, -3, 0] }}
-      transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+      className="relative w-40 h-40 mx-auto flex items-center justify-center group"
+      whileHover={{ y: -5 }}
     >
-      <User className="w-10 h-10" style={{ color: "#0b4c80" }} />
+      {/* Premium Background Container */}
+      <div className={`absolute inset-2 bg-gradient-to-br ${bgGradient} rounded-[3rem] border border-slate-100 shadow-2xl transition-all duration-500 group-hover:shadow-blue-200/50 group-hover:border-blue-100`} />
+      
+      <svg
+        viewBox="0 0 120 120"
+        className="w-36 h-36 relative z-10"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <clipPath id={`avatar-clip-v5-${index}`}>
+            <rect x="10" y="10" width="100" height="100" rx="35" />
+          </clipPath>
+          <linearGradient id={`skin-v5-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#fef3c7" />
+            <stop offset="100%" stopColor="#fde68a" />
+          </linearGradient>
+          <linearGradient id={`hair-grad-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#4B2C20" />
+            <stop offset="100%" stopColor="#2D1F17" />
+          </linearGradient>
+        </defs>
+
+        <g clipPath={`url(#avatar-clip-v5-${index})`}>
+          {variant === 0 && ( // Variant 1: Premium Professional Man (CEO)
+            <>
+              {/* Suit and Tie */}
+              <path d="M20 95C20 80 35 72 60 72C85 72 100 80 100 95V115H20V95Z" fill={primary} />
+              <path d="M60 72L45 95H75L60 72Z" fill="white" />
+              <path d="M60 72L58 85L60 92L62 85L60 72Z" fill={accent} />
+              {/* Head */}
+              <rect x="52" y="60" width="16" height="15" fill="#fde68a" />
+              <circle cx="60" cy="42" r="24" fill="url(#skin-v5-0)" />
+              {/* Modern Hair */}
+              <path d="M36 38C36 22 50 16 65 16C82 16 86 32 84 48L78 42C78 42 70 38 60 40C50 42 38 42 36 38Z" fill="#1e293b" />
+              {/* Face */}
+              <g opacity="0.9">
+                <circle cx="50" cy="45" r="2" fill="#0f172a" />
+                <circle cx="70" cy="45" r="2" fill="#0f172a" />
+                <path d="M54 58C54 58 57 61 60 61C63 61 66 58 66 58" stroke="#0f172a" strokeWidth="2" strokeLinecap="round" />
+              </g>
+            </>
+          )}
+
+          {variant === 1 && ( // Variant 2: Premium Professional Man (Modern Specialist)
+            <>
+              {/* Smart Casual Outfit */}
+              <path d="M20 95C20 82 35 75 60 75C85 75 100 82 100 95V115H20V95Z" fill="#334155" />
+              <path d="M60 75L50 115H70L60 75Z" fill={accent} opacity="0.8" />
+              {/* Head */}
+              <rect x="52" y="65" width="16" height="12" fill="#fde68a" />
+              <circle cx="60" cy="45" r="24" fill="url(#skin-v5-1)" />
+              {/* Smart Hair */}
+              <path d="M36 45V35C36 20 50 18 60 18C70 18 84 20 84 35V45H36Z" fill="#475569" />
+              {/* Glasses */}
+              <g stroke="#0f172a" strokeWidth="1.2">
+                <rect x="46" y="42" width="12" height="10" rx="3" fill="none" />
+                <rect x="62" y="42" width="12" height="10" rx="3" fill="none" />
+                <path d="M58 47H62" />
+                <path d="M55 60C55 60 58 63 60 63C62 63 65 60 65 60" strokeLinecap="round" />
+              </g>
+            </>
+          )}
+
+          {variant === 2 && ( // Variant 3: Ultra-Luxe & Stunning Professional Woman (Premium Masterpiece Style)
+            <>
+              {/* Designer Professional Outfit */}
+              <path d="M15 100C15 82 35 72 60 72C85 72 105 82 105 100V120H15V100Z" fill={isTax ? "#064e3b" : "#1e40af"} />
+              <path d="M60 72L52 95H68L60 72Z" fill="white" />
+              {/* Silk Scarf / Detail */}
+              <path d="M52 72C52 72 56 82 60 82C64 82 68 72 68 72" fill={accent} opacity="0.6" />
+              <path d="M45 75L35 100M75 75L85 100" stroke="white" strokeWidth="0.5" opacity="0.4" />
+              
+              {/* Gorgeous Silk Hair (Back Layer with Depth) */}
+              <path d="M22 40C22 12 40 8 60 8C85 8 98 25 98 65V100H22V40Z" fill="#3D2B1F" />
+              <path d="M98 60C98 80 92 95 85 105" stroke="#2D1F17" strokeWidth="4" strokeLinecap="round" />
+              
+              {/* Head and Neck */}
+              <rect x="54" y="60" width="12" height="15" fill="#fde68a" />
+              <circle cx="60" cy="40" r="23" fill="url(#skin-v5-2)" />
+              
+              {/* Stunning Face (Fine Details) */}
+              <g>
+                {/* Beautiful Eyes (High Detail) */}
+                <path d="M48 39C48 39 50 37 54 37.5" stroke="#0f172a" strokeWidth="1.2" strokeLinecap="round" />
+                <path d="M66 37.5C66 37.5 70 37 72 39" stroke="#0f172a" strokeWidth="1.2" strokeLinecap="round" />
+                {/* Lashes */}
+                <path d="M47 41L45 40M73 41L75 40" stroke="#0f172a" strokeWidth="0.5" />
+                {/* Eye Sparkle & Iris */}
+                <circle cx="52" cy="44" r="3" fill="#5C4033" opacity="0.3" />
+                <circle cx="68" cy="44" r="3" fill="#5C4033" opacity="0.3" />
+                <circle cx="52" cy="44.5" r="2" fill="#0f172a" />
+                <circle cx="68" cy="44.5" r="2" fill="#0f172a" />
+                <circle cx="52.8" cy="43.5" r="0.8" fill="white" />
+                <circle cx="68.8" cy="43.5" r="0.8" fill="white" />
+                
+                {/* Perfect Professional Smile */}
+                <path d="M54 58C54 58 58 63 60 63C62 63 66 58 66 58" fill="#f43f5e" opacity="0.15" />
+                <path d="M55 58C55 58 58 62 60 62C62 62 65 58 65 58" stroke="#be123c" strokeWidth="2.5" strokeLinecap="round" />
+                
+                {/* Soft Elegance Makeup */}
+                <circle cx="45" cy="52" r="4" fill="#fda4af" opacity="0.2" />
+                <circle cx="75" cy="52" r="4" fill="#fda4af" opacity="0.2" />
+                
+                {/* Luxury Diamond Studs */}
+                <circle cx="36" cy="52" r="1.5" fill="white" shadow-xl="true" />
+                <circle cx="36" cy="52" r="2" stroke="white" strokeWidth="0.5" opacity="0.4" />
+                <circle cx="84" cy="52" r="1.5" fill="white" shadow-xl="true" />
+                <circle cx="84" cy="52" r="2" stroke="white" strokeWidth="0.5" opacity="0.4" />
+              </g>
+
+              {/* Front Hair (Layered Silky Highlights) */}
+              <path d="M36 35C36 15 50 10 65 10C85 10 92 25 90 50C90 60 85 75 80 95" stroke="#3D2B1F" strokeWidth="9" strokeLinecap="round" />
+              <path d="M35 35C30 45 28 60 30 85" stroke="#3D2B1F" strokeWidth="7" strokeLinecap="round" />
+              {/* Silk Highlights */}
+              <path d="M62 13C75 13 85 25 85 45" stroke="#5C4033" strokeWidth="2.5" opacity="0.4" strokeLinecap="round" />
+              <path d="M38 32C35 42 35 55 38 72" stroke="#5C4033" strokeWidth="1.5" opacity="0.2" strokeLinecap="round" />
+            </>
+          )}
+        </g>
+      </svg>
+
+      {/* Decorative Floating Accent */}
+      <motion.div
+        className="absolute -top-1 -right-1 w-8 h-8 rounded-2xl bg-white shadow-lg border border-slate-50 flex items-center justify-center"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+      >
+        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: accent }} />
+      </motion.div>
     </motion.div>
-  </motion.div>
-);
+  );
+};
 
 export function DynamicTeamSection() {
   const [teamSection, setTeamSection] =
@@ -206,7 +337,7 @@ export function DynamicTeamSection() {
                 <div className="mb-8 relative">
                   <div className="absolute inset-0 bg-blue-100 opacity-0 group-hover:opacity-40 rounded-full transition-all duration-500 transform group-hover:scale-150 blur-xl"></div>
                   <div className="relative z-10 transition-transform duration-500 group-hover:scale-110">
-                    <FinanceAvatar />
+                    <IllustratedAvatar index={index} type={member.title} />
                   </div>
                 </div>
 

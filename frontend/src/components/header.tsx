@@ -168,10 +168,11 @@ export function Header() {
       </AnimatePresence>
 
       <header
-        className={`fixed top-0 left-0 right-0 z-50 flex justify-center transition-all duration-500 px-6 py-4 ${
-          isScrolled ? "pt-2" : "pt-6"
+        className={`fixed top-0 left-0 right-0 z-50 flex flex-col items-center transition-all duration-500 ${
+          isScrolled ? "py-2" : "py-4"
         }`}
       >
+
         <nav
           className={`relative w-full max-w-[95%] lg:max-w-7xl flex items-center justify-between px-8 py-2 transition-all duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.1)] ${
             isScrolled

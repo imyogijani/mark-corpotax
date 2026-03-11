@@ -83,11 +83,11 @@ export default function Home() {
       )}
 
       {isLoadingLayout ? (
-        <div className="min-h-[80vh] flex flex-col items-center justify-center">
+        <div className="min-h-[80vh] flex flex-col items-center justify-center bg-white">
           <motion.div
             animate={{
               scale: [1, 1.1, 1],
-              opacity: [0.5, 1, 0.5],
+              opacity: [0.7, 1, 0.7],
             }}
             transition={{
               duration: 2,
@@ -96,16 +96,19 @@ export default function Home() {
             }}
             className="relative w-24 h-24 mb-6"
           >
-            <div className="absolute inset-0 rounded-full border-2 border-primary/20 scale-125 animate-pulse" />
+            <div className="absolute inset-0 rounded-full border-2 border-[#0b4c80]/10 scale-125 animate-pulse" />
             <div className="flex items-center justify-center w-full h-full">
-              <Logo className="w-16 h-16 object-contain brightness-0 invert opacity-50" />
+              <Logo className="w-16 h-16 object-contain" />
             </div>
           </motion.div>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]" />
-            <span className="w-2 h-2 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]" />
-            <span className="w-2 h-2 rounded-full bg-primary animate-bounce" />
+            <span className="w-2 h-2 rounded-full bg-[#0b4c80] animate-bounce [animation-delay:-0.3s]" />
+            <span className="w-2 h-2 rounded-full bg-[#0b4c80] animate-bounce [animation-delay:-0.15s]" />
+            <span className="w-2 h-2 rounded-full bg-[#0b4c80] animate-bounce" />
           </div>
+          <p className="mt-6 text-xs font-medium text-slate-400 uppercase tracking-widest">
+            Loading Experience
+          </p>
         </div>
       ) : (
         <ComponentRenderer components={layoutComponents} />
