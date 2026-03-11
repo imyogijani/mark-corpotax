@@ -137,17 +137,17 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             {/* Left Column */}
             <div className="js-reveal space-y-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full border border-blue-100 text-blue-600 text-xs font-black uppercase tracking-tighter">
-                <Sparkles className="w-3.5 h-3.5" />
+              <div className="inline-flex items-center gap-2 px-6 py-2 bg-blue-50 rounded-full border border-blue-100 text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">
+                <Sparkles className="w-4 h-4" />
                 <span>Established 2012</span>
               </div>
 
-              <h1 className="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter leading-[0.85] uppercase">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-slate-900 tracking-tighter leading-[0.9] uppercase">
                 The Mark <br />
-                <span className="italic text-blue-600">Legacy.</span>
+                <span className="text-blue-600">Legacy.</span>
               </h1>
 
-              <p className="text-xl text-slate-600 font-medium leading-relaxed max-w-lg">
+              <p className="text-base md:text-xl text-slate-600 font-medium leading-relaxed max-w-lg">
                 Dedicated to delivering comprehensive financial and legal solutions designed to address the unique requirements of our clients across India.
               </p>
             </div>
@@ -188,8 +188,8 @@ export default function AboutPage() {
               <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mb-8">
                 <Eye className="w-8 h-8 text-blue-600" />
               </div>
-              <h2 className="text-4xl font-black text-slate-900 mb-6 uppercase tracking-tighter">Our Vision</h2>
-              <p className="text-xl text-slate-500 font-medium leading-[1.6]">
+              <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 uppercase tracking-tighter">Our Vision</h2>
+              <p className="text-base md:text-xl text-slate-500 font-medium leading-relaxed">
                 "To be the most trusted partner in providing innovative loan consultancy and financial solutions, enabling businesses to unlock sustainable growth."
               </p>
             </div>
@@ -199,8 +199,8 @@ export default function AboutPage() {
               <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mb-8">
                 <Target className="w-8 h-8 text-emerald-600" />
               </div>
-              <h2 className="text-4xl font-black text-slate-900 mb-6 uppercase tracking-tighter">Our Mission</h2>
-              <p className="text-xl text-slate-500 font-medium leading-[1.6]">
+              <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 uppercase tracking-tighter">Our Mission</h2>
+              <p className="text-base md:text-xl text-slate-500 font-medium leading-relaxed">
                 Empowering businesses to achieve their growth ambitions by providing expert, client-focused loan consultancy. We simplify the complex process of securing capital.
               </p>
             </div>
@@ -212,7 +212,7 @@ export default function AboutPage() {
       <section className="py-32 bg-white">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="text-center mb-20 lg:mb-24">
-            <h2 className="js-reveal text-5xl md:text-8xl font-black text-slate-900 tracking-tighter uppercase leading-none">
+            <h2 className="js-reveal text-4xl md:text-6xl lg:text-7xl font-black text-slate-900 tracking-tighter uppercase leading-[0.9]">
               Pure Excellence.
             </h2>
           </div>

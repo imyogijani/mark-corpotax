@@ -35,7 +35,7 @@ export function AskExpertSection() {
         <div className="grid lg:grid-cols-5 items-stretch min-h-[550px]">
           
           {/* Left Panel: Expert Identity */}
-          <div className="lg:col-span-2 bg-slate-900 p-10 md:p-14 text-white flex flex-col justify-between relative overflow-hidden">
+          <div className="lg:col-span-2 bg-[#111827] p-10 md:p-14 text-white flex flex-col justify-between relative overflow-hidden">
             {/* Background Texture */}
             <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
             <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px] -mr-40 -mt-40" />
@@ -49,12 +49,12 @@ export function AskExpertSection() {
               </div>
 
               <div className="space-y-4 mb-12">
-                <h2 className="text-4xl md:text-5xl font-black leading-[1.05] tracking-tighter uppercase">
+                <h2 className="text-3xl md:text-4xl font-black leading-none tracking-tighter uppercase whitespace-pre-line">
                   Direct <br />
                   <span className="text-blue-400">Consulting</span>
                 </h2>
                 <div className="h-1 w-12 bg-blue-500 rounded-full" />
-                <p className="text-slate-400 font-medium text-sm leading-relaxed max-w-xs">
+                <p className="text-slate-400 font-medium text-[13px] leading-relaxed max-w-[240px]">
                   Connect directly with our panel of chartered accountants and financial analysts for tailored clarity.
                 </p>
               </div>
@@ -131,7 +131,7 @@ export function AskExpertSection() {
                   <div className="space-y-10">
                     <div className="grid md:grid-cols-2 gap-10">
                       <div className="space-y-3">
-                        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
+                        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-700 flex items-center gap-2">
                           <User className="w-3.5 h-3.5 text-blue-500" /> Professional Identity
                         </label>
                         <Input 
@@ -143,7 +143,7 @@ export function AskExpertSection() {
                         />
                       </div>
                       <div className="space-y-3">
-                        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
+                        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-700 flex items-center gap-2">
                           <Send className="w-3.5 h-3.5 text-blue-500" /> Channel of Contact
                         </label>
                         <Input 
@@ -157,7 +157,7 @@ export function AskExpertSection() {
                     </div>
                     
                     <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
+                      <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-700 flex items-center gap-2">
                         <MessageSquare className="w-3.5 h-3.5 text-blue-500" /> Consultation Requirements
                       </label>
                       <Textarea 
@@ -172,7 +172,7 @@ export function AskExpertSection() {
 
                   <Button 
                     disabled={formState === "loading"}
-                    className="group/btn w-full bg-blue-600 hover:bg-slate-900 text-white font-black uppercase tracking-[0.3em] py-10 rounded-2xl shadow-2xl shadow-blue-500/30 transition-all active:scale-95 flex items-center justify-center gap-4 h-auto"
+                    className="group/btn w-full bg-blue-600 hover:bg-slate-900 text-white font-black uppercase tracking-[0.2em] py-10 rounded-2xl shadow-2xl shadow-blue-500/30 transition-all active:scale-95 flex items-center justify-center gap-4 h-auto text-xs"
                   >
                     {formState === "loading" ? (
                       <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin" />
@@ -186,7 +186,7 @@ export function AskExpertSection() {
                   
                   <div className="flex items-center justify-center gap-3">
                     <div className="w-2 h-2 rounded-full bg-blue-500 animate-bounce" />
-                    <p className="text-[9px] text-slate-500 font-black uppercase tracking-[0.25em]">
+                    <p className="text-[9px] text-slate-800 font-black uppercase tracking-[0.25em]">
                       Senior Team Response Time &lt; 2 Hours
                     </p>
                   </div>
