@@ -281,10 +281,12 @@ export const DynamicHeroSection = () => {
                     {heroMain.phone?.help_text || "Need help?"}
                   </span>
                   <Link
-                    href={`tel:${heroMain.phone?.number}`}
+                    href={`tel:${division === "taxation" ? "9773822604" : "9712067891"}`}
                     className="text-lg font-black text-slate-900 hover:text-blue-600 transition-colors tracking-tight"
                   >
-                    {heroMain.phone?.number || "+91 97120 67891"}
+                    {division === "taxation" 
+                      ? "+91 97738 22604" 
+                      : (heroMain.phone?.number === "+91 97120 67891" ? "+91 97120 67891/92" : (heroMain.phone?.number || "+91 97120 67891/92"))}
                   </Link>
                 </div>
               </div>

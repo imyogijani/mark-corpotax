@@ -28,7 +28,7 @@ export default function Preloader() {
     <AnimatePresence mode="wait">
       {isLoading && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#020617]"
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white"
           initial={{ opacity: 1 }}
           exit={{ 
             y: "-100%",
@@ -39,21 +39,21 @@ export default function Preloader() {
             } 
           }}
         >
-          {/* Animated Background Elements */}
-          <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
+          {/* Subtle Background Decorations */}
+          <div className="absolute inset-0 overflow-hidden opacity-40 pointer-events-none">
             <motion.div 
-              className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-blue-600/30 blur-[120px]"
+              className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-blue-100/50 blur-[120px]"
               animate={{
                 scale: [1, 1.2, 1],
-                opacity: [0.3, 0.5, 0.3],
+                opacity: [0.3, 0.6, 0.3],
               }}
               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
             />
             <motion.div 
-              className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-blue-900/30 blur-[120px]"
+              className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-slate-100/50 blur-[120px]"
               animate={{
                 scale: [1.2, 1, 1.2],
-                opacity: [0.5, 0.3, 0.5],
+                opacity: [0.6, 0.3, 0.6],
               }}
               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
             />
@@ -67,14 +67,14 @@ export default function Preloader() {
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
               className="relative w-32 h-32 mb-8"
             >
-              <div className="absolute inset-0 rounded-full border border-blue-500/10 scale-125" />
+              <div className="absolute inset-0 rounded-full border border-blue-100 scale-125 shadow-sm bg-white/50 backdrop-blur-sm" />
               <motion.div 
-                className="absolute inset-0 rounded-full border-t-2 border-blue-500"
+                className="absolute inset-0 rounded-full border-t-2 border-[#0b4c80]"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
               />
               <div className="flex items-center justify-center w-full h-full p-6">
-                <Logo className="w-full h-full object-contain brightness-0 invert" />
+                <Logo className="w-full h-full object-contain" />
               </div>
             </motion.div>
 
@@ -85,28 +85,28 @@ export default function Preloader() {
               transition={{ delay: 0.3, duration: 0.8 }}
               className="text-center"
             >
-              <h1 className="text-3xl sm:text-4xl font-black tracking-[0.2em] text-white">
+              <h1 className="text-3xl sm:text-4xl font-black tracking-[0.2em] text-[#0b4c80]">
                 MARK <span className="text-blue-500">GROUP</span>
               </h1>
               <motion.div 
-                className="mt-2 h-[1px] bg-gradient-to-r from-transparent via-blue-500 to-transparent w-full"
+                className="mt-2 h-[1px] bg-gradient-to-r from-transparent via-[#0b4c80]/20 to-transparent w-full"
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ delay: 0.5, duration: 1 }}
               />
-              <p className="mt-4 text-xs font-medium text-blue-400 uppercase tracking-[0.4em] opacity-80">
+              <p className="mt-4 text-xs font-medium text-slate-500 uppercase tracking-[0.4em]">
                 Shaping Financial Success
               </p>
             </motion.div>
 
             {/* Progress Counter */}
             <div className="absolute top-[calc(100%+3rem)] flex flex-col items-center">
-              <span className="text-4xl font-mono text-white/20 tabular-nums">
+              <span className="text-4xl font-mono text-slate-200 tabular-nums font-bold">
                 {progress.toString().padStart(3, '0')}
               </span>
-              <div className="w-64 h-[2px] bg-white/5 mt-4 overflow-hidden rounded-full">
+              <div className="w-64 h-[2px] bg-slate-100 mt-4 overflow-hidden rounded-full border border-slate-50">
                 <motion.div 
-                  className="h-full bg-blue-500"
+                  className="h-full bg-[#0b4c80]"
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
                 />

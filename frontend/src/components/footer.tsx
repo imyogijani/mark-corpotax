@@ -137,7 +137,7 @@ export function Footer() {
   const address =
     settings.address ||
     "705, 7th Floor, APMC Building, Krushi Bazar, Sahara Darwaja, Ring Road, Surat - 395003";
-  const phoneFinance = settings.phone_finance || "97120 67891";
+  const phoneFinance = settings.phone_finance || "97120 67891/92";
   const phoneTaxation = settings.phone_taxation || "97738 22604";
   const email = settings.email || "markcorpotax@gmail.com";
   const website = settings.website || "markcorpotax.com";
