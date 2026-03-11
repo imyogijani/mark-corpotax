@@ -84,12 +84,6 @@ export default function HoneycombSection() {
 
       <div className="container mx-auto px-6 relative z-10">
         <header className="text-center mb-16 md:mb-24 flex flex-col items-center">
-          <div className="mb-10">
-            <ChangeDivisionButton
-              shouldAnimate={true}
-              className="bg-white border-slate-200 hover:bg-slate-50 shadow-sm"
-            />
-          </div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}

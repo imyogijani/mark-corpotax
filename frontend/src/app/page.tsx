@@ -65,6 +65,7 @@ export default function Home() {
 
   const handleChoice = (choice: "finance" | "taxation") => {
     localStorage.setItem("user_division", choice);
+    window.dispatchEvent(new Event("division-change"));
     setShowTransition(true);
     setDivision(choice);
     fetchLayout(choice);
@@ -114,10 +115,6 @@ export default function Home() {
         <ComponentRenderer components={layoutComponents} />
       )}
 
-      {/* Reset Choice Button */}
-      <div className="fixed bottom-8 right-8 z-[100]">
-        <ChangeDivisionButton />
-      </div>
     </div>
   );
 }
