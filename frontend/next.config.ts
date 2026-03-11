@@ -15,8 +15,7 @@ const nextConfig: NextConfig = {
     // Enable type checking in production for better quality
     ignoreBuildErrors: false,
   },
-
-
+  
   // Image optimization
   images: {
     remotePatterns: [
