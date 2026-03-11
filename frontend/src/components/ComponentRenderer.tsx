@@ -52,19 +52,9 @@ export function ComponentRenderer({ components }: ComponentRendererProps) {
         }
 
         return (
-          <motion.div
-            key={comp.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ 
-              duration: 0.8, 
-              delay: index * 0.1,
-              ease: [0.22, 1, 0.36, 1]
-            }}
-          >
+          <div key={comp.id}>
             <Component {...(comp.props || {})} />
-          </motion.div>
+          </div>
         );
       })}
     </div>
