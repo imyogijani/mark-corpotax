@@ -8,6 +8,7 @@ import PageTransition from "@/components/PageTransition";
 import ScrollProgress from "@/components/ScrollProgress";
 import Preloader from "@/components/Preloader";
 import SmoothScroll from "@/components/SmoothScroll";
+import { AnimatePresence } from "framer-motion";
 
 interface ConditionalLayoutProps {
   children: React.ReactNode;
@@ -42,7 +43,9 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
       <ScrollProgress />
       {showLayout && <Header />}
       <main className="flex-1">
-        <PageTransition>{children}</PageTransition>
+        <AnimatePresence mode="wait">
+          <PageTransition key={pathname}>{children}</PageTransition>
+        </AnimatePresence>
       </main>
       {showLayout && <Footer />}
     </>
