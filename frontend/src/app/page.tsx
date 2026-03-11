@@ -6,6 +6,8 @@ import { ComponentRenderer } from "@/components/ComponentRenderer";
 import CurtainTransition from "@/components/CurtainTransition";
 import { apiClient } from "@/lib/api-client";
 import { ChangeDivisionButton } from "@/components/ChangeDivisionButton";
+import { motion } from "framer-motion";
+import { Logo } from "@/components/logo-image";
 
 // Default fallback components if layout fetch fails
 const FALLBACK_COMPONENTS = [
@@ -81,8 +83,29 @@ export default function Home() {
       )}
 
       {isLoadingLayout ? (
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        <div className="min-h-[80vh] flex flex-col items-center justify-center">
+          <motion.div
+            animate={{
+              scale: [1, 1.1, 1],
+              opacity: [0.5, 1, 0.5],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="relative w-24 h-24 mb-6"
+          >
+            <div className="absolute inset-0 rounded-full border-2 border-primary/20 scale-125 animate-pulse" />
+            <div className="flex items-center justify-center w-full h-full">
+              <Logo className="w-16 h-16 object-contain brightness-0 invert opacity-50" />
+            </div>
+          </motion.div>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]" />
+            <span className="w-2 h-2 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]" />
+            <span className="w-2 h-2 rounded-full bg-primary animate-bounce" />
+          </div>
         </div>
       ) : (
         <ComponentRenderer components={layoutComponents} />
