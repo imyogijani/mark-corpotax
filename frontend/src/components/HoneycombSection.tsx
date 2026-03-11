@@ -65,58 +65,45 @@ export default function HoneycombSection() {
 
     handleSync();
     
-    // Initial animation
-    anime({
-      targets: ".honeycomb-tile",
-      scale: [0, 1],
-      opacity: [0, 1],
-      translateY: [20, 0],
-      easing: "easeOutElastic(1, .8)",
-      duration: 1000,
-      delay: anime.stagger(100),
-    });
-
     window.addEventListener("storage", handleSync);
     return () => window.removeEventListener("storage", handleSync);
   }, []);
 
   return (
-    <section className="py-24 md:py-32 bg-[#0074E4] relative overflow-hidden font-sans">
-      {/* Structural Pattern Background - Dashboard Style */}
-      <div className="absolute inset-0 opacity-[0.2] pointer-events-none">
+    <section className="py-24 md:py-32 bg-slate-50 relative overflow-hidden font-sans">
+      {/* Structural Pattern Background - Light Theme */}
+      <div className="absolute inset-0 opacity-[0.5] pointer-events-none">
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
+            backgroundImage: `radial-gradient(circle at 1px 1px, #cbd5e1 1.5px, transparent 0)`,
             backgroundSize: '40px 40px'
           }}
         />
-        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <path d="M0 40 Q 50 30 100 40" stroke="white" fill="none" strokeWidth="0.1" className="animate-pulse" />
-          <path d="M0 70 Q 50 60 100 70" stroke="white" fill="none" strokeWidth="0.1" className="animate-pulse" style={{ animationDelay: '2s' }} />
-        </svg>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
         <header className="text-center mb-16 md:mb-24 flex flex-col items-center">
-          <ChangeDivisionButton
-            shouldAnimate={true}
-            className="mb-10 bg-white/10 border-white/20 hover:bg-white/20 shadow-[0_0_30px_rgba(255,255,255,0.1)]"
-          />
+          <div className="mb-10">
+            <ChangeDivisionButton
+              shouldAnimate={true}
+              className="bg-white border-slate-200 hover:bg-slate-50 shadow-sm"
+            />
+          </div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="text-white flex flex-col items-center"
+            className="text-slate-900 flex flex-col items-center"
           >
-            <span className="text-white/50 text-[10px] font-black uppercase tracking-[0.5em] mb-4">
+            <span className="text-blue-600 text-[10px] font-black uppercase tracking-[0.5em] mb-4">
               Comprehensive Solutions
             </span>
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-4">
+            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-4 text-slate-800">
               {division === "finance" ? "Finance Ecosystem" : "Taxation Interface"}
             </h2>
-            <div className="w-24 h-1.5 bg-white rounded-full shadow-lg" />
+            <div className="w-24 h-1.5 bg-blue-600 rounded-full shadow-lg" />
           </motion.div>
         </header>
 
@@ -163,12 +150,22 @@ function HexTile({ item, delay }: { item: HoneycombItem; delay: number }) {
 
   return (
     <motion.div
+      initial={{ opacity: 0, scale: 0.5, y: 30 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ 
+        duration: 0.8, 
+        delay: delay,
+        type: "spring",
+        stiffness: 100,
+        damping: 15
+      }}
       whileHover={{
         scale: 1.05,
         zIndex: 100,
         transition: { type: "spring", stiffness: 400, damping: 25 }
       }}
-      className="honeycomb-tile relative w-[100px] h-[115px] md:w-[180px] md:h-[208px] flex items-center justify-center transition-all duration-300 opacity-0 group isolate"
+      className="honeycomb-tile relative w-[100px] h-[115px] md:w-[180px] md:h-[208px] flex items-center justify-center transition-all duration-300 group isolate"
     >
       {/* Precise White Dashboard Hexagon Shape */}
       <svg
