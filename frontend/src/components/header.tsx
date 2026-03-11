@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
@@ -32,6 +32,7 @@ import {
   Calculator,
   Gavel,
   Factory,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./logo-image";
@@ -108,10 +109,16 @@ const serviceCategories: ServiceCategory[] = [
 
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [settings, setSettings] = useState<any>({});
+
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const megaMenuRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -147,6 +154,36 @@ export function Header() {
     };
   }, [loadSettings]);
 
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isSearchOpen]);
+
+  // Sync searchQuery with URL params
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q !== searchQuery) {
+      setSearchQuery(q || "");
+    }
+  }, [searchParams]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/services?q=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setSearchQuery(val);
+    if (pathname === "/services") {
+      router.replace(`/services?q=${encodeURIComponent(val)}`, { scroll: false });
+    }
+  };
+
   const companyName = settings?.company_name || "Mark Corpotax";
 
   return (
@@ -174,22 +211,22 @@ export function Header() {
       >
 
         <nav
-          className={`relative w-full max-w-[95%] lg:max-w-7xl flex items-center justify-between px-8 py-2 transition-all duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.1)] ${
+          className={`relative w-full max-w-[95%] lg:max-w-7xl flex items-center justify-between px-8 py-2 transition-all duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.1)] gpu ${
             isScrolled
               ? "bg-white/95 backdrop-blur-xl border border-white/60 rounded-full py-2 shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
               : "bg-white/90 backdrop-blur-md border border-white/20 rounded-full py-3 lg:py-5"
           }`}
         >
           {/* Left: Logo & Brand */}
-          <Link href="/" className="group flex items-center gap-3">
-            <div className="relative overflow-hidden rounded-xl transition-transform duration-500 group-hover:scale-110">
-              <Logo width={36} height={36} />
+          <Link href="/" className="group flex items-center gap-2 md:gap-3">
+            <div className="relative overflow-hidden rounded-lg md:rounded-xl transition-transform duration-500 group-hover:scale-110">
+              <Logo width={32} height={32} />
             </div>
             <div className="flex flex-col">
-              <span className="text-[18px] font-black uppercase italic tracking-tighter text-slate-900 leading-none">
+              <span className="text-[14px] md:text-[18px] font-black uppercase italic tracking-tighter text-slate-900 leading-none">
                 {companyName}
               </span>
-              <span className="text-[7px] font-black uppercase tracking-[0.4em] text-blue-600/70 leading-normal mt-1">
+              <span className="text-[6px] md:text-[7px] font-black uppercase tracking-[0.3em] text-blue-600/70 leading-normal mt-0.5 md:mt-1">
                 SURAT REGIONAL HQ
               </span>
             </div>
@@ -305,8 +342,49 @@ export function Header() {
             )}
           </AnimatePresence>
 
-          {/* Right: CTA Button */}
-          <div className="hidden lg:flex items-center gap-6">
+          {/* Right: Search & CTA */}
+          <div className="hidden lg:flex items-center gap-4">
+            {/* Search Bar Implementation */}
+            <div className="relative flex items-center">
+              <AnimatePresence>
+                {isSearchOpen && (
+                  <motion.form
+                    initial={{ width: 0, opacity: 0 }}
+                    animate={{ width: 280, opacity: 1 }}
+                    exit={{ width: 0, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    onSubmit={handleSearch}
+                    className="relative mr-2 overflow-hidden gpu"
+                  >
+                    <input
+                      ref={searchInputRef}
+                      type="text"
+                      placeholder="Search services..."
+                      value={searchQuery}
+                      onChange={handleSearchChange}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-full py-2.5 pl-5 pr-12 text-[12px] font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-600/5 focus:border-blue-600 transition-all placeholder:text-slate-400"
+                    />
+                    <button 
+                      type="submit"
+                      className="absolute right-1 top-1 bottom-1 px-3 bg-slate-900 text-white rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
+                    >
+                      <ArrowRight className="w-3 h-3" />
+                    </button>
+                  </motion.form>
+                )}
+              </AnimatePresence>
+
+              <button
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                className={`p-3 rounded-full transition-all duration-300 ${isSearchOpen ? 'bg-slate-100 text-slate-900' : 'text-slate-400 hover:text-blue-600 hover:bg-blue-50'}`}
+                title="Search Services"
+              >
+                {isSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
+              </button>
+            </div>
+
+            <div className="w-[1px] h-6 bg-slate-100 mx-2" />
+
             <Link href="/appointment" className="group">
               <Button
                 className="bg-slate-900 hover:bg-blue-600 text-white font-black text-[12px] uppercase tracking-[0.2em] rounded-full px-10 py-6 h-auto shadow-lg hover:shadow-blue-500/20 transition-all duration-500 relative overflow-hidden group"
@@ -320,14 +398,54 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Mobile Toggle */}
-          <button
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="lg:hidden p-3 bg-white/50 backdrop-blur rounded-2xl border border-white/60 text-slate-900"
-          >
-            <Menu className="w-6 h-6" />
-          </button>
+          {/* Mobile Actions */}
+          <div className="lg:hidden flex items-center gap-2">
+            <button
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              className={`p-3 rounded-2xl border transition-all duration-300 ${isSearchOpen ? 'bg-slate-100 border-slate-200 text-slate-900' : 'bg-white/50 backdrop-blur border-white/60 text-slate-900'}`}
+            >
+              {isSearchOpen ? <X className="w-6 h-6" /> : <Search className="w-6 h-6" />}
+            </button>
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="p-3 bg-white/50 backdrop-blur rounded-2xl border border-white/60 text-slate-900"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
         </nav>
+
+        {/* Mobile Search Bar Expandable - Full Width */}
+        <AnimatePresence>
+          {isSearchOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="lg:hidden w-full max-w-[95%] mt-2 overflow-hidden"
+            >
+              <form 
+                onSubmit={handleSearch}
+                className="bg-white/95 backdrop-blur-xl border border-white/60 rounded-[2rem] p-2 flex items-center shadow-xl"
+              >
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  placeholder="Search services..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  className="flex-1 bg-transparent px-6 py-3 text-sm font-bold text-slate-900 focus:outline-none placeholder:text-slate-400"
+                />
+                <button 
+                  type="submit"
+                  className="bg-slate-900 text-white p-3 rounded-full hover:bg-blue-600 transition-colors"
+                >
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* Mobile Sidebar */}
@@ -348,16 +466,21 @@ export function Header() {
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
               className="fixed top-0 right-0 bottom-0 z-[70] w-[320px] bg-white shadow-2xl overflow-y-auto flex flex-col"
             >
-              <div className="p-8 flex items-center justify-between border-b border-slate-50">
+              <div className="p-6 flex items-center justify-between border-b border-slate-50 bg-white sticky top-0 z-20">
                 <div className="flex items-center gap-3">
-                  <Logo width={32} height={32} />
-                  <span className="font-black italic uppercase tracking-tighter text-xl">MG</span>
+                  <div className="p-2 bg-blue-50 rounded-xl">
+                    <Logo width={28} height={28} />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-black italic uppercase tracking-tighter text-lg leading-none">Mark Legacy</span>
+                    <span className="text-[6px] font-black text-blue-600 tracking-widest mt-1 uppercase">Surat Regional HQ</span>
+                  </div>
                 </div>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 hover:bg-slate-100 rounded-xl transition-colors text-slate-400"
+                  className="p-3 bg-slate-50 hover:bg-slate-100 rounded-full transition-all text-slate-900 shadow-sm active:scale-90"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 

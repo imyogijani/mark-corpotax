@@ -48,8 +48,17 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground;
     font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overscroll-behavior-y: none; /* Better for Lenis smooth scroll */
+  }
+
+  /* Butter Smooth Transitions Global */
+  * {
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .gradient-text {
@@ -135,9 +144,18 @@
   --shadow-premium: 0 4px 12px rgba(0, 0, 0, 0.03), 0 8px 24px rgba(0, 0, 0, 0.02);
 }
 .gpu {
-  transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
   backface-visibility: hidden;
+  perspective: 1000px;
   will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+
+/* Optimize Backdrop blurs for performance */
+.glass-panel, .glass-card {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 .glass-panel {
   background: var(--glass-bg);
@@ -207,4 +225,30 @@
   height: 4px;
   background: #10b981;
   border-radius: 2px;
+}
+
+/* Lenis Specific Overrides for Butter Smoothness */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Fast Tap fix for mobile */
+button, a {
+  touch-action: manipulation;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, Suspense } from "react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import PageTransition from "@/components/PageTransition";
@@ -41,13 +41,21 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
       <SmoothScroll />
       <Preloader />
       <ScrollProgress />
-      {showLayout && <Header />}
+      {showLayout && (
+        <Suspense fallback={null}>
+          <Header />
+        </Suspense>
+      )}
       <main className="flex-1">
         <AnimatePresence mode="wait">
           <PageTransition key={pathname}>{children}</PageTransition>
         </AnimatePresence>
       </main>
-      {showLayout && <Footer />}
+      {showLayout && (
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
+      )}
     </>
   );
 }
