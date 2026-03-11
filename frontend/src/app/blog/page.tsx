@@ -205,17 +205,19 @@ export default function BlogPage() {
       {/* Main Content Area */}
       <section className="py-32 bg-white relative">
         <div className="container mx-auto px-4 lg:px-8">
+          {/* Header Section above grid */}
+          <div className="flex items-center justify-between mb-20 border-b border-slate-50 pb-8">
+            <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Latests Insights</h2>
+            <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+               <div className="w-2 h-2 rounded-full bg-blue-500" />
+               <span>{blogPosts.length} total articles</span>
+            </div>
+          </div>
+
           <div className="grid lg:grid-cols-12 gap-16">
             
             {/* Blog Post List */}
             <div className="lg:col-span-8 space-y-12">
-              <div className="flex items-center justify-between mb-16 border-b border-slate-50 pb-8">
-                <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Latests Insights</h2>
-                <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                   <div className="w-2 h-2 rounded-full bg-blue-500" />
-                   <span>{blogPosts.length} total articles</span>
-                </div>
-              </div>
 
               {blogPosts.length > 0 ? (
                 blogPosts.map((post, index) => (
@@ -306,9 +308,9 @@ export default function BlogPage() {
                   <div className="relative">
                     <Input 
                       placeholder="Keyword Investigation..." 
-                      className="bg-white border-0 rounded-2xl h-14 pl-12 shadow-sm placeholder:text-slate-300 font-bold text-sm focus-visible:ring-blue-500/20"
+                      className="bg-white border border-slate-200 rounded-2xl h-14 pl-12 shadow-sm placeholder:text-slate-400 font-bold text-sm text-slate-900 focus-visible:ring-blue-500/20 focus-visible:border-blue-500/50"
                     />
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
                   </div>
                 </div>
               </div>
