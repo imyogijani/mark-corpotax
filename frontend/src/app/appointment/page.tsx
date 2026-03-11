@@ -21,6 +21,7 @@ import {
   BarChart2,
   Briefcase,
 } from "lucide-react";
+import { Logo } from "@/components/logo-image";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -227,7 +228,7 @@ export default function AppointmentPage() {
   const { hero, form: formContent } = content;
 
   return (
-    <div className="min-h-screen bg-white italic-none">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative pt-48 pb-32 overflow-hidden bg-slate-50">
         <div className="absolute inset-0 z-0">
@@ -237,6 +238,11 @@ export default function AppointmentPage() {
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10 text-center">
           <div className="max-w-4xl mx-auto">
+            <div className="flex justify-center mb-12">
+               <div className="p-4 bg-white rounded-3xl shadow-2xl shadow-blue-500/10 border border-slate-100">
+                  <Logo width={64} height={64} />
+               </div>
+            </div>
             <h1 className="text-4xl md:text-6xl lg:text-8xl font-black text-slate-900 tracking-tighter leading-[0.9] uppercase mb-10">
               Schedule <br />
               <span className="text-blue-600">Appointment.</span>
@@ -274,8 +280,7 @@ export default function AppointmentPage() {
         <div className="absolute inset-0 z-0 flex items-center justify-center opacity-[0.03] select-none pointer-events-none">
           <span className="text-[30vw] font-black tracking-widest text-white uppercase italic">MARK</span>
         </div>
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
-
+        
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-12 gap-20 items-stretch">
             {/* Form Section */}
@@ -287,245 +292,245 @@ export default function AppointmentPage() {
                 <div className="h-1 w-12 bg-blue-600 rounded-full" />
               </div>
 
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
-                    <div className="grid md:grid-cols-2 gap-10">
-                      <FormField
-                        control={form.control}
-                        name="fullName"
-                        render={({ field }) => (
-                          <FormItem className="space-y-4">
-                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
-                              <User className="w-3.5 h-3.5 text-blue-500" /> {formContent.name_label}
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="John Doe"
-                                {...field}
-                                className="bg-white/5 border-0 border-b border-white/10 rounded-none h-14 px-0 text-white font-bold placeholder:text-white/20 focus:ring-0 focus:border-blue-600 transition-all"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem className="space-y-4">
-                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
-                              <Mail className="w-3.5 h-3.5 text-blue-500" /> {formContent.email_label}
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="john.doe@example.com"
-                                {...field}
-                                className="bg-white/5 border-0 border-b border-white/10 rounded-none h-14 px-0 text-white font-bold placeholder:text-white/20 focus:ring-0 focus:border-blue-600 transition-all"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="phone"
-                        render={({ field }) => (
-                          <FormItem className="space-y-4">
-                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
-                              <Phone className="w-3.5 h-3.5 text-blue-500" /> {formContent.phone_label}
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="+91 00000 00000"
-                                {...field}
-                                className="bg-white/5 border-0 border-b border-white/10 rounded-none h-14 px-0 text-white font-bold placeholder:text-white/20 focus:ring-0 focus:border-blue-600 transition-all"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="serviceId"
-                        render={({ field }) => (
-                          <FormItem className="space-y-4">
-                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
-                              <Briefcase className="w-3.5 h-3.5 text-blue-500" /> Services of Interest
-                            </FormLabel>
-                            <Select onValueChange={handleServiceChange} defaultValue={field.value}>
-                              <FormControl>
-                                <SelectTrigger className="bg-white/5 border-0 border-b border-white/10 rounded-none h-14 px-0 text-white font-bold placeholder:text-white/20 focus:ring-0 focus:border-blue-600 transition-all">
-                                  <SelectValue placeholder="Select a service" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent className="bg-slate-900 border-white/10 text-white">
-                                {services.map((service) => (
-                                  <SelectItem key={service.id} value={service.id} className="hover:bg-blue-600 font-bold uppercase text-[10px] tracking-widest pl-10">
-                                    {service.name}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-10">
-                      <FormField
-                        control={form.control}
-                        name="preferredDate"
-                        render={({ field }) => (
-                          <FormItem className="flex flex-col space-y-4">
-                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
-                              <CalendarIcon className="w-3.5 h-3.5 text-blue-500" /> {formContent.date_label}
-                            </FormLabel>
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <FormControl>
-                                  <Button
-                                    variant={"outline"}
-                                    className={cn(
-                                      "bg-white/5 border-0 border-b border-white/10 rounded-none h-14 px-0 text-white font-bold focus:ring-0 focus:border-blue-600 transition-all w-full text-left",
-                                      !field.value && "text-white/20",
-                                    )}
-                                  >
-                                    {field.value ? format(field.value, "PPP") : "Pick a date"}
-                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                  </Button>
-                                </FormControl>
-                              </PopoverTrigger>
-                              <PopoverContent className="w-auto p-0 bg-white border-0 shadow-2xl rounded-3xl overflow-hidden" align="start">
-                                <Calendar
-                                  mode="single"
-                                  selected={field.value}
-                                  onSelect={field.onChange}
-                                  disabled={(date) => date < new Date() || date < new Date("1900-01-01")}
-                                  initialFocus
-                                />
-                              </PopoverContent>
-                            </Popover>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <div className="space-y-4">
-                        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2 mb-4">
-                          <Clock className="w-3.5 h-3.5 text-blue-500" /> {formContent.time_label}
-                        </label>
-                        <FormField
-                          control={form.control}
-                          name="preferredTime"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormControl>
-                                <RadioGroup
-                                  onValueChange={field.onChange}
-                                  defaultValue={field.value}
-                                  className="grid grid-cols-2 gap-3"
-                                >
-                                  {timeSlots.map((slot) => (
-                                    <FormItem key={slot} className="flex items-center space-x-0 space-y-0">
-                                      <FormControl>
-                                        <RadioGroupItem value={slot} className="sr-only" />
-                                      </FormControl>
-                                      <FormLabel className={cn(
-                                        "flex-1 flex items-center justify-center p-3 rounded-xl border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-tight cursor-pointer transition-all hover:bg-white/10",
-                                        field.value === slot ? "bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/20" : "text-slate-400"
-                                      )}>
-                                        {slot.split(' - ')[0]}
-                                      </FormLabel>
-                                    </FormItem>
-                                  ))}
-                                </RadioGroup>
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                    </div>
-
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
+                  <div className="grid md:grid-cols-2 gap-10">
                     <FormField
                       control={form.control}
-                      name="notes"
+                      name="fullName"
                       render={({ field }) => (
                         <FormItem className="space-y-4">
                           <FormLabel className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
-                            <BookUser className="w-3.5 h-3.5 text-blue-500" /> {formContent.notes_label}
+                            <User className="w-3.5 h-3.5 text-blue-500" /> {formContent.name_label}
                           </FormLabel>
                           <FormControl>
-                            <Textarea
-                              placeholder="Tell us anything else that might be helpful."
-                              className="bg-white/5 border-0 border-b border-white/10 rounded-none min-h-[120px] px-0 py-4 text-white font-bold placeholder:text-white/20 focus:ring-0 focus:border-blue-600 transition-all resize-none"
+                            <Input
+                              placeholder="John Doe"
                               {...field}
+                              className="bg-white/5 border-0 border-b border-white/10 rounded-none h-14 px-0 text-white font-bold placeholder:text-white/20 focus:ring-0 focus:border-blue-600 transition-all font-sans"
                             />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full bg-blue-600 hover:bg-white hover:text-[#111827] text-white font-black uppercase tracking-[0.3em] py-10 rounded-2xl shadow-2xl shadow-blue-500/30 transition-all active:scale-95 flex items-center justify-center gap-4 h-auto text-xs"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          Processing...
-                        </>
-                      ) : (
-                        <>
-                          {formContent.submit_button}
-                          <ArrowRight className="w-5 h-5" />
-                        </>
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem className="space-y-4">
+                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
+                            <Mail className="w-3.5 h-3.5 text-blue-500" /> {formContent.email_label}
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="john.doe@example.com"
+                              {...field}
+                              className="bg-white/5 border-0 border-b border-white/10 rounded-none h-14 px-0 text-white font-bold placeholder:text-white/20 focus:ring-0 focus:border-blue-600 transition-all font-sans"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
                       )}
-                    </Button>
-                  </form>
-                </Form>
+                    />
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem className="space-y-4">
+                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
+                            <Phone className="w-3.5 h-3.5 text-blue-500" /> {formContent.phone_label}
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="+91 00000 00000"
+                              {...field}
+                              className="bg-white/5 border-0 border-b border-white/10 rounded-none h-14 px-0 text-white font-bold placeholder:text-white/20 focus:ring-0 focus:border-blue-600 transition-all font-sans"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="serviceId"
+                      render={({ field }) => (
+                        <FormItem className="space-y-4">
+                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
+                            <Briefcase className="w-3.5 h-3.5 text-blue-500" /> Services of Interest
+                          </FormLabel>
+                          <Select onValueChange={handleServiceChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger className="bg-white/5 border-0 border-b border-white/10 rounded-none h-14 px-0 text-white font-bold placeholder:text-white/20 focus:ring-0 focus:border-blue-600 transition-all">
+                                <SelectValue placeholder="Select a service" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className="bg-slate-900 border-white/10 text-white">
+                              {services.map((service) => (
+                                <SelectItem key={service.id} value={service.id} className="hover:bg-blue-600 font-bold uppercase text-[10px] tracking-widest pl-10">
+                                  {service.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-10">
+                    <FormField
+                      control={form.control}
+                      name="preferredDate"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col space-y-4">
+                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
+                            <CalendarIcon className="w-3.5 h-3.5 text-blue-500" /> {formContent.date_label}
+                          </FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={"outline"}
+                                  className={cn(
+                                    "bg-white/5 border-0 border-b border-white/10 rounded-none h-14 px-0 text-white font-bold focus:ring-0 focus:border-blue-600 transition-all w-full text-left font-sans",
+                                    !field.value && "text-white/20",
+                                  )}
+                                >
+                                  {field.value ? format(field.value, "PPP") : "Pick a date"}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0 bg-white border-0 shadow-2xl rounded-3xl overflow-hidden" align="start">
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={(date) => date < new Date() || date < new Date("1900-01-01")}
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="space-y-4">
+                      <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2 mb-4">
+                        <Clock className="w-3.5 h-3.5 text-blue-500" /> {formContent.time_label}
+                      </label>
+                      <FormField
+                        control={form.control}
+                        name="preferredTime"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <RadioGroup
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                                className="grid grid-cols-2 gap-3"
+                              >
+                                {timeSlots.map((slot) => (
+                                  <FormItem key={slot} className="flex items-center space-x-0 space-y-0">
+                                    <FormControl>
+                                      <RadioGroupItem value={slot} className="sr-only" />
+                                    </FormControl>
+                                    <FormLabel className={cn(
+                                      "flex-1 flex items-center justify-center p-3 rounded-xl border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-tight cursor-pointer transition-all hover:bg-white/10",
+                                      field.value === slot ? "bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/20" : "text-slate-400"
+                                    )}>
+                                      {slot.split(' - ')[0]}
+                                    </FormLabel>
+                                  </FormItem>
+                                ))}
+                              </RadioGroup>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+
+                  <FormField
+                    control={form.control}
+                    name="notes"
+                    render={({ field }) => (
+                      <FormItem className="space-y-4">
+                        <FormLabel className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
+                          <BookUser className="w-3.5 h-3.5 text-blue-500" /> {formContent.notes_label}
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Tell us anything else that might be helpful."
+                            className="bg-white/5 border-0 border-b border-white/10 rounded-none min-h-[120px] px-0 py-4 text-white font-bold placeholder:text-white/20 focus:ring-0 focus:border-blue-600 transition-all resize-none font-sans"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-blue-600 hover:bg-white hover:text-[#111827] text-white font-black uppercase tracking-[0.3em] py-10 rounded-2xl shadow-2xl shadow-blue-500/30 transition-all active:scale-95 flex items-center justify-center gap-4 h-auto text-xs"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        {formContent.submit_button}
+                        <ArrowRight className="w-5 h-5" />
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </Form>
+            </div>
+
+            {/* Sidebar Info/Expert Section */}
+            <div className="lg:col-span-5 flex flex-col gap-10">
+              <div className="relative h-[450px] w-full rounded-[3.5rem] overflow-hidden shadow-2xl group">
+                <Image
+                  src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2511&auto=format&fit=crop"
+                  alt="Professional appointment"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#111827] via-transparent to-transparent opacity-80" />
+                <div className="absolute bottom-10 left-10 right-10">
+                  <h4 className="text-white font-black uppercase tracking-tighter text-2xl mb-2">Priority Selection</h4>
+                  <p className="text-slate-300 text-[10px] font-bold uppercase tracking-widest leading-relaxed">
+                    Secure a session with our most senior financial strategists.
+                  </p>
+                </div>
               </div>
 
-              {/* Sidebar Info/Expert Section */}
-              <div className="lg:col-span-5 flex flex-col gap-10">
-                <div className="relative h-[450px] w-full rounded-[3.5rem] overflow-hidden shadow-2xl group">
-                  <Image
-                    src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2511&auto=format&fit=crop"
-                    alt="Professional appointment"
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#111827] via-transparent to-transparent opacity-80" />
-                  <div className="absolute bottom-10 left-10 right-10">
-                    <h4 className="text-white font-black uppercase tracking-tighter text-2xl mb-2">Priority Selection</h4>
-                    <p className="text-slate-300 text-[10px] font-bold uppercase tracking-widest leading-relaxed">
-                      Secure a session with our most senior financial strategists.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="bg-white/5 border border-white/5 p-12 rounded-[3.5rem] backdrop-blur-md">
-                   <h4 className="text-white font-black uppercase tracking-widest text-xs mb-8">Strategic Benefits</h4>
-                   <div className="space-y-6">
-                      {[content.info.benefit_1, content.info.benefit_2, content.info.benefit_3, content.info.benefit_4].map((benefit, i) => (
-                        <div key={i} className="flex items-center gap-4 group">
-                          <div className="w-8 h-8 rounded-lg bg-blue-600/10 flex items-center justify-center border border-blue-600/20 group-hover:bg-blue-600 transition-colors">
-                            <CheckCircle2 className="w-4 h-4 text-blue-400 group-hover:text-white" />
-                          </div>
-                          <span className="text-[11px] font-black uppercase tracking-widest text-slate-300">{benefit}</span>
+              <div className="bg-white/5 border border-white/5 p-12 rounded-[3.5rem] backdrop-blur-md">
+                 <h4 className="text-white font-black uppercase tracking-widest text-xs mb-8">Strategic Benefits</h4>
+                 <div className="space-y-6">
+                    {[content.info.benefit_1, content.info.benefit_2, content.info.benefit_3, content.info.benefit_4].map((benefit, i) => (
+                      <div key={i} className="flex items-center gap-4 group">
+                        <div className="w-8 h-8 rounded-lg bg-blue-600/10 flex items-center justify-center border border-blue-600/20 group-hover:bg-blue-600 transition-colors">
+                          <CheckCircle2 className="w-4 h-4 text-blue-400 group-hover:text-white" />
                         </div>
-                      ))}
-                   </div>
-                </div>
+                        <span className="text-[11px] font-black uppercase tracking-widest text-slate-300">{benefit}</span>
+                      </div>
+                    ))}
+                 </div>
               </div>
             </div>
           </div>
+        </div>
       </section>
     </div>
   );

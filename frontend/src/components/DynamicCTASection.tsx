@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { contentService } from "@/lib/content-service";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Logo } from "./logo";
+import { Logo } from "./logo-image";
 import Link from "next/link";
 
 interface CTASectionData {
@@ -63,7 +63,7 @@ export function DynamicCTASection() {
           href="/"
           className="flex items-center justify-center gap-4 mb-8 group"
         >
-          <Logo className="h-12 w-12 transition-transform group-hover:scale-110" />
+          <Logo width={48} height={48} className="transition-transform group-hover:scale-110" />
           <div className="text-left">
             <span className="text-2xl font-black text-slate-900 tracking-tight block leading-tight uppercase">
               {ctaSection?.logoText || "Mark Corpotax"}

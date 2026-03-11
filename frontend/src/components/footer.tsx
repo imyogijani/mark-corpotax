@@ -186,7 +186,7 @@ export function Footer() {
             <div className="mb-8">
               <Link href="/" className="brand-container inline-flex items-center gap-3 group">
                 <Logo
-                  className="object-contain flex-shrink-0 transition-transform group-hover:scale-110 invert brightness-0"
+                  className="object-contain flex-shrink-0 transition-transform group-hover:scale-110"
                   width={48}
                   height={48}
                 />
