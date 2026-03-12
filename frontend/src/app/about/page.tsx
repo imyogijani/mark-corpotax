@@ -13,6 +13,7 @@ import {
   Sparkles,
   Zap,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import anime from "animejs";
 import Image from "next/image";
 import CompanyTimeline from "@/components/CompanyTimeline";
@@ -110,17 +111,6 @@ export default function AboutPage() {
       });
     }
   }, [loading]);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-50">
-        <div className="flex flex-col items-center gap-4">
-          <div className={`w-12 h-12 border-4 ${division === 'taxation' ? 'border-emerald-600' : 'border-blue-600'} border-t-transparent rounded-full animate-spin`}></div>
-          <p className="text-slate-500 font-medium">Loading Story...</p>
-        </div>
-      </div>
-    );
-  }
 
   const excellencePoints = division === "taxation" 
     ? [

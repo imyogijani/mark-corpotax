@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { BarChart2, PieChart, TrendingUp, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface BlogPost {
   category: string;
@@ -64,40 +65,24 @@ export function DynamicBlogSection() {
     };
   }, [fetchContent]);
 
-  const getIcon = (index: number) => {
-    const icons = [
-      <motion.div
-        key="bar"
-        whileHover={{ scale: 1.05, translateY: -5 }}
-        transition={{ type: "spring", stiffness: 300 }}
-      >
-        <BarChart2
-          className="w-full h-32"
-          style={{ color: "#0b4c80", opacity: 0.6 }}
-        />
-      </motion.div>,
-      <motion.div
-        key="pie"
-        whileHover={{ rotate: 90, scale: 1.05 }}
-        transition={{ type: "spring", stiffness: 200 }}
-      >
-        <PieChart
-          className="w-full h-32"
-          style={{ color: "#0b4c80", opacity: 0.6 }}
-        />
-      </motion.div>,
-      <motion.div
-        key="trend"
-        whileHover={{ scale: 1.1, translateX: 5 }}
-        transition={{ type: "spring", stiffness: 300 }}
-      >
-        <TrendingUp
-          className="w-full h-32"
-          style={{ color: "#0b4c80", opacity: 0.6 }}
-        />
-      </motion.div>,
+  const getBlogImage = (index: number) => {
+    const images = [
+      "/blog-finance.png",
+      "/blog-taxation.png",
+      "/blog-investment.png",
     ];
-    return icons[index % icons.length];
+    const imageSrc = images[index % images.length];
+
+    return (
+      <div className="relative w-full h-full">
+        <Image
+          src={imageSrc}
+          alt="Blog Insight"
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+      </div>
+    );
   };
 
   // Memoize blog posts
@@ -174,11 +159,8 @@ export function DynamicBlogSection() {
               }}
             >
               <Card className="group relative overflow-hidden bg-white border border-slate-100 rounded-[3rem] h-full flex flex-col transition-all duration-500 shadow-[0_15px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_45px_100px_rgba(37,99,235,0.1)] hover:border-blue-100 hover:-translate-y-4">
-                <div className="h-64 relative overflow-hidden bg-slate-50 flex items-center justify-center p-8">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  <div className="relative z-10 transform transition-all duration-700 group-hover:scale-125 group-hover:rotate-6">
-                    {getIcon(index)}
-                  </div>
+                <div className="h-64 relative overflow-hidden bg-slate-50">
+                  {getBlogImage(index)}
                 </div>
 
                 <CardContent className="p-10 flex-1 flex flex-col">

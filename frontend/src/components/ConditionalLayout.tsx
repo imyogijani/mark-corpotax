@@ -41,34 +41,7 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
       <SmoothScroll />
       <Preloader />
       <ScrollProgress />
-      {/* Premium Navigation Curtain */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`curtain-${pathname}`}
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 0 }}
-          exit={{ opacity: 1 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
-          className="fixed inset-0 z-[100] pointer-events-none flex"
-        >
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ scaleY: 0 }}
-              animate={{ 
-                scaleY: [0, 1, 0],
-                transition: { 
-                  duration: 1.2,
-                  times: [0, 0.5, 1],
-                  delay: i * 0.1,
-                  ease: "easeInOut"
-                }
-              }}
-              className="flex-1 bg-blue-600 origin-top h-full"
-            />
-          ))}
-        </motion.div>
-      </AnimatePresence>
+      <ScrollProgress />
 
       {showLayout && (
         <Suspense fallback={null}>
@@ -76,9 +49,7 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
         </Suspense>
       )}
       <main className="flex-1 overflow-hidden">
-        <AnimatePresence mode="wait" initial={false}>
-          <PageTransition key={pathname}>{children}</PageTransition>
-        </AnimatePresence>
+        {children}
       </main>
       {showLayout && (
         <Suspense fallback={null}>
