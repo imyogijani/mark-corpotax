@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, Send, CheckCircle2, User, Phone, Mail, HelpCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,11 +16,18 @@ export function AskExpertSection() {
     message: "",
   });
 
-  useState(() => {
-    if (typeof window !== "undefined") {
+  useEffect(() => {
+    const handleSync = () => {
       setDivision(localStorage.getItem("user_division") || "finance");
-    }
-  });
+    };
+    handleSync();
+    window.addEventListener("storage", handleSync);
+    window.addEventListener("division-change", handleSync);
+    return () => {
+      window.removeEventListener("storage", handleSync);
+      window.removeEventListener("division-change", handleSync);
+    };
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -145,7 +152,7 @@ export function AskExpertSection() {
                     <div className="grid md:grid-cols-2 gap-10">
                       <div className="space-y-3">
                         <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-700 flex items-center gap-2">
-                          <User className="w-3.5 h-3.5 text-blue-500" /> Professional Identity
+                          <User className={`w-3.5 h-3.5 ${division === 'taxation' ? 'text-emerald-500' : 'text-blue-500'}`} /> Professional Identity
                         </label>
                         <Input
                           required
@@ -157,7 +164,7 @@ export function AskExpertSection() {
                       </div>
                       <div className="space-y-3">
                         <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-700 flex items-center gap-2">
-                          <Send className="w-3.5 h-3.5 text-blue-500" /> Channel of Contact
+                          <Send className={`w-3.5 h-3.5 ${division === 'taxation' ? 'text-emerald-500' : 'text-blue-500'}`} /> Channel of Contact
                         </label>
                         <Input
                           required
@@ -171,7 +178,7 @@ export function AskExpertSection() {
 
                     <div className="space-y-3">
                       <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-700 flex items-center gap-2">
-                        <MessageSquare className="w-3.5 h-3.5 text-blue-500" /> Consultation Requirements
+                        <MessageSquare className={`w-3.5 h-3.5 ${division === 'taxation' ? 'text-emerald-500' : 'text-blue-500'}`} /> Consultation Requirements
                       </label>
                       <Textarea
                         required
@@ -198,7 +205,7 @@ export function AskExpertSection() {
                   </Button>
 
                   <div className="flex items-center justify-center gap-3">
-                    <div className="w-2 h-2 rounded-full bg-blue-500 animate-bounce" />
+                    <div className={`w-2 h-2 rounded-full ${division === 'taxation' ? 'bg-emerald-500' : 'bg-blue-500'} animate-bounce`} />
                     <p className="text-[9px] text-slate-800 font-black uppercase tracking-[0.25em]">
                       Senior Team Response Time &lt; 2 Hours
                     </p>

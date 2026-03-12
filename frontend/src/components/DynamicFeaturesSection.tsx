@@ -123,12 +123,17 @@ export function DynamicFeaturesSection() {
   useEffect(() => {
     fetchContent();
 
+    window.addEventListener("storage", fetchContent);
+    window.addEventListener("division-change", fetchContent);
+
     // Subscribe to cache invalidation events
     const unsubscribe = contentService.onCacheInvalidated(() => {
       fetchContent();
     });
 
     return () => {
+      window.removeEventListener("storage", fetchContent);
+      window.removeEventListener("division-change", fetchContent);
       unsubscribe();
     };
   }, [fetchContent]);

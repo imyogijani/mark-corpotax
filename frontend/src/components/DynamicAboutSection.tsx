@@ -324,7 +324,7 @@ export function DynamicAboutSection() {
             <motion.div
               animate={{ y: [0, -20, 0] }}
               transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-10 -right-10 text-[10vw] font-black text-slate-100 select-none pointer-events-none opacity-50"
+              className="absolute -top-10 -right-10 text-[10vw] font-black text-slate-300 select-none pointer-events-none opacity-80"
             >
               2500+
             </motion.div>

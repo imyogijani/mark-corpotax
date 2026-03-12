@@ -65,8 +65,14 @@ export function DynamicServicesSection() {
 
   useEffect(() => {
     fetchContent();
+    window.addEventListener("storage", fetchContent);
+    window.addEventListener("division-change", fetchContent);
     const unsubscribe = contentService.onCacheInvalidated(() => { fetchContent(); });
-    return () => { unsubscribe(); };
+    return () => {
+      window.removeEventListener("storage", fetchContent);
+      window.removeEventListener("division-change", fetchContent);
+      unsubscribe();
+    };
   }, [fetchContent]);
 
   const getIcon = (iconName: string) => {

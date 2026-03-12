@@ -240,7 +240,7 @@ export function DynamicTestimonialsSection() {
         <div className="relative text-center max-w-4xl mx-auto">
           {/* Animated Watermark - Light Theme */}
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[5rem] md:text-[9rem] opacity-[0.08] font-black text-slate-200 whitespace-nowrap select-none pointer-events-none tracking-tighter uppercase"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[5rem] md:text-[9rem] opacity-[0.2] font-black text-slate-300 whitespace-nowrap select-none pointer-events-none tracking-tighter uppercase"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 0.15, scale: 1 }}
             viewport={{ once: false }}
