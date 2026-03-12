@@ -210,22 +210,10 @@ export const DynamicHeroSection = () => {
       {/* Background Watermarks */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <motion.div
-          style={{ y: y1 }}
-          className="absolute -top-10 -left-10 text-[18vw] font-black text-slate-200 select-none leading-none tracking-tighter opacity-70"
-        >
-          {division?.toUpperCase() || "FINANCE"}
-        </motion.div>
-        <motion.div
-          style={{ y: y2 }}
-          className="absolute top-1/2 -right-20 text-[14vw] font-black text-slate-200 select-none leading-none tracking-tighter opacity-50"
+          style={{ y: y3 }}
+          className="absolute bottom-[-5%] -left-10 text-[20vw] font-black text-slate-300 select-none leading-none uppercase tracking-tighter opacity-90"
         >
           GROWTH
-        </motion.div>
-        <motion.div
-          style={{ y: y3 }}
-          className="absolute bottom-[-5%] -left-10 text-[20vw] font-black text-slate-100 select-none leading-none uppercase tracking-tighter opacity-80"
-        >
-          {division === "finance" ? "Capital" : "Legal"}
         </motion.div>
       </div>
 

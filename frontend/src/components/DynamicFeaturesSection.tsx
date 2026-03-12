@@ -123,12 +123,17 @@ export function DynamicFeaturesSection() {
   useEffect(() => {
     fetchContent();
 
+    window.addEventListener("storage", fetchContent);
+    window.addEventListener("division-change", fetchContent);
+
     // Subscribe to cache invalidation events
     const unsubscribe = contentService.onCacheInvalidated(() => {
       fetchContent();
     });
 
     return () => {
+      window.removeEventListener("storage", fetchContent);
+      window.removeEventListener("division-change", fetchContent);
       unsubscribe();
     };
   }, [fetchContent]);
@@ -177,7 +182,7 @@ export function DynamicFeaturesSection() {
         <div className="relative text-center max-w-4xl mx-auto">
           {/* Animated Watermark - Light Theme */}
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[5rem] md:text-[8rem] opacity-5 font-black text-slate-200 whitespace-nowrap select-none pointer-events-none tracking-tighter uppercase"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[5rem] md:text-[8rem] opacity-20 font-black text-slate-300 whitespace-nowrap select-none pointer-events-none tracking-tighter uppercase"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 0.1, scale: 1 }}
             viewport={{ once: false }}

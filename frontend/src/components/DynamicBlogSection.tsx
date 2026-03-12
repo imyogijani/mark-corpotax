@@ -33,9 +33,13 @@ const FALLBACK_BLOG: BlogSectionData = {
 export function DynamicBlogSection() {
   const [blogSection, setBlogSection] =
     useState<BlogSectionData>(FALLBACK_BLOG);
+  const [division, setDivision] = useState<string>("finance");
 
   const fetchContent = useCallback(async () => {
     try {
+      const savedDivision = localStorage.getItem("user_division") || "finance";
+      setDivision(savedDivision);
+
       const blogContent = await contentService.getContentBySection(
         "home",
         "blog",
@@ -54,12 +58,17 @@ export function DynamicBlogSection() {
   useEffect(() => {
     fetchContent();
 
+    window.addEventListener("storage", fetchContent);
+    window.addEventListener("division-change", fetchContent);
+
     // Subscribe to cache invalidation events
     const unsubscribe = contentService.onCacheInvalidated(() => {
       fetchContent();
     });
 
     return () => {
+      window.removeEventListener("storage", fetchContent);
+      window.removeEventListener("division-change", fetchContent);
       unsubscribe();
     };
   }, [fetchContent]);
@@ -73,7 +82,7 @@ export function DynamicBlogSection() {
       >
         <BarChart2
           className="w-full h-32"
-          style={{ color: "#0b4c80", opacity: 0.6 }}
+          style={{ color: division === 'taxation' ? '#059669' : '#2563eb', opacity: 0.6 }}
         />
       </motion.div>,
       <motion.div
@@ -83,7 +92,7 @@ export function DynamicBlogSection() {
       >
         <PieChart
           className="w-full h-32"
-          style={{ color: "#0b4c80", opacity: 0.6 }}
+          style={{ color: division === 'taxation' ? '#059669' : '#2563eb', opacity: 0.6 }}
         />
       </motion.div>,
       <motion.div
@@ -93,7 +102,7 @@ export function DynamicBlogSection() {
       >
         <TrendingUp
           className="w-full h-32"
-          style={{ color: "#0b4c80", opacity: 0.6 }}
+          style={{ color: division === 'taxation' ? '#059669' : '#2563eb', opacity: 0.6 }}
         />
       </motion.div>,
     ];
@@ -112,7 +121,7 @@ export function DynamicBlogSection() {
         <div className="relative text-center max-w-4xl mx-auto">
           {/* Animated Watermark - Light Theme */}
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10vw] font-black text-slate-200 opacity-[0.08] select-none pointer-events-none tracking-tighter uppercase"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10vw] font-black text-slate-300 opacity-[0.2] select-none pointer-events-none tracking-tighter uppercase"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 0.15, scale: 1 }}
             viewport={{ once: false }}
@@ -128,11 +137,11 @@ export function DynamicBlogSection() {
               viewport={{ once: false }}
               className="inline-flex items-center gap-3 mb-6"
             >
-              <span className="w-8 h-[2px] bg-blue-600"></span>
-              <span className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-600">
+              <span className={`w-8 h-[2px] ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}></span>
+              <span className={`text-[10px] font-black uppercase tracking-[0.5em] ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
                 Knowledge Hub
               </span>
-              <span className="w-8 h-[2px] bg-blue-600"></span>
+              <span className={`w-8 h-[2px] ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}></span>
             </motion.div>
 
             <motion.h2
@@ -173,23 +182,23 @@ export function DynamicBlogSection() {
                 ease: "easeOut"
               }}
             >
-              <Card className="group relative overflow-hidden bg-white border border-slate-100 rounded-[3rem] h-full flex flex-col transition-all duration-500 shadow-[0_15px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_45px_100px_rgba(37,99,235,0.1)] hover:border-blue-100 hover:-translate-y-4">
+              <Card className={`group relative overflow-hidden bg-white border border-slate-100 rounded-[3rem] h-full flex flex-col transition-all duration-500 shadow-[0_15px_40px_rgba(0,0,0,0.03)] ${division === 'taxation' ? 'hover:shadow-[0_45px_100px_rgba(16,185,129,0.1)] hover:border-emerald-100' : 'hover:shadow-[0_45px_100px_rgba(37,99,235,0.1)] hover:border-blue-100'} hover:-translate-y-4`}>
                 <div className="h-64 relative overflow-hidden bg-slate-50 flex items-center justify-center p-8">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className={`absolute inset-0 bg-gradient-to-br transition-opacity duration-700 opacity-0 group-hover:opacity-100 ${division === 'taxation' ? 'from-emerald-600/5' : 'from-blue-600/5'} to-transparent`} />
                   <div className="relative z-10 transform transition-all duration-700 group-hover:scale-125 group-hover:rotate-6">
                     {getIcon(index)}
                   </div>
                 </div>
 
                 <CardContent className="p-10 flex-1 flex flex-col">
-                  <div className="text-[10px] font-black text-blue-600 uppercase tracking-[0.2em] mb-4">
+                  <div className={`text-[10px] font-black uppercase tracking-[0.2em] mb-4 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
                     {post?.category}
                   </div>
-                  <h3 className="text-2xl font-black mb-6 text-slate-800 leading-tight group-hover:text-blue-600 transition-colors tracking-tight uppercase">
+                  <h3 className={`text-2xl font-black mb-6 text-slate-800 leading-tight transition-colors tracking-tight uppercase ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'}`}>
                     {post?.title}
                   </h3>
                   <div className="mt-auto">
-                    <button className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-blue-600 transition-all duration-300">
+                    <button className={`flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 transition-all duration-300 ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'}`}>
                       Read Details
                       <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" />
                     </button>
@@ -200,9 +209,9 @@ export function DynamicBlogSection() {
           ))}
         </div>
 
-        <div className="text-center mt-20">
+         <div className="text-center mt-20">
           <Link href="/blog">
-            <button className="h-16 px-12 rounded-2xl bg-slate-900 text-white font-black text-lg hover:bg-blue-600 transition-all duration-300 shadow-xl group active:scale-95 uppercase tracking-widest">
+            <button className={`h-16 px-12 rounded-2xl bg-slate-900 text-white font-black text-lg transition-all duration-300 shadow-xl group active:scale-95 uppercase tracking-widest ${division === 'taxation' ? 'hover:bg-emerald-600' : 'hover:bg-blue-600'}`}>
               <span className="flex items-center gap-3">
                 Explore All Articles
                 <TrendingUp className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />

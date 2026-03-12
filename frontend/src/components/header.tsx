@@ -133,10 +133,22 @@ export function Header() {
     };
   }, []);
 
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setActiveMegaMenu(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setActiveMegaMenu(false);
+    }, 200);
+  };
+
   const handleSwitchDivision = (choice: "finance" | "taxation") => {
     if (choice === currentDivision) return;
     localStorage.setItem("user_division", choice);
-    window.location.reload();
+    setCurrentDivision(choice);
+    window.dispatchEvent(new Event("division-change"));
   };
 
   const handleGoToLanding = () => {
@@ -207,31 +219,21 @@ export function Header() {
 
   return (
     <>
-      <AnimatePresence>
-        {activeMegaMenu && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-slate-950/20 backdrop-blur-sm pointer-events-none"
-            style={{
-              backgroundImage: `radial-gradient(circle at 2px 2px, rgba(0,0,0,0.1) 1px, transparent 0)`,
-              backgroundSize: "24px 24px",
-            }}
-          />
-        )}
-      </AnimatePresence>
+
 
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled || isSearchOpen || isMobileMenuOpen || activeMegaMenu
-            ? "py-3 md:py-4"
-            : "py-6 md:py-8"
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${isScrolled || isSearchOpen || isMobileMenuOpen
+            ? "py-2.5 md:py-3"
+            : "py-4 md:py-5"
           }`}
       >
-        <div className="container mx-auto px-4 md:px-6 flex justify-center">
+        <div className="container mx-auto px-4 md:px-6">
           <nav
-            className={`relative w-full max-w-7xl flex items-center justify-between px-4 md:px-8 py-3 rounded-full border border-white/40 transition-all duration-500 shadow-2xl backdrop-blur-3xl bg-white/70 group ${isScrolled || activeMegaMenu ? "shadow-blue-500/10" : "shadow-transparent"
-              }`}
+            className={`relative w-full max-w-screen-2xl mx-auto flex items-center justify-between px-6 md:px-10 py-3.5 rounded-2xl border transition-all duration-500 bg-white group ${
+              currentDivision === "taxation"
+                ? "border-emerald-100 shadow-[0_20px_60px_rgba(16,185,129,0.12)]"
+                : "border-blue-100 shadow-[0_20px_60px_rgba(37,99,235,0.12)]"
+            } ${isScrolled ? "py-3 scale-[0.99]" : ""}`}
           >
             {/* Logo Section */}
             <Link href="/" className="flex items-center gap-3 group/logo flex-shrink-0">
@@ -251,7 +253,7 @@ export function Header() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-1 xl:gap-2">
+            <div className="hidden lg:flex items-center gap-2 xl:gap-4">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 const isServices = link.label === "Services";
@@ -261,93 +263,113 @@ export function Header() {
                     <div
                       key={link.label}
                       className="relative"
-                      onMouseEnter={() => setActiveMegaMenu(true)}
-                      onMouseLeave={() => setActiveMegaMenu(false)}
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
                     >
-                      <Link
-                        href={link.href}
-                        className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 ${isActive || activeMegaMenu
-                            ? currentDivision === 'taxation' ? "bg-emerald-600 text-white shadow-xl shadow-emerald-500/20" : "bg-blue-600 text-white shadow-xl shadow-blue-500/20"
-                            : "text-slate-600 hover:bg-slate-50"
-                          }`}
-                      >
-                        <link.icon className="w-3.5 h-3.5" />
-                        {link.label}
-                        <ChevronDown
-                          className={`w-3.5 h-3.5 transition-transform duration-500 ${activeMegaMenu ? "rotate-180" : ""
-                            }`}
-                        />
-                      </Link>
+                       <Link
+                         href={link.href}
+                         className={`group/nav flex items-center gap-2 px-5 py-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 relative ${isActive
+                             ? currentDivision === 'taxation' ? "text-emerald-600" : "text-blue-600"
+                             : "text-slate-600 hover:text-slate-900"
+                           }`}
+                       >
+                         <link.icon className="w-3.5 h-3.5" />
+                         {link.label}
+                         <ChevronDown
+                           className={`w-3.5 h-3.5 transition-transform duration-500 ${activeMegaMenu ? "rotate-0" : ""
+                             }`}
+                         />
+                         {isActive && (
+                           <motion.div
+                             layoutId="nav-underline"
+                             className={`absolute bottom-[2px] left-5 right-5 h-[3px] rounded-full ${currentDivision === 'taxation' ? 'bg-emerald-600 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.5)]'}`}
+                             transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                           />
+                         )}
+                       </Link>
+
+                      {/* Invisible Bridge to prevent flicker when moving mouse to menu */}
+                      {activeMegaMenu && (
+                        <div className="absolute top-full left-0 w-full h-[150px] z-[60]" onMouseEnter={handleMouseEnter} />
+                      )}
 
                       {/* Mega Menu */}
                       <AnimatePresence>
                         {activeMegaMenu && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 15, scale: 0.98, x: "-50%" }}
-                            animate={{ opacity: 1, y: 0, scale: 1, x: "-50%" }}
-                            exit={{ opacity: 0, y: 10, scale: 0.98, x: "-50%" }}
-                            transition={{ duration: 0.3, ease: "easeOut" }}
-                            className="fixed top-[100px] left-1/2 w-[90vw] max-w-6xl bg-white/95 backdrop-blur-3xl border border-slate-100 rounded-[2.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.1)] overflow-hidden p-5 md:p-7 z-[60]"
-                          >
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                              {filteredCategories.map((category, idx) => (
-                                <div key={idx} className="space-y-4 group/cat">
-                                  <div className="flex items-center gap-3">
-                                    <div className={`w-8 h-[2px] ${currentDivision === 'taxation' ? 'bg-emerald-600/30' : 'bg-blue-600/30'} group-hover/cat:w-12 transition-all duration-500`} />
-                                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 group-hover/cat:text-slate-900 transition-colors">
-                                      {category.title}
-                                    </h3>
-                                  </div>
-                                  <div className="grid gap-1">
-                                    {category.services.map((service, sIdx) => (
-                                      <Link
-                                        key={sIdx}
-                                        href={service.href}
-                                        onClick={() => setActiveMegaMenu(false)}
-                                        className="group/link flex items-center justify-between p-2 md:p-2.5 rounded-xl hover:bg-slate-50 transition-all duration-300 border border-transparent hover:border-slate-100"
-                                      >
-                                        <div className="flex items-center gap-3">
-                                          <div className={`w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center transition-all duration-500 ${currentDivision === 'taxation' ? 'group-hover/link:bg-emerald-600 group-hover/link:text-white group-hover/link:scale-110 shadow-emerald-500/10' : 'group-hover/link:bg-blue-600 group-hover/link:text-white group-hover/link:scale-110 shadow-blue-500/10'}`}>
-                                            <service.icon className="w-4 h-4" />
+                          <>
+                            <motion.div
+                              initial={{ opacity: 0, y: 15, scale: 0.98, x: "-50%" }}
+                              animate={{ opacity: 1, y: 0, scale: 1, x: "-50%" }}
+                              exit={{ opacity: 0, y: 10, scale: 0.98, x: "-50%" }}
+                              transition={{ duration: 0.3, ease: "easeOut" }}
+                              onMouseEnter={handleMouseEnter}
+                              onMouseLeave={handleMouseLeave}
+                              className={`fixed top-[115px] left-1/2 w-[90vw] max-w-6xl bg-white border rounded-[3rem] overflow-hidden p-6 md:p-8 z-[60] ${
+                                currentDivision === "taxation"
+                                  ? "border-emerald-100 shadow-[0_40px_100px_rgba(16,185,129,0.15)]"
+                                  : "border-blue-100 shadow-[0_40px_100px_rgba(37,99,235,0.15)]"
+                              }`}
+                            >
+                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                                {filteredCategories.map((category, idx) => (
+                                  <div key={idx} className="space-y-5 group/cat">
+                                    <div className="flex items-center gap-3">
+                                      <div className={`w-8 h-[2px] ${currentDivision === 'taxation' ? 'bg-emerald-600/30' : 'bg-blue-600/30'} group-hover/cat:w-12 transition-all duration-500`} />
+                                      <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 group-hover/cat:text-slate-900 transition-colors">
+                                        {category.title}
+                                      </h3>
+                                    </div>
+                                    <div className="grid gap-1">
+                                      {category.services.map((service, sIdx) => (
+                                        <Link
+                                          key={sIdx}
+                                          href={service.href}
+                                          onClick={() => setActiveMegaMenu(false)}
+                                          className="group/link flex items-center justify-between p-2.5 rounded-2xl hover:bg-slate-50 transition-all duration-300 border border-transparent hover:border-slate-100"
+                                        >
+                                          <div className="flex items-center gap-3">
+                                            <div className={`w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center transition-all duration-500 ${currentDivision === 'taxation' ? 'group-hover/link:bg-emerald-600 group-hover/link:text-white group-hover/link:scale-110' : 'group-hover/link:bg-blue-600 group-hover/link:text-white group-hover/link:scale-110'}`}>
+                                              <service.icon className="w-5 h-5" />
+                                            </div>
+                                            <span className="text-sm font-bold text-slate-700 group-hover/link:text-slate-900 transition-colors">
+                                              {service.name}
+                                            </span>
                                           </div>
-                                          <span className="text-xs font-bold text-slate-700 group-hover/link:text-slate-900 transition-colors">
-                                            {service.name}
-                                          </span>
-                                        </div>
-                                        <ArrowRight className={`w-3.5 h-3.5 text-slate-300 opacity-0 group-hover/link:opacity-100 group-hover/link:translate-x-1 transition-all duration-500 ${currentDivision === 'taxation' ? 'group-hover/link:text-emerald-500' : 'group-hover/link:text-blue-500'}`} />
-                                      </Link>
-                                    ))}
+                                          <ArrowRight className={`w-4 h-4 text-slate-300 opacity-0 group-hover/link:opacity-100 group-hover/link:translate-x-1 transition-all duration-500 ${currentDivision === 'taxation' ? 'group-hover/link:text-emerald-500' : 'group-hover/link:text-blue-500'}`} />
+                                        </Link>
+                                      ))}
+                                    </div>
                                   </div>
-                                </div>
-                              ))}
+                                ))}
 
-                              {/* Promotional Panel */}
-                              <div className={`relative rounded-[2rem] overflow-hidden p-6 md:p-8 flex flex-col justify-end min-h-[320px] group/promo ${currentDivision === 'taxation' ? 'bg-emerald-900' : 'bg-blue-900'}`}>
-                                <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
-                                <div className="relative z-10 space-y-4">
-                                  <div className={`inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-[7px] font-black uppercase tracking-widest text-white`}>
-                                    <TrendingUp className="w-2.5 h-2.5 text-white" />
-                                    <span>Expert Advisory</span>
+                                {/* Promotional Panel */}
+                                <div className={`relative rounded-[2.5rem] overflow-hidden p-8 flex flex-col justify-end min-h-[350px] group/promo ${currentDivision === 'taxation' ? 'bg-emerald-950 shadow-2xl shadow-emerald-500/20' : 'bg-blue-950 shadow-2xl shadow-blue-500/20'}`}>
+                                  <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
+                                  <div className="relative z-10 space-y-5">
+                                    <div className={`inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-[8px] font-black uppercase tracking-widest text-white`}>
+                                      <TrendingUp className="w-3 h-3 text-white" />
+                                      <span>Expert Advisory</span>
+                                    </div>
+                                    <h4 className="text-3xl font-black text-white uppercase tracking-tighter leading-none">
+                                      Expert <br /> Consultant.
+                                    </h4>
+                                    <p className="text-white/60 text-xs font-medium leading-relaxed">
+                                      {currentDivision === "taxation"
+                                        ? "Statutory audit and tax planning by certified professionals."
+                                        : "Strategic capital raising and MSME project financing solutions."}
+                                    </p>
+                                    <Link
+                                      href="/appointment"
+                                      onClick={() => setActiveMegaMenu(false)}
+                                      className={`w-full py-4 bg-white text-slate-900 rounded-2xl flex items-center justify-center gap-2 font-black text-[10px] uppercase tracking-widest hover:bg-slate-100 transition-all shadow-xl`}
+                                    >
+                                      Schedule Call <ArrowRight className="w-4 h-4" />
+                                    </Link>
                                   </div>
-                                  <h4 className="text-2xl font-black text-white uppercase tracking-tighter leading-none">
-                                    Expert <br /> Consultant.
-                                  </h4>
-                                  <p className="text-white/60 text-[10px] font-medium leading-relaxed">
-                                    {currentDivision === "taxation"
-                                      ? "Statutory audit and tax planning by certified professionals."
-                                      : "Strategic capital raising and MSME project financing solutions."}
-                                  </p>
-                                  <Link
-                                    href="/appointment"
-                                    onClick={() => setActiveMegaMenu(false)}
-                                    className={`w-full py-3 bg-white text-slate-900 rounded-xl flex items-center justify-center gap-2 font-black text-[9px] uppercase tracking-widest hover:bg-slate-100 transition-all ${currentDivision === 'taxation' ? 'shadow-xl shadow-emerald-950/20' : 'shadow-xl shadow-blue-950/20'}`}
-                                  >
-                                    Schedule Call <ArrowRight className="w-3.5 h-3.5" />
-                                  </Link>
                                 </div>
                               </div>
-                            </div>
-                          </motion.div>
+                            </motion.div>
+                          </>
                         )}
                       </AnimatePresence>
                     </div>
@@ -358,48 +380,72 @@ export function Header() {
                   <Link
                     key={link.label}
                     href={link.href}
-                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 ${isActive
-                        ? currentDivision === 'taxation' ? "bg-emerald-600 text-white shadow-xl shadow-emerald-500/20" : "bg-blue-600 text-white shadow-xl shadow-blue-500/20"
-                        : "text-slate-600 hover:bg-slate-100/50"
+                    className={`group/nav flex items-center gap-2 px-5 py-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 relative ${isActive
+                        ? currentDivision === 'taxation' ? "text-emerald-600" : "text-blue-600"
+                        : "text-slate-600 hover:text-slate-900"
                       }`}
                   >
                     <link.icon className="w-3.5 h-3.5" />
                     {link.label}
+                    {isActive && (
+                      <motion.div
+                        layoutId="nav-underline"
+                        className={`absolute bottom-[2px] left-5 right-5 h-[3px] rounded-full ${currentDivision === 'taxation' ? 'bg-emerald-600 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.5)]'}`}
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
                   </Link>
                 );
               })}
             </div>
 
             {/* Right: Actions Area */}
-            <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+            <div className="hidden lg:flex items-center gap-4 md:gap-6 flex-shrink-0">
               {currentDivision && (
-                <div className="flex items-center gap-1 bg-slate-50/50 p-1 rounded-full border border-slate-100 shadow-inner">
+                <div className="flex items-center gap-1 bg-slate-100/80 p-1.5 rounded-xl border border-slate-200 shadow-inner relative">
+                  {/* Finance Choice */}
                   <button
                     onClick={() => handleSwitchDivision("finance")}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${currentDivision === "finance"
-                      ? "bg-white text-blue-600 shadow-sm font-black"
-                      : "text-slate-400 hover:text-slate-600"
+                    className={`relative z-10 flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-500 overflow-hidden ${currentDivision === "finance"
+                        ? "text-white font-black"
+                        : "text-slate-500 hover:text-slate-800"
                       }`}
                   >
-                    <TrendingUp className="w-3 h-3" />
-                    <span className="text-[8px] uppercase tracking-wider">Finance</span>
+                    <TrendingUp className={`w-3.5 h-3.5 ${currentDivision === 'finance' ? 'animate-bounce' : ''}`} />
+                    <span className="text-[10px] uppercase tracking-widest leading-none">Finance</span>
+                    {currentDivision === "finance" && (
+                      <motion.div
+                        layoutId="active-division"
+                        className="absolute inset-0 bg-blue-600 -z-10 shadow-[0_4px_15px_rgba(37,99,235,0.4)]"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
                   </button>
+
+                  {/* Taxation Choice */}
                   <button
                     onClick={() => handleSwitchDivision("taxation")}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${currentDivision === "taxation"
-                      ? "bg-white text-emerald-600 shadow-sm font-black"
-                      : "text-slate-400 hover:text-slate-600"
+                    className={`relative z-10 flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-500 overflow-hidden ${currentDivision === "taxation"
+                        ? "text-white font-black"
+                        : "text-slate-500 hover:text-slate-800"
                       }`}
                   >
-                    <ShieldCheck className="w-3 h-3" />
-                    <span className="text-[8px] uppercase tracking-wider">Taxation</span>
+                    <ShieldCheck className={`w-3.5 h-3.5 ${currentDivision === 'taxation' ? 'animate-pulse' : ''}`} />
+                    <span className="text-[10px] uppercase tracking-widest leading-none">Taxation</span>
+                    {currentDivision === "taxation" && (
+                      <motion.div
+                        layoutId="active-division"
+                        className="absolute inset-0 bg-emerald-600 -z-10 shadow-[0_4px_15px_rgba(16,185,129,0.4)]"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
                   </button>
                 </div>
               )}
 
               <button
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className={`w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 ${isSearchOpen
+                className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 ${isSearchOpen
                     ? 'bg-slate-900 text-white shadow-lg'
                     : 'text-slate-400 hover:text-blue-600 hover:bg-slate-50'
                   }`}
@@ -409,7 +455,7 @@ export function Header() {
 
               <Link href="/appointment">
                 <Button
-                  className="bg-slate-900 hover:bg-blue-600 text-white font-black text-[10px] uppercase tracking-[0.15em] rounded-full px-6 py-2 h-10 shadow-none transition-all duration-500 flex items-center gap-2"
+                  className="bg-slate-900 hover:bg-blue-600 text-white font-black text-[10px] uppercase tracking-[0.15em] rounded-xl px-6 py-2 h-10 shadow-none transition-all duration-500 flex items-center gap-2"
                 >
                   Join
                   <ArrowRight className="w-3 h-3" />
@@ -421,56 +467,62 @@ export function Header() {
             <div className="lg:hidden flex items-center gap-2">
               <button
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className={`p-3 rounded-2xl border transition-all duration-300 ${isSearchOpen ? 'bg-slate-100 border-slate-200 text-slate-900' : 'bg-white/50 backdrop-blur border-white/60 text-slate-900'}`}
+                className={`p-3 rounded-2xl border transition-all duration-300 ${isSearchOpen ? 'bg-slate-100 border-slate-200 text-slate-900' : 'bg-white border-white/60 text-slate-900'}`}
               >
                 {isSearchOpen ? <X className="w-6 h-6" /> : <Search className="w-6 h-6" />}
               </button>
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="p-3 bg-white/50 backdrop-blur rounded-2xl border border-white/60 text-slate-900"
+                className="p-3 bg-white rounded-2xl border border-white/60 text-slate-900"
               >
                 <Menu className="w-6 h-6" />
               </button>
             </div>
           </nav>
-        </div>
 
-        {/* Desktop Dropdown Search Bar */}
-        <AnimatePresence>
-          {isSearchOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0, scale: 0.95 }}
-              animate={{ height: "auto", opacity: 1, scale: 1 }}
-              exit={{ height: 0, opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="hidden lg:block w-full max-w-2xl mt-4 overflow-hidden z-[49]"
-            >
-              <div className="bg-white/95 backdrop-blur-2xl border border-white/60 rounded-[2.5rem] p-3 shadow-[0_30px_60px_rgba(0,0,0,0.12)] border-b-blue-500/10">
-                <form
-                  onSubmit={handleSearch}
-                  className="flex items-center gap-3 px-4 py-1"
-                >
-                  <Search className="w-5 h-5 text-slate-400" />
-                  <input
-                    ref={searchInputRef}
-                    type="text"
-                    placeholder="What legal or financial service are you looking for?"
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    className="flex-1 bg-transparent py-4 text-[16px] font-bold text-slate-900 focus:outline-none placeholder:text-slate-400"
-                  />
-                  <Button
-                    type="submit"
-                    className="bg-slate-900 hover:bg-blue-600 text-white rounded-full px-8 h-12 text-[12px] font-black uppercase tracking-widest shadow-lg shadow-blue-500/10 transition-all flex items-center gap-2"
+            {/* Desktop Dropdown Search Bar */}
+            <AnimatePresence>
+              {isSearchOpen && (
+                <div className="hidden lg:flex justify-end w-full relative">
+                  <motion.div
+                    initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute top-4 right-0 w-full max-w-2xl overflow-hidden z-[110]"
                   >
-                    Search
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </form>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                    <div className={`bg-white border rounded-[2.5rem] p-3 shadow-2xl ${
+                      currentDivision === "taxation"
+                        ? "border-emerald-100 shadow-[0_30px_60px_rgba(16,185,129,0.12)]"
+                        : "border-blue-100 shadow-[0_30px_60px_rgba(37,99,235,0.12)]"
+                    }`}>
+                      <form
+                        onSubmit={handleSearch}
+                        className="flex items-center gap-3 px-4 py-1"
+                      >
+                        <Search className="w-5 h-5 text-slate-400" />
+                        <input
+                          ref={searchInputRef}
+                          type="text"
+                          placeholder="What legal or financial service are you looking for?"
+                          value={searchQuery}
+                          onChange={handleSearchChange}
+                          className="flex-1 bg-transparent py-4 text-[16px] font-bold text-slate-900 focus:outline-none placeholder:text-slate-400"
+                        />
+                        <Button
+                          type="submit"
+                          className="bg-slate-900 hover:bg-blue-600 text-white rounded-full px-8 h-12 text-[12px] font-black uppercase tracking-widest shadow-lg shadow-blue-500/10 transition-all flex items-center gap-2"
+                        >
+                          Search
+                          <ArrowRight className="w-4 h-4" />
+                        </Button>
+                      </form>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </AnimatePresence>
+          </div>
 
         {/* Mobile Search Bar Expandable */}
         <AnimatePresence>
@@ -514,14 +566,14 @@ export function Header() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 z-[60] bg-slate-950/40 backdrop-blur-md"
+              className="fixed inset-0 z-[105] bg-slate-950/40 backdrop-blur-md"
             />
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 bottom-0 z-[70] w-[320px] bg-white shadow-2xl overflow-y-auto flex flex-col"
+              className="fixed top-0 right-0 bottom-0 z-[110] w-[320px] bg-white shadow-2xl overflow-y-auto flex flex-col"
             >
               <div className="p-6 flex items-center justify-between border-b border-slate-50 bg-white sticky top-0 z-20">
                 <div className="flex items-center gap-3">
@@ -529,8 +581,10 @@ export function Header() {
                     <Logo width={28} height={28} />
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-black italic uppercase tracking-tighter text-lg leading-none">Mark Legacy</span>
-                    <span className="text-[6px] font-black text-blue-600 tracking-widest mt-1 uppercase">Surat Regional HQ</span>
+                    <span className="font-black uppercase tracking-tighter text-lg leading-none text-slate-900">Mark Corpotax</span>
+                    <span className={`text-[8px] font-black tracking-[0.2em] mt-1 uppercase ${currentDivision === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
+                      {currentDivision === "taxation" ? "Taxation & Legal" : "Finance Division"}
+                    </span>
                   </div>
                 </div>
                 <button
@@ -547,22 +601,22 @@ export function Header() {
                   <button
                     onClick={() => handleSwitchDivision("finance")}
                     className={`flex-1 flex items-center justify-center gap-2 py-4 rounded-[1.5rem] transition-all duration-300 ${currentDivision === "finance"
-                      ? "bg-white text-blue-600 shadow-lg shadow-blue-500/10 scale-100"
-                      : "text-slate-400"
+                      ? "bg-blue-600 text-white shadow-[0_10px_25px_rgba(37,99,235,0.3)] scale-100 font-black"
+                      : "text-slate-400 font-bold"
                       }`}
                   >
                     <TrendingUp className="w-4 h-4" />
-                    <span className="text-[11px] font-black uppercase tracking-widest">Finance</span>
+                    <span className="text-[11px] uppercase tracking-widest">Finance</span>
                   </button>
                   <button
                     onClick={() => handleSwitchDivision("taxation")}
                     className={`flex-1 flex items-center justify-center gap-2 py-4 rounded-[1.5rem] transition-all duration-300 ${currentDivision === "taxation"
-                      ? "bg-white text-emerald-600 shadow-lg shadow-emerald-500/10 scale-100"
-                      : "text-slate-400"
+                      ? "bg-emerald-600 text-white shadow-[0_10px_25px_rgba(16,185,129,0.3)] scale-100 font-black"
+                      : "text-slate-400 font-bold"
                       }`}
                   >
                     <ShieldCheck className="w-4 h-4" />
-                    <span className="text-[11px] font-black uppercase tracking-widest">Taxation</span>
+                    <span className="text-[11px] uppercase tracking-widest">Taxation</span>
                   </button>
                 </div>
               </div>
@@ -571,41 +625,44 @@ export function Header() {
                 <nav className="flex flex-col gap-2">
                   {navLinks.map((link) => {
                     const LinkIcon = link.icon;
+                    const isActive = pathname === link.href;
                     return (
                       <Link
                         key={link.href}
                         href={link.href}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className={`group flex items-center justify-between p-5 rounded-3xl transition-all duration-300 ${pathname === link.href ? "bg-blue-600 text-white shadow-xl shadow-blue-500/20" : "text-slate-800 hover:bg-slate-50"
+                        className={`group flex items-center justify-between p-5 rounded-2xl transition-all duration-300 ${isActive
+                            ? currentDivision === 'taxation' ? "bg-emerald-600 text-white shadow-xl shadow-emerald-500/20" : "bg-blue-600 text-white shadow-xl shadow-blue-500/20"
+                            : "text-slate-800 hover:bg-slate-50"
                           }`}
                       >
                         <div className="flex items-center gap-4">
-                          <LinkIcon className={`w-5 h-5 ${pathname === link.href ? 'text-white' : 'text-slate-400 group-hover:text-blue-500'}`} />
+                          <LinkIcon className={`w-5 h-5 ${isActive ? 'text-white' : `text-slate-400 group-hover:${currentDivision === 'taxation' ? 'text-emerald-500' : 'text-blue-500'}`}`} />
                           <span className="text-[13px] font-black uppercase tracking-[0.1em]">{link.label}</span>
                         </div>
-                        <ArrowRight className={`w-4 h-4 opacity-50 ${pathname === link.href ? 'text-white' : ''}`} />
+                        <ArrowRight className={`w-4 h-4 opacity-50 ${isActive ? 'text-white' : ''}`} />
                       </Link>
                     );
                   })}
                 </nav>
 
 
-                <div className="mt-12 p-8 bg-blue-50 rounded-[40px] relative overflow-hidden group">
+                <div className={`mt-12 p-8 ${currentDivision === 'taxation' ? 'bg-emerald-50' : 'bg-blue-50'} rounded-[40px] relative overflow-hidden group`}>
                   <div className="relative z-10">
                     <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-slate-900 tracking-tight overflow-hidden">Dedicated Support</h1>
                     <p className="text-slate-700 text-sm font-bold mb-6">Expert help is just a call away for your financial needs.</p>
-                    <Link href="tel:+919712067891" className="flex items-center gap-3 text-blue-600 font-extrabold group-hover:gap-5 transition-all">
+                    <Link href="tel:+919712067891" className={`flex items-center gap-3 ${currentDivision === 'taxation' ? 'text-emerald-600' : 'text-blue-600'} font-extrabold group-hover:gap-5 transition-all`}>
                       <Phone className="w-5 h-5" />
                       +91 97120 67891
                     </Link>
                   </div>
-                  <div className="absolute top-[-20px] right-[-20px] w-32 h-32 bg-blue-100 rounded-full blur-2xl opacity-50 group-hover:scale-150 transition-transform duration-1000" />
+                  <div className={`absolute top-[-20px] right-[-20px] w-32 h-32 ${currentDivision === 'taxation' ? 'bg-emerald-100' : 'bg-blue-100'} rounded-full blur-2xl opacity-50 group-hover:scale-150 transition-transform duration-1000`} />
                 </div>
               </div>
 
               <div className="p-8">
                 <Link href="/appointment" onClick={() => setIsMobileMenuOpen(false)}>
-                  <Button className="w-full bg-slate-900 hover:bg-blue-600 text-white py-8 rounded-[30px] font-black uppercase tracking-widest text-xs transition-all duration-500">
+                  <Button className={`w-full bg-slate-900 hover:${currentDivision === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'} text-white py-8 rounded-2xl font-black uppercase tracking-widest text-xs transition-all duration-500`}>
                     Book Appointment
                   </Button>
                 </Link>
