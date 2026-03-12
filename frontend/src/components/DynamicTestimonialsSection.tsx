@@ -14,6 +14,7 @@ interface TestimonialItem {
   title?: string;
   designation?: string;
   rating?: number;
+  image?: string;
 }
 
 interface TestimonialsSectionData {
@@ -29,15 +30,17 @@ const FALLBACK_TESTIMONIALS: TestimonialsSectionData = {
   title: "What Our Clients Say",
   testimonials: [
     {
-      name: "Rajesh Patel",
-      title: "CEO, Patel Industries",
+      name: "Mark Patel",
+      title: "Founder & CEO",
+      image: "/mark-patel.png",
       quote:
         "MARK GROUP has been instrumental in my business growth. Their personalized approach and expert financial solutions have made all the difference.",
       rating: 5,
     },
     {
-      name: "Priya Shah",
-      title: "Director, Shah Enterprises",
+      name: "Priya Desai",
+      title: "Senior Consultant",
+      image: "/priya-desai.png",
       quote:
         "The team at MARK GROUP is incredibly knowledgeable and supportive. I feel confident knowing my business financing is in good hands.",
       rating: 5,
@@ -63,8 +66,9 @@ function transformTestimonialsData(
     const name = section[`testimonial_${i}_name`] as string;
     const title = section[`testimonial_${i}_title`] as string;
     const rating = section[`testimonial_${i}_rating`];
+    const image = section[`testimonial_${i}_image`] as string;
 
-    if (quote !== undefined || name !== undefined || title !== undefined) {
+    if (quote !== undefined || name !== undefined || title !== undefined || image !== undefined) {
       // Ensure the array has enough elements
       while (testimonials.length < i) {
         testimonials.push({ name: "", quote: "" });
@@ -84,8 +88,22 @@ function transformTestimonialsData(
       if (typeof rating === "number") {
         testimonials[i - 1].rating = rating;
       }
+      if (image !== undefined && image !== "") {
+        testimonials[i - 1].image = image;
+      }
     }
   }
+
+  // Hardcode images if name matches
+  testimonials = testimonials.map(t => {
+    if (t.name === "Priya Desai" && !t.image) {
+      return { ...t, image: "/priya-desai.png" };
+    }
+    if (t.name === "Mark Patel" && !t.image) {
+      return { ...t, image: "/mark-patel.png" };
+    }
+    return t;
+  });
 
   // Remove any testimonials with empty quote and name
   testimonials = testimonials.filter((t) => t.quote || t.name);
@@ -98,20 +116,25 @@ function transformTestimonialsData(
   };
 }
 
-const FinanceAvatar = () => (
+const FinanceAvatar = ({ image, name }: { image?: string; name: string }) => (
   <motion.div
-    className="flex items-center justify-center w-20 h-20 rounded-full"
-    style={{ backgroundColor: "#0b4c8020" }}
+    className="flex items-center justify-center w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow-lg bg-white"
     whileHover={{ scale: 1.15, rotate: 5 }}
     transition={{ type: "spring", stiffness: 300 }}
   >
-    <motion.div
-      initial={{ y: 0 }}
-      whileInView={{ y: [0, -3, 0] }}
-      transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-    >
-      <User className="w-10 h-10" style={{ color: "#0b4c80" }} />
-    </motion.div>
+    {image ? (
+      <img src={image} alt={name} className="w-full h-full object-cover" />
+    ) : (
+      <div className="flex items-center justify-center w-full h-full bg-blue-50">
+        <motion.div
+          initial={{ y: 0 }}
+          whileInView={{ y: [0, -3, 0] }}
+          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+        >
+          <User className="w-10 h-10 text-blue-600" />
+        </motion.div>
+      </div>
+    )}
   </motion.div>
 );
 
@@ -344,7 +367,7 @@ export function DynamicTestimonialsSection() {
                 <div className="flex flex-col items-center justify-center gap-6 mb-12">
                   <div className="relative">
                     <div className="absolute inset-0 bg-blue-100 blur-2xl opacity-40 group-hover:opacity-60 transition-opacity" />
-                    <FinanceAvatar />
+                    <FinanceAvatar image={currentTestimonial?.image} name={currentTestimonial?.name} />
                   </div>
                   <div className="text-center">
                     <div className="font-black text-slate-900 text-2xl mb-1 tracking-tight uppercase">
