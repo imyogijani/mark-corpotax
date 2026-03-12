@@ -41,8 +41,6 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
       <SmoothScroll />
       <Preloader />
       <ScrollProgress />
-<<<<<<< HEAD
-      
       {/* Premium Navigation Curtain */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -72,18 +70,13 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
         </motion.div>
       </AnimatePresence>
 
-      {showLayout && <Header />}
-      <main className="flex-1 overflow-hidden">
-        <AnimatePresence mode="wait" initial={false}>
-=======
       {showLayout && (
         <Suspense fallback={null}>
           <Header />
         </Suspense>
       )}
-      <main className="flex-1">
-        <AnimatePresence mode="wait">
->>>>>>> 78e92a6ecad02441f2b7dbd4035f473c78398474
+      <main className="flex-1 overflow-hidden">
+        <AnimatePresence mode="wait" initial={false}>
           <PageTransition key={pathname}>{children}</PageTransition>
         </AnimatePresence>
       </main>

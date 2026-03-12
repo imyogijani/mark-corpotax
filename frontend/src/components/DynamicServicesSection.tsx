@@ -90,13 +90,8 @@ export function DynamicServicesSection() {
   const displayServices = useMemo(() => services.slice(0, 3), [services]);
 
   return (
-<<<<<<< HEAD
-    <section className="py-12 md:py-16 bg-slate-50 relative overflow-hidden">
-      <div className="container mx-auto px-4 mb-12">
-=======
     <section className="py-20 md:py-32 bg-slate-50 relative overflow-hidden font-sans">
       <div className="container mx-auto px-4 md:px-6 mb-16 md:mb-24">
->>>>>>> 78e92a6ecad02441f2b7dbd4035f473c78398474
         <div className="relative text-center max-w-4xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -168,13 +163,6 @@ export function DynamicServicesSection() {
           </AnimatePresence>
         </div>
 
-<<<<<<< HEAD
-        <div className="text-center mt-10">
-          <Button asChild className="text-white rounded-full px-8 py-3 h-12 font-bold transition-all hover:bg-blue-700 bg-blue-600 shadow-xl shadow-blue-500/20 active:scale-95">
-            <Link href="/services">View All Services</Link>
-          </Button>
-        </div>
-=======
         <motion.div 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -188,7 +176,6 @@ export function DynamicServicesSection() {
             </button>
           </Link>
         </motion.div>
->>>>>>> 78e92a6ecad02441f2b7dbd4035f473c78398474
       </div>
 
       {/* Background Decor */}
