@@ -377,16 +377,6 @@ export function Header() {
 
             {/* Right: Actions Area */}
             <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-              <button
-                onClick={handleGoToLanding}
-                className="w-10 h-10 flex items-center justify-center rounded-full text-slate-400 hover:text-blue-600 hover:bg-slate-50 transition-all duration-300"
-                title="Return to Selection"
-              >
-                <LayoutGrid className="w-4 h-4" />
-              </button>
-
-              <div className="w-[1px] h-4 bg-slate-200 mx-1" />
-
               {currentDivision && (
                 <div className="flex items-center gap-1 bg-slate-50/50 p-1 rounded-full border border-slate-100 shadow-inner">
                   <button

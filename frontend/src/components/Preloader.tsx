@@ -101,9 +101,6 @@ export default function Preloader() {
 
             {/* Progress Counter */}
             <div className="absolute top-[calc(100%+3rem)] flex flex-col items-center">
-              <span className="text-4xl font-mono text-slate-200 tabular-nums font-bold">
-                {progress.toString().padStart(3, '0')}
-              </span>
               <div className="w-64 h-[2px] bg-slate-100 mt-4 overflow-hidden rounded-full border border-slate-50">
                 <motion.div 
                   className="h-full bg-[#0b4c80]"

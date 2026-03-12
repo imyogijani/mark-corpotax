@@ -59,7 +59,10 @@ export default function Home() {
       setDivision(savedDivision);
       fetchLayout(savedDivision);
     } else {
-      fetchLayout(); // Fetch global if no division
+      // Default to finance if no choice is made
+      setDivision("finance");
+      localStorage.setItem("user_division", "finance");
+      fetchLayout("finance");
     }
   }, [fetchLayout]);
 
@@ -72,10 +75,6 @@ export default function Home() {
   };
 
   if (!isMounted) return null;
-
-  if (!division) {
-    return <LandingChoice onChoice={handleChoice} />;
-  }
 
   return (
     <div className="home-page relative">
