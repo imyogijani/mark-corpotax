@@ -34,7 +34,7 @@ export function AskExpertSection() {
   };
 
   return (
-    <section className="my-24 relative group">
+    <section className="my-12 relative group">
       {/* Decorative Glows */}
       <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full blur-[120px] rounded-full -z-20 scale-110 opacity-50 transition-opacity group-hover:opacity-100 ${division === 'taxation' ? 'bg-emerald-600/5' : 'bg-blue-600/5'}`} />
       

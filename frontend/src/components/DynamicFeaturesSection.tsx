@@ -169,11 +169,11 @@ export function DynamicFeaturesSection() {
   );
 
   return (
-    <section className="py-20 md:py-28 relative overflow-hidden bg-white">
+    <section className="py-12 md:py-16 relative overflow-hidden bg-white">
       {/* Background Elements - Light Theme */}
       <div className="absolute top-1/2 left-0 w-full h-[500px] bg-blue-50/20 -skew-y-3 -z-10 translate-y-[-50%]"></div>
 
-      <div className="container mx-auto px-4 mb-20">
+      <div className="container mx-auto px-4 mb-12">
         <div className="relative text-center max-w-4xl mx-auto">
           {/* Animated Watermark - Light Theme */}
           <motion.div

@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 interface TeamMember {
   name: string;
   title: string;
+  image?: string;
 }
 
 interface TeamSectionData {
@@ -22,9 +23,9 @@ const FALLBACK_TEAM: TeamSectionData = {
   tagline: "Our Team",
   title: "Meet Our Expert Team",
   team_members: [
-    { name: "Mark Patel", title: "Founder & CEO" },
-    { name: "Hitesh Shah", title: "Chief Financial Officer" },
-    { name: "Priya Desai", title: "Senior Consultant" },
+    { name: "Mark Patel", title: "Founder & CEO", image: "/mark-patel.png" },
+    { name: "Hitesh Shah", title: "Chief Financial Officer", image: "/hitesh-shah.png" },
+    { name: "Priya Desai", title: "Senior Consultant", image: "/priya-desai.png" },
   ],
 };
 
@@ -42,8 +43,9 @@ function transformTeamData(data: Record<string, unknown>): TeamSectionData {
   for (let i = 1; i <= 10; i++) {
     const name = section[`member_${i}_name`] as string;
     const title = section[`member_${i}_title`] as string;
+    const image = section[`member_${i}_image`] as string;
 
-    if (name !== undefined || title !== undefined) {
+    if (name !== undefined || title !== undefined || image !== undefined) {
       // Ensure the array has enough elements
       while (teamMembers.length < i) {
         teamMembers.push({ name: "", title: "" });
@@ -55,8 +57,25 @@ function transformTeamData(data: Record<string, unknown>): TeamSectionData {
       if (title !== undefined && title !== "") {
         teamMembers[i - 1].title = title;
       }
+      if (image !== undefined && image !== "") {
+        teamMembers[i - 1].image = image;
+      }
     }
   }
+
+  // Hardcode images if they don't have one and names match
+  teamMembers = teamMembers.map(m => {
+    if (m.name === "Mark Patel" && !m.image) {
+      return { ...m, image: "/mark-patel.png" };
+    }
+    if (m.name === "Hitesh Shah" && !m.image) {
+      return { ...m, image: "/hitesh-shah.png" };
+    }
+    if (m.name === "Priya Desai" && !m.image) {
+      return { ...m, image: "/priya-desai.png" };
+    }
+    return m;
+  });
 
   // Remove any members with empty name and title
   teamMembers = teamMembers.filter((m) => m.name || m.title);
@@ -259,11 +278,11 @@ export function DynamicTeamSection() {
   );
 
   return (
-    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-white relative overflow-hidden">
       {/* Background Decorative Element - Light Theme */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(1000px_circle_at_center,rgba(37,99,235,0.03),transparent_100%)] -z-10" />
 
-      <div className="container mx-auto px-4 mb-20">
+      <div className="container mx-auto px-4 mb-12">
         <div className="relative text-center max-w-4xl mx-auto">
           {/* Animated Watermark - Light Theme */}
           <motion.div
@@ -337,7 +356,18 @@ export function DynamicTeamSection() {
                 <div className="mb-8 relative">
                   <div className="absolute inset-0 bg-blue-100 opacity-0 group-hover:opacity-40 rounded-full transition-all duration-500 transform group-hover:scale-150 blur-xl"></div>
                   <div className="relative z-10 transition-transform duration-500 group-hover:scale-110">
-                    <IllustratedAvatar index={index} type={member.title} />
+                    {member.image ? (
+                      <div className="relative w-40 h-40 mx-auto flex items-center justify-center">
+                        <div className={`absolute inset-2 bg-gradient-to-br ${member.title.toLowerCase().includes("tax") ? "from-emerald-50 to-white" : "from-blue-50 to-white"} rounded-[3rem] border border-slate-100 shadow-2xl transition-all duration-500 group-hover:shadow-blue-200/50 group-hover:border-blue-100`} />
+                        <img 
+                          src={member.image} 
+                          alt={member.name}
+                          className="w-36 h-36 object-cover rounded-[2rem] relative z-10"
+                        />
+                      </div>
+                    ) : (
+                      <IllustratedAvatar index={index} type={member.title} />
+                    )}
                   </div>
                 </div>
 
@@ -348,14 +378,6 @@ export function DynamicTeamSection() {
                   {member?.title}
                 </p>
 
-                {/* Social Placeholder - Light Theme */}
-                <div className="flex justify-center gap-3 mt-8 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                  {[1, 2, 3].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all duration-300 cursor-pointer border border-slate-100 shadow-sm">
-                      <div className="w-4 h-4 rounded-sm bg-current opacity-40" />
-                    </div>
-                  ))}
-                </div>
               </Card>
             </motion.div>
           ))}

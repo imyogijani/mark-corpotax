@@ -249,7 +249,7 @@ export function DynamicAboutSection() {
   const displayContent = useMemo(() => aboutSection, [aboutSection]);
 
   return (
-    <section className="py-24 md:py-32 bg-white relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-white relative overflow-hidden">
       {/* Premium Light Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
         <motion.div
@@ -270,23 +270,23 @@ export function DynamicAboutSection() {
           <div className="relative">
             <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false }} transition={{ duration: 0.8 }}>
               {displayContent.tagline && (
-                <div className="inline-flex items-center gap-3 mb-8 px-4 py-1.5 bg-blue-50 border border-blue-100 rounded-full">
+                <div className="inline-flex items-center gap-3 mb-4 px-4 py-1.5 bg-blue-50 border border-blue-100 rounded-full">
                   <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">{displayContent.tagline}</span>
                 </div>
               )}
 
-              <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-[1.1] mb-8 tracking-tighter">
+              <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-[1.1] mb-6 tracking-tighter">
                 {displayContent.title || "Your Trusted Financial Partner Since 2012"}
               </h2>
 
-              <p className="text-lg text-slate-600 mb-12 leading-relaxed font-medium max-w-xl">
+              <p className="text-lg text-slate-600 mb-8 leading-relaxed font-medium max-w-xl">
                 {displayContent.description || "We are committed to providing exceptional financial services."}
               </p>
 
               {/* Highlights - Premium Light Theme */}
               {displayContent.highlights && (
-                <div className="grid gap-6 mb-12">
+                <div className="grid gap-4 mb-8">
                   {displayContent.highlights.map((highlight, index) => (
                     <motion.div
                       key={index}
