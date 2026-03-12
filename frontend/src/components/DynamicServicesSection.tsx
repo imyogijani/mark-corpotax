@@ -99,18 +99,20 @@ export function DynamicServicesSection() {
             viewport={{ once: true }}
             className="relative z-10"
           >
-            <div className="inline-flex items-center gap-2 px-6 py-2 bg-white rounded-full border border-blue-100 shadow-sm text-blue-600 text-[10px] font-black uppercase tracking-[0.4em] mb-8">
+            <div className={`inline-flex items-center gap-2 px-6 py-2 bg-white rounded-full border shadow-sm ${division === 'taxation' ? 'border-emerald-100 text-emerald-600' : 'border-blue-100 text-blue-600'} text-[10px] font-black uppercase tracking-[0.4em] mb-8`}>
               <Sparkles className="w-4 h-4" />
-              <span>What We Offer</span>
+              <span>{division === "taxation" ? "Regulatory Excellence" : "Strategic Wealth"}</span>
             </div>
 
             <h2 className="text-3xl md:text-5xl font-black mb-6 text-slate-900 uppercase tracking-tighter leading-none">
-              {division === "taxation" ? "Expert Advisory" : "Financial Solutions"} <br />
-              <span className="text-blue-600">Tailored For You</span>
+              {division === "taxation" ? "Statutory Advisory" : "Capital Solutions"} <br />
+              <span className={division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}>Tailored For Excellence</span>
             </h2>
 
             <p className="text-sm md:text-lg text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed">
-              From growth capital to strategic taxation, our multi-division experts provide the precision your financial future demands.
+              {division === "taxation" 
+                ? "Navigating complex legal frameworks with precision audits and strategic tax planning for corporate integrity."
+                : "Empowering your business vision with optimized capital mix, from MSME project finance to strategic working capital."}
             </p>
           </motion.div>
         </div>
@@ -130,17 +132,17 @@ export function DynamicServicesSection() {
               >
                 <Link
                   href={service.slug ? `/services/${service.slug}` : (service as any).id ? `/services/${(service as any).id}` : "/services"}
-                  className="relative block h-full w-full overflow-hidden rounded-[2.5rem] md:rounded-[3rem] bg-white border border-slate-100 p-8 md:p-12 text-left no-underline shadow-[0_20px_50px_rgba(0,0,0,0.02)] hover:shadow-[0_40px_80px_rgba(37,99,235,0.12)] hover:border-blue-200 transition-all duration-500"
+                  className={`relative block h-full w-full overflow-hidden rounded-[2.5rem] md:rounded-[3rem] bg-white border border-slate-100 p-8 md:p-12 text-left no-underline shadow-[0_20px_50px_rgba(0,0,0,0.02)] transition-all duration-500 hover:shadow-[0_40px_80px_rgba(37,99,235,0.12)] ${division === 'taxation' ? 'hover:border-emerald-200 hover:shadow-emerald-500/10' : 'hover:border-blue-200 hover:shadow-blue-500/10'}`}
                 >
                   <div className="relative z-10 flex h-full flex-col">
                     <div className="flex-1">
-                      <div className="mb-8 md:mb-10 w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-full bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center transition-all duration-500 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 shadow-inner group-hover:rotate-6">
+                      <div className={`mb-8 md:mb-10 w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-full flex items-center justify-center transition-all duration-500 shadow-inner group-hover:rotate-6 ${division === 'taxation' ? 'bg-emerald-50 border-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-500' : 'bg-blue-50 border-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500'}`}>
                         <div className="relative z-10 transition-transform duration-500 group-hover:scale-110">
                           {getIcon(service.icon || "")}
                         </div>
                       </div>
 
-                      <h3 className="mb-4 text-xl md:text-2xl font-black text-slate-900 transition-colors group-hover:text-blue-600 tracking-tight uppercase leading-[1.1]">
+                      <h3 className={`mb-4 text-xl md:text-2xl font-black text-slate-900 transition-colors tracking-tight uppercase leading-[1.1] ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'}`}>
                         {service.title}
                       </h3>
 
@@ -149,7 +151,7 @@ export function DynamicServicesSection() {
                       </p>
                     </div>
 
-                    <div className="mt-10 md:mt-12 flex items-center text-[10px] font-black uppercase tracking-[0.25em] text-blue-600 group-hover:text-blue-700 transition-all">
+                    <div className={`mt-10 md:mt-12 flex items-center text-[10px] font-black uppercase tracking-[0.25em] transition-all ${division === 'taxation' ? 'text-emerald-600 group-hover:text-emerald-700' : 'text-blue-600 group-hover:text-blue-700'}`}>
                       <span>Explore</span>
                       <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-3 transition-transform" />
                     </div>
@@ -170,7 +172,7 @@ export function DynamicServicesSection() {
           className="text-center mt-16 md:mt-24"
         >
           <Link href="/services">
-            <button className="inline-flex items-center gap-4 px-10 py-5 bg-slate-900 hover:bg-blue-600 text-white rounded-full font-black text-sm uppercase tracking-widest transition-all duration-500 shadow-xl shadow-slate-200 hover:shadow-blue-500/20 active:scale-95 group">
+            <button className={`inline-flex items-center gap-4 px-10 py-5 rounded-full font-black text-sm uppercase tracking-widest transition-all duration-500 shadow-xl shadow-slate-200 active:scale-95 group ${division === 'taxation' ? 'bg-slate-900 hover:bg-emerald-600 text-white hover:shadow-emerald-500/20' : 'bg-slate-900 hover:bg-blue-600 text-white hover:shadow-blue-500/20'}`}>
               View All Services
               <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
             </button>

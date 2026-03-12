@@ -50,9 +50,13 @@ export function Footer() {
   const [footerSettings, setFooterSettings] = useState<FooterSettings>({});
   const [quickLinks, setQuickLinks] = useState<FooterLink[]>([]);
   const [serviceLinks, setServiceLinks] = useState<FooterLink[]>([]);
+  const [division, setDivision] = useState<string | null>(null);
 
   const loadSettings = useCallback(async () => {
     try {
+      const savedDiv = localStorage.getItem("user_division");
+      setDivision(savedDiv);
+
       const headerSettings = await contentService.getContentBySection(
         "settings",
         "header",
@@ -130,10 +134,12 @@ export function Footer() {
 
   const companyName = settings.company_name || "Mark Corpotax";
   const companyTagline =
-    settings.company_tagline || "Financial & Legal Solutions";
+    settings.company_tagline || (division === 'taxation' ? "Taxation & Legal Division" : "Finance & Loan Division");
   const companyDescription =
     footerSettings.company_description ||
-    "Founded in 2012 in Surat, Gujarat. Delivering comprehensive financial and legal solutions designed to address the unique requirements of our clients.";
+    (division === 'taxation' 
+      ? "Leading destination for comprehensive auditing, legal compliance, and strategic tax planning since 2012."
+      : "Founded in 2012 in Surat, Gujarat. Delivering comprehensive financial and legal solutions designed to address the unique requirements of our clients.");
   const address =
     settings.address ||
     "705, 7th Floor, APMC Building, Krushi Bazar, Sahara Darwaja, Ring Road, Surat - 395003";
@@ -165,13 +171,19 @@ export function Footer() {
     { label: "Appointments", url: "/appointment" },
   ];
 
-  const defaultServiceLinks: FooterLink[] = [
-    { label: "MSME Project Finance", url: "/services/msme-project-finance" },
-    { label: "Working Capital", url: "/services/working-capital" },
-    { label: "Home & Mortgage Loans", url: "/services/home-mortgage-loans" },
-    { label: "Taxation Services", url: "/services/tax-planning" },
-    { label: "Business Loans", url: "/services/business-loans" },
-  ];
+  const defaultServiceLinks: FooterLink[] = division === "taxation" 
+    ? [
+        { label: "Audit & Assurance", url: "/services/audit-assurance" },
+        { label: "Direct & Indirect Tax", url: "/services/income-tax" },
+        { label: "GST Compliance", url: "/services/gst-compliance" },
+        { label: "Corporate ROC Services", url: "/services/roc" },
+      ]
+    : [
+        { label: "MSME Project Finance", url: "/services/msme-project-finance" },
+        { label: "Working Capital", url: "/services/working-capital" },
+        { label: "Home Loans", url: "/services/home-loan" },
+        { label: "Business Loans", url: "/services/business-loan" },
+      ];
 
   const displayQuickLinks =
     quickLinks.length > 0 ? quickLinks : defaultQuickLinks;
@@ -194,7 +206,7 @@ export function Footer() {
                   <span className="text-xl font-black text-white tracking-tight block leading-tight uppercase">
                     {companyName}
                   </span>
-                  <span className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] block">
+                  <span className={`text-[10px] font-black ${division === 'taxation' ? 'text-emerald-400' : 'text-blue-400'} uppercase tracking-[0.3em] block`}>
                     {companyTagline}
                   </span>
                 </div>
@@ -210,21 +222,21 @@ export function Footer() {
               </p>
               <p className="flex items-center gap-2">
                 <strong className="text-white font-black min-w-[70px] uppercase text-[10px] tracking-widest">Finance:</strong>
-                <Link href={`tel:${phoneFinance}`} className="hover:text-blue-400 transition-colors opacity-80">{phoneFinance}</Link>
+                <Link href={`tel:${phoneFinance}`} className={`hover:${division === 'taxation' ? 'text-emerald-400' : 'text-blue-400'} transition-colors opacity-80`}>{phoneFinance}</Link>
               </p>
               <p className="flex items-center gap-2">
                 <strong className="text-white font-black min-w-[70px] uppercase text-[10px] tracking-widest">Taxation:</strong>
-                <Link href={`tel:${phoneTaxation}`} className="hover:text-blue-400 transition-colors opacity-80">{phoneTaxation}</Link>
+                <Link href={`tel:${phoneTaxation}`} className={`hover:${division === 'taxation' ? 'text-emerald-400' : 'text-blue-400'} transition-colors opacity-80`}>{phoneTaxation}</Link>
               </p>
               <p className="flex items-center gap-2">
                 <strong className="text-white font-black min-w-[70px] uppercase text-[10px] tracking-widest">Email:</strong>
-                <Link href={`mailto:${email}`} className="hover:text-blue-400 transition-colors uppercase tracking-wider text-[10px] font-bold opacity-80">{email}</Link>
+                <Link href={`mailto:${email}`} className={`hover:${division === 'taxation' ? 'text-emerald-400' : 'text-blue-400'} transition-colors uppercase tracking-wider text-[10px] font-bold opacity-80`}>{email}</Link>
               </p>
             </div>
             <div className="flex items-center gap-4">
               <Link
                 href={facebookUrl}
-                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-blue-500/50 transition-all duration-300 shadow-xl group"
+                className={`w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white ${division === 'taxation' ? 'hover:border-emerald-500/50' : 'hover:border-blue-500/50'} transition-all duration-300 shadow-xl group`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -234,7 +246,7 @@ export function Footer() {
               </Link>
               <Link
                 href={twitterUrl}
-                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-blue-500/50 transition-all duration-300 shadow-xl group"
+                className={`w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white ${division === 'taxation' ? 'hover:border-emerald-500/50' : 'hover:border-blue-500/50'} transition-all duration-300 shadow-xl group`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -244,7 +256,7 @@ export function Footer() {
               </Link>
               <Link
                 href={linkedinUrl}
-                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-blue-500/50 transition-all duration-300 shadow-xl group"
+                className={`w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white ${division === 'taxation' ? 'hover:border-emerald-500/50' : 'hover:border-blue-500/50'} transition-all duration-300 shadow-xl group`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -254,7 +266,7 @@ export function Footer() {
               </Link>
               <Link
                 href={instagramUrl}
-                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-blue-500/50 transition-all duration-300 shadow-xl group"
+                className={`w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white ${division === 'taxation' ? 'hover:border-emerald-500/50' : 'hover:border-blue-500/50'} transition-all duration-300 shadow-xl group`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -269,11 +281,11 @@ export function Footer() {
               {quickLinksTitle}
             </h4>
             <ul className="space-y-3 text-sm font-bold uppercase tracking-widest text-[10px]">
-              {displayQuickLinks.map((link, index) => (
+              {displayQuickLinks.map((link: FooterLink, index: number) => (
                 <li key={index}>
                   <Link
                     href={link.url}
-                    className="text-slate-500 hover:text-blue-400 transition-colors inline-block hover:translate-x-1 transition-transform"
+                    className={`text-slate-500 ${division === 'taxation' ? 'hover:text-emerald-400' : 'hover:text-blue-400'} transition-colors inline-block hover:translate-x-1 transition-transform`}
                   >
                     {link.label}
                   </Link>
@@ -286,11 +298,11 @@ export function Footer() {
               {servicesTitle}
             </h4>
             <ul className="space-y-3 text-sm font-bold uppercase tracking-widest text-[10px]">
-              {displayServiceLinks.map((link, index) => (
+              {displayServiceLinks.map((link: FooterLink, index: number) => (
                 <li key={index}>
                   <Link
                     href={link.url}
-                    className="text-slate-500 hover:text-blue-400 transition-colors inline-block hover:translate-x-1 transition-transform"
+                    className={`text-slate-500 ${division === 'taxation' ? 'hover:text-emerald-400' : 'hover:text-blue-400'} transition-colors inline-block hover:translate-x-1 transition-transform`}
                   >
                     {link.label}
                   </Link>
@@ -305,7 +317,7 @@ export function Footer() {
             <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-6 leading-relaxed">
               {newsletterDescription}
             </p>
-            <form className="flex items-center gap-1 p-1 bg-white/5 border border-white/10 rounded-3xl shadow-2xl focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
+            <form className={`flex items-center gap-1 p-1 bg-white/5 border border-white/10 rounded-3xl shadow-2xl focus-within:ring-2 ${division === 'taxation' ? 'focus-within:ring-emerald-500/20' : 'focus-within:ring-blue-500/20'} transition-all`}>
               <Input
                 type="email"
                 placeholder="EMAIL ADDRESS"
@@ -314,7 +326,7 @@ export function Footer() {
               <Button
                 type="submit"
                 size="sm"
-                className="rounded-2xl bg-blue-600 hover:bg-white hover:text-slate-950 text-white px-5 h-10 text-[10px] font-black uppercase tracking-widest transition-all"
+                className={`rounded-2xl ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'} hover:bg-white hover:text-slate-950 text-white px-5 h-10 text-[10px] font-black uppercase tracking-widest transition-all`}
               >
                 Join
               </Button>
@@ -325,10 +337,10 @@ export function Footer() {
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center text-[9px] font-black uppercase tracking-[0.3em] text-slate-600 text-center gap-6">
           <p className="hover:text-slate-400 transition-colors cursor-default">{copyrightText}</p>
           <div className="flex gap-8">
-            <Link href="/privacy-policy" className="hover:text-blue-400 transition-colors">
+            <Link href="/privacy-policy" className={`hover:${division === 'taxation' ? 'text-emerald-400' : 'text-blue-400'} transition-colors`}>
               Privacy Policy
             </Link>
-            <Link href="/terms-of-service" className="hover:text-blue-400 transition-colors">
+            <Link href="/terms-of-service" className={`hover:${division === 'taxation' ? 'text-emerald-400' : 'text-blue-400'} transition-colors`}>
               Terms of Service
             </Link>
           </div>

@@ -48,8 +48,8 @@ export default function ServiceDetailPage() {
     <div className="min-h-screen bg-slate-50 pt-28 md:pt-36 pb-20 md:pb-32 relative overflow-x-hidden">
       {/* Background Orbs */}
       <div className="fixed inset-0 pointer-events-none -z-10">
-        <div className="absolute top-[-10%] right-[-10%] w-[500px] md:w-[800px] h-[500px] md:h-[800px] bg-blue-100/30 rounded-full blur-[80px] md:blur-[120px]" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] md:w-[900px] h-[600px] md:h-[900px] bg-emerald-50/40 rounded-full blur-[100px] md:blur-[150px]" />
+        <div className={`absolute top-[-10%] right-[-10%] w-[500px] md:w-[800px] h-[500px] md:h-[800px] rounded-full blur-[80px] md:blur-[120px] ${isTaxation ? 'bg-emerald-100/30' : 'bg-blue-100/30'}`} />
+        <div className={`absolute bottom-[-10%] left-[-10%] w-[600px] md:w-[900px] h-[600px] md:h-[900px] rounded-full blur-[100px] md:blur-[150px] ${isTaxation ? 'bg-emerald-200/20' : 'bg-emerald-50/40'}`} />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10 font-sans">
@@ -61,9 +61,9 @@ export default function ServiceDetailPage() {
         >
           <Link
             href="/services"
-            className="inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 hover:text-blue-600 transition-all group"
+            className={`inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 transition-all group ${isTaxation ? 'hover:text-emerald-600' : 'hover:text-blue-600'}`}
           >
-            <div className="w-10 h-10 md:w-14 md:h-14 rounded-full border border-slate-200 bg-white flex items-center justify-center group-hover:border-blue-600 group-hover:bg-blue-50 transition-all shadow-sm">
+            <div className={`w-10 h-10 md:w-14 md:h-14 rounded-full border border-slate-200 bg-white flex items-center justify-center transition-all shadow-sm ${isTaxation ? 'group-hover:border-emerald-600 group-hover:bg-emerald-50' : 'group-hover:border-blue-600 group-hover:bg-blue-50'}`}>
               <ArrowLeft className="w-4 h-4 md:w-5 md:h-5 group-hover:-translate-x-1 transition-transform" />
             </div>
             Back to Services
@@ -127,7 +127,7 @@ export default function ServiceDetailPage() {
               <div className="absolute inset-x-6 md:inset-x-12 bottom-6 md:bottom-12 bg-white/95 backdrop-blur-2xl rounded-[2.5rem] md:rounded-[4rem] p-8 md:p-14 border border-white flex flex-col justify-end shadow-2xl">
                 <div className="space-y-6 md:space-y-8">
                   <div className="flex items-center gap-4 md:gap-6">
-                    <div className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shadow-inner">
+                    <div className={`w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center shadow-inner ${isTaxation ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'}`}>
                       <TrendingUp className="w-5 h-5 md:w-6 md:h-6" />
                     </div>
                     <span className="text-slate-900 font-black uppercase tracking-[0.2em] text-[10px] md:text-xs">Rapid Scaling Vertical</span>
@@ -153,20 +153,20 @@ export default function ServiceDetailPage() {
             viewport={{ once: true }}
             className="bg-white rounded-[3rem] md:rounded-[4.5rem] p-10 md:p-20 border border-slate-100 shadow-[0_40px_80px_rgba(0,0,0,0.03)] relative overflow-hidden group h-full"
           >
-            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-50 rounded-full blur-[120px] -mr-48 -mt-48 opacity-60" />
+            <div className={`absolute top-0 right-0 w-[400px] h-[400px] rounded-full blur-[120px] -mr-48 -mt-48 opacity-60 ${isTaxation ? 'bg-emerald-50' : 'bg-blue-50'}`} />
 
             <div className="relative z-10">
               <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-8 mb-12 md:mb-16">
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-blue-50 text-blue-600 rounded-2xl md:rounded-[2rem] flex items-center justify-center shadow-inner">
+                <div className={`w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-[2rem] flex items-center justify-center shadow-inner ${isTaxation ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'}`}>
                   <Zap className="w-8 h-8 md:w-10 md:h-10" />
                 </div>
-                <h3 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tighter uppercase leading-[0.9]">Key <br /><span className="text-blue-600">Features</span></h3>
+                <h3 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tighter uppercase leading-[0.9]">Key <br /><span className={isTaxation ? 'text-emerald-600' : 'text-blue-600'}>Features</span></h3>
               </div>
 
               <div className="grid gap-6 md:gap-8">
                 {service.features.map((feature, idx) => (
-                  <div key={idx} className="flex items-start gap-6 p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-slate-50/50 border border-transparent hover:border-blue-100 transition-all group/item">
-                    <CheckCircle className="w-6 h-6 md:w-7 md:h-7 text-emerald-500 mt-0.5 flex-shrink-0" />
+                  <div key={idx} className={`flex items-start gap-6 p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-slate-50/50 border border-transparent transition-all group/item ${isTaxation ? 'hover:border-emerald-100' : 'hover:border-blue-100'}`}>
+                    <CheckCircle className={`w-6 h-6 md:w-7 md:h-7 mt-0.5 flex-shrink-0 ${isTaxation ? 'text-emerald-500' : 'text-blue-500'}`} />
                     <p className="text-xs md:text-base font-black text-slate-700 leading-tight tracking-[0.1em] uppercase">
                       {feature}
                     </p>
@@ -183,21 +183,21 @@ export default function ServiceDetailPage() {
             viewport={{ once: true }}
             className="bg-slate-900 rounded-[3rem] md:rounded-[4.5rem] p-10 md:p-20 text-white border border-slate-800 shadow-2xl relative overflow-hidden group h-full"
           >
-            <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[120px] -mr-48 -mb-48" />
+            <div className={`absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full blur-[120px] -mr-48 -mb-48 ${isTaxation ? 'bg-emerald-600/10' : 'bg-blue-600/10'}`} />
 
             <div className="relative z-10">
               <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-8 mb-12 md:mb-16">
                 <div className="w-16 h-16 md:w-20 md:h-20 bg-white/10 text-white rounded-2xl md:rounded-[2rem] flex items-center justify-center border border-white/10 shadow-inner">
                   <Award className="w-8 h-8 md:w-10 md:h-10" />
                 </div>
-                <h3 className="text-3xl md:text-5xl font-black text-white tracking-tighter uppercase leading-[0.9]">Core <br /><span className="text-blue-400">Benefits</span></h3>
+                <h3 className="text-3xl md:text-5xl font-black text-white tracking-tighter uppercase leading-[0.9]">Core <br /><span className={isTaxation ? 'text-emerald-400' : 'text-blue-400'}>Benefits</span></h3>
               </div>
 
               <div className="grid gap-6 md:gap-8">
                 {service.benefits.map((benefit, idx) => (
                   <div key={idx} className="flex items-start gap-6 p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-white/5 border border-white/5 hover:border-white/10 transition-all group/benefit">
-                    <div className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-blue-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                       <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-blue-400 shadow-[0_0_15px_rgba(96,165,250,0.5)]" />
+                    <div className={`w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${isTaxation ? 'bg-emerald-500/30' : 'bg-blue-500/30'}`}>
+                       <div className={`w-2 md:w-3 h-2 md:h-3 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.2)] ${isTaxation ? 'bg-emerald-400' : 'bg-blue-400'}`} />
                     </div>
                     <p className="text-xs md:text-base font-black text-slate-300 leading-tight tracking-[0.1em] uppercase">
                       {benefit}
@@ -220,25 +220,25 @@ export default function ServiceDetailPage() {
             <div className="absolute inset-0 bg-blue-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
             
             <div className="relative z-10 max-w-4xl mx-auto">
-               <div className="w-20 h-20 md:w-24 md:h-24 bg-blue-600 text-white rounded-[2rem] md:rounded-[2.5rem] flex items-center justify-center mx-auto mb-10 md:mb-16 shadow-2xl shadow-blue-200 group-hover:rotate-12 transition-transform duration-500">
+               <div className={`w-20 h-20 md:w-24 md:h-24 text-white rounded-[2rem] md:rounded-[2.5rem] flex items-center justify-center mx-auto mb-10 md:mb-16 shadow-2xl group-hover:rotate-12 transition-transform duration-500 ${isTaxation ? 'bg-emerald-600 shadow-emerald-200' : 'bg-blue-600 shadow-blue-200'}`}>
                   <Users className="w-10 h-10 md:w-12 md:h-12" />
                </div>
                <h2 className="text-4xl md:text-8xl font-black text-slate-900 uppercase tracking-tighter mb-8 md:mb-12 leading-[0.85]">
                  Strategic Vertical <br />
-                 <span className="text-blue-600">Guidance</span>
+                 <span className={isTaxation ? 'text-emerald-600' : 'text-blue-600'}>Guidance</span>
                </h2>
                <p className="text-base md:text-2xl text-slate-500 font-medium mb-12 md:mb-20 leading-relaxed max-w-2xl mx-auto">
-                 Connect with our specialized advisors to craft a financial strategy for your unique goals. 24/7 priority support for all corporate accounts.
+                 Connect with our specialized advisors to craft a strategy for your unique goals. 24/7 priority support for all corporate accounts.
                </p>
                
                <div className="flex flex-col sm:flex-row gap-6 md:gap-8 justify-center">
-                  <Link href="tel:+919712067891" className="w-full sm:w-auto">
-                    <button className="w-full px-12 py-7 md:py-9 bg-slate-900 text-white rounded-full font-black text-lg md:text-2xl hover:bg-blue-600 transition-all flex items-center justify-center gap-6 shadow-2xl">
+                  <Link href={`tel:${isTaxation ? '9773822604' : '9712067891'}`} className="w-full sm:w-auto">
+                    <button className={`w-full px-12 py-7 md:py-9 text-white rounded-full font-black text-lg md:text-2xl transition-all flex items-center justify-center gap-6 shadow-2xl ${isTaxation ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-slate-900 hover:bg-blue-600'}`}>
                         <Phone className="w-6 h-6 md:w-8 md:h-8" /> Call Expert
                     </button>
                   </Link>
                   <Link href="/appointment" className="w-full sm:w-auto">
-                    <button className="w-full px-12 py-7 md:py-9 border-2 border-slate-900 text-slate-900 rounded-full font-black text-lg md:text-2xl hover:bg-slate-50 transition-all flex items-center justify-center gap-6 group/kb">
+                    <button className={`w-full px-12 py-7 md:py-9 border-2 rounded-full font-black text-lg md:text-2xl transition-all flex items-center justify-center gap-6 group/kb ${isTaxation ? 'border-emerald-600 text-emerald-600 hover:bg-emerald-50' : 'border-slate-900 text-slate-900 hover:bg-slate-50'}`}>
                         Book Now <ChevronRight className="w-6 h-6 md:w-8 md:h-8 group-hover/kb:translate-x-3 transition-transform duration-500" />
                     </button>
                   </Link>

@@ -193,11 +193,11 @@ export function DynamicFeaturesSection() {
               viewport={{ once: false }}
               className="inline-flex items-center gap-2 mb-4"
             >
-              <span className="w-8 h-[2px] bg-blue-600"></span>
-              <span className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-600">
+              <span className={`w-8 h-[2px] ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}></span>
+              <span className={`text-[10px] font-black uppercase tracking-[0.5em] ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
                 Our Strategy
               </span>
-              <span className="w-8 h-[2px] bg-blue-600"></span>
+              <span className={`w-8 h-[2px] ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}></span>
             </motion.div>
 
             <motion.h2
@@ -243,19 +243,19 @@ export function DynamicFeaturesSection() {
                 {/* Card Glow Effect - Light Theme */}
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-[2.5rem] blur opacity-0 group-hover:opacity-10 transition duration-1000" />
 
-                <Card className="relative h-full text-center p-10 border border-slate-100 bg-white shadow-[0_15px_30px_rgba(0,0,0,0.02)] transition-all duration-500 rounded-[2.5rem] overflow-hidden group-hover:-translate-y-4 group-hover:shadow-[0_25px_50px_rgba(37,99,235,0.1)] group-hover:border-blue-100">
-                  {/* Icon Container - Light Theme */}
+                <Card className={`relative h-full text-center p-10 border bg-white shadow-[0_15px_30px_rgba(0,0,0,0.02)] transition-all duration-500 rounded-[2.5rem] overflow-hidden group-hover:-translate-y-4 ${division === 'taxation' ? 'border-slate-100 group-hover:shadow-[0_25px_50px_rgba(16,185,129,0.1)] group-hover:border-emerald-100' : 'border-slate-100 group-hover:shadow-[0_25px_50px_rgba(37,99,235,0.1)] group-hover:border-blue-100'}`}>
+                  {/* Icon Container */}
                   <motion.div
                     animate={{ y: [0, -10, 0] }}
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }}
-                    className="w-20 h-20 rounded-[1.8rem] flex items-center justify-center mx-auto mb-8 bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500 shadow-inner border border-blue-50"
+                    className={`w-20 h-20 rounded-[1.8rem] flex items-center justify-center mx-auto mb-8 transition-all duration-500 shadow-inner border ${division === 'taxation' ? 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white border-emerald-50' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white border-blue-50'}`}
                   >
                     <div className="[&>svg]:w-10 [&>svg]:h-10">
                       {getIcon(feature.icon || "", index)}
                     </div>
                   </motion.div>
 
-                  <h3 className="text-lg font-black mb-4 text-slate-800 tracking-tight group-hover:text-blue-600 transition-colors uppercase">
+                  <h3 className={`text-lg font-black mb-4 text-slate-800 tracking-tight transition-colors uppercase ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'}`}>
                     {feature.title}
                   </h3>
                   <p className="text-slate-500 leading-relaxed font-medium text-sm">
@@ -263,7 +263,7 @@ export function DynamicFeaturesSection() {
                   </p>
 
                   {/* Corner Accent */}
-                  <div className="absolute top-0 right-0 w-12 h-12 bg-gradient-to-br from-blue-600/5 to-transparent -translate-x-full -translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-500" />
+                  <div className={`absolute top-0 right-0 w-12 h-12 bg-gradient-to-br from-current to-transparent opacity-5 -translate-x-full -translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-500 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`} />
                 </Card>
               </div>
             </motion.div>

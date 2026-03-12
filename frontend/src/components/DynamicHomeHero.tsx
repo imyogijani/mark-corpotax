@@ -73,7 +73,7 @@ const HeroTitle = ({ text, trigger = true }: { text: string; trigger?: boolean }
   );
 };
 
-const StaticHeroImage = ({ heroMain, y3 }: { heroMain: HeroMainData; y3: any }) => {
+const StaticHeroImage = ({ heroMain, y3, division }: { heroMain: HeroMainData; y3: any; division: string }) => {
   return (
     <div className="relative w-full h-full flex items-center justify-center py-10">
       <div className="relative z-10 w-full max-w-lg">
@@ -84,7 +84,7 @@ const StaticHeroImage = ({ heroMain, y3 }: { heroMain: HeroMainData; y3: any }) 
           className="relative flex items-center justify-center min-h-[400px] w-full"
         >
           {/* Main Illustration Glow */}
-          <div className="absolute inset-0 bg-blue-400/10 blur-[100px] rounded-full -z-10 animate-pulse" />
+          <div className={`absolute inset-0 blur-[100px] rounded-full -z-10 animate-pulse ${division === 'taxation' ? 'bg-emerald-400/10' : 'bg-blue-400/10'}`} />
 
           <HeroClipart />
 
@@ -94,11 +94,11 @@ const StaticHeroImage = ({ heroMain, y3 }: { heroMain: HeroMainData; y3: any }) 
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.8, type: "spring", damping: 15 }}
-            className="absolute bottom-4 right-0 md:-right-8 bg-white/90 backdrop-blur-xl px-6 py-5 rounded-[2rem] shadow-[0_20px_50px_rgba(37,99,235,0.1)] border border-blue-100 flex items-center gap-4 group hover:bg-white transition-all duration-500 z-50 text-slate-900 overflow-hidden"
+            className={`absolute bottom-4 right-0 md:-right-8 bg-white/90 backdrop-blur-xl px-6 py-5 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border flex items-center gap-4 group hover:bg-white transition-all duration-500 z-50 text-slate-900 overflow-hidden ${division === 'taxation' ? 'border-emerald-100 shadow-emerald-500/10' : 'border-blue-100 shadow-blue-500/10'}`}
           >
-            <motion.div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+            <motion.div className={`absolute inset-0 bg-gradient-to-r from-transparent via-current to-transparent opacity-5 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ${division === 'taxation' ? 'text-emerald-500' : 'text-blue-500'}`} />
             <div className="flex flex-col relative z-10">
-              <span className="text-4xl font-black text-blue-600 tracking-tighter">
+              <span className={`text-4xl font-black tracking-tighter ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
                 <Counter to={parseInt(heroMain.experience_badge?.years || "12")} />+
               </span>
             </div>
@@ -234,8 +234,8 @@ export const DynamicHeroSection = () => {
           {/* Left Content */}
           <div className="flex flex-col space-y-10">
             <MotionWrapper direction="left">
-              <div className="inline-flex items-center gap-2 px-1 py-1 pr-4 bg-white border border-blue-100 rounded-full text-blue-600 font-semibold text-xs md:text-sm uppercase tracking-wider shadow-sm group">
-                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
+              <div className={`inline-flex items-center gap-2 px-1 py-1 pr-4 bg-white border rounded-full font-semibold text-xs md:text-sm uppercase tracking-wider shadow-sm group ${division === 'taxation' ? 'border-emerald-100 text-emerald-600' : 'border-blue-100 text-blue-600'}`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}>
                   <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
                 </div>
                 <span>{heroMain.tagline || "MARK GROUP"}</span>
@@ -260,7 +260,7 @@ export const DynamicHeroSection = () => {
 
             <MotionWrapper direction="left" delay={0.4} className="flex flex-wrap gap-8 items-center pt-4">
               <Link href={heroMain.cta_primary?.link || "/appointment"}>
-                <button className="group relative h-16 px-10 rounded-2xl bg-blue-600 font-bold text-white text-base overflow-hidden shadow-[0_15px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_20px_40px_rgba(37,99,235,0.4)] transition-all duration-300 active:scale-95">
+                <button className={`group relative h-16 px-10 rounded-2xl font-bold text-white text-base overflow-hidden transition-all duration-300 active:scale-95 ${division === 'taxation' ? 'bg-emerald-600 shadow-[0_15px_30px_rgba(16,185,129,0.25)] hover:shadow-[0_20px_40px_rgba(16,185,129,0.4)]' : 'bg-blue-600 shadow-[0_15px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_20px_40px_rgba(37,99,235,0.4)]'}`}>
                   <span className="relative z-10 flex items-center gap-2">
                     {heroMain.cta_primary?.text || "Get Started"}
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -272,7 +272,7 @@ export const DynamicHeroSection = () => {
               <div className="flex items-center gap-5">
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 10 }}
-                  className="w-14 h-14 rounded-2xl bg-white shadow-md flex items-center justify-center border border-blue-50 text-blue-600 cursor-pointer"
+                  className={`w-14 h-14 rounded-2xl bg-white shadow-md flex items-center justify-center border cursor-pointer ${division === 'taxation' ? 'border-emerald-50 text-emerald-600' : 'border-blue-50 text-blue-600'}`}
                 >
                   <Phone className="w-6 h-6" />
                 </motion.div>
@@ -282,7 +282,7 @@ export const DynamicHeroSection = () => {
                   </span>
                   <Link
                     href={`tel:${division === "taxation" ? "9773822604" : "9712067891"}`}
-                    className="text-lg font-black text-slate-900 hover:text-blue-600 transition-colors tracking-tight"
+                    className={`text-lg font-black transition-colors tracking-tight ${division === 'taxation' ? 'text-slate-900 hover:text-emerald-600' : 'text-slate-900 hover:text-blue-600'}`}
                   >
                     {division === "taxation" 
                       ? "+91 97738 22604" 
@@ -306,7 +306,7 @@ export const DynamicHeroSection = () => {
                       />
                     </div>
                   ))}
-                  <div className="w-10 h-10 rounded-full border-2 border-white bg-blue-600 flex items-center justify-center text-[10px] font-bold text-white ring-1 ring-slate-200">
+                  <div className={`w-10 h-10 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white ring-1 ring-slate-200 ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}>
                     2.5k+
                   </div>
                 </div>
@@ -320,7 +320,7 @@ export const DynamicHeroSection = () => {
 
           {/* Right Image */}
           <MotionWrapper direction="right" delay={0.3}>
-            <StaticHeroImage heroMain={heroMain} y3={y3} />
+            <StaticHeroImage heroMain={heroMain} y3={y3} division={division} />
           </MotionWrapper>
         </div>
       </div>

@@ -91,47 +91,47 @@ export default function HoneycombSection() {
             viewport={{ once: true }}
             className="text-slate-900 flex flex-col items-center"
           >
-            <span className="text-blue-600 text-[10px] font-black uppercase tracking-[0.5em] mb-4">
+            <span className={`${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'} text-[10px] font-black uppercase tracking-[0.5em] mb-4`}>
               Comprehensive Solutions
             </span>
             <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-4 text-slate-800">
               {division === "finance" ? "Finance Ecosystem" : "Taxation Interface"}
             </h2>
-            <div className="w-24 h-1.5 bg-blue-600 rounded-full shadow-lg" />
+            <div className={`w-24 h-1.5 rounded-full shadow-lg ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`} />
           </motion.div>
         </header>
 
-        {/* 1-2-3-2-3 Dashboard Interlocking Grid matches reference image */}
+        {/* 1-2-3-2-3 Dashboard Interlocking Grid */}
         <div className="flex flex-col items-center justify-center space-y-[-24px] md:space-y-[-42px]">
           {/* Row 1 (Center Top) */}
           <div className="flex justify-center z-50">
-            <HexTile item={items[0]} delay={0.1} />
+            <HexTile item={items[0]} delay={0.1} division={division} />
           </div>
 
           {/* Row 2 (Sides) */}
           <div className="flex justify-center space-x-[8px] md:space-x-[15px] z-40">
-            <HexTile item={items[1]} delay={0.2} />
-            <HexTile item={items[2]} delay={0.2} />
+            <HexTile item={items[1]} delay={0.2} division={division} />
+            <HexTile item={items[2]} delay={0.2} division={division} />
           </div>
 
           {/* Row 3 (Main Row) */}
           <div className="flex justify-center space-x-[8px] md:space-x-[15px] z-30">
-            <HexTile item={items[3]} delay={0.3} />
-            <HexTile item={items[4]} delay={0.3} />
-            <HexTile item={items[5]} delay={0.3} />
+            <HexTile item={items[3]} delay={0.3} division={division} />
+            <HexTile item={items[4]} delay={0.3} division={division} />
+            <HexTile item={items[5]} delay={0.3} division={division} />
           </div>
 
           {/* Row 4 (Lower Sides) */}
           <div className="flex justify-center space-x-[8px] md:space-x-[15px] z-20">
-            <HexTile item={items[6]} delay={0.4} />
-            <HexTile item={items[7]} delay={0.4} />
+            <HexTile item={items[6]} delay={0.4} division={division} />
+            <HexTile item={items[7]} delay={0.4} division={division} />
           </div>
 
           {/* Row 5 (Base) */}
           <div className="flex justify-center space-x-[8px] md:space-x-[15px] z-10">
-            <HexTile item={items[8]} delay={0.5} />
-            <HexTile item={items[9]} delay={0.5} />
-            <HexTile item={items[10]} delay={0.5} />
+            <HexTile item={items[8]} delay={0.5} division={division} />
+            <HexTile item={items[9]} delay={0.5} division={division} />
+            <HexTile item={items[10]} delay={0.5} division={division} />
           </div>
         </div>
       </div>
@@ -139,7 +139,7 @@ export default function HoneycombSection() {
   );
 }
 
-function HexTile({ item, delay }: { item: HoneycombItem; delay: number }) {
+function HexTile({ item, delay, division }: { item: HoneycombItem; delay: number; division: string }) {
   const Icon = item.icon;
 
   return (
@@ -161,40 +161,34 @@ function HexTile({ item, delay }: { item: HoneycombItem; delay: number }) {
       }}
       className="honeycomb-tile relative w-[100px] h-[115px] md:w-[180px] md:h-[208px] flex items-center justify-center transition-all duration-300 group isolate"
     >
-      {/* Precise White Dashboard Hexagon Shape */}
       <svg
-        className="absolute inset-0 w-full h-full drop-shadow-[0_4px_10px_rgba(0,0,0,0.1)] transition-all duration-300 group-hover:drop-shadow-[0_10px_30px_rgba(0,0,0,0.2)]"
+        className="absolute inset-0 w-full h-full drop-shadow-[0_4px_10px_rgba(0,0,0,0.1)] transition-all duration-300 group-hover:drop-shadow-[0_10px_30px_rgba(0,0,0,0.15)]"
         viewBox="0 0 100 115"
       >
-        {/* Shadow/Outline */}
         <polygon
           points="50,2 98,30 98,85 50,113 2,85 2,30"
           className="fill-white"
         />
 
-        {/* Precise Blue Border - matches image blue */}
         <polygon
           points="50,2 98,30 98,85 50,113 2,85 2,30"
-          className="fill-none stroke-[#0074E4] stroke-[1.2] opacity-80"
+          className={`fill-none stroke-[1.2] transition-all duration-500 ${division === 'taxation' ? 'stroke-emerald-600/50 group-hover:stroke-emerald-600' : 'stroke-blue-600/50 group-hover:stroke-blue-600'}`}
         />
 
-        {/* Origami Focal Geometry Highlight (matches reference) */}
         <polygon
           points="50,2 98,30 50,57.5 2,30"
           className="fill-slate-100 opacity-20 pointer-events-none"
         />
 
-        {/* Reflective Glossy Top Overlay */}
         <polygon
           points="50,2 98,30 80,45 50,57.5 20,45 2,30"
           className="fill-white opacity-40 pointer-events-none"
         />
       </svg>
 
-      {/* Content Layout per Image style */}
       <div className="relative z-10 flex flex-col items-center justify-center p-3 md:p-6 text-center w-full h-full group-hover:scale-105 transition-transform duration-500">
         <div className="mb-2 md:mb-5">
-          <Icon className="w-7 h-7 md:w-12 md:h-12 text-[#0074E4]" strokeWidth={1.5} />
+          <Icon className={`w-7 h-7 md:w-12 md:h-12 transition-colors duration-500 ${division === 'taxation' ? 'text-emerald-600 group-hover:text-emerald-500' : 'text-blue-600 group-hover:text-blue-500'}`} strokeWidth={1.5} />
         </div>
 
         <h3 className="text-[7px] md:text-[12px] font-bold text-slate-800 leading-tight md:leading-snug max-w-[85%] mx-auto">

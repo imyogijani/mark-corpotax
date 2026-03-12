@@ -26,16 +26,19 @@ function ServicesPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("q") || "";
+  const [division, setDivision] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [showFloatingNav, setShowFloatingNav] = useState(false);
-  const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  const categories = [
-    "Retail / Mortgage",
-    "SME / MSME Loans",
-    "Unsecured Loans",
-    "Taxation Division",
-  ] as const;
+  useEffect(() => {
+    const saved = localStorage.getItem("user_division");
+    setDivision(saved || "finance");
+  }, []);
+
+  const categories = division === "taxation" 
+    ? ["Taxation Division"] as const
+    : ["Retail / Mortgage", "SME / MSME Loans", "Unsecured Loans"] as const;
 
   // Scroll Spy Logic
   useEffect(() => {
@@ -59,7 +62,7 @@ function ServicesPageContent() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [categories]);
 
   const scrollToSection = (id: string) => {
     const element = sectionRefs.current[id];
@@ -77,11 +80,19 @@ function ServicesPageContent() {
     }
   };
 
-  const filteredServicesData = servicesData.filter(service => 
-    service.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    service.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    service.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredServicesData = servicesData.filter(service => {
+    if (!division) return false;
+    
+    const matchesQuery = service.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      service.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      service.category.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesDivision = division === "taxation" 
+      ? service.category === "Taxation Division"
+      : service.category !== "Taxation Division";
+
+    return matchesQuery && matchesDivision;
+  });
 
   const hasAnyResults = filteredServicesData.length > 0;
 
@@ -89,8 +100,8 @@ function ServicesPageContent() {
     <div className="min-h-screen bg-slate-50 pt-28 md:pt-36 pb-20 md:pb-32 relative overflow-x-hidden">
       {/* Background Decor */}
       <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
-        <div className="absolute top-[-15%] left-[-10%] w-[600px] md:w-[1000px] h-[600px] md:h-[1000px] bg-blue-100/30 rounded-full opacity-50 blur-[100px] md:blur-[140px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[700px] md:w-[1100px] h-[700px] md:h-[1100px] bg-emerald-50/40 rounded-full opacity-50 blur-[100px] md:blur-[140px]" />
+        <div className={`absolute top-[-15%] left-[-10%] w-[600px] md:w-[1000px] h-[600px] md:h-[1000px] ${division === 'taxation' ? 'bg-emerald-100/30' : 'bg-blue-100/30'} rounded-full opacity-50 blur-[100px] md:blur-[140px]`} />
+        <div className={`absolute bottom-[-10%] right-[-10%] w-[700px] md:w-[1100px] h-[700px] md:h-[1100px] ${division === 'taxation' ? 'bg-emerald-50/40' : 'bg-emerald-50/40'} rounded-full opacity-50 blur-[100px] md:blur-[140px]`} />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -101,18 +112,20 @@ function ServicesPageContent() {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto text-center mb-16 md:mb-24"
         >
-          <div className="inline-flex items-center gap-2 px-6 py-2 bg-white rounded-full border border-blue-50 shadow-[0_10px_30px_rgba(37,99,235,0.06)] text-blue-600 text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-8">
+          <div className={`inline-flex items-center gap-2 px-6 py-2 bg-white rounded-full border ${division === 'taxation' ? 'border-emerald-50 text-emerald-600 shadow-[0_10px_30px_rgba(16,185,129,0.06)]' : 'border-blue-50 text-blue-600 shadow-[0_10px_30px_rgba(37,99,235,0.06)]'} text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-8`}>
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Discover Excellence</span>
+            <span>{division === 'taxation' ? 'Regulatory Integrity' : 'Financial Mastery'}</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-slate-900 tracking-tighter leading-[1] md:leading-[0.85] uppercase mb-8">
-            Financial <br />
-            <span className="text-blue-600">Guidance</span>
+            {division === 'taxation' ? 'Tax & Legal' : 'Financial'}<br />
+            <span className={division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}>{division === 'taxation' ? 'Compliance' : 'Guidance'}</span>
           </h1>
 
           <p className="text-sm sm:text-base md:text-xl text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed md:leading-loose">
-            Precision-engineered financial strategies for individual growth and large-scale industrial excellence.
+            {division === 'taxation' 
+              ? "Comprehensive auditing, legal compliance, and strategic tax planning for robust corporate governance."
+              : "Precision-engineered financial strategies for individual growth and large-scale industrial excellence."}
           </p>
         </motion.div>
 
@@ -133,8 +146,8 @@ function ServicesPageContent() {
                           onClick={() => scrollToSection(id)}
                           className={`whitespace-nowrap px-8 py-3.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
                             isActive 
-                              ? "bg-blue-600 text-white shadow-lg shadow-blue-200/50" 
-                              : "text-slate-500 hover:text-blue-600 hover:bg-blue-50/50"
+                              ? division === 'taxation' ? "bg-emerald-600 text-white shadow-lg shadow-emerald-200/50" : "bg-blue-600 text-white shadow-lg shadow-blue-200/50" 
+                              : division === 'taxation' ? "text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/50" : "text-slate-500 hover:text-blue-600 hover:bg-blue-50/50"
                           }`}
                         >
                           {cat}
@@ -160,7 +173,7 @@ function ServicesPageContent() {
                     onClick={() => scrollToSection(id)}
                     className={`px-4 py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all text-center flex items-center justify-center leading-tight gpu ${
                       isActive 
-                        ? "bg-blue-600 text-white shadow-lg shadow-blue-200" 
+                        ? division === 'taxation' ? "bg-emerald-600 text-white shadow-lg shadow-emerald-200" : "bg-blue-600 text-white shadow-lg shadow-blue-200" 
                         : "bg-white text-slate-600 border border-slate-100 shadow-sm"
                     }`}
                   >
@@ -197,8 +210,8 @@ function ServicesPageContent() {
                   >
                     <div className="flex flex-col text-center md:text-left">
                       <div className="flex items-center gap-3 justify-center md:justify-start mb-4">
-                         <div className="w-10 h-[1px] bg-blue-600/30" />
-                         <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.6em] leading-none">Sector Profile 0{catIdx + 1}</span>
+                         <div className={`w-10 h-[1px] ${division === 'taxation' ? 'bg-emerald-600/30' : 'bg-blue-600/30'}`} />
+                         <span className={`${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'} font-black text-[10px] uppercase tracking-[0.6em] leading-none`}>Sector Profile 0{catIdx + 1}</span>
                       </div>
                       <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter text-slate-900 leading-none">
                         {cat}
@@ -228,7 +241,7 @@ function ServicesPageContent() {
                           exit={{ opacity: 0, scale: 0.95 }}
                         >
                           <Link href={`/services/${service.id}`} className="group block h-full gpu">
-                            <div className="bg-white rounded-[3rem] overflow-hidden h-full flex flex-col border border-slate-100 group-hover:border-blue-200 transition-all duration-700 relative shadow-[0_30px_60px_rgba(0,0,0,0.02)] group-hover:shadow-[0_50px_100px_rgba(37,99,235,0.08)] gpu">
+                            <div className={`bg-white rounded-[3rem] overflow-hidden h-full flex flex-col border border-slate-100 transition-all duration-700 relative shadow-[0_30px_60px_rgba(0,0,0,0.02)] gpu ${division === 'taxation' ? 'group-hover:border-emerald-200 group-hover:shadow-[0_50px_100px_rgba(16,185,129,0.08)]' : 'group-hover:border-blue-200 group-hover:shadow-[0_50px_100px_rgba(37,99,235,0.08)]'}`}>
                               {/* Service Asset Interface */}
                               <div className="relative h-64 sm:h-72 w-full overflow-hidden gpu">
                                 <img
@@ -246,7 +259,7 @@ function ServicesPageContent() {
                               </div>
 
                               <div className="p-10 pt-2 flex flex-col items-start flex-1 relative z-10">
-                                <h3 className="text-2xl md:text-3xl font-black text-slate-900 mb-5 group-hover:text-blue-600 transition-colors uppercase tracking-tighter leading-none">
+                                <h3 className={`text-2xl md:text-3xl font-black text-slate-900 mb-5 ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'} transition-colors uppercase tracking-tighter leading-none`}>
                                   {service.name}
                                 </h3>
                                 
@@ -255,8 +268,8 @@ function ServicesPageContent() {
                                 </p>
                                 
                                 <div className="mt-auto flex items-center gap-4 group/link">
-                                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 group-hover/link:text-blue-600 transition-colors">Strategic Details</span>
-                                  <div className="w-12 h-[1.5px] bg-slate-100 group-hover/link:bg-blue-600 group-hover/link:w-20 transition-all duration-700" />
+                                  <span className={`text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 ${division === 'taxation' ? 'group-hover/link:text-emerald-600' : 'group-hover/link:text-blue-600'} transition-colors`}>Strategic Details</span>
+                                  <div className={`w-12 h-[1.5px] bg-slate-100 ${division === 'taxation' ? 'group-hover/link:bg-emerald-600' : 'group-hover/link:bg-blue-600'} group-hover/link:w-20 transition-all duration-700`} />
                                 </div>
                               </div>
                             </div>
@@ -312,10 +325,12 @@ function ServicesPageContent() {
                 </div>
                 <h2 className="text-4xl md:text-7xl font-black text-white tracking-[1.1] uppercase mb-10 leading-[0.85] tracking-tighter">
                   Not sure where <br />
-                  <span className="text-blue-500">to begin?</span>
+                  <span className={division === 'taxation' ? 'text-emerald-500' : 'text-blue-500'}>to begin?</span>
                 </h2>
                 <p className="text-base md:text-xl text-slate-400 font-medium leading-loose max-w-2xl">
-                  Engage with our strategic vertical heads for a precise alignment between your capital requirements and our financial solutions.
+                  {division === 'taxation' 
+                    ? "Engage with our compliance heads for a precise alignment between your statutory requirements and our legal solutions."
+                    : "Engage with our strategic vertical heads for a precise alignment between your capital requirements and our financial solutions."}
                 </p>
               </div>
               
@@ -361,18 +376,18 @@ function ServicesPageContent() {
                       onClick={() => scrollToSection(id)}
                       className={`flex flex-col md:flex-row items-center justify-center gap-1.5 md:gap-3 px-3 md:px-6 py-2.5 md:py-3.5 rounded-[1.8rem] transition-all duration-300 relative group flex-1 md:flex-none ${
                         isActive 
-                          ? "bg-blue-600 text-white shadow-xl shadow-blue-500/20" 
-                          : "text-slate-500 hover:text-blue-600 hover:bg-slate-50"
+                          ? division === 'taxation' ? "bg-emerald-600 text-white shadow-xl shadow-emerald-500/20" : "bg-blue-600 text-white shadow-xl shadow-blue-500/20" 
+                          : division === 'taxation' ? "text-slate-500 hover:text-emerald-600 hover:bg-slate-50" : "text-slate-500 hover:text-blue-600 hover:bg-slate-50"
                       }`}
                     >
-                      <CatIcon className={`w-4 h-4 md:w-3.5 md:h-3.5 ${isActive ? "text-white" : "text-slate-400 group-hover:text-blue-500"}`} />
+                      <CatIcon className={`w-4 h-4 md:w-3.5 md:h-3.5 ${isActive ? "text-white" : division === 'taxation' ? "text-slate-400 group-hover:text-emerald-500" : "text-slate-400 group-hover:text-blue-500"}`} />
                       <span className="text-[8px] md:text-[10px] font-black uppercase tracking-widest whitespace-nowrap hidden sm:block">
                         {cat.split(' / ')[0]}
                       </span>
                       {isActive && (
                         <motion.div 
                           layoutId="activePill"
-                          className="absolute inset-0 bg-blue-600 rounded-[1.8rem] -z-10"
+                          className={`absolute inset-0 ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'} rounded-[1.8rem] -z-10`}
                         />
                       )}
                     </button>

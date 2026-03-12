@@ -126,7 +126,6 @@ export function Header() {
     };
     handleSync();
     window.addEventListener("storage", handleSync);
-    // Also listen for a custom event if we want local sync in the same tab
     window.addEventListener("division-change", handleSync);
     return () => {
       window.removeEventListener("storage", handleSync);
@@ -149,20 +148,7 @@ export function Header() {
   };
 
   const searchInputRef = useRef<HTMLInputElement>(null);
-
-  const megaMenuRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const openMegaMenu = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setActiveMegaMenu(true);
-  };
-
-  const closeMegaMenu = () => {
-    timeoutRef.current = setTimeout(() => {
-      setActiveMegaMenu(false);
-    }, 200);
-  };
 
   // Load Settings
   const loadSettings = useCallback(async () => {
@@ -190,7 +176,6 @@ export function Header() {
     }
   }, [isSearchOpen]);
 
-  // Sync searchQuery with URL params
   useEffect(() => {
     const q = searchParams.get("q");
     if (q !== searchQuery) {
@@ -216,9 +201,12 @@ export function Header() {
 
   const companyName = settings?.company_name || "Mark Corpotax";
 
+  const filteredCategories = currentDivision === "taxation"
+    ? serviceCategories.filter(cat => cat.title === "TAXATION DIVISION")
+    : serviceCategories.filter(cat => cat.title !== "TAXATION DIVISION");
+
   return (
     <>
-      {/* Mega Menu Overlay with Dot Pattern */}
       <AnimatePresence>
         {activeMegaMenu && (
           <motion.div
@@ -235,224 +223,233 @@ export function Header() {
       </AnimatePresence>
 
       <header
-        className={`fixed top-0 left-0 right-0 z-50 flex flex-col items-center transition-all duration-500 ${isScrolled ? "py-2" : "py-4"
-          }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          isScrolled || isSearchOpen || isMobileMenuOpen || activeMegaMenu
+            ? "py-3 md:py-4"
+            : "py-6 md:py-8"
+        }`}
       >
-
-        <nav
-          className={`relative w-full max-w-[95%] lg:max-w-7xl flex items-center justify-between px-8 py-2 transition-all duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.1)] gpu ${isScrolled
-              ? "bg-white/95 backdrop-blur-xl border border-white/60 rounded-full py-2 shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
-              : "bg-white/90 backdrop-blur-md border border-white/20 rounded-full py-3 lg:py-5"
+        <div className="container mx-auto px-4 md:px-6 flex justify-center">
+          <nav
+            className={`relative w-full max-w-7xl flex items-center justify-between px-4 md:px-8 py-3 rounded-full border border-white/40 transition-all duration-500 shadow-2xl backdrop-blur-3xl bg-white/70 group ${
+              isScrolled || activeMegaMenu ? "shadow-blue-500/10" : "shadow-transparent"
             }`}
-        >
-          {/* Left: Logo & Brand Area */}
-          <Link href="/" className="group flex items-center gap-3 flex-shrink-0">
-            <div className="relative flex items-center justify-center w-10 h-10 md:w-11 md:h-11 bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden transition-all duration-500 group-hover:shadow-md">
-              <Logo width={36} height={36} className="object-contain p-1" />
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="text-[18px] md:text-[22px] font-black uppercase italic tracking-tighter text-slate-900 leading-none">
-                  {companyName.split(' ')[0]}
+          >
+            {/* Logo Section */}
+            <Link href="/" className="flex items-center gap-3 group/logo flex-shrink-0">
+              <Logo
+                className="object-contain transition-transform duration-500 group-hover/logo:scale-110"
+                width={42}
+                height={42}
+              />
+              <div className="flex flex-col">
+                <span className="text-sm md:text-lg font-black tracking-tighter text-slate-900 group-hover/logo:text-blue-600 transition-colors uppercase leading-none">
+                  Mark Corpotax
                 </span>
-                <span className="text-[18px] md:text-[22px] font-black uppercase italic tracking-tighter text-blue-600 leading-none">
-                  {companyName.split(' ').slice(1).join(' ')}
-                </span>
-              </div>
-              <div className="flex items-center gap-2 mt-0.5">
-                <div className="h-[1px] w-3 bg-blue-600/30" />
-                <span className="text-[6px] md:text-[8px] font-black uppercase tracking-[0.3em] text-slate-400 leading-none">
-                  SURAT REGIONAL HQ
+                <span className={`text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] ${currentDivision === 'taxation' ? 'text-emerald-500' : 'text-blue-500'} leading-none mt-1 whitespace-nowrap`}>
+                  {currentDivision === "taxation" ? "Taxation & Legal" : "Finance Division"}
                 </span>
               </div>
-            </div>
-          </Link>
+            </Link>
 
-          {/* Center: Navigation Links */}
-          <ul className="hidden lg:flex items-center gap-2">
-            {navLinks.map((link) => {
-              const Icon = link.icon;
-              const isServices = link.label === "Services";
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-1 xl:gap-2">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                const isServices = link.label === "Services";
 
-              return (
-                <li
-                  key={link.href}
-                  className="relative"
-                  onMouseEnter={() => isServices && openMegaMenu()}
-                  onMouseLeave={() => isServices && closeMegaMenu()}
-                >
+                if (isServices) {
+                  return (
+                    <div
+                      key={link.label}
+                      className="relative"
+                      onMouseEnter={() => setActiveMegaMenu(true)}
+                      onMouseLeave={() => setActiveMegaMenu(false)}
+                    >
+                      <Link
+                        href={link.href}
+                        className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                          isActive || activeMegaMenu
+                            ? currentDivision === 'taxation' ? "bg-emerald-600 text-white shadow-xl shadow-emerald-500/20" : "bg-blue-600 text-white shadow-xl shadow-blue-500/20"
+                            : "text-slate-600 hover:bg-slate-50"
+                        }`}
+                      >
+                        <link.icon className="w-3.5 h-3.5" />
+                        {link.label}
+                        <ChevronDown
+                          className={`w-3.5 h-3.5 transition-transform duration-500 ${
+                            activeMegaMenu ? "rotate-180" : ""
+                          }`}
+                        />
+                      </Link>
+
+                      {/* Mega Menu */}
+                      <AnimatePresence>
+                        {activeMegaMenu && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 15, scale: 0.98, x: "-50%" }}
+                            animate={{ opacity: 1, y: 0, scale: 1, x: "-50%" }}
+                            exit={{ opacity: 0, y: 10, scale: 0.98, x: "-50%" }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                            className="fixed top-[100px] left-1/2 w-[90vw] max-w-6xl bg-white/95 backdrop-blur-3xl border border-slate-100 rounded-[2.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.1)] overflow-hidden p-5 md:p-7 z-[60]"
+                          >
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                              {filteredCategories.map((category, idx) => (
+                                <div key={idx} className="space-y-4 group/cat">
+                                  <div className="flex items-center gap-3">
+                                    <div className={`w-8 h-[2px] ${currentDivision === 'taxation' ? 'bg-emerald-600/30' : 'bg-blue-600/30'} group-hover/cat:w-12 transition-all duration-500`} />
+                                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 group-hover/cat:text-slate-900 transition-colors">
+                                      {category.title}
+                                    </h3>
+                                  </div>
+                                  <div className="grid gap-1">
+                                    {category.services.map((service, sIdx) => (
+                                      <Link
+                                        key={sIdx}
+                                        href={service.href}
+                                        onClick={() => setActiveMegaMenu(false)}
+                                        className="group/link flex items-center justify-between p-2 md:p-2.5 rounded-xl hover:bg-slate-50 transition-all duration-300 border border-transparent hover:border-slate-100"
+                                      >
+                                        <div className="flex items-center gap-3">
+                                          <div className={`w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center transition-all duration-500 ${currentDivision === 'taxation' ? 'group-hover/link:bg-emerald-600 group-hover/link:text-white group-hover/link:scale-110 shadow-emerald-500/10' : 'group-hover/link:bg-blue-600 group-hover/link:text-white group-hover/link:scale-110 shadow-blue-500/10'}`}>
+                                            <service.icon className="w-4 h-4" />
+                                          </div>
+                                          <span className="text-xs font-bold text-slate-700 group-hover/link:text-slate-900 transition-colors">
+                                            {service.name}
+                                          </span>
+                                        </div>
+                                        <ArrowRight className={`w-3.5 h-3.5 text-slate-300 opacity-0 group-hover/link:opacity-100 group-hover/link:translate-x-1 transition-all duration-500 ${currentDivision === 'taxation' ? 'group-hover/link:text-emerald-500' : 'group-hover/link:text-blue-500'}`} />
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
+
+                              {/* Promotional Panel */}
+                              <div className={`relative rounded-[2rem] overflow-hidden p-6 md:p-8 flex flex-col justify-end min-h-[320px] group/promo ${currentDivision === 'taxation' ? 'bg-emerald-900' : 'bg-blue-900'}`}>
+                                <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
+                                <div className="relative z-10 space-y-4">
+                                  <div className={`inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-[7px] font-black uppercase tracking-widest text-white`}>
+                                    <TrendingUp className="w-2.5 h-2.5 text-white" />
+                                    <span>Expert Advisory</span>
+                                  </div>
+                                  <h4 className="text-2xl font-black text-white uppercase tracking-tighter leading-none">
+                                    Expert <br /> Consultant.
+                                  </h4>
+                                  <p className="text-white/60 text-[10px] font-medium leading-relaxed">
+                                    {currentDivision === "taxation"
+                                      ? "Statutory audit and tax planning by certified professionals."
+                                      : "Strategic capital raising and MSME project financing solutions."}
+                                  </p>
+                                  <Link
+                                    href="/appointment"
+                                    onClick={() => setActiveMegaMenu(false)}
+                                    className={`w-full py-3 bg-white text-slate-900 rounded-xl flex items-center justify-center gap-2 font-black text-[9px] uppercase tracking-widest hover:bg-slate-100 transition-all ${currentDivision === 'taxation' ? 'shadow-xl shadow-emerald-950/20' : 'shadow-xl shadow-blue-950/20'}`}
+                                  >
+                                    Schedule Call <ArrowRight className="w-3.5 h-3.5" />
+                                  </Link>
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                }
+
+                return (
                   <Link
+                    key={link.label}
                     href={link.href}
-                    className={`group flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-500 text-[11px] font-black uppercase tracking-[0.15em] relative z-20 ${pathname === link.href || (isServices && activeMegaMenu)
-                        ? "text-blue-600 bg-white shadow-[0_4px_15px_rgba(37,99,235,0.1)] border border-blue-50"
-                        : "text-slate-900/70 hover:text-blue-600 border border-transparent"
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                      isActive
+                        ? currentDivision === 'taxation' ? "bg-emerald-600 text-white shadow-xl shadow-emerald-500/20" : "bg-blue-600 text-white shadow-xl shadow-blue-500/20"
+                        : "text-slate-600 hover:bg-slate-100/50"
+                    }`}
+                  >
+                    <link.icon className="w-3.5 h-3.5" />
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Right: Actions Area */}
+            <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+              <button
+                onClick={handleGoToLanding}
+                className="w-10 h-10 flex items-center justify-center rounded-full text-slate-400 hover:text-blue-600 hover:bg-slate-50 transition-all duration-300"
+                title="Return to Selection"
+              >
+                <LayoutGrid className="w-4 h-4" />
+              </button>
+
+              <div className="w-[1px] h-4 bg-slate-200 mx-1" />
+
+              {currentDivision && (
+                <div className="flex items-center gap-1 bg-slate-50/50 p-1 rounded-full border border-slate-100 shadow-inner">
+                  <button
+                    onClick={() => handleSwitchDivision("finance")}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${currentDivision === "finance"
+                        ? "bg-white text-blue-600 shadow-sm font-black"
+                        : "text-slate-400 hover:text-slate-600"
                       }`}
                   >
-                    <Icon className={`w-3 h-3 transition-all duration-500 ${pathname === link.href || (isServices && activeMegaMenu) ? "text-blue-600" : "text-slate-400 group-hover:text-blue-500"
-                      }`} />
-                    {link.label}
-                    {isServices && (
-                      <ChevronDown className={`w-3 h-3 transition-all duration-500 ${activeMegaMenu ? 'rotate-180 text-blue-600' : 'text-slate-400 group-hover:text-blue-500'}`} />
-                    )}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-
-          {/* Mega Menu Container - Moved outside the loop for centered alignment relative to nav */}
-          <AnimatePresence>
-            {activeMegaMenu && (
-              <motion.div
-                initial={{ opacity: 0, y: 15, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 10, scale: 0.98 }}
-                onMouseEnter={openMegaMenu}
-                onMouseLeave={closeMegaMenu}
-                className="absolute left-[38%] -translate-x-1/2 -ml-[200px] top-full pt-3 z-50 w-[calc(100vw-64px)] max-w-4xl"
-              >
-                <div className="bg-white border border-slate-200 p-0 rounded-[28px] shadow-[0_25px_50px_rgba(0,0,0,0.1)] relative group/menu overflow-hidden">
-                  <div className="absolute -top-8 left-0 right-0 h-8 bg-transparent" />
-
-                  <div className="p-5 relative max-h-[75vh] overflow-y-auto custom-scrollbar bg-white">
-                    <div className="grid grid-cols-4 gap-4 relative z-10">
-                      {serviceCategories.map((cat, idx) => {
-                        const isTaxation = idx === 3;
-
-                        return (
-                          <div key={idx} className={`flex flex-col gap-4 ${isTaxation ? 'bg-emerald-50/30 p-4 rounded-[22px] border border-emerald-100/50' : idx < 3 ? 'border-r border-slate-100/60 pr-2' : ''}`}>
-                            <div className="flex flex-col gap-1 px-1">
-                              <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${isTaxation ? 'text-emerald-700' : 'text-blue-600'}`}>
-                                {cat.title}
-                              </span>
-                              <div className={`h-[1px] w-6 ${isTaxation ? 'bg-emerald-200' : 'bg-blue-200'}`} />
-                            </div>
-
-                            <div className="flex flex-col gap-0.5">
-                              {cat.services.map((svc, sIdx) => {
-                                const SvcIcon = svc.icon;
-                                return (
-                                  <Link
-                                    key={sIdx}
-                                    href={svc.href}
-                                    onClick={() => setActiveMegaMenu(false)}
-                                    className="group/svc flex items-center gap-3 p-1.5 rounded-lg transition-all duration-300 hover:bg-slate-50 border border-transparent hover:border-slate-100"
-                                  >
-                                    <div className={`w-7 h-7 rounded-full flex items-center justify-center transition-all duration-500 flex-shrink-0 ${isTaxation ? 'bg-white shadow-sm text-emerald-600 group-hover/svc:bg-emerald-600 group-hover/svc:text-white' : 'bg-blue-50 text-blue-600 group-hover/svc:bg-blue-600 group-hover/svc:text-white'}`}>
-                                      <SvcIcon className="w-3.5 h-3.5" />
-                                    </div>
-                                    <span className="text-[13px] font-bold text-slate-700 group-hover/svc:text-blue-600 transition-colors leading-tight">
-                                      {svc.name}
-                                    </span>
-                                  </Link>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* bottom cta bar */}
-                  <div className="bg-slate-50/80 backdrop-blur-md px-12 py-6 border-t border-slate-100 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
-                        <ShieldCheck className="w-3 h-3 text-blue-600" />
-                      </div>
-                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Shaping successful corporate landscapes since 2012</span>
-                    </div>
-                    <Link href="/services">
-                      <Button className="bg-white hover:bg-blue-50 text-blue-600 border border-blue-100 rounded-full px-8 py-2.5 h-auto text-[11px] font-black uppercase tracking-[0.15em] shadow-sm flex items-center gap-3 transition-all">
-                        Explore All Services
-                        <ArrowRight className="w-4 h-4" />
-                      </Button>
-                    </Link>
-                  </div>
+                    <TrendingUp className="w-3 h-3" />
+                    <span className="text-[8px] uppercase tracking-wider">Finance</span>
+                  </button>
+                  <button
+                    onClick={() => handleSwitchDivision("taxation")}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${currentDivision === "taxation"
+                        ? "bg-white text-emerald-600 shadow-sm font-black"
+                        : "text-slate-400 hover:text-slate-600"
+                      }`}
+                  >
+                    <ShieldCheck className="w-3 h-3" />
+                    <span className="text-[8px] uppercase tracking-wider">Taxation</span>
+                  </button>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              )}
 
-          {/* Right: Actions Area */}
-          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-            {/* Landing Choice Button */}
-            <button
-              onClick={handleGoToLanding}
-              className="w-10 h-10 flex items-center justify-center rounded-full text-slate-400 hover:text-blue-600 hover:bg-slate-50 transition-all duration-300"
-              title="Return to Selection"
-            >
-              <LayoutGrid className="w-4 h-4" />
-            </button>
-
-            <div className="w-[1px] h-4 bg-slate-200 mx-1" />
-
-            {/* Division Switcher */}
-            {currentDivision && (
-              <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-full border border-slate-100 mr-1 shadow-inner">
-                <button
-                  onClick={() => handleSwitchDivision("finance")}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${currentDivision === "finance"
-                      ? "bg-white text-blue-600 shadow-sm font-black"
-                      : "text-slate-400 hover:text-slate-600"
-                    }`}
-                >
-                  <TrendingUp className="w-3 h-3" />
-                  <span className="text-[8px] uppercase tracking-wider">Finance</span>
-                </button>
-                <button
-                  onClick={() => handleSwitchDivision("taxation")}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${currentDivision === "taxation"
-                      ? "bg-white text-emerald-600 shadow-sm font-black"
-                      : "text-slate-400 hover:text-slate-600"
-                    }`}
-                >
-                  <ShieldCheck className="w-3 h-3" />
-                  <span className="text-[8px] uppercase tracking-wider">Taxation</span>
-                </button>
-              </div>
-            )}
-
-            {/* Search Toggle */}
-            <button
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className={`w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 ${
-                isSearchOpen 
-                  ? 'bg-slate-900 text-white shadow-lg' 
-                  : 'text-slate-400 hover:text-blue-600 hover:bg-slate-50'
-              }`}
-            >
-              {isSearchOpen ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
-            </button>
-
-            <div className="w-[1px] h-4 bg-slate-200 mx-1" />
-
-            <Link href="/appointment">
-              <Button
-                className="bg-slate-900 hover:bg-blue-600 text-white font-black text-[10px] uppercase tracking-[0.15em] rounded-full px-7 py-5 h-auto shadow-md transition-all duration-500 flex items-center gap-2"
+              <button
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                className={`w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 ${
+                  isSearchOpen 
+                    ? 'bg-slate-900 text-white shadow-lg' 
+                    : 'text-slate-400 hover:text-blue-600 hover:bg-slate-50'
+                }`}
               >
-                Join Now
-                <ArrowRight className="w-3 h-3" />
-              </Button>
-            </Link>
-          </div>
+                {isSearchOpen ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
+              </button>
 
-          {/* Mobile Actions */}
-          <div className="lg:hidden flex items-center gap-2">
-            <button
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className={`p-3 rounded-2xl border transition-all duration-300 ${isSearchOpen ? 'bg-slate-100 border-slate-200 text-slate-900' : 'bg-white/50 backdrop-blur border-white/60 text-slate-900'}`}
-            >
-              {isSearchOpen ? <X className="w-6 h-6" /> : <Search className="w-6 h-6" />}
-            </button>
-            <button
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="p-3 bg-white/50 backdrop-blur rounded-2xl border border-white/60 text-slate-900"
-            >
-              <Menu className="w-6 h-6" />
-            </button>
-          </div>
-        </nav>
+              <Link href="/appointment">
+                <Button
+                  className="bg-slate-900 hover:bg-blue-600 text-white font-black text-[10px] uppercase tracking-[0.15em] rounded-full px-6 py-2 h-10 shadow-none transition-all duration-500 flex items-center gap-2"
+                >
+                  Join
+                  <ArrowRight className="w-3 h-3" />
+                </Button>
+              </Link>
+            </div>
+
+            {/* Mobile Actions */}
+            <div className="lg:hidden flex items-center gap-2">
+              <button
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                className={`p-3 rounded-2xl border transition-all duration-300 ${isSearchOpen ? 'bg-slate-100 border-slate-200 text-slate-900' : 'bg-white/50 backdrop-blur border-white/60 text-slate-900'}`}
+              >
+                {isSearchOpen ? <X className="w-6 h-6" /> : <Search className="w-6 h-6" />}
+              </button>
+              <button
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="p-3 bg-white/50 backdrop-blur rounded-2xl border border-white/60 text-slate-900"
+              >
+                <Menu className="w-6 h-6" />
+              </button>
+            </div>
+          </nav>
+        </div>
 
         {/* Desktop Dropdown Search Bar */}
         <AnimatePresence>
@@ -623,9 +620,11 @@ export function Header() {
               </div>
 
               <div className="p-8">
-                <Button className="w-full bg-slate-900 hover:bg-blue-600 text-white py-8 rounded-[30px] font-black uppercase tracking-widest text-xs transition-all duration-500">
-                  Book Appointment
-                </Button>
+                <Link href="/appointment" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button className="w-full bg-slate-900 hover:bg-blue-600 text-white py-8 rounded-[30px] font-black uppercase tracking-widest text-xs transition-all duration-500">
+                    Book Appointment
+                  </Button>
+                </Link>
               </div>
             </motion.div>
           </>

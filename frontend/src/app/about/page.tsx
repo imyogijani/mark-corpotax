@@ -74,8 +74,12 @@ const ExcellenceItem = ({ text }: { text: string }) => (
 export default function AboutPage() {
   const [content, setContent] = useState<AboutPageContent>({});
   const [loading, setLoading] = useState(true);
+  const [division, setDivision] = useState<string | null>(null);
 
   useEffect(() => {
+    const saved = localStorage.getItem("user_division");
+    setDivision(saved);
+
     const fetchContent = async () => {
       try {
         const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
@@ -111,68 +115,92 @@ export default function AboutPage() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-slate-50">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <div className={`w-12 h-12 border-4 ${division === 'taxation' ? 'border-emerald-600' : 'border-blue-600'} border-t-transparent rounded-full animate-spin`}></div>
           <p className="text-slate-500 font-medium">Loading Story...</p>
         </div>
       </div>
     );
   }
 
-  const excellencePoints = [
-    "12+ years associated with top banks",
-    "2500+ satisfied clients across India",
-    "Lowest and affordable interest rates",
-    "Fast and hassle-free loan processing",
-    "Quick decision-making for timely funding",
-    "Tailored strategic financial advice",
-    "Commitment to transparency and integrity",
-    "Making business financing simple"
-  ];
+  const excellencePoints = division === "taxation" 
+    ? [
+        "Specialized in GST & Income Tax Advisory",
+        "Expert ROC & Corporate Law Compliance",
+        "Transparent Audit & Assurance Services",
+        "Strategic Financial Planning & Budgeting",
+        "Certified Professionals at your service",
+        "Accuracy and Integrity in every filing",
+        "Timely updates on regulatory changes",
+        "Trusted by 500+ Corporate Clients"
+      ]
+    : [
+        "12+ years associated with top banks",
+        "2500+ satisfied clients across India",
+        "Lowest and affordable interest rates",
+        "Fast and hassle-free loan processing",
+        "Quick decision-making for timely funding",
+        "Tailored strategic financial advice",
+        "Commitment to transparency and integrity",
+        "Making business financing simple"
+      ];
+
+  const primaryColor = division === "taxation" ? "text-emerald-600" : "text-blue-600";
+  const primaryBg = division === "taxation" ? "bg-emerald-50" : "bg-blue-50";
+  const primaryBorder = division === "taxation" ? "border-emerald-100" : "border-blue-100";
+  const primaryIcon = division === "taxation" ? "text-emerald-400" : "text-blue-400";
+  const primaryHoverBorder = division === "taxation" ? "group-hover:border-emerald-600" : "group-hover:border-blue-600";
+  const primaryHoverText = division === "taxation" ? "group-hover:text-emerald-600" : "group-hover:text-blue-600";
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans selection:bg-blue-100 italic-none">
+    <div className={`min-h-screen bg-slate-50 font-sans selection:${division === 'taxation' ? 'bg-emerald-100' : 'bg-blue-100'} italic-none`}>
       {/* Hero Section */}
       <section className="relative pt-32 pb-24 overflow-hidden">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             {/* Left Column */}
             <div className="js-reveal space-y-8">
-              <div className="inline-flex items-center gap-2 px-6 py-2 bg-blue-50 rounded-full border border-blue-100 text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">
+              <div className={`inline-flex items-center gap-2 px-6 py-2 ${primaryBg} rounded-full border ${primaryBorder} text-[10px] font-black uppercase tracking-[0.4em] ${primaryColor}`}>
                 <Sparkles className="w-4 h-4" />
-                <span>Established 2012</span>
+                <span>{division === 'taxation' ? 'Regulatory Mastery' : 'Financial Excellence'}</span>
               </div>
 
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-slate-900 tracking-tighter leading-[0.9] uppercase">
-                The Mark <br />
-                <span className="text-blue-600">Legacy.</span>
+                Building <br />
+                <span className={primaryColor}>{division === 'taxation' ? 'Integrity.' : 'Legacy.'}</span>
               </h1>
 
               <p className="text-base md:text-xl text-slate-600 font-medium leading-relaxed max-w-lg">
-                Dedicated to delivering comprehensive financial and legal solutions designed to address the unique requirements of our clients across India.
+                {division === 'taxation' 
+                  ? "Providing specialized audit, tax compliance, and legal advisory services to ensure your business remains resilient and compliant in a dynamic regulatory landscape."
+                  : "Dedicated to delivering comprehensive financial and legal solutions designed to address the unique requirements of our clients across India."}
               </p>
             </div>
 
             {/* Right Column - Stats Grid */}
             <div className="js-reveal grid grid-cols-2 gap-6 md:gap-8">
               <StatCard
-                icon={<Clock className="w-8 h-8 text-blue-600" />}
+                icon={<Clock className={`w-8 h-8 ${primaryColor}`} />}
                 value="12+"
                 label="years experience"
+                className={division === 'taxation' ? 'hover:shadow-emerald-200/50' : 'hover:shadow-blue-200/50'}
               />
               <StatCard
                 icon={<Users className="w-8 h-8 text-emerald-500" />}
-                value="2500+"
-                label="satisfied clients"
+                value={division === 'taxation' ? "1000+" : "2500+"}
+                label="Corporate Clients"
+                className={division === 'taxation' ? 'hover:shadow-emerald-200/50' : 'hover:shadow-blue-200/50'}
               />
               <StatCard
                 icon={<Award className="w-8 h-8 text-amber-500" />}
-                value="Lowest"
-                label="interest rates"
+                value={division === 'taxation' ? "100%" : "Lowest"}
+                label={division === 'taxation' ? "Accuracy" : "interest rates"}
+                className={division === 'taxation' ? 'hover:shadow-emerald-200/50' : 'hover:shadow-blue-200/50'}
               />
               <StatCard
                 icon={<Globe className="w-8 h-8 text-purple-500" />}
-                value="Hassle-free"
-                label="process"
+                value="National"
+                label="Presence"
+                className={division === 'taxation' ? 'hover:shadow-emerald-200/50' : 'hover:shadow-blue-200/50'}
               />
             </div>
           </div>
@@ -185,23 +213,27 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
             {/* Vision */}
             <div className="js-reveal p-12 lg:p-16 bg-white rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-200/30 flex flex-col items-start translate-y-12">
-              <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mb-8">
-                <Eye className="w-8 h-8 text-blue-600" />
+              <div className={`w-16 h-16 rounded-2xl ${primaryBg} flex items-center justify-center mb-8`}>
+                <Eye className={`w-8 h-8 ${primaryColor}`} />
               </div>
               <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 uppercase tracking-tighter">Our Vision</h2>
               <p className="text-base md:text-xl text-slate-500 font-medium leading-relaxed">
-                "To be the most trusted partner in providing innovative loan consultancy and financial solutions, enabling businesses to unlock sustainable growth."
+                {division === 'taxation' 
+                  ? "To be the standard-bearer of fiscal transparency and regulatory excellence, helping businesses navigate the complexities of tax and law with absolute confidence."
+                  : "To be the most trusted partner in providing innovative loan consultancy and financial solutions, enabling businesses to unlock sustainable growth."}
               </p>
             </div>
 
             {/* Mission */}
-            <div className="js-reveal p-12 lg:p-16 bg-white rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-200/30 flex flex-col items-start">
+            <div className="js-reveal p-12 lg:p-16 bg-white rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-200/30 flex flex-col items-start text-emerald-900">
               <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mb-8">
                 <Target className="w-8 h-8 text-emerald-600" />
               </div>
               <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 uppercase tracking-tighter">Our Mission</h2>
               <p className="text-base md:text-xl text-slate-500 font-medium leading-relaxed">
-                Empowering businesses to achieve their growth ambitions by providing expert, client-focused loan consultancy. We simplify the complex process of securing capital.
+                {division === 'taxation' 
+                  ? "Safeguarding corporate integrity through meticulous audit practices and strategic compliance management, ensuring every client achieves statutory excellence."
+                  : "Empowering businesses to achieve their growth ambitions by providing expert, client-focused loan consultancy. We simplify the complex process of securing capital."}
               </p>
             </div>
           </div>
@@ -213,14 +245,19 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="text-center mb-20 lg:mb-24">
             <h2 className="js-reveal text-4xl md:text-6xl lg:text-7xl font-black text-slate-900 tracking-tighter uppercase leading-[0.9]">
-              Pure Excellence.
+              {division === 'taxation' ? 'Filing Accuracy.' : 'Pure Excellence.'}
             </h2>
           </div>
 
           <div className="grid md:grid-cols-2 gap-x-12 lg:gap-x-20 gap-y-4 max-w-6xl mx-auto">
             {excellencePoints.map((point, i) => (
-              <div key={i} className="js-reveal">
-                <ExcellenceItem text={point} />
+              <div key={i} className="js-reveal flex items-center gap-4 py-4 group">
+                <div className={`w-10 h-10 rounded-full border-2 ${primaryBorder} flex items-center justify-center flex-shrink-0 ${primaryHoverBorder} transition-colors`}>
+                  <CheckCircle className={`w-5 h-5 ${primaryIcon} ${primaryHoverText} transition-colors`} />
+                </div>
+                <span className="text-lg font-bold text-slate-700 tracking-tight">
+                  {point}
+                </span>
               </div>
             ))}
           </div>
@@ -232,7 +269,7 @@ export default function AboutPage() {
 
       {/* Background Decorative Blobs */}
       <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden opacity-40">
-        <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-blue-100 rounded-full blur-[120px] animate-pulse" />
+        <div className={`absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] ${division === 'taxation' ? 'bg-emerald-100' : 'bg-blue-100'} rounded-full blur-[120px] animate-pulse`} />
         <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-emerald-50 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
     </div>
