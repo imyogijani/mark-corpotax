@@ -96,94 +96,103 @@ export function DynamicServicesSection() {
   const displayServices = useMemo(() => services.slice(0, 3), [services]);
 
   return (
-    <section className="py-20 md:py-32 bg-slate-50 relative overflow-hidden font-sans">
-      <div className="container mx-auto px-4 md:px-6 mb-16 md:mb-24">
-        <div className="relative text-center max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="relative z-10"
-          >
-            <div className={`inline-flex items-center gap-2 px-6 py-2 bg-white rounded-full border shadow-sm ${division === 'taxation' ? 'border-emerald-100 text-emerald-600' : 'border-blue-100 text-blue-600'} text-[10px] font-black uppercase tracking-[0.4em] mb-8`}>
-              <Sparkles className="w-4 h-4" />
-              <span>{division === "taxation" ? "Regulatory Excellence" : "Strategic Wealth"}</span>
-            </div>
-
-            <h2 className="text-3xl md:text-5xl font-black mb-6 text-slate-900 uppercase tracking-tighter leading-none">
-              {division === "taxation" ? "Statutory Advisory" : "Capital Solutions"} <br />
-              <span className={division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}>Tailored For Excellence</span>
-            </h2>
-
-            <p className="text-sm md:text-lg text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed">
-              {division === "taxation"
-                ? "Navigating complex legal frameworks with precision audits and strategic tax planning for corporate integrity."
-                : "Empowering your business vision with optimized capital mix, from MSME project finance to strategic working capital."}
-            </p>
-          </motion.div>
-        </div>
-      </div>
-
+    <section className="py-24 md:py-36 bg-slate-50 relative overflow-hidden font-sans">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-          <AnimatePresence mode="wait">
-            {displayServices.map((service, index) => (
-              <motion.div
-                key={`${division}-${index}`}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="relative group"
-              >
-                <Link
-                  href={service.slug ? `/services/${service.slug}` : (service as any).id ? `/services/${(service as any).id}` : "/services"}
-                  className={`relative block h-full w-full overflow-hidden rounded-[2.5rem] md:rounded-[3rem] bg-white border border-slate-100 p-8 md:p-12 text-left no-underline shadow-[0_20px_50px_rgba(0,0,0,0.02)] transition-all duration-500 hover:shadow-[0_40px_80px_rgba(37,99,235,0.12)] ${division === 'taxation' ? 'hover:border-emerald-200 hover:shadow-emerald-500/10' : 'hover:border-blue-200 hover:shadow-blue-500/10'}`}
-                >
-                  <div className="relative z-10 flex h-full flex-col">
-                    <div className="flex-1">
-                      <div className={`mb-8 md:mb-10 w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-full flex items-center justify-center transition-all duration-500 shadow-inner group-hover:rotate-6 ${division === 'taxation' ? 'bg-emerald-50 border-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-500' : 'bg-blue-50 border-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500'}`}>
-                        <div className="relative z-10 transition-transform duration-500 group-hover:scale-110">
-                          {getIcon(service.icon || "")}
+        <div className="flex flex-col xl:flex-row gap-16 xl:gap-20 items-start">
+          {/* Left: Heading Content (Sticky) */}
+          <div className="xl:w-[28%] xl:sticky xl:top-40 xl:pt-4">
+            <motion.div 
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="relative z-10"
+            >
+              <div className={`inline-flex items-center gap-3 px-6 py-2 bg-white rounded-full border shadow-sm ${division === 'taxation' ? 'border-emerald-100 text-emerald-600' : 'border-blue-100 text-blue-600'} text-[10px] font-black uppercase tracking-[0.4em] mb-8`}>
+                <Sparkles className="w-4 h-4" />
+                <span>{division === "taxation" ? "Regulatory Excellence" : "Strategic Wealth"}</span>
+              </div>
+
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-8 text-slate-900 uppercase tracking-tighter leading-[1] space-y-2">
+                <span className="block">{division === "taxation" ? "Statutory" : "Capital"}</span>
+                <span className={division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}>
+                  {division === "taxation" ? "Advisory" : "Solutions"}
+                </span>
+              </h2>
+
+              <p className="text-base text-slate-500 font-medium leading-relaxed mb-10 max-w-sm">
+                {division === "taxation" 
+                  ? "Navigating complex legal frameworks with precision audits and strategic tax planning."
+                  : "Empowering your business vision with optimized capital mix and strategic project finance."}
+              </p>
+
+              <Link href="/services" className="hidden xl:inline-flex">
+                <button className={`inline-flex items-center gap-5 px-10 py-5 rounded-full font-black text-xs uppercase tracking-[0.2em] transition-all duration-500 shadow-xl active:scale-95 group ${division === 'taxation' ? 'bg-slate-900 hover:bg-emerald-600 text-white shadow-emerald-500/10' : 'bg-slate-900 hover:bg-blue-600 text-white shadow-blue-500/10'}`}>
+                  View All Services
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
+                </button>
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Right: Cards Grid */}
+          <div className="xl:w-[72%] w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+              <AnimatePresence mode="wait">
+                {displayServices.map((service, index) => (
+                  <motion.div 
+                    key={`${division}-${index}`} 
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1, duration: 0.6 }}
+                    className="relative group h-full flex"
+                  >
+                    <Link
+                      href={service.slug ? `/services/${service.slug}` : (service as any).id ? `/services/${(service as any).id}` : "/services"}
+                      className={`relative flex-1 flex flex-col overflow-hidden rounded-[2.5rem] bg-white border border-slate-100 p-7 md:p-8 text-left no-underline shadow-[0_20px_50px_rgba(0,0,0,0.02)] transition-all duration-700 hover:shadow-[0_40px_80px_rgba(37,99,235,0.1)] ${division === 'taxation' ? 'hover:border-emerald-200 hover:shadow-emerald-500/10' : 'hover:border-blue-200 hover:shadow-blue-500/10'}`}
+                    >
+                      <div className="relative z-10 flex h-full flex-col">
+                        <div className="flex-1">
+                          <div className={`mb-6 w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-700 shadow-inner group-hover:rotate-12 ${division === 'taxation' ? 'bg-emerald-50 border-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white' : 'bg-blue-50 border-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white'}`}>
+                            <div className="relative z-10 transition-transform duration-700 group-hover:scale-110">
+                              {getIcon(service.icon || "")}
+                            </div>
+                          </div>
+
+                          <h3 className={`mb-3 text-xl md:text-[1.25rem] font-bold text-slate-900 transition-colors tracking-tight uppercase leading-[1.2] ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'}`}>
+                            {service.title}
+                          </h3>
+
+                          <p className="text-sm text-slate-500 group-hover:text-slate-600 leading-relaxed font-medium opacity-80 group-hover:opacity-100 transition-opacity">
+                            {service.description}
+                          </p>
+                        </div>
+
+                        <div className={`mt-8 flex items-center text-[10px] font-black uppercase tracking-[0.3em] transition-all ${division === 'taxation' ? 'text-emerald-600 group-hover:text-emerald-700' : 'text-blue-600 group-hover:text-blue-700'}`}>
+                          <span className="border-b-2 border-transparent group-hover:border-current pb-1 transition-all">Explore</span>
+                          <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-2 transition-transform duration-500" />
                         </div>
                       </div>
 
-                      <h3 className={`mb-4 text-xl md:text-2xl font-black text-slate-900 transition-colors tracking-tight uppercase leading-[1.1] ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'}`}>
-                        {service.title}
-                      </h3>
+                      {/* Premium Decorative Gradient */}
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-slate-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                    </Link>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
 
-                      <p className="text-xs md:text-sm text-slate-500 group-hover:text-slate-600 leading-relaxed font-medium">
-                        {service.description}
-                      </p>
-                    </div>
-
-                    <div className={`mt-10 md:mt-12 flex items-center text-[10px] font-black uppercase tracking-[0.25em] transition-all ${division === 'taxation' ? 'text-emerald-600 group-hover:text-emerald-700' : 'text-blue-600 group-hover:text-blue-700'}`}>
-                      <span>Explore</span>
-                      <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-3 transition-transform" />
-                    </div>
-                  </div>
-
-                  {/* Pattern Overlay */}
-                  <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
-                </Link>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+            <div className="xl:hidden text-center mt-12">
+              <Link href="/services">
+                <button className={`inline-flex items-center gap-5 px-10 py-5 rounded-full font-black text-xs uppercase tracking-[0.2em] transition-all duration-500 shadow-xl active:scale-95 group ${division === 'taxation' ? 'bg-slate-900 hover:bg-emerald-600 text-white shadow-emerald-500/10' : 'bg-slate-900 hover:bg-blue-600 text-white shadow-blue-500/10'}`}>
+                  View All Services
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                </button>
+              </Link>
+            </div>
+          </div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mt-16 md:mt-24"
-        >
-          <Link href="/services">
-            <button className={`inline-flex items-center gap-4 px-10 py-5 rounded-full font-black text-sm uppercase tracking-widest transition-all duration-500 shadow-xl shadow-slate-200 active:scale-95 group ${division === 'taxation' ? 'bg-slate-900 hover:bg-emerald-600 text-white hover:shadow-emerald-500/20' : 'bg-slate-900 hover:bg-blue-600 text-white hover:shadow-blue-500/20'}`}>
-              View All Services
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
-            </button>
-          </Link>
-        </motion.div>
       </div>
 
       {/* Background Decor */}

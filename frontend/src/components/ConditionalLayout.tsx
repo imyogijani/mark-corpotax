@@ -61,6 +61,7 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
       <SmoothScroll />
       <Preloader />
       <ScrollProgress />
+
       {/* Premium Navigation Curtain */}
       <AnimatePresence mode="wait">
         <motion.div

@@ -14,12 +14,12 @@ export default function Preloader() {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
-          setTimeout(() => setIsLoading(false), 500);
+          setTimeout(() => setIsLoading(false), 200);
           return 100;
         }
         return prev + 1;
       });
-    }, 20); // Fast but smooth progress
+    }, 8); // Very fast progress
 
     return () => clearInterval(interval);
   }, [setIsLoading]);
@@ -32,11 +32,11 @@ export default function Preloader() {
           initial={{ opacity: 1 }}
           exit={{
             y: "-100%",
-            transition: {
-              duration: 0.8,
+            transition: { 
+              duration: 0.5, 
               ease: [0.76, 0, 0.24, 1],
-              delay: 0.2
-            }
+              delay: 0.1
+            } 
           }}
         >
           {/* Subtle Background Decorations */}
@@ -64,15 +64,10 @@ export default function Preloader() {
             <motion.div
               initial={{ scale: 0.8, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="relative w-32 h-32 mb-8"
             >
               <div className="absolute inset-0 rounded-full border border-blue-100 scale-125 shadow-sm bg-white/50 backdrop-blur-sm" />
-              <motion.div
-                className="absolute inset-0 rounded-full border-t-2 border-[#0b4c80]"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              />
               <div className="flex items-center justify-center w-full h-full p-6">
                 <Logo className="w-full h-full object-contain" />
               </div>
