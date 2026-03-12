@@ -208,12 +208,12 @@ export function DynamicTestimonialsSection() {
   const currentTestimonial = testimonials[currentIndex];
 
   return (
-    <section className="py-20 md:py-28 bg-[#F8FAFC] relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-[#F8FAFC] relative overflow-hidden">
       {/* Premium Light Decorative Background */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 -z-10"></div>
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-100/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 -z-10"></div>
 
-      <div className="container mx-auto px-4 mb-20">
+      <div className="container mx-auto px-4 mb-12">
         <div className="relative text-center max-w-4xl mx-auto">
           {/* Animated Watermark - Light Theme */}
           <motion.div

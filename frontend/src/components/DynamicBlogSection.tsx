@@ -104,11 +104,11 @@ export function DynamicBlogSection() {
   const blogPosts = useMemo(() => blogSection?.blog_posts || [], [blogSection]);
 
   return (
-    <section className="py-24 md:py-32 bg-white relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-white relative overflow-hidden">
       {/* Background flair - Light Theme */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-50/50 blur-[120px] rounded-full -z-10" />
 
-      <div className="container mx-auto px-4 mb-20">
+      <div className="container mx-auto px-4 mb-12">
         <div className="relative text-center max-w-4xl mx-auto">
           {/* Animated Watermark - Light Theme */}
           <motion.div

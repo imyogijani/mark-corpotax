@@ -259,11 +259,11 @@ export function DynamicTeamSection() {
   );
 
   return (
-    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-white relative overflow-hidden">
       {/* Background Decorative Element - Light Theme */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(1000px_circle_at_center,rgba(37,99,235,0.03),transparent_100%)] -z-10" />
 
-      <div className="container mx-auto px-4 mb-20">
+      <div className="container mx-auto px-4 mb-12">
         <div className="relative text-center max-w-4xl mx-auto">
           {/* Animated Watermark - Light Theme */}
           <motion.div
@@ -348,14 +348,6 @@ export function DynamicTeamSection() {
                   {member?.title}
                 </p>
 
-                {/* Social Placeholder - Light Theme */}
-                <div className="flex justify-center gap-3 mt-8 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                  {[1, 2, 3].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all duration-300 cursor-pointer border border-slate-100 shadow-sm">
-                      <div className="w-4 h-4 rounded-sm bg-current opacity-40" />
-                    </div>
-                  ))}
-                </div>
               </Card>
             </motion.div>
           ))}

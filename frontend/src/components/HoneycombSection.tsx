@@ -70,7 +70,7 @@ export default function HoneycombSection() {
   }, []);
 
   return (
-    <section className="py-24 md:py-32 bg-slate-50 relative overflow-hidden font-sans">
+    <section className="py-12 md:py-16 bg-slate-50 relative overflow-hidden font-sans">
       {/* Structural Pattern Background - Light Theme */}
       <div className="absolute inset-0 opacity-[0.5] pointer-events-none">
         <div
@@ -83,7 +83,7 @@ export default function HoneycombSection() {
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <header className="text-center mb-16 md:mb-24 flex flex-col items-center">
+        <header className="text-center mb-10 md:mb-14 flex flex-col items-center">
           <div className="mb-10">
             <ChangeDivisionButton
               shouldAnimate={true}

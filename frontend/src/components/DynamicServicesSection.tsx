@@ -94,8 +94,8 @@ export function DynamicServicesSection() {
   const displayServices = useMemo(() => services.slice(0, 3), [services]);
 
   return (
-    <section className="py-20 md:py-28 bg-slate-50 relative overflow-hidden">
-      <div className="container mx-auto px-4 mb-20">
+    <section className="py-12 md:py-16 bg-slate-50 relative overflow-hidden">
+      <div className="container mx-auto px-4 mb-12">
         <div className="relative text-center max-w-4xl mx-auto">
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 mb-4">
@@ -152,7 +152,7 @@ export function DynamicServicesSection() {
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        <div className="text-center mt-10">
           <Button asChild className="text-white rounded-full px-8 py-3 h-12 font-bold transition-all hover:bg-blue-700 bg-blue-600 shadow-xl shadow-blue-500/20 active:scale-95">
             <Link href="/services">View All Services</Link>
           </Button>
