@@ -240,9 +240,9 @@ export function Header() {
       >
 
         <nav
-          className={`relative w-full max-w-[95%] lg:max-w-7xl flex items-center justify-between px-8 py-2 transition-all duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.1)] gpu ${isScrolled
-              ? "bg-white/95 backdrop-blur-xl border border-white/60 rounded-full py-2 shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
-              : "bg-white/90 backdrop-blur-md border border-white/20 rounded-full py-3 lg:py-5"
+          className={`relative w-full max-w-[95%] lg:max-w-7xl flex items-center justify-between pl-8 pr-2 transition-all duration-500 shadow-[0_25px_60px_rgba(0,0,0,0.08)] gpu ${isScrolled
+              ? "bg-white/95 backdrop-blur-2xl border border-white/60 rounded-full py-1.5"
+              : "bg-white/90 backdrop-blur-xl border border-white/20 rounded-full py-2.5"
             }`}
         >
           {/* Left: Logo & Brand Area */}
@@ -425,14 +425,14 @@ export function Header() {
               {isSearchOpen ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
             </button>
 
-            <div className="w-[1px] h-4 bg-slate-200 mx-1" />
-
+            <div className="w-[1px] h-4 bg-slate-200 ml-1 mr-2" />
+            
             <Link href="/appointment">
               <Button
-                className="bg-slate-900 hover:bg-blue-600 text-white font-black text-[10px] uppercase tracking-[0.15em] rounded-full px-7 py-5 h-auto shadow-md transition-all duration-500 flex items-center gap-2"
+                className="bg-slate-950 hover:bg-blue-600 text-white font-black text-[11px] uppercase tracking-[0.2em] rounded-full px-10 py-4 h-auto transition-all duration-500 flex items-center gap-4 group shadow-lg shadow-slate-900/10 hover:shadow-blue-500/20 active:scale-95"
               >
                 Join Now
-                <ArrowRight className="w-3 h-3" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
               </Button>
             </Link>
           </div>
