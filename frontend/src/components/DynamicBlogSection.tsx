@@ -74,13 +74,6 @@ export function DynamicBlogSection() {
     };
   }, [fetchContent]);
 
-<<<<<<< HEAD
-  const getBlogImage = (index: number) => {
-    const images = [
-      "/blog-finance.png",
-      "/blog-taxation.png",
-      "/blog-investment.png",
-=======
   const getIcon = (index: number) => {
     const icons = [
       <motion.div
@@ -113,20 +106,8 @@ export function DynamicBlogSection() {
           style={{ color: division === 'taxation' ? '#059669' : '#2563eb', opacity: 0.6 }}
         />
       </motion.div>,
->>>>>>> b5f05c8449eb89f0eee28a0a3cb365b6e7bcb258
     ];
-    const imageSrc = images[index % images.length];
-
-    return (
-      <div className="relative w-full h-full">
-        <Image
-          src={imageSrc}
-          alt="Blog Insight"
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-        />
-      </div>
-    );
+    return icons[index % icons.length];
   };
 
   // Memoize blog posts
@@ -202,18 +183,12 @@ export function DynamicBlogSection() {
                 ease: "easeOut"
               }}
             >
-<<<<<<< HEAD
-              <Card className="group relative overflow-hidden bg-white border border-slate-100 rounded-[3rem] h-full flex flex-col transition-all duration-500 shadow-[0_15px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_45px_100px_rgba(37,99,235,0.1)] hover:border-blue-100 hover:-translate-y-4">
-                <div className="h-64 relative overflow-hidden bg-slate-50">
-                  {getBlogImage(index)}
-=======
               <Card className={`group relative overflow-hidden bg-white border border-slate-100 rounded-[3rem] h-full flex flex-col transition-all duration-500 shadow-[0_15px_40px_rgba(0,0,0,0.03)] ${division === 'taxation' ? 'hover:shadow-[0_45px_100px_rgba(16,185,129,0.1)] hover:border-emerald-100' : 'hover:shadow-[0_45px_100px_rgba(37,99,235,0.1)] hover:border-blue-100'} hover:-translate-y-4`}>
                 <div className="h-64 relative overflow-hidden bg-slate-50 flex items-center justify-center p-8">
                   <div className={`absolute inset-0 bg-gradient-to-br transition-opacity duration-700 opacity-0 group-hover:opacity-100 ${division === 'taxation' ? 'from-emerald-600/5' : 'from-blue-600/5'} to-transparent`} />
                   <div className="relative z-10 transform transition-all duration-700 group-hover:scale-125 group-hover:rotate-6">
                     {getIcon(index)}
                   </div>
->>>>>>> b5f05c8449eb89f0eee28a0a3cb365b6e7bcb258
                 </div>
 
                 <CardContent className="p-10 flex-1 flex flex-col">
