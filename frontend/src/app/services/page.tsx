@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, Variants, AnimatePresence } from "framer-motion";
-import { ArrowRight, Sparkles, HelpCircle, Search, X, ChevronRight, Filter, Home, Factory, User, Calculator, Briefcase } from "lucide-react";
+import { ArrowRight, Sparkles, HelpCircle, Search, X, ChevronRight, ChevronLeft, Filter, Home, Factory, User, Calculator, Briefcase } from "lucide-react";
 import { servicesData } from "@/constants/servicesData";
 
 const containerVariants: Variants = {
@@ -29,7 +29,10 @@ function ServicesPageContent() {
   const [division, setDivision] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [showFloatingNav, setShowFloatingNav] = useState(false);
+  const [currentSwipeIndex, setCurrentSwipeIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const sliderRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
     const saved = localStorage.getItem("user_division");
@@ -40,13 +43,7 @@ function ServicesPageContent() {
     ? ["Taxation Division"] as const
     : ["Retail / Mortgage", "SME / MSME Loans", "Unsecured Loans"] as const;
 
-  // Set default active category when division changes
-  useEffect(() => {
-    if (categories.length > 0 && !activeCategory) {
-      const firstId = categories[0].toLowerCase().replace(/[^a-z0-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-      setActiveCategory(firstId);
-    }
-  }, [categories, activeCategory]);
+  const getCategoryId = (cat: string) => cat.toLowerCase().replace(/[^a-z0-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
 
   const filteredServicesData = servicesData.filter(service => {
     if (!division) return false;
@@ -62,7 +59,41 @@ function ServicesPageContent() {
     return matchesQuery && matchesDivision;
   });
 
-  const getCategoryId = (cat: string) => cat.toLowerCase().replace(/[^a-z0-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+  // Reset swipe index when category changes
+  useEffect(() => {
+    setCurrentSwipeIndex(0);
+  }, [activeCategory]);
+
+  // Auto-swipe Logic
+  useEffect(() => {
+    if (!isAutoPlaying || !activeCategory) return;
+
+    const interval = setInterval(() => {
+      const slider = sliderRefs.current[activeCategory];
+      if (slider) {
+        const filteredServices = filteredServicesData.filter(s => getCategoryId(s.category) === activeCategory);
+        if (filteredServices.length <= 1) return;
+        
+        const nextIndex = (currentSwipeIndex + 1) % filteredServices.length;
+        
+        slider.scrollTo({ 
+          left: nextIndex * slider.clientWidth, 
+          behavior: 'smooth' 
+        });
+        setCurrentSwipeIndex(nextIndex);
+      }
+    }, 5000); // 5 seconds interval
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, currentSwipeIndex, activeCategory, filteredServicesData]);
+
+  // Default active category
+  useEffect(() => {
+    if (categories.length > 0 && !activeCategory) {
+      const firstId = getCategoryId(categories[0]);
+      setActiveCategory(firstId);
+    }
+  }, [categories, activeCategory]);
 
   return (
     <div className="min-h-screen bg-slate-50 pt-28 md:pt-36 pb-20 md:pb-32 relative overflow-x-hidden">
@@ -136,7 +167,7 @@ function ServicesPageContent() {
             </div>
 
             {/* Mobile Navigation */}
-            <div className="md:hidden grid grid-cols-2 gap-3 px-1">
+            <div className="md:hidden flex gap-2 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4 snap-x">
               {categories.map((cat) => {
                 const id = getCategoryId(cat);
                 const isActive = activeCategory === id;
@@ -144,7 +175,7 @@ function ServicesPageContent() {
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(id)}
-                    className={`px-4 py-5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all text-center leading-tight ${
+                    className={`flex-shrink-0 whitespace-nowrap px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all text-center leading-tight snap-center ${
                       isActive 
                         ? division === 'taxation' ? "bg-emerald-600 text-white shadow-lg" : "bg-blue-600 text-white shadow-lg" 
                         : "bg-white text-slate-600 border border-slate-100 shadow-sm"
@@ -197,50 +228,115 @@ function ServicesPageContent() {
                       </div>
                     </div>
 
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-12">
-                      {filteredServices.map((service) => (
-                        <motion.div 
-                          key={service.id} 
-                          variants={itemVariants}
-                          initial="hidden"
-                          animate="visible"
-                          whileHover={{ y: -10 }}
-                        >
-                          <Link href={`/services/${service.id}`} className="group block h-full">
-                            <div className={`bg-white rounded-[3rem] overflow-hidden h-full flex flex-col border border-slate-100 transition-all duration-700 relative shadow-[0_30px_60px_rgba(0,0,0,0.02)] ${division === 'taxation' ? 'hover:border-emerald-200 hover:shadow-[0_50px_100px_rgba(16,185,129,0.08)]' : 'hover:border-blue-200 hover:shadow-[0_50px_100px_rgba(37,99,235,0.08)]'}`}>
-                              <div className="relative h-64 sm:h-72 w-full overflow-hidden">
-                                <img
-                                  src={service.image}
-                                  alt={service.name}
-                                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-80" />
-                                
-                                <div className="absolute top-8 right-8">
-                                   <div className="w-14 h-14 rounded-full bg-white/95 backdrop-blur-xl border border-white flex items-center justify-center text-slate-900 shadow-2xl opacity-0 hover:opacity-100 transition-all duration-500 transform translate-x-4 hover:translate-x-0">
-                                      <ArrowRight className="w-5 h-5" />
-                                   </div>
-                                </div>
-                              </div>
+                    <div className="relative group/slider">
+                      {/* Swipe Hint */}
+                      <div className="absolute -top-12 right-2 flex items-center gap-2 text-slate-400 md:hidden">
+                        <span className="text-[10px] font-black uppercase tracking-widest">Swipe</span>
+                        <ArrowRight className="w-3 h-3 animate-bounce-x" />
+                      </div>
 
-                              <div className="p-10 pt-2 flex flex-col items-start flex-1 relative z-10">
-                                <h3 className={`text-3xl md:text-4xl font-black text-slate-900 mb-6 ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'} transition-colors uppercase tracking-tighter leading-none`}>
-                                  {service.name}
-                                </h3>
-                                
-                                <p className="text-base md:text-lg text-slate-600 font-medium leading-relaxed mb-12 line-clamp-3">
-                                  {service.description}
-                                </p>
-                                
-                                <div className="mt-auto flex items-center gap-4 group/link">
-                                  <span className={`text-xs font-black uppercase tracking-[0.3em] text-slate-500 ${division === 'taxation' ? 'group-hover/link:text-emerald-600' : 'group-hover/link:text-blue-600'} transition-colors`}>Strategic Details</span>
-                                  <div className={`w-16 h-[2px] bg-slate-200 ${division === 'taxation' ? 'group-hover/link:bg-emerald-600' : 'group-hover/link:bg-blue-600'} group-hover/link:w-24 transition-all duration-700`} />
+                      <div className="relative overflow-visible">
+                        {/* Navigation Arrows (Desktop Only) */}
+                        <div className="hidden md:flex absolute -left-20 -right-20 top-1/2 -translate-y-1/2 items-center justify-between pointer-events-none z-20">
+                          <button 
+                            onClick={() => {
+                              const slider = sliderRefs.current[id];
+                              if (slider) {
+                                slider.scrollBy({ left: -slider.clientWidth, behavior: 'smooth' });
+                              }
+                            }}
+                            className="p-6 bg-white border border-slate-100 rounded-full shadow-xl text-slate-400 hover:text-blue-600 hover:scale-110 pointer-events-auto transition-all active:scale-90"
+                          >
+                            <ChevronLeft className="w-8 h-8" />
+                          </button>
+                          <button 
+                            onClick={() => {
+                              const slider = sliderRefs.current[id];
+                              if (slider) {
+                                slider.scrollBy({ left: slider.clientWidth, behavior: 'smooth' });
+                              }
+                            }}
+                            className="p-6 bg-white border border-slate-100 rounded-full shadow-xl text-slate-400 hover:text-blue-600 hover:scale-110 pointer-events-auto transition-all active:scale-90"
+                          >
+                            <ChevronRight className="w-8 h-8" />
+                          </button>
+                        </div>
+
+                        {/* Swipe Container */}
+                        <div 
+                          ref={(el) => { if (id) sliderRefs.current[id] = el; }}
+                          onMouseEnter={() => setIsAutoPlaying(false)}
+                          onMouseLeave={() => setIsAutoPlaying(true)}
+                          onScroll={(e) => {
+                            const container = e.currentTarget;
+                            const index = Math.round(container.scrollLeft / container.clientWidth);
+                            if (index !== currentSwipeIndex) setCurrentSwipeIndex(index);
+                          }}
+                          className="slider-container flex gap-0 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-12 -mx-4 md:-mx-12"
+                          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                        >
+                          {filteredServices.map((service) => (
+                            <motion.div 
+                              key={service.id} 
+                              className="flex-shrink-0 w-full md:max-w-4xl mx-auto px-4 md:px-12 snap-center snap-always"
+                              variants={itemVariants}
+                              initial="hidden"
+                              animate="visible"
+                              whileHover={{ y: -10 }}
+                            >
+                              <Link href={`/services/${service.id}`} className="group block h-full">
+                                <div className={`bg-white rounded-[3rem] overflow-hidden h-full flex flex-col border border-slate-100 transition-all duration-700 relative shadow-[0_30px_60px_rgba(0,0,0,0.02)] ${division === 'taxation' ? 'hover:border-emerald-200 hover:shadow-[0_50px_100px_rgba(16,185,129,0.08)]' : 'hover:border-blue-200 hover:shadow-[0_50px_100px_rgba(37,99,235,0.08)]'}`}>
+                                  <div className="relative h-64 sm:h-72 w-full overflow-hidden">
+                                    <img
+                                      src={service.image}
+                                      alt={service.name}
+                                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-80" />
+                                    
+                                    <div className="absolute top-8 right-8">
+                                       <div className="w-14 h-14 rounded-full bg-white/95 backdrop-blur-xl border border-white flex items-center justify-center text-slate-900 shadow-2xl opacity-0 hover:opacity-100 transition-all duration-500 transform translate-x-4 hover:translate-x-0">
+                                          <ArrowRight className="w-5 h-5" />
+                                       </div>
+                                    </div>
+                                  </div>
+
+                                  <div className="p-10 pt-2 flex flex-col items-start flex-1 relative z-10 text-center md:text-left">
+                                    <h3 className={`w-full text-3xl md:text-5xl font-black text-slate-900 mb-6 ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'} transition-colors uppercase tracking-tighter leading-tight`}>
+                                      {service.name}
+                                    </h3>
+                                    
+                                    <p className="w-full text-base md:text-xl text-slate-600 font-medium leading-relaxed mb-12 line-clamp-3">
+                                      {service.description}
+                                    </p>
+                                    
+                                    <div className="mt-auto w-full flex items-center justify-center md:justify-start gap-4 group/link">
+                                      <span className={`text-xs font-black uppercase tracking-[0.3em] text-slate-500 ${division === 'taxation' ? 'group-hover/link:text-emerald-600' : 'group-hover/link:text-blue-600'} transition-colors`}>Strategic Details</span>
+                                      <div className={`w-16 h-[2px] bg-slate-200 ${division === 'taxation' ? 'group-hover/link:bg-emerald-600' : 'group-hover/link:bg-blue-600'} group-hover/link:w-24 transition-all duration-700`} />
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
-                          </Link>
-                        </motion.div>
-                      ))}
+                              </Link>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Progress Indication (Dots) */}
+                      <div className="flex justify-center gap-3 mt-4">
+                        {filteredServices.map((_, idx) => (
+                          <button 
+                            key={idx}
+                            onClick={() => {
+                              const slider = sliderRefs.current[id];
+                              if (slider) {
+                                slider.scrollTo({ left: idx * slider.clientWidth, behavior: 'smooth' });
+                              }
+                            }}
+                            className={`h-2 rounded-full transition-all duration-500 ${idx === currentSwipeIndex ? (division === 'taxation' ? 'w-12 bg-emerald-600' : 'w-12 bg-blue-600') : 'w-2 bg-slate-200 hover:bg-slate-300'}`}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
                 );
