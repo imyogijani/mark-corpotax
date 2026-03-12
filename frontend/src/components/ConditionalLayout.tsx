@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, Suspense } from "react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import PageTransition from "@/components/PageTransition";
@@ -41,6 +41,7 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
       <SmoothScroll />
       <Preloader />
       <ScrollProgress />
+<<<<<<< HEAD
       
       {/* Premium Navigation Curtain */}
       <AnimatePresence mode="wait">
@@ -74,10 +75,23 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
       {showLayout && <Header />}
       <main className="flex-1 overflow-hidden">
         <AnimatePresence mode="wait" initial={false}>
+=======
+      {showLayout && (
+        <Suspense fallback={null}>
+          <Header />
+        </Suspense>
+      )}
+      <main className="flex-1">
+        <AnimatePresence mode="wait">
+>>>>>>> 78e92a6ecad02441f2b7dbd4035f473c78398474
           <PageTransition key={pathname}>{children}</PageTransition>
         </AnimatePresence>
       </main>
-      {showLayout && <Footer />}
+      {showLayout && (
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
+      )}
     </>
   );
 }
