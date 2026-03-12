@@ -90,7 +90,7 @@ function transformTeamData(data: Record<string, unknown>): TeamSectionData {
 const IllustratedAvatar = ({ index, type }: { index: number; type: string }) => {
   const variant = index % 3;
   const isTax = type.toLowerCase().includes("tax");
-  
+
   // High-end color palette
   const primary = isTax ? "#059669" : "#0b4c80";
   const accent = isTax ? "#10b981" : "#2563eb";
@@ -103,7 +103,7 @@ const IllustratedAvatar = ({ index, type }: { index: number; type: string }) => 
     >
       {/* Premium Background Container */}
       <div className={`absolute inset-2 bg-gradient-to-br ${bgGradient} rounded-[3rem] border border-slate-100 shadow-2xl transition-all duration-500 group-hover:shadow-blue-200/50 group-hover:border-blue-100`} />
-      
+
       <svg
         viewBox="0 0 120 120"
         className="w-36 h-36 relative z-10"
@@ -173,15 +173,15 @@ const IllustratedAvatar = ({ index, type }: { index: number; type: string }) => 
               {/* Silk Scarf / Detail */}
               <path d="M52 72C52 72 56 82 60 82C64 82 68 72 68 72" fill={accent} opacity="0.6" />
               <path d="M45 75L35 100M75 75L85 100" stroke="white" strokeWidth="0.5" opacity="0.4" />
-              
+
               {/* Gorgeous Silk Hair (Back Layer with Depth) */}
               <path d="M22 40C22 12 40 8 60 8C85 8 98 25 98 65V100H22V40Z" fill="#3D2B1F" />
               <path d="M98 60C98 80 92 95 85 105" stroke="#2D1F17" strokeWidth="4" strokeLinecap="round" />
-              
+
               {/* Head and Neck */}
               <rect x="54" y="60" width="12" height="15" fill="#fde68a" />
               <circle cx="60" cy="40" r="23" fill="url(#skin-v5-2)" />
-              
+
               {/* Stunning Face (Fine Details) */}
               <g>
                 {/* Beautiful Eyes (High Detail) */}
@@ -196,15 +196,15 @@ const IllustratedAvatar = ({ index, type }: { index: number; type: string }) => 
                 <circle cx="68" cy="44.5" r="2" fill="#0f172a" />
                 <circle cx="52.8" cy="43.5" r="0.8" fill="white" />
                 <circle cx="68.8" cy="43.5" r="0.8" fill="white" />
-                
+
                 {/* Perfect Professional Smile */}
                 <path d="M54 58C54 58 58 63 60 63C62 63 66 58 66 58" fill="#f43f5e" opacity="0.15" />
                 <path d="M55 58C55 58 58 62 60 62C62 62 65 58 65 58" stroke="#be123c" strokeWidth="2.5" strokeLinecap="round" />
-                
+
                 {/* Soft Elegance Makeup */}
                 <circle cx="45" cy="52" r="4" fill="#fda4af" opacity="0.2" />
                 <circle cx="75" cy="52" r="4" fill="#fda4af" opacity="0.2" />
-                
+
                 {/* Luxury Diamond Studs */}
                 <circle cx="36" cy="52" r="1.5" fill="white" shadow-xl="true" />
                 <circle cx="36" cy="52" r="2" stroke="white" strokeWidth="0.5" opacity="0.4" />
@@ -359,8 +359,8 @@ export function DynamicTeamSection() {
                     {member.image ? (
                       <div className="relative w-40 h-40 mx-auto flex items-center justify-center">
                         <div className={`absolute inset-2 bg-gradient-to-br ${member.title.toLowerCase().includes("tax") ? "from-emerald-50 to-white" : "from-blue-50 to-white"} rounded-[3rem] border border-slate-100 shadow-2xl transition-all duration-500 group-hover:shadow-blue-200/50 group-hover:border-blue-100`} />
-                        <img 
-                          src={member.image} 
+                        <img
+                          src={member.image}
                           alt={member.name}
                           className="w-36 h-36 object-cover rounded-[2rem] relative z-10"
                         />

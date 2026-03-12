@@ -137,7 +137,7 @@ export function Footer() {
     settings.company_tagline || (division === 'taxation' ? "Taxation & Legal Division" : "Finance & Loan Division");
   const companyDescription =
     footerSettings.company_description ||
-    (division === 'taxation' 
+    (division === 'taxation'
       ? "Leading destination for comprehensive auditing, legal compliance, and strategic tax planning since 2012."
       : "Founded in 2012 in Surat, Gujarat. Delivering comprehensive financial and legal solutions designed to address the unique requirements of our clients.");
   const address =
@@ -171,19 +171,19 @@ export function Footer() {
     { label: "Appointments", url: "/appointment" },
   ];
 
-  const defaultServiceLinks: FooterLink[] = division === "taxation" 
+  const defaultServiceLinks: FooterLink[] = division === "taxation"
     ? [
-        { label: "Audit & Assurance", url: "/services/audit-assurance" },
-        { label: "Direct & Indirect Tax", url: "/services/income-tax" },
-        { label: "GST Compliance", url: "/services/gst-compliance" },
-        { label: "Corporate ROC Services", url: "/services/roc" },
-      ]
+      { label: "Audit & Assurance", url: "/services/audit-assurance" },
+      { label: "Direct & Indirect Tax", url: "/services/income-tax" },
+      { label: "GST Compliance", url: "/services/gst-compliance" },
+      { label: "Corporate ROC Services", url: "/services/roc" },
+    ]
     : [
-        { label: "MSME Project Finance", url: "/services/msme-project-finance" },
-        { label: "Working Capital", url: "/services/working-capital" },
-        { label: "Home Loans", url: "/services/home-loan" },
-        { label: "Business Loans", url: "/services/business-loan" },
-      ];
+      { label: "MSME Project Finance", url: "/services/msme-project-finance" },
+      { label: "Working Capital", url: "/services/working-capital" },
+      { label: "Home Loans", url: "/services/home-loan" },
+      { label: "Business Loans", url: "/services/business-loan" },
+    ];
 
   const displayQuickLinks =
     quickLinks.length > 0 ? quickLinks : defaultQuickLinks;

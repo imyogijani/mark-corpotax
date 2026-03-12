@@ -100,9 +100,8 @@ export function NotificationBell({ variant = "sheet" }: NotificationBellProps) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
             <h4
-              className={`text-sm font-medium ${
-                notification.read ? "text-gray-600" : "text-gray-900"
-              }`}
+              className={`text-sm font-medium ${notification.read ? "text-gray-600" : "text-gray-900"
+                }`}
             >
               {notification.title}
             </h4>
@@ -121,9 +120,8 @@ export function NotificationBell({ variant = "sheet" }: NotificationBellProps) {
             </div>
           </div>
           <p
-            className={`text-sm ${
-              notification.read ? "text-gray-500" : "text-gray-700"
-            } mb-2`}
+            className={`text-sm ${notification.read ? "text-gray-500" : "text-gray-700"
+              } mb-2`}
           >
             {notification.message}
           </p>

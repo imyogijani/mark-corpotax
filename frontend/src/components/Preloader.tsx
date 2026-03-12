@@ -30,18 +30,18 @@ export default function Preloader() {
         <motion.div
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white"
           initial={{ opacity: 1 }}
-          exit={{ 
+          exit={{
             y: "-100%",
-            transition: { 
-              duration: 0.8, 
+            transition: {
+              duration: 0.8,
               ease: [0.76, 0, 0.24, 1],
               delay: 0.2
-            } 
+            }
           }}
         >
           {/* Subtle Background Decorations */}
           <div className="absolute inset-0 overflow-hidden opacity-40 pointer-events-none">
-            <motion.div 
+            <motion.div
               className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-blue-100/50 blur-[120px]"
               animate={{
                 scale: [1, 1.2, 1],
@@ -49,7 +49,7 @@ export default function Preloader() {
               }}
               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
             />
-            <motion.div 
+            <motion.div
               className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-slate-100/50 blur-[120px]"
               animate={{
                 scale: [1.2, 1, 1.2],
@@ -68,7 +68,7 @@ export default function Preloader() {
               className="relative w-32 h-32 mb-8"
             >
               <div className="absolute inset-0 rounded-full border border-blue-100 scale-125 shadow-sm bg-white/50 backdrop-blur-sm" />
-              <motion.div 
+              <motion.div
                 className="absolute inset-0 rounded-full border-t-2 border-[#0b4c80]"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
@@ -88,7 +88,7 @@ export default function Preloader() {
               <h1 className="text-3xl sm:text-4xl font-black tracking-[0.2em] text-[#0b4c80]">
                 MARK <span className="text-blue-500">GROUP</span>
               </h1>
-              <motion.div 
+              <motion.div
                 className="mt-2 h-[1px] bg-gradient-to-r from-transparent via-[#0b4c80]/20 to-transparent w-full"
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
@@ -102,7 +102,7 @@ export default function Preloader() {
             {/* Progress Counter */}
             <div className="absolute top-[calc(100%+3rem)] flex flex-col items-center">
               <div className="w-64 h-[2px] bg-slate-100 mt-4 overflow-hidden rounded-full border border-slate-50">
-                <motion.div 
+                <motion.div
                   className="h-full bg-[#0b4c80]"
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}

@@ -55,9 +55,9 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
             <motion.div
               key={i}
               initial={{ scaleY: 0 }}
-              animate={{ 
+              animate={{
                 scaleY: [0, 1, 0],
-                transition: { 
+                transition: {
                   duration: 1.2,
                   times: [0, 0.5, 1],
                   delay: i * 0.1,

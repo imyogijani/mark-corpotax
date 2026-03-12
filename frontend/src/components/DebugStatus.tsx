@@ -101,11 +101,10 @@ export function DebugStatus() {
                   <span>API Status</span>
                 </div>
                 <span
-                  className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                    health?.status === "OK"
+                  className={`text-xs font-bold px-2 py-0.5 rounded-full ${health?.status === "OK"
                       ? "bg-green-100 text-green-700"
                       : "bg-red-100 text-red-700"
-                  }`}
+                    }`}
                 >
                   {health?.status || "Offline"}
                 </span>

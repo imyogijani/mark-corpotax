@@ -93,7 +93,7 @@ export function DynamicServicesSection() {
     <section className="py-20 md:py-32 bg-slate-50 relative overflow-hidden font-sans">
       <div className="container mx-auto px-4 md:px-6 mb-16 md:mb-24">
         <div className="relative text-center max-w-4xl mx-auto">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -110,7 +110,7 @@ export function DynamicServicesSection() {
             </h2>
 
             <p className="text-sm md:text-lg text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed">
-              {division === "taxation" 
+              {division === "taxation"
                 ? "Navigating complex legal frameworks with precision audits and strategic tax planning for corporate integrity."
                 : "Empowering your business vision with optimized capital mix, from MSME project finance to strategic working capital."}
             </p>
@@ -122,8 +122,8 @@ export function DynamicServicesSection() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           <AnimatePresence mode="wait">
             {displayServices.map((service, index) => (
-              <motion.div 
-                key={`${division}-${index}`} 
+              <motion.div
+                key={`${division}-${index}`}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -165,7 +165,7 @@ export function DynamicServicesSection() {
           </AnimatePresence>
         </div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
