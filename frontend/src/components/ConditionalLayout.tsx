@@ -41,7 +41,6 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
       <SmoothScroll />
       <Preloader />
       <ScrollProgress />
-      <ScrollProgress />
 
       {showLayout && (
         <Suspense fallback={null}>
