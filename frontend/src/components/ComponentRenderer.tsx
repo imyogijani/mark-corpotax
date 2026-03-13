@@ -2,25 +2,18 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { DynamicHeroSection } from "./DynamicHomeHero";
-import { DynamicAboutSection } from "./DynamicAboutSection";
-import { DynamicFeaturesSection } from "./DynamicFeaturesSection";
-import { DynamicServicesSection } from "./DynamicServicesSection";
-import { DynamicTestimonialsSection } from "./DynamicTestimonialsSection";
-import { DynamicTeamSection } from "./DynamicTeamSection";
-import { DynamicBlogSection } from "./DynamicBlogSection";
-import HoneycombSection from "./HoneycombSection";
+import dynamic from "next/dynamic";
 
-// Component Registry
+// Component Registry with Lazy Loading
 const COMPONENT_MAP: { [key: string]: React.ComponentType<any> } = {
-  HomeHero: DynamicHeroSection,
-  About: DynamicAboutSection,
-  Features: DynamicFeaturesSection,
-  Services: DynamicServicesSection,
-  Testimonials: DynamicTestimonialsSection,
-  Team: DynamicTeamSection,
-  Blog: DynamicBlogSection,
-  Honeycomb: HoneycombSection,
+  HomeHero: dynamic(() => import("./DynamicHomeHero").then(m => m.DynamicHeroSection), { ssr: true }),
+  About: dynamic(() => import("./DynamicAboutSection").then(m => m.DynamicAboutSection), { ssr: false }),
+  Features: dynamic(() => import("./DynamicFeaturesSection").then(m => m.DynamicFeaturesSection), { ssr: false }),
+  Services: dynamic(() => import("./DynamicServicesSection").then(m => m.DynamicServicesSection), { ssr: false }),
+  Testimonials: dynamic(() => import("./DynamicTestimonialsSection").then(m => m.DynamicTestimonialsSection), { ssr: false }),
+  Team: dynamic(() => import("./DynamicTeamSection").then(m => m.DynamicTeamSection), { ssr: false }),
+  Blog: dynamic(() => import("./DynamicBlogSection").then(m => m.DynamicBlogSection), { ssr: false }),
+  Honeycomb: dynamic(() => import("./HoneycombSection"), { ssr: false }),
 };
 
 interface ComponentData {

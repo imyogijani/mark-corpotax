@@ -160,6 +160,7 @@ function HexTile({ item, delay, division }: { item: HoneycombItem; delay: number
         transition: { type: "spring", stiffness: 400, damping: 25 }
       }}
       className="honeycomb-tile relative w-[90px] xs:w-[100px] h-[105px] xs:h-[115px] md:w-[180px] md:h-[208px] flex items-center justify-center transition-all duration-300 group isolate"
+      style={{ willChange: "transform, opacity" }}
     >
       <svg
         className="absolute inset-0 w-full h-full drop-shadow-[0_4px_10px_rgba(0,0,0,0.1)] transition-all duration-300 group-hover:drop-shadow-[0_10px_30px_rgba(0,0,0,0.15)]"

@@ -66,6 +66,7 @@ export function MotionWrapper({
       animate={isInView && trigger ? "visible" : "hidden"}
       variants={getVariants()}
       className={className}
+      style={{ willChange: "transform, opacity" }}
     >
       {children}
     </motion.div>

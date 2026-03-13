@@ -139,11 +139,13 @@ const StaticHeroImage = ({ heroMain, y3, division }: { heroMain: HeroMainData; y
           animate={{ rotate: 360 }}
           transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] h-[130%] border border-blue-200 rounded-full"
+          style={{ willChange: "transform" }}
         />
         <motion.div
           animate={{ rotate: -360 }}
           transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] border border-emerald-200 rounded-full"
+          style={{ willChange: "transform" }}
         />
       </div>
     </div>
