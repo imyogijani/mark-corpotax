@@ -230,7 +230,7 @@ export default function AppointmentPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative pt-48 pb-32 overflow-hidden bg-slate-50">
+      <section className="relative pt-48 pb-12 overflow-hidden bg-slate-50">
         <div className="absolute inset-0 z-0">
           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100/30 rounded-full blur-[120px] -mr-64 -mt-64" />
           <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-50/30 rounded-full blur-[100px] -ml-48 -mb-48" />
@@ -250,7 +250,7 @@ export default function AppointmentPage() {
       </section>
 
       {/* Main Content Area - Dark Theme for Premium Form */}
-      <section className="relative bg-[#111827] py-32 overflow-hidden">
+      <section className="relative bg-[#111827] pt-16 pb-32 overflow-hidden">
         {/* Large Watermark Background */}
         <div className="absolute inset-0 z-0 flex items-center justify-center opacity-[0.03] select-none pointer-events-none">
           <span className="text-[30vw] font-black tracking-widest text-white uppercase italic">MARK</span>
