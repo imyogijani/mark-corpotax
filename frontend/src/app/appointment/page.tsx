@@ -250,18 +250,18 @@ export default function AppointmentPage() {
       </section>
 
       {/* Main Content Area - Dark Theme for Premium Form */}
-      <section className="relative bg-[#111827] pt-16 pb-32 overflow-hidden">
+      <section className="relative bg-white pt-16 pb-32 overflow-hidden">
         {/* Large Watermark Background */}
-        <div className="absolute inset-0 z-0 flex items-center justify-center opacity-[0.03] select-none pointer-events-none">
-          <span className="text-[30vw] font-black tracking-widest text-white uppercase italic">MARK</span>
+        <div className="absolute inset-0 z-0 flex items-center justify-center opacity-[0.05] select-none pointer-events-none">
+          <span className="text-[30vw] font-black tracking-widest text-slate-200 uppercase italic">MARK</span>
         </div>
         
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-12 gap-20 items-stretch">
             {/* Form Section */}
-            <div className="lg:col-span-7 bg-white/5 backdrop-blur-xl border border-white/5 p-12 md:p-16 rounded-[3.5rem] shadow-2xl relative">
+            <div className="lg:col-span-7 bg-slate-50 border border-slate-100 p-12 md:p-16 rounded-[3.5rem] shadow-2xl relative">
               <div className="mb-16">
-                <h2 className="text-4xl font-black text-white uppercase tracking-tighter mb-4 font-outfit">
+                <h2 className="text-4xl font-black text-slate-900 uppercase tracking-tighter mb-4 font-outfit">
                   {formContent.form_title}
                 </h2>
                 <div className="h-1.5 w-16 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full" />
@@ -275,14 +275,14 @@ export default function AppointmentPage() {
                       name="fullName"
                       render={({ field }) => (
                         <FormItem className="group">
-                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 group-focus-within:text-blue-400 transition-colors font-outfit">
+                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-500 flex items-center gap-2 mb-3 group-focus-within:text-blue-600 transition-colors font-outfit">
                             <User className="w-3.5 h-3.5 text-blue-500" /> {formContent.name_label}
                           </FormLabel>
                           <FormControl>
                             <Input
                               placeholder="John Doe"
                               {...field}
-                              className="bg-white/5 border border-white/10 rounded-2xl h-14 px-6 text-white font-bold placeholder:text-white/20 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 bg-white/[0.03] backdrop-blur-sm transition-all font-sans"
+                              className="bg-white border border-slate-200 rounded-2xl h-14 px-6 text-slate-900 font-bold placeholder:text-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all font-sans"
                             />
                           </FormControl>
                           <FormMessage className="text-rose-500 font-bold text-[10px] uppercase tracking-wider" />
@@ -294,14 +294,14 @@ export default function AppointmentPage() {
                       name="email"
                       render={({ field }) => (
                         <FormItem className="group">
-                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 group-focus-within:text-blue-400 transition-colors font-outfit">
+                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-500 flex items-center gap-2 mb-3 group-focus-within:text-blue-600 transition-colors font-outfit">
                             <Mail className="w-3.5 h-3.5 text-blue-500" /> {formContent.email_label}
                           </FormLabel>
                           <FormControl>
                             <Input
                               placeholder="john.doe@example.com"
                               {...field}
-                              className="bg-white/5 border border-white/10 rounded-2xl h-14 px-6 text-white font-bold placeholder:text-white/20 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 bg-white/[0.03] backdrop-blur-sm transition-all font-sans"
+                              className="bg-white border border-slate-200 rounded-2xl h-14 px-6 text-slate-900 font-bold placeholder:text-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all font-sans"
                             />
                           </FormControl>
                           <FormMessage className="text-rose-500 font-bold text-[10px] uppercase tracking-wider" />
@@ -313,14 +313,14 @@ export default function AppointmentPage() {
                       name="phone"
                       render={({ field }) => (
                         <FormItem className="group">
-                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 group-focus-within:text-blue-400 transition-colors font-outfit">
+                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-500 flex items-center gap-2 mb-3 group-focus-within:text-blue-600 transition-colors font-outfit">
                             <Phone className="w-3.5 h-3.5 text-blue-500" /> {formContent.phone_label}
                           </FormLabel>
                           <FormControl>
                             <Input
                               placeholder="+91 00000 00000"
                               {...field}
-                              className="bg-white/5 border border-white/10 rounded-2xl h-14 px-6 text-white font-bold placeholder:text-white/20 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 bg-white/[0.03] backdrop-blur-sm transition-all font-sans"
+                              className="bg-white border border-slate-200 rounded-2xl h-14 px-6 text-slate-900 font-bold placeholder:text-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all font-sans"
                             />
                           </FormControl>
                           <FormMessage className="text-rose-500 font-bold text-[10px] uppercase tracking-wider" />
@@ -332,18 +332,18 @@ export default function AppointmentPage() {
                       name="serviceId"
                       render={({ field }) => (
                         <FormItem className="group">
-                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 group-focus-within:text-blue-400 transition-colors font-outfit">
+                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-500 flex items-center gap-2 mb-3 group-focus-within:text-blue-600 transition-colors font-outfit">
                             <Briefcase className="w-3.5 h-3.5 text-blue-500" /> Services of Interest
                           </FormLabel>
                           <Select onValueChange={handleServiceChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="bg-white/5 border border-white/10 rounded-2xl h-14 px-6 text-white font-bold placeholder:text-white/20 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 bg-white/[0.03] backdrop-blur-sm transition-all">
+                              <SelectTrigger className="bg-white border border-slate-200 rounded-2xl h-14 px-6 text-slate-900 font-bold placeholder:text-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all">
                                 <SelectValue placeholder="Select a service" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent className="bg-slate-900 border-white/10 text-white rounded-2xl overflow-hidden">
+                            <SelectContent className="bg-white border-slate-200 text-slate-900 rounded-2xl overflow-hidden">
                               {services.map((service) => (
-                                <SelectItem key={service.id} value={service.id} className="hover:bg-blue-600 font-bold uppercase text-[10px] tracking-widest pl-10 focus:bg-blue-600 transition-colors">
+                                <SelectItem key={service.id} value={service.id} className="hover:bg-blue-600 hover:text-white font-bold uppercase text-[10px] tracking-widest pl-10 focus:bg-blue-600 focus:text-white transition-colors">
                                   {service.name}
                                 </SelectItem>
                               ))}
@@ -361,7 +361,7 @@ export default function AppointmentPage() {
                       name="preferredDate"
                       render={({ field }) => (
                         <FormItem className="flex flex-col group">
-                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 group-focus-within:text-blue-400 transition-colors font-outfit">
+                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-500 flex items-center gap-2 mb-3 group-focus-within:text-blue-600 transition-colors font-outfit">
                             <CalendarIcon className="w-3.5 h-3.5 text-blue-500" /> {formContent.date_label}
                           </FormLabel>
                           <Popover>
@@ -370,8 +370,8 @@ export default function AppointmentPage() {
                                 <Button
                                   variant={"outline"}
                                   className={cn(
-                                    "bg-white/5 border border-white/10 rounded-2xl h-14 px-6 text-white font-bold focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 bg-white/[0.03] backdrop-blur-sm transition-all w-full text-left font-sans hover:bg-white/10 hover:text-white",
-                                    !field.value && "text-white/20",
+                                    "bg-white border border-slate-200 rounded-2xl h-14 px-6 text-slate-900 font-bold focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all w-full text-left font-sans hover:bg-slate-50 hover:text-slate-900",
+                                    !field.value && "text-slate-400",
                                   )}
                                 >
                                   {field.value ? format(field.value, "PPP") : "Pick a date"}
@@ -395,7 +395,7 @@ export default function AppointmentPage() {
                     />
 
                     <div className="group">
-                      <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-4 group-focus-within:text-blue-400 transition-colors font-outfit">
+                      <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-500 flex items-center gap-2 mb-4 group-focus-within:text-blue-600 transition-colors font-outfit">
                         <Clock className="w-3.5 h-3.5 text-blue-500" /> {formContent.time_label}
                       </label>
                       <FormField
@@ -415,8 +415,8 @@ export default function AppointmentPage() {
                                       <RadioGroupItem value={slot} className="sr-only" />
                                     </FormControl>
                                     <FormLabel className={cn(
-                                      "flex-1 flex items-center justify-center p-4 rounded-2xl border border-white/10 bg-white/[0.03] text-[10px] font-black uppercase tracking-tight cursor-pointer transition-all hover:bg-white/10 hover:border-white/20",
-                                      field.value === slot ? "bg-blue-600 border-blue-500 text-white shadow-xl shadow-blue-500/20 scale-[1.02]" : "text-slate-400"
+                                      "flex-1 flex items-center justify-center p-4 rounded-2xl border border-slate-200 bg-white text-[10px] font-black uppercase tracking-tight cursor-pointer transition-all hover:bg-slate-50 hover:border-slate-300",
+                                      field.value === slot ? "bg-blue-600 border-blue-500 text-white shadow-xl shadow-blue-500/20 scale-[1.02]" : "text-slate-500"
                                     )}>
                                       {slot.split(' - ')[0]}
                                     </FormLabel>
@@ -436,13 +436,13 @@ export default function AppointmentPage() {
                     name="notes"
                     render={({ field }) => (
                       <FormItem className="group">
-                        <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 group-focus-within:text-blue-400 transition-colors font-outfit">
+                        <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-500 flex items-center gap-2 mb-3 group-focus-within:text-blue-600 transition-colors font-outfit">
                           <BookUser className="w-3.5 h-3.5 text-blue-500" /> {formContent.notes_label}
                         </FormLabel>
                         <FormControl>
                           <Textarea
                             placeholder="Tell us anything else that might be helpful."
-                            className="bg-white/5 border border-white/10 rounded-[2rem] min-h-[140px] px-6 py-6 text-white font-bold placeholder:text-white/20 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 bg-white/[0.03] backdrop-blur-sm transition-all resize-none font-sans"
+                            className="bg-white border border-slate-200 rounded-[2rem] min-h-[140px] px-6 py-6 text-slate-900 font-bold placeholder:text-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all resize-none font-sans"
                             {...field}
                           />
                         </FormControl>
@@ -481,24 +481,24 @@ export default function AppointmentPage() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#111827] via-transparent to-transparent opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60" />
                 <div className="absolute bottom-10 left-10 right-10">
                   <h4 className="text-white font-black uppercase tracking-tighter text-2xl mb-2 font-outfit">Priority Selection</h4>
-                  <p className="text-slate-300 text-[10px] font-bold uppercase tracking-widest leading-relaxed">
+                  <p className="text-slate-100 text-[10px] font-bold uppercase tracking-widest leading-relaxed">
                     Secure a session with our most senior financial strategists.
                   </p>
                 </div>
               </div>
 
-              <div className="bg-white/5 border border-white/5 p-12 rounded-[3.5rem] backdrop-blur-md">
-                 <h4 className="text-white font-black uppercase tracking-widest text-[10px] mb-8 font-outfit opacity-60">Strategic Benefits</h4>
+              <div className="bg-slate-50 border border-slate-100 p-12 rounded-[3.5rem]">
+                 <h4 className="text-slate-900 font-black uppercase tracking-widest text-[10px] mb-8 font-outfit opacity-60">Strategic Benefits</h4>
                  <div className="space-y-6">
                     {[content.info.benefit_1, content.info.benefit_2, content.info.benefit_3, content.info.benefit_4].map((benefit, i) => (
                       <div key={i} className="flex items-center gap-4 group">
-                        <div className="w-8 h-8 rounded-lg bg-blue-600/10 flex items-center justify-center border border-blue-600/20 group-hover:bg-blue-600 transition-colors">
-                          <CheckCircle2 className="w-4 h-4 text-blue-400 group-hover:text-white" />
+                        <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center border border-blue-100 group-hover:bg-blue-600 transition-colors">
+                          <CheckCircle2 className="w-4 h-4 text-blue-600 group-hover:text-white" />
                         </div>
-                        <span className="text-[11px] font-black uppercase tracking-widest text-slate-300 font-outfit">{benefit}</span>
+                        <span className="text-[11px] font-black uppercase tracking-widest text-slate-700 font-outfit">{benefit}</span>
                       </div>
                     ))}
                  </div>

@@ -173,23 +173,6 @@ function ServicesPageContent() {
                   : "Precision-driven financial consulting to fuel your business expansion and industrial scale."}
               </p>
 
-              {/* Enhanced Search Input */}
-              <form onSubmit={handleSearch} className="relative max-w-xl group">
-                <input 
-                  type="text"
-                  placeholder="Find a specific solution..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className={`w-full h-14 md:h-18 bg-white/80 backdrop-blur-xl border border-slate-200 rounded-2xl px-12 md:px-16 text-base md:text-lg font-bold text-slate-900 focus:outline-none focus:ring-4 transition-all shadow-xl shadow-slate-200/50 ${division === 'taxation' ? 'focus:ring-emerald-500/10' : 'focus:ring-blue-500/10'}`}
-                />
-                <Search className={`absolute left-4 md:left-6 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-slate-400 transition-colors ${division === 'taxation' ? 'group-focus-within:text-emerald-600' : 'group-focus-within:text-blue-600'}`} />
-                <button 
-                  type="submit"
-                  className={`absolute right-3 top-1/2 -translate-y-1/2 h-10 md:h-12 px-6 rounded-xl font-black text-[10px] uppercase tracking-widest text-white shadow-lg ${division === 'taxation' ? 'bg-emerald-600 shadow-emerald-600/20' : 'bg-blue-600 shadow-blue-600/20'}`}
-                >
-                  Search
-                </button>
-              </form>
             </motion.div>
 
             {/* Hero Visual Card */}
