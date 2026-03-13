@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, Variants, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
+import { DotLottiePlayer } from "@dotlottie/react-player";
 import { 
   ArrowRight, 
   Sparkles, 
@@ -196,37 +197,49 @@ function ServicesPageContent() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="flex-shrink-0 w-full md:w-[400px] aspect-[4/5] relative group hidden lg:block"
+              className="flex-shrink-0 w-full md:w-[500px] aspect-square relative group hidden lg:block"
             >
-              <div className={`absolute inset-0 rounded-[3rem] shadow-2xl overflow-hidden bg-gradient-to-br ${division === 'taxation' ? 'from-emerald-600 to-teal-700' : 'from-blue-600 to-indigo-700'}`}>
-                <div className="absolute inset-0 opacity-40 mix-blend-overlay">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_2px_2px,white_1px,transparent_0)] bg-[size:24px_24px]" />
+              {/* Premium Glow Container */}
+              <div className={`absolute inset-0 rounded-[4rem] opacity-20 blur-[100px] ${division === 'taxation' ? 'bg-emerald-400' : 'bg-blue-400'}`} />
+              
+              <div className="relative w-full h-full flex items-center justify-center p-8 bg-white/40 backdrop-blur-3xl rounded-[4rem] border border-white/40 shadow-2xl overflow-hidden ring-1 ring-white/20">
+                {/* Lottie Animation */}
+                <div className="w-full h-full scale-110">
+                  <DotLottiePlayer
+                    src="/extrafiles/Service.lottie"
+                    autoplay
+                    loop
+                    className="w-full h-full"
+                  />
                 </div>
-                <div className="absolute inset-0 flex flex-col justify-end p-10 md:p-14 text-white">
-                  <div className="w-12 h-1 bg-white/20 rounded-full mb-6" />
-                  <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter leading-[0.95] mb-4 drop-shadow-2xl">
-                    Strategic<br />Advantage
-                  </h3>
-                  <p className="text-white/60 text-sm md:text-base font-medium leading-relaxed max-w-[280px]">
-                    Unlocking high-ticket funding and global compliance through precision engineering.
-                  </p>
+
+                {/* Glass Overlay for depth */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-transparent pointer-events-none" />
+                
+                {/* Floating Meta details inside the card */}
+                <div className="absolute top-10 left-10">
+                  <div className={`px-4 py-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[8px] font-black uppercase tracking-[0.3em] text-white shadow-lg`}>
+                    Interactive Visual
+                  </div>
                 </div>
               </div>
-              {/* Floating Accents */}
+
+              {/* Enhanced Floating Accents */}
               <motion.div 
-                animate={{ y: [0, -20, 0] }}
+                animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-10 -right-10 w-24 h-24 bg-white rounded-3xl shadow-2xl flex items-center justify-center"
+                className="absolute -top-6 -right-6 w-20 h-20 bg-white rounded-3xl shadow-2xl flex items-center justify-center border border-slate-50 z-20"
               >
-                <Zap className="w-10 h-10 text-yellow-400 fill-yellow-400" />
+                <Zap className={`w-10 h-10 ${division === 'taxation' ? 'text-emerald-500' : 'text-blue-500'} fill-current opacity-80`} />
               </motion.div>
+              
               <motion.div 
-                animate={{ y: [0, 20, 0] }}
+                animate={{ y: [0, 15, 0], rotate: [0, -5, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute -bottom-10 -left-20 w-32 h-32 bg-slate-900 rounded-[2rem] shadow-4xl flex flex-col items-center justify-center p-4 border border-white/10 z-20"
+                className="absolute -bottom-8 -left-12 px-8 py-5 bg-slate-900 rounded-[2rem] shadow-4xl flex flex-col items-center justify-center border border-white/10 z-20 backdrop-blur-xl"
               >
                 <ShieldCheck className="w-8 h-8 text-emerald-500 mb-2" />
-                <span className="text-[8px] font-black text-white/50 uppercase tracking-widest text-center">Verified Compliance</span>
+                <span className="text-[9px] font-black text-white uppercase tracking-widest text-center">Verified Data</span>
               </motion.div>
             </motion.div>
           </div>
