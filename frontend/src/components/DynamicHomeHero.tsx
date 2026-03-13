@@ -59,7 +59,7 @@ const HeroTitle = ({ text, trigger = true }: { text: string; trigger?: boolean }
   const characters = text.split("");
 
   return (
-    <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-slate-900 tracking-tight overflow-hidden">
+    <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-slate-900 tracking-tight overflow-hidden text-center lg:text-left">
       {characters.map((char, i) =>
         char === "\n" ? (
           <br key={i} />
@@ -220,7 +220,7 @@ export const DynamicHeroSection = () => {
       <div className="container mx-auto px-6 relative z-10 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center h-full">
           {/* Left Content */}
-          <div className="flex flex-col space-y-10">
+          <div className="flex flex-col space-y-8 md:space-y-10 items-center lg:items-start text-center lg:text-left">
             <MotionWrapper direction="left">
               <div className={`inline-flex items-center gap-2 px-1 py-1 pr-4 bg-white border rounded-full font-semibold text-xs md:text-sm uppercase tracking-wider shadow-sm group ${division === 'taxation' ? 'border-emerald-100 text-emerald-600' : 'border-blue-100 text-blue-600'}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}>
@@ -239,16 +239,16 @@ export const DynamicHeroSection = () => {
             />
 
             <MotionWrapper direction="left" delay={0.2}>
-              <p className="text-lg text-slate-600 leading-relaxed max-w-xl font-medium">
+              <p className="text-base md:text-lg text-slate-600 leading-relaxed max-w-xl font-medium mx-auto lg:mx-0">
                 {division === "taxation"
                   ? "Strategic legal advisory and comprehensive tax solutions designed for sustainable business growth and compliance in a changing landscape."
                   : (heroMain.description || FALLBACK_HERO.description)}
               </p>
             </MotionWrapper>
 
-            <MotionWrapper direction="left" delay={0.4} className="flex flex-wrap gap-8 items-center pt-4">
+            <MotionWrapper direction="left" delay={0.4} className="flex flex-wrap gap-6 md:gap-8 items-center justify-center lg:justify-start pt-4">
               <Link href={heroMain.cta_primary?.link || "/appointment"}>
-                <button className={`group relative h-16 px-10 rounded-2xl font-bold text-white text-base overflow-hidden transition-all duration-300 active:scale-95 ${division === 'taxation' ? 'bg-emerald-600 shadow-[0_15px_30px_rgba(16,185,129,0.25)] hover:shadow-[0_20px_40px_rgba(16,185,129,0.4)]' : 'bg-blue-600 shadow-[0_15px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_20px_40px_rgba(37,99,235,0.4)]'}`}>
+                <button className={`group relative h-14 md:h-16 px-8 md:px-10 rounded-2xl font-bold text-white text-sm md:text-base overflow-hidden transition-all duration-300 active:scale-95 ${division === 'taxation' ? 'bg-emerald-600 shadow-[0_15px_30px_rgba(16,185,129,0.25)] hover:shadow-[0_20px_40px_rgba(16,185,129,0.4)]' : 'bg-blue-600 shadow-[0_15px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_20px_40px_rgba(37,99,235,0.4)]'}`}>
                   <span className="relative z-10 flex items-center gap-2">
                     {heroMain.cta_primary?.text || "Get Started"}
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -264,16 +264,16 @@ export const DynamicHeroSection = () => {
                 >
                   <Phone className="w-6 h-6" />
                 </motion.div>
-                <div className="flex flex-col">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                <div className="flex flex-col text-left">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none mb-1">
                     {heroMain.phone?.help_text || "Need help?"}
                   </span>
                   <Link
                     href={`tel:${division === "taxation" ? "9773822604" : "9712067891"}`}
-                    className={`text-lg font-black transition-colors tracking-tight ${division === 'taxation' ? 'text-slate-900 hover:text-emerald-600' : 'text-slate-900 hover:text-blue-600'}`}
+                    className={`text-base md:text-lg font-black transition-colors tracking-tight ${division === 'taxation' ? 'text-slate-900 hover:text-emerald-600' : 'text-slate-900 hover:text-blue-600'}`}
                   >
-                    {division === "taxation" 
-                      ? "+91 97738 22604" 
+                    {division === "taxation"
+                      ? "+91 97738 22604"
                       : (heroMain.phone?.number === "+91 97120 67891" ? "+91 97120 67891/92" : (heroMain.phone?.number || "+91 97120 67891/92"))}
                   </Link>
                 </div>
@@ -281,8 +281,8 @@ export const DynamicHeroSection = () => {
             </MotionWrapper>
 
             {/* Trusted By */}
-            <MotionWrapper direction="up" delay={0.6} className="pt-8 border-t border-slate-100 max-w-md">
-              <div className="flex items-center gap-6">
+            <MotionWrapper direction="up" delay={0.6} className="pt-8 border-t border-slate-100 max-w-md w-full">
+              <div className="flex items-center gap-6 justify-center lg:justify-start">
                 <div className="flex -space-x-4">
                   {[1, 2, 3, 4].map((i) => (
                     <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center overflow-hidden ring-1 ring-slate-200">

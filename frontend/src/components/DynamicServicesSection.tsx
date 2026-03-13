@@ -100,8 +100,8 @@ export function DynamicServicesSection() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col xl:flex-row gap-16 xl:gap-20 items-start">
           {/* Left: Heading Content (Sticky) */}
-          <div className="xl:w-[28%] xl:sticky xl:top-40 xl:pt-4">
-            <motion.div 
+          <div className="xl:w-[28%] xl:sticky xl:top-40 xl:pt-4 text-center xl:text-left flex flex-col items-center xl:items-start">
+            <motion.div
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -113,7 +113,7 @@ export function DynamicServicesSection() {
                 <span>{division === "taxation" ? "Regulatory Excellence" : "Strategic Wealth"}</span>
               </div>
 
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-8 text-slate-900 uppercase tracking-tighter leading-[1] space-y-2">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 md:mb-8 text-slate-900 uppercase tracking-tighter leading-[1.1] md:leading-[1] space-y-2">
                 <span className="block">{division === "taxation" ? "Statutory" : "Capital"}</span>
                 <span className={division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}>
                   {division === "taxation" ? "Advisory" : "Solutions"}
@@ -121,7 +121,7 @@ export function DynamicServicesSection() {
               </h2>
 
               <p className="text-base text-slate-500 font-medium leading-relaxed mb-10 max-w-sm">
-                {division === "taxation" 
+                {division === "taxation"
                   ? "Navigating complex legal frameworks with precision audits and strategic tax planning."
                   : "Empowering your business vision with optimized capital mix and strategic project finance."}
               </p>
@@ -140,8 +140,8 @@ export function DynamicServicesSection() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
               <AnimatePresence mode="wait">
                 {displayServices.map((service, index) => (
-                  <motion.div 
-                    key={`${division}-${index}`} 
+                  <motion.div
+                    key={`${division}-${index}`}
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -150,11 +150,11 @@ export function DynamicServicesSection() {
                   >
                     <Link
                       href={service.slug ? `/services/${service.slug}` : (service as any).id ? `/services/${(service as any).id}` : "/services"}
-                      className={`relative flex-1 flex flex-col overflow-hidden rounded-[2.5rem] bg-white border border-slate-100 p-7 md:p-8 text-left no-underline shadow-[0_20px_50px_rgba(0,0,0,0.02)] transition-all duration-700 hover:shadow-[0_40px_80px_rgba(37,99,235,0.1)] ${division === 'taxation' ? 'hover:border-emerald-200 hover:shadow-emerald-500/10' : 'hover:border-blue-200 hover:shadow-blue-500/10'}`}
+                      className={`relative flex-1 flex flex-col overflow-hidden rounded-[2rem] md:rounded-[2.5rem] bg-white border border-slate-100 p-6 md:p-8 text-left no-underline shadow-[0_20px_50px_rgba(0,0,0,0.02)] transition-all duration-700 hover:shadow-[0_40px_80px_rgba(37,99,235,0.1)] ${division === 'taxation' ? 'hover:border-emerald-200 hover:shadow-emerald-500/10' : 'hover:border-blue-200 hover:shadow-blue-500/10'}`}
                     >
                       <div className="relative z-10 flex h-full flex-col">
                         <div className="flex-1">
-                          <div className={`mb-6 w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-700 shadow-inner group-hover:rotate-12 ${division === 'taxation' ? 'bg-emerald-50 border-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white' : 'bg-blue-50 border-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white'}`}>
+                          <div className={`mb-5 md:mb-6 w-14 h-14 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center transition-all duration-700 shadow-inner group-hover:rotate-12 ${division === 'taxation' ? 'bg-emerald-50 border-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white' : 'bg-blue-50 border-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white'}`}>
                             <div className="relative z-10 transition-transform duration-700 group-hover:scale-110">
                               {getIcon(service.icon || "")}
                             </div>

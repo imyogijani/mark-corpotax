@@ -84,12 +84,6 @@ export default function HoneycombSection() {
 
       <div className="container mx-auto px-6 relative z-10">
         <header className="text-center mb-10 md:mb-14 flex flex-col items-center">
-          <div className="mb-10">
-            <ChangeDivisionButton
-              shouldAnimate={true}
-              className="bg-white border-slate-200 hover:bg-slate-50 shadow-sm"
-            />
-          </div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -115,26 +109,26 @@ export default function HoneycombSection() {
           </div>
 
           {/* Row 2 (Sides) */}
-          <div className="flex justify-center space-x-[8px] md:space-x-[15px] z-40">
+          <div className="flex justify-center space-x-[4px] md:space-x-[15px] z-40">
             <HexTile item={items[1]} delay={0.2} division={division} />
             <HexTile item={items[2]} delay={0.2} division={division} />
           </div>
 
           {/* Row 3 (Main Row) */}
-          <div className="flex justify-center space-x-[8px] md:space-x-[15px] z-30">
+          <div className="flex justify-center space-x-[4px] md:space-x-[15px] z-30">
             <HexTile item={items[3]} delay={0.3} division={division} />
             <HexTile item={items[4]} delay={0.3} division={division} />
             <HexTile item={items[5]} delay={0.3} division={division} />
           </div>
 
           {/* Row 4 (Lower Sides) */}
-          <div className="flex justify-center space-x-[8px] md:space-x-[15px] z-20">
+          <div className="flex justify-center space-x-[4px] md:space-x-[15px] z-20">
             <HexTile item={items[6]} delay={0.4} division={division} />
             <HexTile item={items[7]} delay={0.4} division={division} />
           </div>
 
           {/* Row 5 (Base) */}
-          <div className="flex justify-center space-x-[8px] md:space-x-[15px] z-10">
+          <div className="flex justify-center space-x-[4px] md:space-x-[15px] z-10">
             <HexTile item={items[8]} delay={0.5} division={division} />
             <HexTile item={items[9]} delay={0.5} division={division} />
             <HexTile item={items[10]} delay={0.5} division={division} />
@@ -165,7 +159,7 @@ function HexTile({ item, delay, division }: { item: HoneycombItem; delay: number
         zIndex: 100,
         transition: { type: "spring", stiffness: 400, damping: 25 }
       }}
-      className="honeycomb-tile relative w-[100px] h-[115px] md:w-[180px] md:h-[208px] flex items-center justify-center transition-all duration-300 group isolate"
+      className="honeycomb-tile relative w-[90px] xs:w-[100px] h-[105px] xs:h-[115px] md:w-[180px] md:h-[208px] flex items-center justify-center transition-all duration-300 group isolate"
     >
       <svg
         className="absolute inset-0 w-full h-full drop-shadow-[0_4px_10px_rgba(0,0,0,0.1)] transition-all duration-300 group-hover:drop-shadow-[0_10px_30px_rgba(0,0,0,0.15)]"
@@ -193,11 +187,11 @@ function HexTile({ item, delay, division }: { item: HoneycombItem; delay: number
       </svg>
 
       <div className="relative z-10 flex flex-col items-center justify-center p-3 md:p-6 text-center w-full h-full group-hover:scale-105 transition-transform duration-500">
-        <div className="mb-2 md:mb-5">
-          <Icon className={`w-7 h-7 md:w-12 md:h-12 transition-colors duration-500 ${division === 'taxation' ? 'text-emerald-600 group-hover:text-emerald-500' : 'text-blue-600 group-hover:text-blue-500'}`} strokeWidth={1.5} />
+        <div className="mb-1 md:mb-5">
+          <Icon className={`w-6 h-6 xs:w-7 xs:h-7 md:w-12 md:h-12 transition-colors duration-500 ${division === 'taxation' ? 'text-emerald-600 group-hover:text-emerald-500' : 'text-blue-600 group-hover:text-blue-500'}`} strokeWidth={1.5} />
         </div>
 
-        <h3 className="text-[7px] md:text-[12px] font-bold text-slate-800 leading-tight md:leading-snug max-w-[85%] mx-auto">
+        <h3 className="text-[6.5px] xs:text-[7px] md:text-[12px] font-bold text-slate-800 leading-tight md:leading-snug max-w-[90%] mx-auto">
           {item.title}
         </h3>
       </div>

@@ -32,8 +32,8 @@ import {
   Calculator,
   Gavel,
   Factory,
-  Search,
   LayoutGrid,
+  Calendar,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./logo-image";
@@ -115,8 +115,6 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [settings, setSettings] = useState<any>({});
   const [currentDivision, setCurrentDivision] = useState<string | null>(null);
 
@@ -159,7 +157,6 @@ export function Header() {
     }, 100);
   };
 
-  const searchInputRef = useRef<HTMLInputElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Load Settings
@@ -183,33 +180,14 @@ export function Header() {
   }, [loadSettings]);
 
   useEffect(() => {
-    if (isSearchOpen && searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
-  }, [isSearchOpen]);
-
-  useEffect(() => {
-    const q = searchParams.get("q");
-    if (q !== searchQuery) {
-      setSearchQuery(q || "");
-    }
-  }, [searchParams]);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/services?q=${encodeURIComponent(searchQuery.trim())}`);
-      setIsSearchOpen(false);
-    }
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setSearchQuery(val);
-    if (pathname === "/services") {
-      router.replace(`/services?q=${encodeURIComponent(val)}`, { scroll: false });
-    }
-  };
+    loadSettings();
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [loadSettings]);
 
   const companyName = settings?.company_name || "Mark Corpotax";
 
@@ -222,18 +200,17 @@ export function Header() {
 
 
       <header
-        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${isScrolled || isSearchOpen || isMobileMenuOpen
-            ? "py-2.5 md:py-3"
-            : "py-4 md:py-5"
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${isScrolled || isMobileMenuOpen
+          ? "py-2.5 md:py-3"
+          : "py-4 md:py-5"
           }`}
       >
-        <div className="container mx-auto px-4 md:px-6">
+        <div className="w-full max-w-7xl mx-auto px-4 md:px-6">
           <nav
-            className={`relative w-full max-w-screen-2xl mx-auto flex items-center justify-between px-6 md:px-10 py-3.5 rounded-2xl border transition-all duration-500 bg-white group ${
-              currentDivision === "taxation"
-                ? "border-emerald-100 shadow-[0_20px_60px_rgba(16,185,129,0.12)]"
-                : "border-blue-100 shadow-[0_20px_60px_rgba(37,99,235,0.12)]"
-            } ${isScrolled ? "py-3 scale-[0.99]" : ""}`}
+            className={`relative w-full flex items-center justify-between px-4 md:px-8 py-3 rounded-2xl border transition-all duration-500 bg-white/90 backdrop-blur-xl group ${currentDivision === "taxation"
+              ? "border-emerald-100 shadow-[0_20px_50px_rgba(16,185,129,0.1)]"
+              : "border-blue-100 shadow-[0_20px_50px_rgba(37,99,235,0.1)]"
+              } ${isScrolled ? "py-2.5 scale-[0.985]" : ""}`}
           >
             {/* Logo Section */}
             <Link href="/" className="flex items-center gap-3 group/logo flex-shrink-0">
@@ -253,7 +230,7 @@ export function Header() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-2 xl:gap-4">
+            <div className="hidden lg:flex items-center gap-1 xl:gap-2">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 const isServices = link.label === "Services";
@@ -266,27 +243,27 @@ export function Header() {
                       onMouseEnter={handleMouseEnter}
                       onMouseLeave={handleMouseLeave}
                     >
-                       <Link
-                         href={link.href}
-                         className={`group/nav flex items-center gap-2 px-5 py-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 relative ${isActive
-                             ? currentDivision === 'taxation' ? "text-emerald-600" : "text-blue-600"
-                             : "text-slate-600 hover:text-slate-900"
-                           }`}
-                       >
-                         <link.icon className="w-3.5 h-3.5" />
-                         {link.label}
-                         <ChevronDown
-                           className={`w-3.5 h-3.5 transition-transform duration-500 ${activeMegaMenu ? "rotate-0" : ""
-                             }`}
-                         />
-                         {isActive && (
-                           <motion.div
-                             layoutId="nav-underline"
-                             className={`absolute bottom-[2px] left-5 right-5 h-[3px] rounded-full ${currentDivision === 'taxation' ? 'bg-emerald-600 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.5)]'}`}
-                             transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                           />
-                         )}
-                       </Link>
+                      <Link
+                        href={link.href}
+                        className={`group/nav flex items-center gap-1.5 px-3.5 py-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 relative ${isActive
+                          ? currentDivision === 'taxation' ? "text-emerald-600" : "text-blue-600"
+                          : "text-slate-600 hover:text-slate-900"
+                          }`}
+                      >
+                        <link.icon className="w-3.5 h-3.5" />
+                        {link.label}
+                        <ChevronDown
+                          className={`w-3.5 h-3.5 transition-transform duration-500 ${activeMegaMenu ? "rotate-0" : ""
+                            }`}
+                        />
+                        {isActive && (
+                            <motion.div
+                              layoutId="nav-underline"
+                              className={`absolute bottom-[2px] left-3.5 right-3.5 h-[3px] rounded-full ${currentDivision === 'taxation' ? 'bg-emerald-600 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.5)]'}`}
+                              transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                            />
+                        )}
+                      </Link>
 
                       {/* Invisible Bridge to prevent flicker when moving mouse to menu */}
                       {activeMegaMenu && (
@@ -304,11 +281,10 @@ export function Header() {
                               transition={{ duration: 0.3, ease: "easeOut" }}
                               onMouseEnter={handleMouseEnter}
                               onMouseLeave={handleMouseLeave}
-                              className={`fixed top-[115px] left-1/2 w-[90vw] max-w-6xl bg-white border rounded-[3rem] overflow-hidden p-6 md:p-8 z-[60] ${
-                                currentDivision === "taxation"
-                                  ? "border-emerald-100 shadow-[0_40px_100px_rgba(16,185,129,0.15)]"
-                                  : "border-blue-100 shadow-[0_40px_100px_rgba(37,99,235,0.15)]"
-                              }`}
+                              className={`fixed top-[115px] left-1/2 w-[90vw] max-w-6xl bg-white border rounded-[3rem] overflow-hidden p-6 md:p-8 z-[60] ${currentDivision === "taxation"
+                                ? "border-emerald-100 shadow-[0_40px_100px_rgba(16,185,129,0.15)]"
+                                : "border-blue-100 shadow-[0_40px_100px_rgba(37,99,235,0.15)]"
+                                }`}
                             >
                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                                 {filteredCategories.map((category, idx) => (
@@ -380,9 +356,9 @@ export function Header() {
                   <Link
                     key={link.label}
                     href={link.href}
-                    className={`group/nav flex items-center gap-2 px-5 py-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 relative ${isActive
-                        ? currentDivision === 'taxation' ? "text-emerald-600" : "text-blue-600"
-                        : "text-slate-600 hover:text-slate-900"
+                    className={`group/nav flex items-center gap-1.5 px-3.5 py-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 relative ${isActive
+                      ? currentDivision === 'taxation' ? "text-emerald-600" : "text-blue-600"
+                      : "text-slate-600 hover:text-slate-900"
                       }`}
                   >
                     <link.icon className="w-3.5 h-3.5" />
@@ -400,15 +376,15 @@ export function Header() {
             </div>
 
             {/* Right: Actions Area */}
-            <div className="hidden lg:flex items-center gap-4 md:gap-6 flex-shrink-0">
+            <div className="hidden lg:flex items-center gap-2 md:gap-3 flex-shrink-0">
               {currentDivision && (
                 <div className="flex items-center gap-1 bg-slate-100/80 p-1.5 rounded-xl border border-slate-200 shadow-inner relative">
                   {/* Finance Choice */}
                   <button
                     onClick={() => handleSwitchDivision("finance")}
                     className={`relative z-10 flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-500 overflow-hidden ${currentDivision === "finance"
-                        ? "text-white font-black"
-                        : "text-slate-500 hover:text-slate-800"
+                      ? "text-white font-black"
+                      : "text-slate-500 hover:text-slate-800"
                       }`}
                   >
                     <TrendingUp className={`w-3.5 h-3.5 ${currentDivision === 'finance' ? 'animate-bounce' : ''}`} />
@@ -426,8 +402,8 @@ export function Header() {
                   <button
                     onClick={() => handleSwitchDivision("taxation")}
                     className={`relative z-10 flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-500 overflow-hidden ${currentDivision === "taxation"
-                        ? "text-white font-black"
-                        : "text-slate-500 hover:text-slate-800"
+                      ? "text-white font-black"
+                      : "text-slate-500 hover:text-slate-800"
                       }`}
                   >
                     <ShieldCheck className={`w-3.5 h-3.5 ${currentDivision === 'taxation' ? 'animate-pulse' : ''}`} />
@@ -443,118 +419,34 @@ export function Header() {
                 </div>
               )}
 
-              <button
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 ${isSearchOpen
-                    ? 'bg-slate-900 text-white shadow-lg'
-                    : 'text-slate-400 hover:text-blue-600 hover:bg-slate-50'
-                  }`}
-              >
-                {isSearchOpen ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
-              </button>
 
               <Link href="/appointment">
                 <Button
-                  className="bg-slate-900 hover:bg-blue-600 text-white font-black text-[10px] uppercase tracking-[0.15em] rounded-xl px-6 py-2 h-10 shadow-none transition-all duration-500 flex items-center gap-2"
+                  className={`bg-slate-900 border-none text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-xl px-6 h-11 transition-all duration-500 flex items-center gap-2 group/btn relative overflow-hidden active:scale-95 ${currentDivision === 'taxation' ? 'hover:bg-emerald-600 shadow-xl shadow-emerald-500/10' : 'hover:bg-blue-600 shadow-xl shadow-blue-500/10'}`}
                 >
-                  Join
-                  <ArrowRight className="w-3 h-3" />
+                  <span className="relative z-10">Appointment</span>
+                  <ArrowRight className="w-3.5 h-3.5 relative z-10 group-hover/btn:translate-x-1 transition-transform" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite] pointer-events-none" />
                 </Button>
               </Link>
             </div>
 
             {/* Mobile Actions */}
-            <div className="lg:hidden flex items-center gap-2">
-              <button
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className={`p-3 rounded-2xl border transition-all duration-300 ${isSearchOpen ? 'bg-slate-100 border-slate-200 text-slate-900' : 'bg-white border-white/60 text-slate-900'}`}
-              >
-                {isSearchOpen ? <X className="w-6 h-6" /> : <Search className="w-6 h-6" />}
-              </button>
+            <div className="lg:hidden flex items-center gap-3">
+              <Link href="/appointment">
+                <button className={`p-3 rounded-xl transition-all active:scale-90 ${currentDivision === 'taxation' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'}`}>
+                  <Calendar className="w-5 h-5" />
+                </button>
+              </Link>
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="p-3 bg-white rounded-2xl border border-white/60 text-slate-900"
+                className="p-3 bg-slate-900 rounded-xl text-white shadow-lg active:scale-90"
               >
-                <Menu className="w-6 h-6" />
+                <Menu className="w-5 h-5" />
               </button>
             </div>
           </nav>
-
-            {/* Desktop Dropdown Search Bar */}
-            <AnimatePresence>
-              {isSearchOpen && (
-                <div className="hidden lg:flex justify-end w-full relative">
-                  <motion.div
-                    initial={{ opacity: 0, y: -20, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute top-4 right-0 w-full max-w-2xl overflow-hidden z-[110]"
-                  >
-                    <div className={`bg-white border rounded-[2.5rem] p-3 shadow-2xl ${
-                      currentDivision === "taxation"
-                        ? "border-emerald-100 shadow-[0_30px_60px_rgba(16,185,129,0.12)]"
-                        : "border-blue-100 shadow-[0_30px_60px_rgba(37,99,235,0.12)]"
-                    }`}>
-                      <form
-                        onSubmit={handleSearch}
-                        className="flex items-center gap-3 px-4 py-1"
-                      >
-                        <Search className="w-5 h-5 text-slate-400" />
-                        <input
-                          ref={searchInputRef}
-                          type="text"
-                          placeholder="What legal or financial service are you looking for?"
-                          value={searchQuery}
-                          onChange={handleSearchChange}
-                          className="flex-1 bg-transparent py-4 text-[16px] font-bold text-slate-900 focus:outline-none placeholder:text-slate-400"
-                        />
-                        <Button
-                          type="submit"
-                          className="bg-slate-900 hover:bg-blue-600 text-white rounded-full px-8 h-12 text-[12px] font-black uppercase tracking-widest shadow-lg shadow-blue-500/10 transition-all flex items-center gap-2"
-                        >
-                          Search
-                          <ArrowRight className="w-4 h-4" />
-                        </Button>
-                      </form>
-                    </div>
-                  </motion.div>
-                </div>
-              )}
-            </AnimatePresence>
-          </div>
-
-        {/* Mobile Search Bar Expandable */}
-        <AnimatePresence>
-          {isSearchOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="lg:hidden w-full max-w-[95%] mt-2 overflow-hidden"
-            >
-              <form
-                onSubmit={handleSearch}
-                className="bg-white/95 backdrop-blur-xl border border-white/60 rounded-[2rem] p-2 flex items-center shadow-xl"
-              >
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  placeholder="Search services..."
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  className="flex-1 bg-transparent px-6 py-3 text-sm font-bold text-slate-900 focus:outline-none placeholder:text-slate-400"
-                />
-                <button
-                  type="submit"
-                  className="bg-slate-900 text-white p-3 rounded-full hover:bg-blue-600 transition-colors"
-                >
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-              </form>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        </div>
       </header>
 
       {/* Mobile Sidebar */}
@@ -632,8 +524,8 @@ export function Header() {
                         href={link.href}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={`group flex items-center justify-between p-5 rounded-2xl transition-all duration-300 ${isActive
-                            ? currentDivision === 'taxation' ? "bg-emerald-600 text-white shadow-xl shadow-emerald-500/20" : "bg-blue-600 text-white shadow-xl shadow-blue-500/20"
-                            : "text-slate-800 hover:bg-slate-50"
+                          ? currentDivision === 'taxation' ? "bg-emerald-600 text-white shadow-xl shadow-emerald-500/20" : "bg-blue-600 text-white shadow-xl shadow-blue-500/20"
+                          : "text-slate-800 hover:bg-slate-50"
                           }`}
                       >
                         <div className="flex items-center gap-4">

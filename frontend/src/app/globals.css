@@ -53,7 +53,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    overscroll-behavior-y: none; /* Better for Lenis smooth scroll */
+    overscroll-behavior-y: none;
+    /* Better for Lenis smooth scroll */
   }
 
   /* Butter Smooth Transitions Global */
@@ -143,6 +144,7 @@
   --glass-border: rgba(255, 255, 255, 0.4);
   --shadow-premium: 0 4px 12px rgba(0, 0, 0, 0.03), 0 8px 24px rgba(0, 0, 0, 0.02);
 }
+
 .gpu {
   transform: translateZ(0);
   backface-visibility: hidden;
@@ -152,17 +154,20 @@
 }
 
 /* Optimize Backdrop blurs for performance */
-.glass-panel, .glass-card {
+.glass-panel,
+.glass-card {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transform: translateZ(0);
 }
+
 .glass-panel {
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
 }
+
 .glass-card {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(8px);
@@ -170,25 +175,46 @@
   border-radius: 40px;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .glass-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.1);
   background: white;
 }
+
 @keyframes blob {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  33% { transform: translate3d(30px, -30px, 0) scale(1.05); }
-  66% { transform: translate3d(-20px, 20px, 0) scale(0.95); }
+
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate3d(30px, -30px, 0) scale(1.05);
+  }
+
+  66% {
+    transform: translate3d(-20px, 20px, 0) scale(0.95);
+  }
 }
+
 .animate-blob {
   animation: blob 20s infinite alternate linear;
   filter: blur(40px);
 }
 
 @keyframes wave {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(-25%); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(-25%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .animate-wave {
@@ -196,12 +222,15 @@
   will-change: transform;
 }
 
-.js-reveal { opacity: 0; }
+.js-reveal {
+  opacity: 0;
+}
 
 /* Category Decorations */
 .decoration-finance {
   position: relative;
 }
+
 .decoration-finance::after {
   content: '';
   position: absolute;
@@ -216,6 +245,7 @@
 .decoration-tax {
   position: relative;
 }
+
 .decoration-tax::after {
   content: '';
   position: absolute;
@@ -249,6 +279,7 @@ html.lenis {
 }
 
 /* Fast Tap fix for mobile */
-button, a {
+button,
+a {
   touch-action: manipulation;
 }

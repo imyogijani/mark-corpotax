@@ -267,8 +267,9 @@ export function DynamicAboutSection() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           {/* Left Content */}
-          <div className="relative">
-            <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false }} transition={{ duration: 0.8 }}>
+          <div className="relative text-center lg:text-left">
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ duration: 0.8 }}>
+              <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
               {displayContent.tagline && (
                 <div className="inline-flex items-center gap-3 mb-4 px-4 py-1.5 bg-blue-50 border border-blue-100 rounded-full">
                   <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
@@ -280,7 +281,7 @@ export function DynamicAboutSection() {
                 {displayContent.title || "Your Trusted Financial Partner Since 2012"}
               </h2>
 
-              <p className="text-lg text-slate-600 mb-8 leading-relaxed font-medium max-w-xl">
+              <p className="text-base md:text-lg text-slate-600 mb-8 leading-relaxed font-medium max-w-xl mx-auto lg:mx-0">
                 {displayContent.description || "We are committed to providing exceptional financial services."}
               </p>
 
@@ -297,9 +298,9 @@ export function DynamicAboutSection() {
                       className="flex items-center gap-4 group"
                     >
                       <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm border border-blue-100">
-                        <CheckCircle className="w-5 h-5" />
+                        <CheckCircle className="w-4 h-4 md:w-5 md:h-5" />
                       </div>
-                      <span className="text-base text-slate-700 font-bold tracking-tight">{highlight}</span>
+                      <span className="text-sm md:text-base text-slate-700 font-bold tracking-tight">{highlight}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -316,6 +317,7 @@ export function DynamicAboutSection() {
                   </button>
                 </Link>
               )}
+            </div>
             </motion.div>
           </div>
 
@@ -329,7 +331,7 @@ export function DynamicAboutSection() {
               2500+
             </motion.div>
 
-            <div className="grid grid-cols-2 gap-6 relative">
+            <div className="grid grid-cols-2 gap-4 md:gap-6 relative">
               {displayContent.stats?.map((stat, index) => (
                 <motion.div
                   key={index}
@@ -337,10 +339,10 @@ export function DynamicAboutSection() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: false }}
                   transition={{ delay: index * 0.15 }}
-                  className={`${index % 2 === 1 ? "mt-12" : ""} p-8 rounded-3xl bg-white border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(37,99,235,0.1)] hover:border-blue-200 transition-all duration-500 group relative overflow-hidden`}
+                  className={`${index % 2 === 1 ? "mt-6 md:mt-12" : ""} p-6 md:p-8 rounded-3xl bg-white border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(37,99,235,0.1)] hover:border-blue-200 transition-all duration-500 group relative overflow-hidden`}
                 >
                   <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-                    <Layers className="w-12 h-12 text-blue-600" />
+                    <Layers className="w-10 h-10 md:w-12 md:h-12 text-blue-600" />
                   </div>
                   <div className="relative z-10">
                     <AnimatedStat value={stat.value} label={stat.label} icon={stat.icon} index={index} />
