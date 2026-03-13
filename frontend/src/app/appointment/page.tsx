@@ -238,38 +238,13 @@ export default function AppointmentPage() {
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10 text-center">
           <div className="max-w-4xl mx-auto">
-            <div className="flex justify-center mb-12">
-               <div className="p-4 bg-white rounded-3xl shadow-2xl shadow-blue-500/10 border border-slate-100">
-                  <Logo width={64} height={64} />
-               </div>
-            </div>
-            <h1 className="text-4xl md:text-6xl lg:text-8xl font-black text-slate-900 tracking-tighter leading-[0.9] uppercase mb-10 font-outfit">
-              Schedule <br />
-              <span className="text-blue-600">Appointment.</span>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 tracking-tighter leading-[0.9] uppercase mb-10 font-outfit">
+              Schedule <span className="text-blue-600">Appointment.</span>
             </h1>
             <p className="text-base md:text-xl text-slate-600 font-medium max-w-2xl mx-auto leading-relaxed mb-20 font-sans">
               {hero.subtitle}
             </p>
 
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {[
-                { label: hero.stat_1_label, value: hero.stat_1_value, icon: DollarSign },
-                { label: hero.stat_2_label, value: hero.stat_2_value, icon: Clock },
-                { label: hero.stat_3_label, value: hero.stat_3_value, icon: Users }
-              ].map((stat, i) => (
-                <div key={i} className="flex flex-col items-center bg-white rounded-[3rem] p-10 border border-slate-100 shadow-[0_20px_50px_rgba(37,99,235,0.03)] group hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500">
-                  <div className="w-16 h-16 rounded-2xl bg-slate-50 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
-                    <stat.icon className="w-8 h-8" />
-                  </div>
-                  <span className="text-4xl font-black text-slate-900 tracking-tighter mb-1 uppercase">
-                    {stat.value}
-                  </span>
-                  <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">
-                    {stat.label}
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
