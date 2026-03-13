@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { contentService } from "@/lib/content-service";
 import { Card } from "@/components/ui/card";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import {
@@ -145,28 +146,57 @@ export default function BlogPage() {
   }
 
   return (
-    <div className="blog-page-wrapper overflow-hidden bg-white">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="blog-page-wrapper overflow-hidden bg-white"
+    >
       {/* Premium Hero Section */}
       <section className="relative pt-48 pb-32 overflow-hidden bg-slate-50">
         <div className="absolute inset-0 z-0">
           <FloatingGraffiti />
-          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100/30 rounded-full blur-[120px] -mr-64 -mt-64" />
-          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-50/30 rounded-full blur-[100px] -ml-48 -mb-48" />
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.1, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+            className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100/30 rounded-full blur-[120px] -mr-64 -mt-64" 
+          />
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.4, 0.3],
+            }}
+            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-50/30 rounded-full blur-[100px] -ml-48 -mb-48" 
+          />
         </div>
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10 text-center">
           <div className="max-w-4xl mx-auto">
             <MotionWrapper direction="up" delay={0.1}>
-              <div className="inline-flex items-center gap-2 px-6 py-2 bg-white rounded-full border border-blue-100 shadow-[0_10px_30px_rgba(37,99,235,0.08)] text-blue-600 text-[10px] font-black uppercase tracking-[0.4em] mb-10">
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="inline-flex items-center gap-2 px-6 py-2 bg-white rounded-full border border-blue-100 shadow-[0_10px_30px_rgba(37,99,235,0.08)] text-blue-600 text-[10px] font-black uppercase tracking-[0.4em] mb-10"
+              >
                 <Sparkles className="w-4 h-4" />
                 <span>Knowledge Hub</span>
-              </div>
+              </motion.div>
             </MotionWrapper>
 
             <MotionWrapper direction="up" delay={0.2}>
               <h1 className="text-4xl md:text-6xl lg:text-8xl font-black text-slate-900 tracking-tighter leading-[0.9] uppercase mb-10">
                 Financial <br />
-                <span className="text-blue-600">Insights.</span>
+                <motion.span 
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  className="text-blue-600"
+                >
+                  Insights.
+                </motion.span>
               </h1>
             </MotionWrapper>
 
@@ -184,17 +214,21 @@ export default function BlogPage() {
                   { label: "Active Readers", value: statsContent.stat_2_value || "10K+", icon: TrendingUp, color: "blue" },
                   { label: "Fresh Content", value: statsContent.stat_3_value || "Weekly", icon: BarChart2, color: "blue" }
                 ].map((stat, i) => (
-                  <div key={i} className="flex flex-col items-center bg-white rounded-[3rem] p-10 border border-slate-100 shadow-[0_20px_50px_rgba(37,99,235,0.03)] group hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500">
-                    <div className="w-16 h-16 rounded-2xl bg-slate-50 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
+                  <motion.div 
+                    key={i} 
+                    whileHover={{ y: -10 }}
+                    className="flex flex-col items-center bg-white rounded-[3rem] p-10 border border-slate-100 shadow-[0_20px_50px_rgba(37,99,235,0.03)] group hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500"
+                  >
+                    <div className="w-16 h-16 rounded-2xl bg-slate-50 text-blue-600 flex items-center justify-center mb-6 group-hover:rotate-12 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
                       <stat.icon className="w-8 h-8" />
                     </div>
-                    <span className="text-4xl font-black text-slate-900 tracking-tighter mb-1 uppercase">
+                    <span className="text-4xl font-black text-slate-900 tracking-tighter mb-1 uppercase text-shadow-sm">
                       {stat.value}
                     </span>
                     <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">
                       {stat.label}
                     </span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </MotionWrapper>
@@ -206,13 +240,22 @@ export default function BlogPage() {
       <section className="py-32 bg-white relative">
         <div className="container mx-auto px-4 lg:px-8">
           {/* Header Section above grid */}
-          <div className="flex items-center justify-between mb-20 border-b border-slate-50 pb-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center justify-between mb-20 border-b border-slate-50 pb-8"
+          >
             <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Latests Insights</h2>
             <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-               <div className="w-2 h-2 rounded-full bg-blue-500" />
+               <motion.div 
+                 animate={{ scale: [1, 1.5, 1] }}
+                 transition={{ duration: 2, repeat: Infinity }}
+                 className="w-2 h-2 rounded-full bg-blue-500" 
+               />
                <span>{blogPosts.length} total articles</span>
             </div>
-          </div>
+          </motion.div>
 
           <div className="grid lg:grid-cols-12 gap-16">
             
@@ -221,18 +264,24 @@ export default function BlogPage() {
 
               {blogPosts.length > 0 ? (
                 blogPosts.map((post, index) => (
-                  <MotionWrapper
+                  <motion.div
                     key={post.id || post._id || index}
-                    direction="up"
-                    delay={0.1 * index}
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.8, delay: index * 0.1 }}
                   >
-                    <Card className="group bg-white border-0 rounded-[3.5rem] shadow-[0_30px_70px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_100px_rgba(37,99,235,0.12)] transition-all duration-700 overflow-hidden relative">
+                    <Card className="group bg-white border-0 rounded-[3.5rem] shadow-[0_30px_70px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_100px_rgba(37,99,235,0.12)] transition-all duration-700 overflow-hidden relative border border-transparent hover:border-blue-100">
                       <div className="flex flex-col md:flex-row min-h-[380px]">
                         {/* Visual Area */}
                         <div className="md:w-[40%] relative bg-[#111827] overflow-hidden flex items-center justify-center border-r border-[#111827]">
-                          <div className="transition-all duration-700 group-hover:scale-110 opacity-60">
+                          <motion.div 
+                            whileHover={{ scale: 1.2, rotate: 5 }}
+                            transition={{ duration: 0.7 }}
+                            className="transition-all duration-700 opacity-60"
+                          >
                             {categoryIcons[post.category] || categoryIcons.Default}
-                          </div>
+                          </motion.div>
                           <div className="absolute top-10 left-10">
                             <span className="px-6 py-2 bg-white/10 backdrop-blur-md text-blue-400 text-[10px] font-black uppercase tracking-[0.3em] rounded-full shadow-lg border border-white/10">
                               {post.category || "General"}
@@ -282,27 +331,41 @@ export default function BlogPage() {
                         </div>
                       </div>
                     </Card>
-                  </MotionWrapper>
+                  </motion.div>
                 ))
               ) : (
-                <div className="text-center py-32 bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-100 italic-none">
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-center py-32 bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-100 italic-none"
+                >
                   <FileText className="w-16 h-16 text-slate-200 mx-auto mb-6" />
                   <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Under Construction</h3>
                   <p className="text-slate-400 font-medium mt-2 tracking-tight uppercase text-xs">Awaiting fresh market intelligence</p>
-                </div>
+                </motion.div>
               )}
 
               {/* Consultation Section - Aligned with sidebar */}
-              <div className="mt-12">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="mt-12"
+              >
                 <AskExpertSection />
-              </div>
+              </motion.div>
             </div>
 
             {/* Premium Sidebar */}
             <div className="lg:col-span-4 space-y-12">
               
               {/* Search Widget */}
-              <div className="bg-slate-50 p-10 rounded-[3rem] relative overflow-hidden group">
+              <motion.div 
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="bg-slate-50 p-10 rounded-[3rem] relative overflow-hidden group"
+              >
                 <div className="relative z-10 space-y-6">
                   <h4 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em]">Intel Search</h4>
                   <div className="relative">
@@ -313,51 +376,77 @@ export default function BlogPage() {
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Categories Navigation */}
-              <div className="bg-white border border-slate-50 p-10 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
+              <motion.div 
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="bg-white border border-slate-50 p-10 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.02)]"
+              >
                 <h4 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em] mb-10 flex items-center gap-3">
                   <PieChart className="w-5 h-5 text-blue-600" />
                   Divisions
                 </h4>
                 <div className="space-y-3">
                   {categories.map((cat, i) => (
-                    <div key={i} className="group flex items-center justify-between p-5 bg-slate-50 rounded-2xl cursor-pointer hover:bg-blue-600 hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300">
+                    <motion.div 
+                      key={i} 
+                      whileHover={{ scale: 1.02 }}
+                      className="group flex items-center justify-between p-5 bg-slate-50 rounded-2xl cursor-pointer hover:bg-blue-600 hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300"
+                    >
                       <span className="text-[11px] font-black uppercase tracking-widest text-slate-600 group-hover:text-white">{cat.name}</span>
                       <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-white transition-transform group-hover:translate-x-1" />
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
               {/* Recruitment / Expert CTA */}
-              <div className="bg-[#111827] p-12 rounded-[3.5rem] text-white relative overflow-hidden text-center">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="bg-[#111827] p-12 rounded-[3.5rem] text-white relative overflow-hidden text-center"
+              >
                  <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[80px] -mr-32 -mt-32" />
                  <div className="relative z-10">
-                    <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-8 backdrop-blur-sm">
+                    <motion.div 
+                      animate={{ rotate: [0, 10, 0] }}
+                      transition={{ duration: 4, repeat: Infinity }}
+                      className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-8 backdrop-blur-sm"
+                    >
                        <Sparkles className="w-8 h-8 text-blue-400" />
-                    </div>
+                    </motion.div>
                     <h3 className="text-3xl font-black uppercase tracking-tighter leading-none mb-6">Expert <br /> Clarity</h3>
                     <p className="text-slate-400 font-medium text-sm leading-relaxed mb-10 italic-none">Direct connection to senior chartered accountants.</p>
                     <Button asChild className="w-full bg-white text-slate-900 hover:bg-blue-600 hover:text-white rounded-2xl h-14 font-black uppercase tracking-widest text-[10px] transition-all">
                        <Link href="/contact">Initial Connection</Link>
                     </Button>
                  </div>
-              </div>
+              </motion.div>
 
               {/* Recent Briefs */}
-              <div className="bg-white p-10 items-start">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="bg-white p-10 items-start"
+              >
                 <h4 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em] mb-10">Recent Briefs</h4>
                 <div className="space-y-8">
                   {recentPosts.map((post, i) => (
-                    <Link key={i} href={`/blog/${post.slug || post.id}`} className="group block">
-                       <span className="text-[9px] font-black text-blue-600 uppercase tracking-widest mb-2 block">{formatDate(post.createdAt)}</span>
-                       <h5 className="font-black text-slate-900 uppercase text-sm leading-snug group-hover:text-blue-600 transition-colors line-clamp-2 underline-offset-4 decoration-blue-100 group-hover:underline">{post.title}</h5>
-                    </Link>
+                    <motion.div key={i} whileHover={{ x: 5 }}>
+                      <Link href={`/blog/${post.slug || post.id}`} className="group block">
+                         <span className="text-[9px] font-black text-blue-600 uppercase tracking-widest mb-2 block">{formatDate(post.createdAt)}</span>
+                         <h5 className="font-black text-slate-900 uppercase text-sm leading-snug group-hover:text-blue-600 transition-colors line-clamp-2 underline-offset-4 decoration-blue-100 group-hover:underline">{post.title}</h5>
+                      </Link>
+                    </motion.div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
             </div>
           </div>
@@ -366,6 +455,6 @@ export default function BlogPage() {
 
 
       <DynamicCTASection />
-    </div>
+    </motion.div>
   );
 }

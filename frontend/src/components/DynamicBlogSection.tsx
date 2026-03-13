@@ -12,6 +12,7 @@ import Image from "next/image";
 interface BlogPost {
   category: string;
   title: string;
+  image?: string;
 }
 
 interface BlogSectionData {
@@ -25,9 +26,9 @@ const FALLBACK_BLOG: BlogSectionData = {
   tagline: "Latest Articles",
   title: "Financial Insights & Updates",
   blog_posts: [
-    { category: "Finance", title: "Understanding MSME Loan Benefits" },
-    { category: "Taxation", title: "GST Filing Made Simple" },
-    { category: "Investment", title: "Growing Your Business Capital" },
+    { category: "Finance", title: "Understanding MSME Loan Benefits", image: "/blog-msme.png" },
+    { category: "Taxation", title: "GST Filing Made Simple", image: "/blog-taxation-gears.png" },
+    { category: "Investment", title: "Growing Your Business Capital", image: "/blog-investment.png" },
   ],
 };
 
@@ -184,11 +185,20 @@ export function DynamicBlogSection() {
               }}
             >
               <Card className={`group relative overflow-hidden bg-white border border-slate-100 rounded-[3rem] h-full flex flex-col transition-all duration-500 shadow-[0_15px_40px_rgba(0,0,0,0.03)] ${division === 'taxation' ? 'hover:shadow-[0_45px_100px_rgba(16,185,129,0.1)] hover:border-emerald-100' : 'hover:shadow-[0_45px_100px_rgba(37,99,235,0.1)] hover:border-blue-100'} hover:-translate-y-4`}>
-                <div className="h-64 relative overflow-hidden bg-slate-50 flex items-center justify-center p-8">
-                  <div className={`absolute inset-0 bg-gradient-to-br transition-opacity duration-700 opacity-0 group-hover:opacity-100 ${division === 'taxation' ? 'from-emerald-600/5' : 'from-blue-600/5'} to-transparent`} />
-                  <div className="relative z-10 transform transition-all duration-700 group-hover:scale-125 group-hover:rotate-6">
-                    {getIcon(index)}
-                  </div>
+                <div className="h-64 relative overflow-hidden bg-slate-50 flex items-center justify-center">
+                  <div className={`absolute inset-0 bg-gradient-to-br transition-opacity duration-700 opacity-0 group-hover:opacity-100 ${division === 'taxation' ? 'from-emerald-600/10' : 'from-blue-600/10'} to-transparent z-10`} />
+                  {post.image ? (
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  ) : (
+                    <div className="relative z-10 transform transition-all duration-700 group-hover:scale-125 group-hover:rotate-6 p-8">
+                      {getIcon(index)}
+                    </div>
+                  )}
                 </div>
 
                 <CardContent className="p-10 flex-1 flex flex-col">
