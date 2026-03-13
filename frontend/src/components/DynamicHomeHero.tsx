@@ -202,8 +202,7 @@ export const DynamicHeroSection = () => {
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:40px_40px] z-0 pointer-events-none" />
+      {/* Grid Pattern Removed as per user request to clean watermark area */}
 
       {/* Background Gradients */}
       <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[50%] bg-blue-100 blur-[150px] rounded-full -z-10" />
@@ -283,7 +282,7 @@ export const DynamicHeroSection = () => {
             </MotionWrapper>
 
             {/* Trusted By */}
-            <MotionWrapper direction="up" delay={0.6} className="pt-8 border-t border-slate-100 max-w-md w-full">
+            <MotionWrapper direction="up" delay={0.6} className="pt-8 max-w-md w-full">
               <div className="flex items-center gap-6 justify-center lg:justify-start">
                 <div className="flex -space-x-4">
                   {[1, 2, 3, 4].map((i) => (

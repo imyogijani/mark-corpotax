@@ -175,7 +175,7 @@ export default function AboutPage() {
   return (
     <div className={`min-h-screen bg-slate-50 font-sans selection:${division === 'taxation' ? 'bg-emerald-100' : 'bg-blue-100'} italic-none`}>
       {/* Hero Section */}
-      <section className="relative pt-32 pb-24 overflow-hidden">
+      <section className="relative pt-32 pb-8 overflow-hidden">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             {/* Left Column */}
@@ -248,7 +248,7 @@ export default function AboutPage() {
       </section>
 
       {/* Vision & Mission Section */}
-      <section className="py-24 relative bg-white/50">
+      <section className="pt-8 pb-12 relative bg-white/50">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
             {/* Vision */}
@@ -257,7 +257,7 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="p-12 lg:p-16 bg-white rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-200/30 flex flex-col items-start translate-y-12"
+              className="p-12 lg:p-16 bg-white rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-200/30 flex flex-col items-start"
             >
               <div className={`w-16 h-16 rounded-2xl ${primaryBg} flex items-center justify-center mb-8 transform group-hover:rotate-12 transition-transform`}>
                 <Eye className={`w-8 h-8 ${primaryColor}`} />
@@ -293,9 +293,9 @@ export default function AboutPage() {
       </section>
 
       {/* Pure Excellence Section */}
-      <section className="py-32 bg-white">
+      <section className="pt-16 pb-6 bg-white">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center mb-20 lg:mb-24">
+          <div className="text-center mb-16">
             <h2 className="js-reveal text-4xl md:text-6xl lg:text-7xl font-black text-slate-900 tracking-tighter uppercase leading-[0.9]">
               {division === 'taxation' ? 'Filing Accuracy.' : 'Pure Excellence.'}
             </h2>

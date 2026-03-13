@@ -72,10 +72,10 @@ const CompanyTimeline = () => {
   ];
 
   return (
-    <section className="py-40 bg-white relative overflow-hidden italic-none">
+    <section className="pt-10 pb-40 bg-white relative overflow-hidden italic-none">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-32">
+        <div className="text-center mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

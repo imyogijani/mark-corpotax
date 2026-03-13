@@ -243,7 +243,7 @@ function ServicesPageContent() {
                 <h2 className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tighter leading-tight">Business <br />Architecture</h2>
               </div>
               
-              <div className="flex flex-wrap justify-center gap-3">
+              <div className="flex flex-col items-center lg:items-end gap-3">
                 {categories.map((cat) => {
                   const id = getCategoryId(cat);
                   const isActive = activeCategory === id;
