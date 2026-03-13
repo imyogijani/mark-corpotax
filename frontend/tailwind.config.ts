@@ -20,6 +20,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
+        outfit: ['var(--font-outfit)', ...fontFamily.sans],
       },
       colors: {
         background: 'hsl(var(--background))',

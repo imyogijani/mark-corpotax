@@ -14,6 +14,13 @@ const inter = Inter({
   variable: "--font-sans",
 });
 
+import { Outfit } from "next/font/google";
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+});
+
+
 export const metadata: Metadata = {
   title: {
     default: "MARK GROUP - Shaping Financial Success in the AI Era",
@@ -34,6 +41,7 @@ export default function RootLayout({
         className={cn(
           "font-sans antialiased",
           inter.variable,
+          outfit.variable,
           "min-h-screen bg-background flex flex-col relative",
         )}
       >
