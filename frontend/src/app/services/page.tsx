@@ -177,53 +177,23 @@ function ServicesPageContent() {
 
             {/* Hero Visual Card */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="flex-shrink-0 w-full md:w-[500px] aspect-square relative group hidden lg:block"
+              transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
+              className="flex-shrink-0 w-full md:w-[600px] aspect-square relative hidden lg:flex items-center justify-center p-0"
             >
-              {/* Premium Glow Container */}
-              <div className={`absolute inset-0 rounded-[4rem] opacity-20 blur-[100px] ${division === 'taxation' ? 'bg-emerald-400' : 'bg-blue-400'}`} />
+              {/* Subtle Background Glow to give it context */}
+              <div className={`absolute inset-0 rounded-full opacity-30 blur-[120px] ${division === 'taxation' ? 'bg-emerald-400' : 'bg-blue-400'}`} />
               
-              <div className="relative w-full h-full flex items-center justify-center p-8 bg-white/40 backdrop-blur-3xl rounded-[4rem] border border-white/40 shadow-2xl overflow-hidden ring-1 ring-white/20">
-                {/* Lottie Animation */}
-                <div className="w-full h-full scale-110">
-                  <DotLottiePlayer
-                    src="/extrafiles/Service.lottie"
-                    autoplay
-                    loop
-                    className="w-full h-full"
-                  />
-                </div>
-
-                {/* Glass Overlay for depth */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-transparent pointer-events-none" />
-                
-                {/* Floating Meta details inside the card */}
-                <div className="absolute top-10 left-10">
-                  <div className={`px-4 py-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[8px] font-black uppercase tracking-[0.3em] text-white shadow-lg`}>
-                    Interactive Visual
-                  </div>
-                </div>
+              {/* Lottie Animation - Now Direct */}
+              <div className="relative w-full h-full z-10">
+                <DotLottiePlayer
+                  src="/extrafiles/Service.lottie"
+                  autoplay
+                  loop
+                  className="w-full h-full"
+                />
               </div>
-
-              {/* Enhanced Floating Accents */}
-              <motion.div 
-                animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-6 -right-6 w-20 h-20 bg-white rounded-3xl shadow-2xl flex items-center justify-center border border-slate-50 z-20"
-              >
-                <Zap className={`w-10 h-10 ${division === 'taxation' ? 'text-emerald-500' : 'text-blue-500'} fill-current opacity-80`} />
-              </motion.div>
-              
-              <motion.div 
-                animate={{ y: [0, 15, 0], rotate: [0, -5, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute -bottom-8 -left-12 px-8 py-5 bg-slate-900 rounded-[2rem] shadow-4xl flex flex-col items-center justify-center border border-white/10 z-20 backdrop-blur-xl"
-              >
-                <ShieldCheck className="w-8 h-8 text-emerald-500 mb-2" />
-                <span className="text-[9px] font-black text-white uppercase tracking-widest text-center">Verified Data</span>
-              </motion.div>
             </motion.div>
           </div>
         </div>
