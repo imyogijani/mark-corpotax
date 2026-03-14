@@ -47,7 +47,7 @@ interface AboutPageContent {
   stats?: StatsData;
 }
 
-const StatCard = ({ icon, value, label, className = "", delay = 0 }: { icon: React.ReactNode, value: string, label: string, className?: string, delay?: number }) => {
+const StatCard = ({ icon, value, label, className = "", delay = 0, division = "finance" }: { icon: React.ReactNode, value: string, label: string, className?: string, delay?: number, division?: string | null }) => {
   const [displayValue, setDisplayValue] = useState(0);
   const target = parseInt(value) || 0;
   const isNumeric = !isNaN(target);
@@ -79,13 +79,13 @@ const StatCard = ({ icon, value, label, className = "", delay = 0 }: { icon: Rea
       transition={{ duration: 0.6, delay }}
       className={`p-8 bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 flex flex-col items-center text-center group hover:translate-y-[-5px] transition-all duration-300 ${className}`}
     >
-      <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mb-6 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-500">
+      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-500 ${division === 'taxation' ? 'bg-emerald-50' : 'bg-blue-50'}`}>
         {icon}
       </div>
       <div className="text-4xl md:text-5xl font-black text-slate-900 mb-2 tracking-tighter">
         {isNumeric ? `${displayValue}${value.includes('+') ? '+' : ''}` : value}
       </div>
-      <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] bg-slate-50 px-4 py-2 rounded-full group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+      <div className={`text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] bg-slate-50 px-4 py-2 rounded-full group-hover:text-white transition-all duration-300 ${division === 'taxation' ? 'group-hover:bg-emerald-600' : 'group-hover:bg-blue-600'}`}>
         {label}
       </div>
     </motion.div>
@@ -215,11 +215,12 @@ export default function AboutPage() {
             {/* Right Column - Stats Grid */}
             <div className="grid grid-cols-2 gap-6 md:gap-8">
               <StatCard
-                icon={<Clock className={`w-8 h-8 ${primaryColor}`} />}
+                icon={<Clock className="w-8 h-8 text-blue-500" />}
                 value="12+"
                 label="years experience"
                 delay={0.1}
                 className={division === 'taxation' ? 'hover:shadow-emerald-200/50' : 'hover:shadow-blue-200/50'}
+                division={division}
               />
               <StatCard
                 icon={<Users className="w-8 h-8 text-emerald-500" />}
@@ -227,6 +228,7 @@ export default function AboutPage() {
                 label="Corporate Clients"
                 delay={0.2}
                 className={division === 'taxation' ? 'hover:shadow-emerald-200/50' : 'hover:shadow-blue-200/50'}
+                division={division}
               />
               <StatCard
                 icon={<Award className="w-8 h-8 text-amber-500" />}
@@ -234,6 +236,7 @@ export default function AboutPage() {
                 label={division === 'taxation' ? "Accuracy %" : "interest rates"}
                 delay={0.3}
                 className={division === 'taxation' ? 'hover:shadow-emerald-200/50' : 'hover:shadow-blue-200/50'}
+                division={division}
               />
               <StatCard
                 icon={<Globe className="w-8 h-8 text-purple-500" />}
@@ -241,6 +244,7 @@ export default function AboutPage() {
                 label="India"
                 delay={0.4}
                 className={division === 'taxation' ? 'hover:shadow-emerald-200/50' : 'hover:shadow-blue-200/50'}
+                division={division}
               />
             </div>
           </div>
