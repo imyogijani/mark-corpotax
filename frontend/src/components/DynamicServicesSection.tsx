@@ -154,17 +154,9 @@ export function DynamicServicesSection() {
                     >
                       <div className="relative z-10 flex h-full flex-col">
                         <div className="flex-1">
-                          <div className="flex flex-row items-center gap-4 mb-4">
-                            <div className={`w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-xl md:rounded-2xl flex items-center justify-center shadow-inner ${division === 'taxation' ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-blue-50 border-blue-100 text-blue-600'}`}>
-                              <div className="relative z-10">
-                                {getIcon(service.icon || "")}
-                              </div>
-                            </div>
-
-                            <h3 className="text-lg md:text-xl font-bold text-slate-900 tracking-tight uppercase leading-[1.2]">
+                            <h3 className="text-lg md:text-xl font-bold text-slate-900 tracking-tight uppercase leading-[1.2] mb-4">
                               {service.title}
                             </h3>
-                          </div>
 
                           <p className="text-sm text-slate-500 leading-relaxed font-medium">
                             {service.description}

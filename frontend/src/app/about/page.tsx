@@ -48,29 +48,6 @@ interface AboutPageContent {
 }
 
 const StatCard = ({ icon, value, label, className = "", delay = 0, division = "finance" }: { icon: React.ReactNode, value: string, label: string, className?: string, delay?: number, division?: string | null }) => {
-  const [displayValue, setDisplayValue] = useState(0);
-  const target = parseInt(value) || 0;
-  const isNumeric = !isNaN(target);
-
-  useEffect(() => {
-    if (!isNumeric) return;
-    let start = 0;
-    const duration = 2000;
-    const increment = target / (duration / 16);
-    
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= target) {
-        setDisplayValue(target);
-        clearInterval(timer);
-      } else {
-        setDisplayValue(Math.floor(start));
-      }
-    }, 16);
-    
-    return () => clearInterval(timer);
-  }, [target, isNumeric]);
-
   return (
     <motion.div 
       initial={{ opacity: 0, y: 30 }}
@@ -79,11 +56,11 @@ const StatCard = ({ icon, value, label, className = "", delay = 0, division = "f
       transition={{ duration: 0.6, delay }}
       className={`p-8 bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 flex flex-col items-center text-center group hover:translate-y-[-5px] transition-all duration-300 ${className}`}
     >
-      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-500 ${division === 'taxation' ? 'bg-emerald-50' : 'bg-blue-50'}`}>
+      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${division === 'taxation' ? 'bg-emerald-50' : 'bg-blue-50'}`}>
         {icon}
       </div>
       <div className="text-4xl md:text-5xl font-black text-slate-900 mb-2 tracking-tighter">
-        {isNumeric ? `${displayValue}${value.includes('+') ? '+' : ''}` : value}
+        {value}
       </div>
       <div className={`text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] bg-slate-50 px-4 py-2 rounded-full group-hover:text-white transition-all duration-300 ${division === 'taxation' ? 'group-hover:bg-emerald-600' : 'group-hover:bg-blue-600'}`}>
         {label}
