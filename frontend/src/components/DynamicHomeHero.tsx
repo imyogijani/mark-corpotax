@@ -86,7 +86,7 @@ const StaticHeroImage = ({ heroMain, y3, division }: { heroMain: HeroMainData; y
           {/* Main Illustration Glow */}
           <div className={`absolute inset-0 blur-[100px] rounded-full -z-10 animate-pulse ${division === 'taxation' ? 'bg-emerald-400/10' : 'bg-blue-400/10'}`} />
 
-          <HeroClipart />
+          <HeroClipart division={division} />
 
           {/* Experience Badge - Premium Light Theme */}
           <motion.div
