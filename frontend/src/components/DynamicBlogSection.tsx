@@ -147,7 +147,7 @@ export function DynamicBlogSection() {
             </motion.div>
 
             <motion.h2
-              className="text-4xl md:text-6xl font-black mb-8 text-slate-900 tracking-tighter uppercase"
+              className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-8 text-slate-900 tracking-tighter uppercase whitespace-nowrap"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
@@ -186,16 +186,15 @@ export function DynamicBlogSection() {
             >
               <Card className={`group relative overflow-hidden bg-white border border-slate-100 rounded-[3rem] h-full flex flex-col transition-all duration-500 shadow-[0_15px_40px_rgba(0,0,0,0.03)] ${division === 'taxation' ? 'hover:shadow-[0_45px_100px_rgba(16,185,129,0.1)] hover:border-emerald-100' : 'hover:shadow-[0_45px_100px_rgba(37,99,235,0.1)] hover:border-blue-100'} hover:-translate-y-4`}>
                 <div className="h-64 relative overflow-hidden bg-slate-50 flex items-center justify-center">
-                  <div className={`absolute inset-0 bg-gradient-to-br transition-opacity duration-700 opacity-0 group-hover:opacity-100 ${division === 'taxation' ? 'from-emerald-600/10' : 'from-blue-600/10'} to-transparent z-10`} />
                   {post.image ? (
                     <Image
                       src={post.image}
                       alt={post.title}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="object-cover"
                     />
                   ) : (
-                    <div className="relative z-10 transform transition-all duration-700 group-hover:scale-125 group-hover:rotate-6 p-8">
+                    <div className="relative z-10 p-8">
                       {getIcon(index)}
                     </div>
                   )}
@@ -205,13 +204,13 @@ export function DynamicBlogSection() {
                   <div className={`text-[10px] font-black uppercase tracking-[0.2em] mb-4 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
                     {post?.category}
                   </div>
-                  <h3 className={`text-2xl font-black mb-6 text-slate-800 leading-tight transition-colors tracking-tight uppercase ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'}`}>
+                  <h3 className="text-2xl font-black mb-6 text-slate-800 leading-tight tracking-tight uppercase">
                     {post?.title}
                   </h3>
                   <div className="mt-auto">
-                    <button className={`flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 transition-all duration-300 ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'}`}>
+                    <button className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
                       Read Details
-                      <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" />
+                      <ArrowRight className="w-5 h-5" />
                     </button>
                   </div>
                 </CardContent>

@@ -114,53 +114,30 @@ function AnimatedStat({ value, label, icon, index, division }: { value: string; 
       <TrendingUp key="trending" className="w-8 h-8" />,
       <Shield key="shield" className="w-8 h-8" />,
     ];
-    const iconElement = iconName && iconMap[iconName] ? iconMap[iconName] : defaultIcons[(idx || 0) % defaultIcons.length];
-    return (
-      <motion.div
-        initial={{ scale: 0.5, opacity: 0 }}
-        whileInView={{ scale: 1, opacity: 1 }}
-        viewport={{ once: false }}
-        transition={{ type: "spring", stiffness: 200, delay: (idx || 0) * 0.1 }}
-        variants={{
-          hover: { rotate: [0, -10, 10, -5, 5, 0], scale: 1.1, transition: { duration: 0.5 } },
-        }}
-      >
-        {iconElement}
-      </motion.div>
-    );
+    return iconName && iconMap[iconName] ? iconMap[iconName] : defaultIcons[(idx || 0) % defaultIcons.length];
   };
 
   return (
-    <motion.div
+    <div
       ref={elementRef}
-      initial={{ opacity: 0, y: 50, scale: 0.9 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: false, amount: 0.3 }}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      whileHover="hover"
-      className="relative bg-transparent group h-full flex flex-col justify-between transition-colors duration-300"
+      className="relative bg-transparent h-full flex flex-col justify-between"
     >
-      <motion.div variants={{ hover: { opacity: 1 } }} initial={{ opacity: 0 }} className={`absolute inset-0 bg-gradient-to-br via-transparent to-transparent pointer-events-none ${division === 'taxation' ? 'from-emerald-50/10' : 'from-blue-50/10'}`} />
-      <motion.div variants={{ hover: { scaleX: 1, opacity: 1 } }} initial={{ scaleX: 0, opacity: 0 }} transition={{ duration: 0.4, ease: "easeOut" }} className={`absolute bottom-0 left-0 w-full h-[2px] origin-left ${division === 'taxation' ? 'bg-emerald-500' : 'bg-blue-500'}`} />
-
-      <motion.div
-        variants={{ hover: { y: -4, backgroundColor: division === 'taxation' ? "rgba(16,185,129,0.2)" : "rgba(59,130,246,0.2)", color: division === 'taxation' ? "#34d399" : "#60a5fa", boxShadow: division === 'taxation' ? "0 10px 25px -5px rgba(16,185,129,0.2)" : "0 10px 25px -5px rgba(59,130,246,0.2)" } }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
+      <div
         className={`w-14 h-14 rounded-xl flex items-center justify-center mb-5 border relative z-10 ${division === 'taxation' ? 'text-emerald-600 bg-emerald-50 border-emerald-100' : 'text-blue-600 bg-blue-50 border-blue-100'}`}
       >
         <div className="[&>svg]:w-7 [&>svg]:h-7">{getStatIcon(icon, index)}</div>
-      </motion.div>
+      </div>
 
       <div className="relative z-10">
-        <motion.div variants={{ hover: { y: -2 } }} transition={{ duration: 0.3 }} className="text-3xl font-black mb-2 tabular-nums tracking-tight text-slate-900">
+        <div className="text-3xl font-black mb-2 tabular-nums tracking-tight text-slate-900">
           {prefix}{formatNumber(count, hasDecimal)}{suffix}
-        </motion.div>
+        </div>
         <div className="flex items-center gap-2">
-          <div className={`h-[1px] w-4 group-hover:w-8 transition-all duration-300 mb-[2px] ${division === 'taxation' ? 'bg-emerald-200 group-hover:bg-emerald-500' : 'bg-blue-200 group-hover:bg-blue-500'}`} />
-          <div className={`text-slate-500 text-xs font-bold uppercase tracking-widest transition-colors duration-300 ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'}`}>{label}</div>
+          <div className={`h-[1px] w-4 mb-[2px] ${division === 'taxation' ? 'bg-emerald-200' : 'bg-blue-200'}`} />
+          <div className="text-slate-500 text-xs font-bold uppercase tracking-widest">{label}</div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -306,7 +283,7 @@ export function DynamicAboutSection() {
                       transition={{ delay: 0.2 + index * 0.1 }}
                       className="flex items-center gap-4 group"
                     >
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm border ${division === 'taxation' ? 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white border-emerald-100' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white border-blue-100'}`}>
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-sm border ${division === 'taxation' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-blue-50 text-blue-600 border-blue-100'}`}>
                         <CheckCircle className="w-4 h-4 md:w-5 md:h-5" />
                       </div>
                       <span className="text-sm md:text-base text-slate-700 font-bold tracking-tight">{highlight}</span>
@@ -332,13 +309,6 @@ export function DynamicAboutSection() {
 
           {/* Right Stats Grid */}
           <div className="relative">
-            <motion.div
-              animate={{ y: [0, -20, 0] }}
-              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-10 -right-10 text-[10vw] font-black text-slate-300 select-none pointer-events-none opacity-80"
-            >
-              2500+
-            </motion.div>
 
             <div className="grid grid-cols-2 gap-4 md:gap-6 relative">
               {displayContent.stats?.map((stat, index) => (
@@ -348,9 +318,10 @@ export function DynamicAboutSection() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: false }}
                   transition={{ delay: index * 0.15 }}
+                  whileHover={{ y: -12 }}
                   className={`${index % 2 === 1 ? "mt-6 md:mt-12" : ""} p-6 md:p-8 rounded-3xl bg-white border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.03)] transition-all duration-500 group relative overflow-hidden ${division === 'taxation' ? 'hover:shadow-[0_20px_50px_rgba(16,185,129,0.1)] hover:border-emerald-200' : 'hover:shadow-[0_20px_50px_rgba(37,99,235,0.1)] hover:border-blue-200'}`}
                 >
-                  <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                  <div className="absolute top-0 right-0 p-4 opacity-[0.03]">
                     <Layers className={`w-10 h-10 md:w-12 md:h-12 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`} />
                   </div>
                   <div className="relative z-10">

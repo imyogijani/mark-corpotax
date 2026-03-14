@@ -77,20 +77,20 @@ export function DynamicServicesSection() {
 
   const getIcon = (iconName: string) => {
     const iconMap: { [key: string]: JSX.Element } = {
-      Landmark: <Landmark className="w-10 h-10 md:w-12 md:h-12" />,
-      ShieldCheck: <ShieldCheck className="w-10 h-10 md:w-12 md:h-12" />,
-      ShieldHalf: <Shield className="w-10 h-10 md:w-12 md:h-12" />,
-      Briefcase: <Briefcase className="w-10 h-10 md:w-12 md:h-12" />,
-      Building2: <Building2 className="w-10 h-10 md:w-12 md:h-12" />,
-      HandCoins: <HandCoins className="w-10 h-10 md:w-12 md:h-12" />,
-      Home: <Home className="w-10 h-10 md:w-12 md:h-12" />,
-      Award: <Award className="w-10 h-10 md:w-12 md:h-12" />,
-      FileText: <FileText className="w-10 h-10 md:w-12 md:h-12" />,
-      PiggyBank: <PiggyBank className="w-10 h-10 md:w-12 md:h-12" />,
-      University: <GraduationCap className="w-10 h-10 md:w-12 md:h-12" />,
-      Factory: <Factory className="w-10 h-10 md:w-12 md:h-12" />,
+      Landmark: <Landmark className="w-6 h-6 md:w-7 md:h-7" />,
+      ShieldCheck: <ShieldCheck className="w-6 h-6 md:w-7 md:h-7" />,
+      ShieldHalf: <Shield className="w-6 h-6 md:w-7 md:h-7" />,
+      Briefcase: <Briefcase className="w-6 h-6 md:w-7 md:h-7" />,
+      Building2: <Building2 className="w-6 h-6 md:w-7 md:h-7" />,
+      HandCoins: <HandCoins className="w-6 h-6 md:w-7 md:h-7" />,
+      Home: <Home className="w-6 h-6 md:w-7 md:h-7" />,
+      Award: <Award className="w-6 h-6 md:w-7 md:h-7" />,
+      FileText: <FileText className="w-6 h-6 md:w-7 md:h-7" />,
+      PiggyBank: <PiggyBank className="w-6 h-6 md:w-7 md:h-7" />,
+      University: <GraduationCap className="w-6 h-6 md:w-7 md:h-7" />,
+      Factory: <Factory className="w-6 h-6 md:w-7 md:h-7" />,
     };
-    return iconMap[iconName] || <Briefcase className="w-10 h-10 md:w-12 md:h-12" />;
+    return iconMap[iconName] || <Briefcase className="w-6 h-6 md:w-7 md:h-7" />;
   };
 
   const displayServices = useMemo(() => services.slice(0, 3), [services]);
@@ -150,28 +150,30 @@ export function DynamicServicesSection() {
                   >
                     <Link
                       href={service.slug ? `/services/${service.slug}` : (service as any).id ? `/services/${(service as any).id}` : "/services"}
-                      className={`relative flex-1 flex flex-col overflow-hidden rounded-[2rem] md:rounded-[2.5rem] bg-white border border-slate-100 p-6 md:p-8 text-left no-underline shadow-[0_20px_50px_rgba(0,0,0,0.02)] transition-all duration-700 hover:shadow-[0_40px_80px_rgba(37,99,235,0.1)] ${division === 'taxation' ? 'hover:border-emerald-200 hover:shadow-emerald-500/10' : 'hover:border-blue-200 hover:shadow-blue-500/10'}`}
+                      className={`relative flex-1 flex flex-col overflow-hidden rounded-[2rem] md:rounded-[2.5rem] bg-white border border-slate-100 p-6 md:p-8 text-left no-underline shadow-[0_20px_50px_rgba(0,0,0,0.02)] transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_40px_80px_rgba(37,99,235,0.1)] ${division === 'taxation' ? 'hover:border-emerald-200 hover:shadow-emerald-500/10' : 'hover:border-blue-200 hover:shadow-blue-500/10'}`}
                     >
                       <div className="relative z-10 flex h-full flex-col">
                         <div className="flex-1">
-                          <div className={`mb-5 md:mb-6 w-14 h-14 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center transition-all duration-700 shadow-inner group-hover:rotate-12 ${division === 'taxation' ? 'bg-emerald-50 border-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white' : 'bg-blue-50 border-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white'}`}>
-                            <div className="relative z-10 transition-transform duration-700 group-hover:scale-110">
-                              {getIcon(service.icon || "")}
+                          <div className="flex flex-row items-center gap-4 mb-4">
+                            <div className={`w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-xl md:rounded-2xl flex items-center justify-center shadow-inner ${division === 'taxation' ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-blue-50 border-blue-100 text-blue-600'}`}>
+                              <div className="relative z-10">
+                                {getIcon(service.icon || "")}
+                              </div>
                             </div>
+
+                            <h3 className="text-lg md:text-xl font-bold text-slate-900 tracking-tight uppercase leading-[1.2]">
+                              {service.title}
+                            </h3>
                           </div>
 
-                          <h3 className={`mb-3 text-xl md:text-[1.25rem] font-bold text-slate-900 transition-colors tracking-tight uppercase leading-[1.2] ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'}`}>
-                            {service.title}
-                          </h3>
-
-                          <p className="text-sm text-slate-500 group-hover:text-slate-600 leading-relaxed font-medium opacity-80 group-hover:opacity-100 transition-opacity">
+                          <p className="text-sm text-slate-500 leading-relaxed font-medium">
                             {service.description}
                           </p>
                         </div>
 
-                        <div className={`mt-8 flex items-center text-[10px] font-black uppercase tracking-[0.3em] transition-all ${division === 'taxation' ? 'text-emerald-600 group-hover:text-emerald-700' : 'text-blue-600 group-hover:text-blue-700'}`}>
-                          <span className="border-b-2 border-transparent group-hover:border-current pb-1 transition-all">Explore</span>
-                          <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-2 transition-transform duration-500" />
+                        <div className={`mt-8 flex items-center text-[10px] font-black uppercase tracking-[0.3em] ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
+                          <span className="border-b-2 border-transparent pb-1">Explore</span>
+                          <ArrowRight className="ml-3 h-4 w-4" />
                         </div>
                       </div>
 
