@@ -197,7 +197,17 @@ export function Header() {
 
   return (
     <>
-
+      <AnimatePresence>
+        {activeMegaMenu && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="fixed inset-0 z-[90] bg-slate-900/20 backdrop-blur-md"
+          />
+        )}
+      </AnimatePresence>
 
       <header
         className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${isScrolled || isMobileMenuOpen
@@ -281,14 +291,14 @@ export function Header() {
                               transition={{ duration: 0.3, ease: "easeOut" }}
                               onMouseEnter={handleMouseEnter}
                               onMouseLeave={handleMouseLeave}
-                              className={`fixed top-[115px] left-1/2 w-[90vw] max-w-6xl bg-white border rounded-[3rem] overflow-hidden p-6 md:p-8 z-[60] ${currentDivision === "taxation"
+                              className={`fixed top-[115px] left-1/2 w-[85vw] max-w-5xl bg-white border rounded-[2.5rem] overflow-hidden p-5 md:p-6 z-[60] ${currentDivision === "taxation"
                                 ? "border-emerald-100 shadow-[0_40px_100px_rgba(16,185,129,0.15)]"
                                 : "border-blue-100 shadow-[0_40px_100px_rgba(37,99,235,0.15)]"
                                 }`}
                             >
-                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                                 {filteredCategories.map((category, idx) => (
-                                  <div key={idx} className="space-y-5 group/cat">
+                                  <div key={idx} className="space-y-4 group/cat">
                                     <div className="flex items-center gap-3">
                                       <div className={`w-8 h-[2px] ${currentDivision === 'taxation' ? 'bg-emerald-600/30' : 'bg-blue-600/30'} group-hover/cat:w-12 transition-all duration-500`} />
                                       <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 group-hover/cat:text-slate-900 transition-colors">
@@ -301,13 +311,13 @@ export function Header() {
                                           key={sIdx}
                                           href={service.href}
                                           onClick={() => setActiveMegaMenu(false)}
-                                          className="group/link flex items-center justify-between p-2.5 rounded-2xl hover:bg-slate-50 transition-all duration-300 border border-transparent hover:border-slate-100"
+                                          className="group/link flex items-center justify-between p-2 rounded-[1rem] hover:bg-slate-50 transition-all duration-300 border border-transparent hover:border-slate-100"
                                         >
-                                          <div className="flex items-center gap-3">
-                                            <div className={`w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center transition-all duration-500 ${currentDivision === 'taxation' ? 'group-hover/link:bg-emerald-600 group-hover/link:text-white group-hover/link:scale-110' : 'group-hover/link:bg-blue-600 group-hover/link:text-white group-hover/link:scale-110'}`}>
-                                              <service.icon className="w-5 h-5" />
+                                          <div className="flex items-center gap-2.5">
+                                            <div className={`w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center transition-all duration-500 ${currentDivision === 'taxation' ? 'group-hover/link:bg-emerald-600 group-hover/link:text-white group-hover/link:scale-110' : 'group-hover/link:bg-blue-600 group-hover/link:text-white group-hover/link:scale-110'}`}>
+                                              <service.icon className="w-4 h-4" />
                                             </div>
-                                            <span className="text-sm font-bold text-slate-700 group-hover/link:text-slate-900 transition-colors">
+                                            <span className="text-[13px] font-bold text-slate-700 group-hover/link:text-slate-900 transition-colors">
                                               {service.name}
                                             </span>
                                           </div>
@@ -319,17 +329,17 @@ export function Header() {
                                 ))}
 
                                 {/* Promotional Panel */}
-                                <div className={`relative rounded-[2.5rem] overflow-hidden p-8 flex flex-col justify-end min-h-[350px] group/promo ${currentDivision === 'taxation' ? 'bg-emerald-950 shadow-2xl shadow-emerald-500/20' : 'bg-blue-950 shadow-2xl shadow-blue-500/20'}`}>
+                                <div className={`relative rounded-[2rem] overflow-hidden p-6 flex flex-col justify-end min-h-[300px] group/promo ${currentDivision === 'taxation' ? 'bg-emerald-950 shadow-2xl shadow-emerald-500/20' : 'bg-blue-950 shadow-2xl shadow-blue-500/20'}`}>
                                   <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
-                                  <div className="relative z-10 space-y-5">
-                                    <div className={`inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-[8px] font-black uppercase tracking-widest text-white`}>
+                                  <div className="relative z-10 space-y-4">
+                                    <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-[8px] font-black uppercase tracking-widest text-white`}>
                                       <TrendingUp className="w-3 h-3 text-white" />
                                       <span>Expert Advisory</span>
                                     </div>
-                                    <h4 className="text-3xl font-black text-white uppercase tracking-tighter leading-none">
+                                    <h4 className="text-2xl font-black text-white uppercase tracking-tighter leading-none">
                                       Expert <br /> Consultant.
                                     </h4>
-                                    <p className="text-white/60 text-xs font-medium leading-relaxed">
+                                    <p className="text-white/60 text-[11px] font-medium leading-relaxed">
                                       {currentDivision === "taxation"
                                         ? "Statutory audit and tax planning by certified professionals."
                                         : "Strategic capital raising and MSME project financing solutions."}
@@ -337,9 +347,9 @@ export function Header() {
                                     <Link
                                       href="/appointment"
                                       onClick={() => setActiveMegaMenu(false)}
-                                      className={`w-full py-4 bg-white text-slate-900 rounded-2xl flex items-center justify-center gap-2 font-black text-[10px] uppercase tracking-widest hover:bg-slate-100 transition-all shadow-xl`}
+                                      className={`w-full py-3 bg-white text-slate-900 rounded-xl flex items-center justify-center gap-2 font-black text-[10px] uppercase tracking-widest hover:bg-slate-100 transition-all shadow-xl`}
                                     >
-                                      Schedule Call <ArrowRight className="w-4 h-4" />
+                                      Schedule Call <ArrowRight className="w-3.5 h-3.5" />
                                     </Link>
                                   </div>
                                 </div>
