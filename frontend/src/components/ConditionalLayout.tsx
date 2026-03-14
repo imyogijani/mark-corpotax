@@ -62,74 +62,43 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
       <Preloader />
       <ScrollProgress />
 
-      {/* Premium Navigation Curtain */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`curtain-${pathname}`}
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 0 }}
-          exit={{ opacity: 1 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
-          className="fixed inset-0 z-[100] pointer-events-none flex"
-        >
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ scaleY: 0 }}
-              animate={{
-                scaleY: [0, 1, 0],
-                transition: {
-                  duration: 1.2,
-                  times: [0, 0.5, 1],
-                  delay: i * 0.1,
-                  ease: "easeInOut"
-                }
-              }}
-              className="flex-1 origin-top h-full"
-              style={{ backgroundColor: currentDivision === 'taxation' ? '#059669' : '#2563eb' }}
-            />
-          ))}
-        </motion.div>
-      </AnimatePresence>
+
 
       {showLayout && (
         <Suspense fallback={null}>
           <Header />
         </Suspense>
       )}
-      <main className="flex-1 overflow-x-hidden relative">
-        <AnimatePresence mode="wait" initial={false} custom={direction}>
+      <main className="flex-1 overflow-x-hidden relative bg-slate-50 min-h-screen">
+        <AnimatePresence mode="popLayout" initial={false} custom={direction}>
           <motion.div
             key={`${pathname}-${currentDivision}`}
             custom={direction}
             variants={{
               enter: (dir: number) => ({
                 x: dir > 0 ? '100%' : dir < 0 ? '-100%' : 0,
-                opacity: 0,
-                filter: "blur(10px)"
+                opacity: 0
               }),
               center: {
                 zIndex: 1,
                 x: 0,
-                opacity: 1,
-                filter: "blur(0px)"
+                opacity: 1
               },
               exit: (dir: number) => ({
                 zIndex: 0,
                 x: dir > 0 ? '-100%' : dir < 0 ? '100%' : 0,
-                opacity: 0,
-                filter: "blur(10px)"
+                opacity: 0
               })
             }}
             initial="enter"
             animate="center"
             exit="exit"
             transition={{
-              x: { type: "spring", stiffness: 300, damping: 30 },
-              opacity: { duration: 0.3 },
-              filter: { duration: 0.3 }
+              type: "tween",
+              duration: 0.3,
+              ease: "easeInOut"
             }}
-            className="w-full h-full"
+            className="w-full"
           >
             <PageTransition key={pathname}>{children}</PageTransition>
           </motion.div>

@@ -147,6 +147,9 @@ export function Header() {
     localStorage.setItem("user_division", choice);
     setCurrentDivision(choice);
     window.dispatchEvent(new Event("division-change"));
+    if (pathname !== "/") {
+      router.push("/");
+    }
   };
 
   const handleGoToLanding = () => {
@@ -230,7 +233,7 @@ export function Header() {
                 height={42}
               />
               <div className="flex flex-col">
-                <span className="text-sm md:text-lg font-black tracking-tighter text-slate-900 group-hover/logo:text-blue-600 transition-colors uppercase leading-none">
+                <span className={`text-sm md:text-lg font-black tracking-tighter text-slate-900 transition-colors uppercase leading-none ${currentDivision === 'taxation' ? 'group-hover/logo:text-emerald-600' : 'group-hover/logo:text-blue-600'}`}>
                   Mark Corpotax
                 </span>
                 <span className={`text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] ${currentDivision === 'taxation' ? 'text-emerald-500' : 'text-blue-500'} leading-none mt-1 whitespace-nowrap`}>
@@ -479,7 +482,7 @@ export function Header() {
             >
               <div className="p-6 flex items-center justify-between border-b border-slate-50 bg-white sticky top-0 z-20">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-50 rounded-xl">
+                  <div className={`p-2 rounded-xl ${currentDivision === 'taxation' ? 'bg-emerald-50' : 'bg-blue-50'}`}>
                     <Logo width={28} height={28} />
                   </div>
                   <div className="flex flex-col">
@@ -539,7 +542,7 @@ export function Header() {
                           }`}
                       >
                         <div className="flex items-center gap-4">
-                          <LinkIcon className={`w-5 h-5 ${isActive ? 'text-white' : `text-slate-400 group-hover:${currentDivision === 'taxation' ? 'text-emerald-500' : 'text-blue-500'}`}`} />
+                          <LinkIcon className={`w-5 h-5 ${isActive ? 'text-white' : `text-slate-400 ${currentDivision === 'taxation' ? 'group-hover:text-emerald-500' : 'group-hover:text-blue-500'}`}`} />
                           <span className="text-[13px] font-black uppercase tracking-[0.1em]">{link.label}</span>
                         </div>
                         <ArrowRight className={`w-4 h-4 opacity-50 ${isActive ? 'text-white' : ''}`} />
@@ -564,7 +567,7 @@ export function Header() {
 
               <div className="p-8">
                 <Link href="/appointment" onClick={() => setIsMobileMenuOpen(false)}>
-                  <Button className={`w-full bg-slate-900 hover:${currentDivision === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'} text-white py-8 rounded-2xl font-black uppercase tracking-widest text-xs transition-all duration-500`}>
+                  <Button className={`w-full bg-slate-900 text-white py-8 rounded-2xl font-black uppercase tracking-widest text-xs transition-all duration-500 ${currentDivision === 'taxation' ? 'hover:bg-emerald-600' : 'hover:bg-blue-600'}`}>
                     Book Appointment
                   </Button>
                 </Link>

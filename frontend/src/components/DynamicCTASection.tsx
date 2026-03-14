@@ -25,6 +25,7 @@ const FALLBACK_CTA: CTASectionData = {
 
 export function DynamicCTASection() {
   const [ctaSection, setCtaSection] = useState<CTASectionData>(FALLBACK_CTA);
+  const [division, setDivision] = useState<string>("finance");
 
   const fetchContent = useCallback(async () => {
     try {
@@ -42,6 +43,12 @@ export function DynamicCTASection() {
 
   useEffect(() => {
     fetchContent();
+    const handleSync = () => {
+      setDivision(localStorage.getItem("user_division") || "finance");
+    };
+    handleSync();
+    window.addEventListener("storage", handleSync);
+    window.addEventListener("division-change", handleSync);
 
     // Subscribe to cache invalidation events
     const unsubscribe = contentService.onCacheInvalidated(() => {
@@ -49,6 +56,8 @@ export function DynamicCTASection() {
     });
 
     return () => {
+      window.removeEventListener("storage", handleSync);
+      window.removeEventListener("division-change", handleSync);
       unsubscribe();
     };
   }, [fetchContent]);
@@ -56,7 +65,7 @@ export function DynamicCTASection() {
   return (
     <section className="py-20 bg-slate-50 relative overflow-hidden">
       {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100/20 rounded-full blur-[120px] -z-10" />
+      <div className={`absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-[120px] -z-10 transition-colors duration-500 ${division === 'taxation' ? 'bg-emerald-100/20' : 'bg-blue-100/20'}`} />
 
       <div className="container mx-auto px-6 text-center">
         <Link
@@ -68,7 +77,7 @@ export function DynamicCTASection() {
             <span className="text-2xl font-black text-slate-900 tracking-tight block leading-tight uppercase">
               {ctaSection?.logoText || "Mark Corpotax"}
             </span>
-            <span className="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em]">
+            <span className={`text-[10px] font-black uppercase tracking-[0.3em] ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
               Premium Excellence
             </span>
           </div>
@@ -82,7 +91,7 @@ export function DynamicCTASection() {
             "www.markcorpotax.com"}
         </p>
 
-        <form className="max-w-xl mx-auto flex items-center gap-2 p-2 bg-white border border-slate-200 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] focus-within:ring-2 focus-within:ring-blue-500/10 focus-within:border-blue-500/50 transition-all">
+        <form className={`max-w-xl mx-auto flex items-center gap-2 p-2 bg-white border border-slate-200 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] focus-within:ring-2 transition-all ${division === 'taxation' ? 'focus-within:ring-emerald-500/10 focus-within:border-emerald-500/50' : 'focus-within:ring-blue-500/10 focus-within:border-blue-500/50'}`}>
           <Input
             type="email"
             placeholder="Enter your email for updates"
@@ -90,7 +99,7 @@ export function DynamicCTASection() {
           />
           <Button
             type="submit"
-            className="rounded-2xl h-14 bg-blue-600 hover:bg-slate-900 text-white px-10 font-black uppercase tracking-widest text-[11px] transition-all shadow-lg active:scale-95"
+            className={`rounded-2xl h-14 hover:bg-slate-900 text-white px-10 font-black uppercase tracking-widest text-[11px] transition-all shadow-lg active:scale-95 ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}
           >
             {ctaSection?.buttonText || "Subscribe"}
           </Button>

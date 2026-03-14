@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Rocket,
@@ -20,6 +21,22 @@ interface TimelineItem {
 }
 
 const CompanyTimeline = () => {
+  const [division, setDivision] = useState<string>("finance");
+
+  useEffect(() => {
+    const handleSync = () => {
+      setDivision(localStorage.getItem("user_division") || "finance");
+    };
+    handleSync();
+    window.addEventListener("storage", handleSync);
+    window.addEventListener("division-change", handleSync);
+
+    return () => {
+      window.removeEventListener("storage", handleSync);
+      window.removeEventListener("division-change", handleSync);
+    };
+  }, []);
+
   const timelineItems: TimelineItem[] = [
     {
       year: "1991",
@@ -80,7 +97,7 @@ const CompanyTimeline = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-6 py-2 bg-blue-50/50 rounded-full border border-blue-100 text-[10px] font-black uppercase tracking-[0.4em] text-blue-600 mb-8"
+            className={`inline-flex items-center gap-2 px-6 py-2 rounded-full border text-[10px] font-black uppercase tracking-[0.4em] mb-8 transition-colors duration-500 ${division === 'taxation' ? 'bg-emerald-50/50 border-emerald-100 text-emerald-600' : 'bg-blue-50/50 border-blue-100 text-blue-600'}`}
           >
             <Globe className="w-3.5 h-3.5" />
             <span>Our Corporate Journey</span>
@@ -105,7 +122,7 @@ const CompanyTimeline = () => {
             whileInView={{ scaleY: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
-            className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[4px] bg-blue-500 rounded-full hidden md:block origin-top"
+            className={`absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[4px] rounded-full hidden md:block origin-top transition-colors duration-500 ${division === 'taxation' ? 'bg-emerald-500' : 'bg-blue-500'}`}
           />
 
           {/* Timeline Items */}
@@ -143,7 +160,7 @@ const CompanyTimeline = () => {
 
                         {/* Connecting horizontal line animation */}
                         <motion.div
-                          className={`hidden md:block absolute top-1/2 -translate-y-1/2 w-12 h-[2px] bg-blue-500 ${isEven ? 'left-[-48px]' : 'right-[-48px]'} origin-right`}
+                          className={`hidden md:block absolute top-1/2 -translate-y-1/2 w-12 h-[2px] ${isEven ? 'left-[-48px]' : 'right-[-48px]'} origin-right transition-colors duration-500 ${division === 'taxation' ? 'bg-emerald-500' : 'bg-blue-500'}`}
                           initial={{ scaleX: 0 }}
                           whileInView={{ scaleX: 1 }}
                           viewport={{ once: true }}
@@ -151,8 +168,8 @@ const CompanyTimeline = () => {
                         />
 
                         <div className={`flex items-center gap-4 mb-5 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-                          <div className="h-[2px] w-12 bg-blue-500 hidden md:block" />
-                          <span className="text-4xl font-black text-blue-600 tracking-tighter">
+                          <div className={`h-[2px] w-12 hidden md:block transition-colors duration-500 ${division === 'taxation' ? 'bg-emerald-500' : 'bg-blue-500'}`} />
+                          <span className={`text-4xl font-black tracking-tighter transition-colors duration-500 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
                             {item.year}
                           </span>
                         </div>
@@ -179,14 +196,14 @@ const CompanyTimeline = () => {
                           damping: 20,
                           delay: 0.3
                         }}
-                        className="w-14 h-14 bg-[#f8faff] border-[3px] border-blue-500 rounded-xl flex items-center justify-center shadow-[0_10px_40px_rgba(37,99,235,0.2)]"
+                        className={`w-14 h-14 bg-[#f8faff] border-[3px] rounded-xl flex items-center justify-center transition-colors duration-500 ${division === 'taxation' ? 'border-emerald-500 shadow-[0_10px_40px_rgba(16,185,129,0.2)]' : 'border-blue-500 shadow-[0_10px_40px_rgba(37,99,235,0.2)]'}`}
                       >
                         <motion.div
                           initial={{ opacity: 0, rotate: -45 }}
                           whileInView={{ opacity: 1 }}
                           viewport={{ once: true }}
                           transition={{ delay: 0.5 }}
-                          className="-rotate-45 text-blue-600"
+                          className={`-rotate-45 transition-colors duration-500 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}
                         >
                           <Icon className="w-5 h-5 stroke-[2.5px]" />
                         </motion.div>
@@ -208,7 +225,7 @@ const CompanyTimeline = () => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="absolute top-[45%] left-0 right-0 h-[300px] border-y border-blue-100/30 -z-10 bg-gradient-to-b from-transparent via-blue-50/20 to-transparent pointer-events-none"
+        className={`absolute top-[45%] left-0 right-0 h-[300px] border-y -z-10 pointer-events-none transition-colors duration-500 ${division === 'taxation' ? 'border-emerald-100/30 bg-gradient-to-b from-transparent via-emerald-50/20 to-transparent' : 'border-blue-100/30 bg-gradient-to-b from-transparent via-blue-50/20 to-transparent'}`}
       />
     </section>
   );

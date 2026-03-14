@@ -176,7 +176,7 @@ export function DynamicFeaturesSection() {
   return (
     <section className="py-12 md:py-28 relative overflow-hidden bg-white">
       {/* Background Elements - Light Theme */}
-      <div className="absolute top-1/2 left-0 w-full h-[600px] bg-blue-50/20 -skew-y-3 -z-10 translate-y-[-50%]"></div>
+      <div className={`absolute top-1/2 left-0 w-full h-[600px] -skew-y-3 -z-10 translate-y-[-50%] transition-colors duration-500 ${division === 'taxation' ? 'bg-emerald-50/20' : 'bg-blue-50/20'}`}></div>
 
       <div className="container mx-auto px-4 mb-20">
         <div className="relative text-center max-w-4xl mx-auto">
@@ -246,7 +246,7 @@ export function DynamicFeaturesSection() {
             >
               <div className="relative group h-full">
                 {/* Card Glow Effect - Light Theme */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-[3rem] blur opacity-0 group-hover:opacity-10 transition duration-1000" />
+                <div className={`absolute -inset-1 rounded-[3rem] blur opacity-0 group-hover:opacity-10 transition duration-1000 ${division === 'taxation' ? 'bg-gradient-to-r from-emerald-600 to-teal-600' : 'bg-gradient-to-r from-blue-600 to-indigo-600'}`} />
 
                 <Card className={`relative h-full text-center p-8 md:p-14 border bg-white shadow-[0_20px_40px_rgba(0,0,0,0.03)] transition-all duration-700 rounded-[2.5rem] md:rounded-[3rem] overflow-hidden group-hover:-translate-y-6 ${division === 'taxation' ? 'border-slate-100 group-hover:shadow-[0_40px_80px_rgba(16,185,129,0.12)] group-hover:border-emerald-100' : 'border-slate-100 group-hover:shadow-[0_40px_80px_rgba(37,99,235,0.12)] group-hover:border-blue-100'}`}>
                   {/* Icon Container */}

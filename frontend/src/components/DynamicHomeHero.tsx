@@ -117,18 +117,18 @@ const StaticHeroImage = ({ heroMain, y3, division }: { heroMain: HeroMainData; y
           <motion.div
             animate={{ y: [0, -15, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -top-10 -left-10 bg-white p-3 rounded-2xl border border-blue-100 shadow-xl hidden md:block"
+            className={`absolute -top-10 -left-10 bg-white p-3 rounded-2xl border shadow-xl hidden md:block transition-colors duration-500 ${division === 'taxation' ? 'border-emerald-100' : 'border-blue-100'}`}
           >
-            <PieChart className="w-6 h-6 text-blue-600" />
+            <PieChart className={`w-6 h-6 transition-colors duration-500 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`} />
           </motion.div>
 
           {/* Floating Element 2 */}
           <motion.div
             animate={{ y: [0, 15, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute top-1/2 -left-20 bg-white p-3 rounded-2xl border border-emerald-100 shadow-xl hidden lg:block"
+            className={`absolute top-1/2 -left-20 bg-white p-3 rounded-2xl border shadow-xl hidden lg:block transition-colors duration-500 ${division === 'taxation' ? 'border-emerald-100' : 'border-blue-100'}`}
           >
-            <TrendingUp className="w-6 h-6 text-emerald-600" />
+            <TrendingUp className={`w-6 h-6 transition-colors duration-500 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`} />
           </motion.div>
         </motion.div>
       </div>
@@ -138,13 +138,13 @@ const StaticHeroImage = ({ heroMain, y3, division }: { heroMain: HeroMainData; y
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] h-[130%] border border-blue-200 rounded-full"
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] h-[130%] border rounded-full transition-colors duration-500 ${division === 'taxation' ? 'border-emerald-200' : 'border-blue-200'}`}
           style={{ willChange: "transform" }}
         />
         <motion.div
           animate={{ rotate: -360 }}
           transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] border border-emerald-200 rounded-full"
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] border rounded-full transition-colors duration-500 ${division === 'taxation' ? 'border-emerald-300' : 'border-indigo-200'}`}
           style={{ willChange: "transform" }}
         />
       </div>
@@ -197,7 +197,7 @@ export const DynamicHeroSection = () => {
       {/* Interactive Spotlight */}
       <motion.div
         className="absolute inset-0 z-0 pointer-events-none opacity-[0.4]"
-        style={{ background: "radial-gradient(800px circle at center, rgba(37,99,235,0.08), transparent 80%)" }}
+        style={{ background: division === 'taxation' ? "radial-gradient(800px circle at center, rgba(16,185,129,0.08), transparent 80%)" : "radial-gradient(800px circle at center, rgba(37,99,235,0.08), transparent 80%)" }}
         animate={{ x: [0, 100, -100, 0], y: [0, 50, -50, 0] }}
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
       />
@@ -205,8 +205,8 @@ export const DynamicHeroSection = () => {
       {/* Grid Pattern Removed as per user request to clean watermark area */}
 
       {/* Background Gradients */}
-      <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[50%] bg-blue-100 blur-[150px] rounded-full -z-10" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[50%] bg-emerald-100/60 blur-[150px] rounded-full -z-10" />
+      <div className={`absolute top-[-10%] right-[-10%] w-[40%] h-[50%] blur-[150px] rounded-full -z-10 ${division === 'taxation' ? 'bg-emerald-100' : 'bg-blue-100'}`} />
+      <div className={`absolute bottom-[-10%] left-[-10%] w-[40%] h-[50%] blur-[150px] rounded-full -z-10 ${division === 'taxation' ? 'bg-emerald-100/60' : 'bg-blue-100/60'}`} />
 
       {/* Background Watermarks */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">

@@ -117,7 +117,7 @@ export function DynamicBlogSection() {
   return (
     <section className="py-12 md:py-16 bg-white relative overflow-hidden">
       {/* Background flair - Light Theme */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-50/50 blur-[120px] rounded-full -z-10" />
+      <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full blur-[120px] rounded-full -z-10 transition-colors duration-500 ${division === 'taxation' ? 'bg-emerald-50/50' : 'bg-blue-50/50'}`} />
 
       <div className="container mx-auto px-4 mb-12">
         <div className="relative text-center max-w-4xl mx-auto">

@@ -116,22 +116,22 @@ function transformTestimonialsData(
   };
 }
 
-const FinanceAvatar = ({ image, name }: { image?: string; name: string }) => (
+const FinanceAvatar = ({ image, name, division }: { image?: string; name: string, division: string }) => (
   <motion.div
-    className="flex items-center justify-center w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow-lg bg-white"
+    className={`flex items-center justify-center w-20 h-20 rounded-full overflow-hidden border-2 shadow-lg ${division === 'taxation' ? 'border-emerald-50 bg-emerald-50' : 'border-white bg-white'}`}
     whileHover={{ scale: 1.15, rotate: 5 }}
     transition={{ type: "spring", stiffness: 300 }}
   >
     {image ? (
       <img src={image} alt={name} className="w-full h-full object-cover" />
     ) : (
-      <div className="flex items-center justify-center w-full h-full bg-blue-50">
+      <div className={`flex items-center justify-center w-full h-full ${division === 'taxation' ? 'bg-emerald-50' : 'bg-blue-50'}`}>
         <motion.div
           initial={{ y: 0 }}
           whileInView={{ y: [0, -3, 0] }}
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
         >
-          <User className="w-10 h-10 text-blue-600" />
+          <User className={`w-10 h-10 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`} />
         </motion.div>
       </div>
     )}
@@ -147,8 +147,13 @@ export function DynamicTestimonialsSection() {
     "right",
   );
 
+  const [division, setDivision] = useState<string>("finance");
+
   const fetchContent = useCallback(async () => {
     try {
+      const savedDivision = localStorage.getItem("user_division");
+      if (savedDivision) setDivision(savedDivision);
+
       const testimonialsContent = await contentService.getContentBySection(
         "home",
         "testimonials",
@@ -168,6 +173,8 @@ export function DynamicTestimonialsSection() {
 
   useEffect(() => {
     fetchContent();
+    window.addEventListener("storage", fetchContent);
+    window.addEventListener("division-change", fetchContent);
 
     // Subscribe to cache invalidation events
     const unsubscribe = contentService.onCacheInvalidated(() => {
@@ -175,6 +182,8 @@ export function DynamicTestimonialsSection() {
     });
 
     return () => {
+      window.removeEventListener("storage", fetchContent);
+      window.removeEventListener("division-change", fetchContent);
       unsubscribe();
     };
   }, [fetchContent]);
@@ -233,7 +242,7 @@ export function DynamicTestimonialsSection() {
   return (
     <section className="py-12 md:py-16 bg-[#F8FAFC] relative overflow-hidden">
       {/* Premium Light Decorative Background */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 -z-10"></div>
+      <div className={`absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 -z-10 transition-colors duration-500 ${division === 'taxation' ? 'bg-emerald-100/30' : 'bg-blue-100/30'}`}></div>
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-100/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 -z-10"></div>
 
       <div className="container mx-auto px-4 mb-12">
@@ -256,11 +265,11 @@ export function DynamicTestimonialsSection() {
               viewport={{ once: false }}
               className="inline-flex items-center gap-2 mb-4"
             >
-              <span className="w-8 h-[2px] bg-blue-600"></span>
-              <span className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-600">
+              <span className={`w-8 h-[2px] ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}></span>
+              <span className={`text-[10px] font-black uppercase tracking-[0.5em] ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
                 {testimonialsSection?.tagline || "Testimonials"}
               </span>
-              <span className="w-8 h-[2px] bg-blue-600"></span>
+              <span className={`w-8 h-[2px] ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}></span>
             </motion.div>
 
             <motion.h2
@@ -301,7 +310,7 @@ export function DynamicTestimonialsSection() {
               <Button
                 variant="outline"
                 size="icon"
-                className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-20 z-10 w-12 h-12 rounded-full bg-white shadow-xl hover:bg-blue-600 border-slate-100 hover:border-blue-500 transition-all duration-300 group"
+                className={`hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-20 z-10 w-12 h-12 rounded-full bg-white shadow-xl transition-all duration-300 group border-slate-100 ${division === 'taxation' ? 'hover:bg-emerald-600 hover:border-emerald-500' : 'hover:bg-blue-600 hover:border-blue-500'}`}
                 onClick={goToPrev}
                 disabled={isAnimating}
               >
@@ -310,7 +319,7 @@ export function DynamicTestimonialsSection() {
               <Button
                 variant="outline"
                 size="icon"
-                className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-20 z-10 w-12 h-12 rounded-full bg-white shadow-xl hover:bg-blue-600 border-slate-100 hover:border-blue-500 transition-all duration-300 group"
+                className={`hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-20 z-10 w-12 h-12 rounded-full bg-white shadow-xl transition-all duration-300 group border-slate-100 ${division === 'taxation' ? 'hover:bg-emerald-600 hover:border-emerald-500' : 'hover:bg-blue-600 hover:border-blue-500'}`}
                 onClick={goToNext}
                 disabled={isAnimating}
               >
@@ -331,7 +340,7 @@ export function DynamicTestimonialsSection() {
             >
               <Card className="p-10 md:p-16 text-center shadow-[0_45px_100px_rgba(0,0,0,0.05)] border-0 bg-white rounded-[3.5rem] relative overflow-hidden group">
                 {/* Visual Accent */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2" />
+                <div className={`absolute top-0 right-0 w-64 h-64 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2 ${division === 'taxation' ? 'bg-emerald-50' : 'bg-blue-50'}`} />
 
                 <motion.div
                   className="absolute top-12 left-12 opacity-[0.05] group-hover:opacity-10 transition-opacity"
@@ -345,7 +354,7 @@ export function DynamicTestimonialsSection() {
                     ease: "easeInOut",
                   }}
                 >
-                  <Quote className="w-24 h-24 text-blue-600" />
+                  <Quote className={`w-24 h-24 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`} />
                 </motion.div>
 
                 {/* Stars - Animated */}
@@ -366,14 +375,14 @@ export function DynamicTestimonialsSection() {
                 {/* Author Info - Modern Light Layout */}
                 <div className="flex flex-col items-center justify-center gap-6 mb-12">
                   <div className="relative">
-                    <div className="absolute inset-0 bg-blue-100 blur-2xl opacity-40 group-hover:opacity-60 transition-opacity" />
-                    <FinanceAvatar image={currentTestimonial?.image} name={currentTestimonial?.name} />
+                    <div className={`absolute inset-0 blur-2xl opacity-40 group-hover:opacity-60 transition-opacity ${division === 'taxation' ? 'bg-emerald-100' : 'bg-blue-100'}`} />
+                    <FinanceAvatar image={currentTestimonial?.image} name={currentTestimonial?.name} division={division} />
                   </div>
                   <div className="text-center">
                     <div className="font-black text-slate-900 text-2xl mb-1 tracking-tight uppercase">
                       {currentTestimonial?.name}
                     </div>
-                    <div className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">
+                    <div className={`text-[10px] font-black uppercase tracking-[0.2em] ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
                       {currentTestimonial?.title || currentTestimonial?.designation}
                     </div>
                   </div>
@@ -395,7 +404,7 @@ export function DynamicTestimonialsSection() {
                   key={index}
                   onClick={() => goToSlide(index)}
                   className={`h-2 rounded-full transition-all duration-500 ${index === currentIndex
-                    ? "w-8 bg-blue-600"
+                    ? division === 'taxation' ? "w-8 bg-emerald-600" : "w-8 bg-blue-600"
                     : "w-2 bg-slate-200 hover:bg-slate-300"
                     }`}
                   aria-label={`Go to testimonial ${index + 1}`}

@@ -95,7 +95,7 @@ function formatNumber(num: number, hasDecimal: boolean = false): string {
 }
 
 // Animated Stat Component
-function AnimatedStat({ value, label, icon, index }: { value: string; label: string; icon?: string; index: number }) {
+function AnimatedStat({ value, label, icon, index, division }: { value: string; label: string; icon?: string; index: number, division: string }) {
   const { number, prefix, suffix } = parseStatValue(value);
   const hasDecimal = value.includes(".");
   const { count, elementRef } = useCountAnimation(number, 2000);
@@ -140,13 +140,13 @@ function AnimatedStat({ value, label, icon, index }: { value: string; label: str
       whileHover="hover"
       className="relative bg-transparent group h-full flex flex-col justify-between transition-colors duration-300"
     >
-      <motion.div variants={{ hover: { opacity: 1 } }} initial={{ opacity: 0 }} className="absolute inset-0 bg-gradient-to-br from-blue-50/10 via-transparent to-transparent pointer-events-none" />
-      <motion.div variants={{ hover: { scaleX: 1, opacity: 1 } }} initial={{ scaleX: 0, opacity: 0 }} transition={{ duration: 0.4, ease: "easeOut" }} className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 origin-left" />
+      <motion.div variants={{ hover: { opacity: 1 } }} initial={{ opacity: 0 }} className={`absolute inset-0 bg-gradient-to-br via-transparent to-transparent pointer-events-none ${division === 'taxation' ? 'from-emerald-50/10' : 'from-blue-50/10'}`} />
+      <motion.div variants={{ hover: { scaleX: 1, opacity: 1 } }} initial={{ scaleX: 0, opacity: 0 }} transition={{ duration: 0.4, ease: "easeOut" }} className={`absolute bottom-0 left-0 w-full h-[2px] origin-left ${division === 'taxation' ? 'bg-emerald-500' : 'bg-blue-500'}`} />
 
       <motion.div
-        variants={{ hover: { y: -4, backgroundColor: "rgba(59,130,246,0.2)", color: "#60a5fa", boxShadow: "0 10px 25px -5px rgba(59,130,246,0.2)" } }}
+        variants={{ hover: { y: -4, backgroundColor: division === 'taxation' ? "rgba(16,185,129,0.2)" : "rgba(59,130,246,0.2)", color: division === 'taxation' ? "#34d399" : "#60a5fa", boxShadow: division === 'taxation' ? "0 10px 25px -5px rgba(16,185,129,0.2)" : "0 10px 25px -5px rgba(59,130,246,0.2)" } }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 text-blue-600 bg-blue-50 border border-blue-100 relative z-10"
+        className={`w-14 h-14 rounded-xl flex items-center justify-center mb-5 border relative z-10 ${division === 'taxation' ? 'text-emerald-600 bg-emerald-50 border-emerald-100' : 'text-blue-600 bg-blue-50 border-blue-100'}`}
       >
         <div className="[&>svg]:w-7 [&>svg]:h-7">{getStatIcon(icon, index)}</div>
       </motion.div>
@@ -156,8 +156,8 @@ function AnimatedStat({ value, label, icon, index }: { value: string; label: str
           {prefix}{formatNumber(count, hasDecimal)}{suffix}
         </motion.div>
         <div className="flex items-center gap-2">
-          <div className="h-[1px] w-4 bg-blue-200 group-hover:w-8 group-hover:bg-blue-500 transition-all duration-300 mb-[2px]" />
-          <div className="text-slate-500 text-xs font-bold uppercase tracking-widest group-hover:text-blue-600 transition-colors duration-300">{label}</div>
+          <div className={`h-[1px] w-4 group-hover:w-8 transition-all duration-300 mb-[2px] ${division === 'taxation' ? 'bg-emerald-200 group-hover:bg-emerald-500' : 'bg-blue-200 group-hover:bg-blue-500'}`} />
+          <div className={`text-slate-500 text-xs font-bold uppercase tracking-widest transition-colors duration-300 ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'}`}>{label}</div>
         </div>
       </div>
     </motion.div>
@@ -240,10 +240,19 @@ export function DynamicAboutSection() {
     }
   }, []);
 
+  const [division, setDivision] = useState("finance");
   useEffect(() => {
     fetchContent();
+    const handleSync = () => setDivision(localStorage.getItem("user_division") || "finance");
+    handleSync();
+    window.addEventListener("storage", handleSync);
+    window.addEventListener("division-change", handleSync);
     const unsubscribe = contentService.onCacheInvalidated(() => { fetchContent(); });
-    return () => { unsubscribe(); };
+    return () => { 
+      window.removeEventListener("storage", handleSync);
+      window.removeEventListener("division-change", handleSync);
+      unsubscribe(); 
+    };
   }, [fetchContent]);
 
   const displayContent = useMemo(() => aboutSection, [aboutSection]);
@@ -255,12 +264,12 @@ export function DynamicAboutSection() {
         <motion.div
           animate={{ x: [0, 50, 0], y: [0, 30, 0] }}
           transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-32 -left-32 w-96 h-96 bg-blue-50 blur-[120px] rounded-full"
+          className={`absolute -top-32 -left-32 w-96 h-96 blur-[120px] rounded-full transition-colors duration-500 ${division === 'taxation' ? 'bg-emerald-50' : 'bg-blue-50'}`}
         />
         <motion.div
           animate={{ x: [0, -50, 0], y: [0, -30, 0] }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-32 -right-32 w-96 h-96 bg-emerald-50 blur-[120px] rounded-full"
+          className={`absolute -bottom-32 -right-32 w-96 h-96 blur-[120px] rounded-full transition-colors duration-500 ${division === 'taxation' ? 'bg-emerald-50/60' : 'bg-blue-50'}`}
         />
       </div>
 
@@ -271,9 +280,9 @@ export function DynamicAboutSection() {
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ duration: 0.8 }}>
               <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
               {displayContent.tagline && (
-                <div className="inline-flex items-center gap-3 mb-4 px-4 py-1.5 bg-blue-50 border border-blue-100 rounded-full">
-                  <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">{displayContent.tagline}</span>
+                <div className={`inline-flex items-center gap-3 mb-4 px-4 py-1.5 border rounded-full transition-colors duration-500 ${division === 'taxation' ? 'bg-emerald-50 border-emerald-100' : 'bg-blue-50 border-blue-100'}`}>
+                  <span className={`w-2 h-2 rounded-full animate-pulse ${division === 'taxation' ? 'bg-emerald-500' : 'bg-blue-500'}`} />
+                  <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>{displayContent.tagline}</span>
                 </div>
               )}
 
@@ -297,7 +306,7 @@ export function DynamicAboutSection() {
                       transition={{ delay: 0.2 + index * 0.1 }}
                       className="flex items-center gap-4 group"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm border border-blue-100">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm border ${division === 'taxation' ? 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white border-emerald-100' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white border-blue-100'}`}>
                         <CheckCircle className="w-4 h-4 md:w-5 md:h-5" />
                       </div>
                       <span className="text-sm md:text-base text-slate-700 font-bold tracking-tight">{highlight}</span>
@@ -309,7 +318,7 @@ export function DynamicAboutSection() {
               {/* CTA Button */}
               {displayContent.cta && (
                 <Link href={displayContent.cta?.link || "/about"}>
-                  <button className="group relative h-14 px-8 rounded-2xl bg-slate-900 text-white font-bold hover:bg-blue-600 transition-all duration-300 overflow-hidden shadow-xl">
+                  <button className={`group relative h-14 px-8 rounded-2xl bg-slate-900 text-white font-bold transition-all duration-300 overflow-hidden shadow-xl ${division === 'taxation' ? 'hover:bg-emerald-600' : 'hover:bg-blue-600'}`}>
                     <span className="relative z-10 flex items-center gap-2">
                       {displayContent.cta?.text || "Learn More"}
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -339,19 +348,19 @@ export function DynamicAboutSection() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: false }}
                   transition={{ delay: index * 0.15 }}
-                  className={`${index % 2 === 1 ? "mt-6 md:mt-12" : ""} p-6 md:p-8 rounded-3xl bg-white border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(37,99,235,0.1)] hover:border-blue-200 transition-all duration-500 group relative overflow-hidden`}
+                  className={`${index % 2 === 1 ? "mt-6 md:mt-12" : ""} p-6 md:p-8 rounded-3xl bg-white border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.03)] transition-all duration-500 group relative overflow-hidden ${division === 'taxation' ? 'hover:shadow-[0_20px_50px_rgba(16,185,129,0.1)] hover:border-emerald-200' : 'hover:shadow-[0_20px_50px_rgba(37,99,235,0.1)] hover:border-blue-200'}`}
                 >
                   <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-                    <Layers className="w-10 h-10 md:w-12 md:h-12 text-blue-600" />
+                    <Layers className={`w-10 h-10 md:w-12 md:h-12 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`} />
                   </div>
                   <div className="relative z-10">
-                    <AnimatedStat value={stat.value} label={stat.label} icon={stat.icon} index={index} />
+                    <AnimatedStat value={stat.value} label={stat.label} icon={stat.icon} index={index} division={division} />
                   </div>
                 </motion.div>
               ))}
             </div>
 
-            <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-200 to-transparent rotate-[35deg]" />
+            <div className={`absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[1px] rotate-[35deg] transition-colors duration-500 ${division === 'taxation' ? 'bg-gradient-to-r from-transparent via-emerald-200 to-transparent' : 'bg-gradient-to-r from-transparent via-blue-200 to-transparent'}`} />
           </div>
         </div>
       </div>

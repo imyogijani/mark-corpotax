@@ -222,15 +222,15 @@ export function Footer() {
               </p>
               <p className="flex items-center gap-2">
                 <strong className="text-white font-black min-w-[70px] uppercase text-[10px] tracking-widest">Finance:</strong>
-                <Link href={`tel:${phoneFinance}`} className={`hover:${division === 'taxation' ? 'text-emerald-400' : 'text-blue-400'} transition-colors opacity-80`}>{phoneFinance}</Link>
+                <Link href={`tel:${phoneFinance}`} className={`${division === 'taxation' ? 'hover:text-emerald-400' : 'hover:text-blue-400'} transition-colors opacity-80`}>{phoneFinance}</Link>
               </p>
               <p className="flex items-center gap-2">
                 <strong className="text-white font-black min-w-[70px] uppercase text-[10px] tracking-widest">Taxation:</strong>
-                <Link href={`tel:${phoneTaxation}`} className={`hover:${division === 'taxation' ? 'text-emerald-400' : 'text-blue-400'} transition-colors opacity-80`}>{phoneTaxation}</Link>
+                <Link href={`tel:${phoneTaxation}`} className={`${division === 'taxation' ? 'hover:text-emerald-400' : 'hover:text-blue-400'} transition-colors opacity-80`}>{phoneTaxation}</Link>
               </p>
               <p className="flex items-center gap-2">
                 <strong className="text-white font-black min-w-[70px] uppercase text-[10px] tracking-widest">Email:</strong>
-                <Link href={`mailto:${email}`} className={`hover:${division === 'taxation' ? 'text-emerald-400' : 'text-blue-400'} transition-colors uppercase tracking-wider text-[10px] font-bold opacity-80`}>{email}</Link>
+                <Link href={`mailto:${email}`} className={`${division === 'taxation' ? 'hover:text-emerald-400' : 'hover:text-blue-400'} transition-colors uppercase tracking-wider text-[10px] font-bold opacity-80`}>{email}</Link>
               </p>
             </div>
             <div className="flex items-center gap-4">
@@ -337,10 +337,10 @@ export function Footer() {
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center text-[9px] font-black uppercase tracking-[0.3em] text-slate-600 text-center gap-6">
           <p className="hover:text-slate-400 transition-colors cursor-default">{copyrightText}</p>
           <div className="flex gap-8">
-            <Link href="/privacy-policy" className={`hover:${division === 'taxation' ? 'text-emerald-400' : 'text-blue-400'} transition-colors`}>
+            <Link href="/privacy-policy" className={`${division === 'taxation' ? 'hover:text-emerald-400' : 'hover:text-blue-400'} transition-colors`}>
               Privacy Policy
             </Link>
-            <Link href="/terms-of-service" className={`hover:${division === 'taxation' ? 'text-emerald-400' : 'text-blue-400'} transition-colors`}>
+            <Link href="/terms-of-service" className={`${division === 'taxation' ? 'hover:text-emerald-400' : 'hover:text-blue-400'} transition-colors`}>
               Terms of Service
             </Link>
           </div>

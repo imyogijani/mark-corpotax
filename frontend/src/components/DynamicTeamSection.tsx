@@ -87,9 +87,9 @@ function transformTeamData(data: Record<string, unknown>): TeamSectionData {
   };
 }
 
-const IllustratedAvatar = ({ index, type }: { index: number; type: string }) => {
+const IllustratedAvatar = ({ index, type, division }: { index: number; type: string, division: string }) => {
   const variant = index % 3;
-  const isTax = type.toLowerCase().includes("tax");
+  const isTax = division === 'taxation';
 
   // High-end color palette
   const primary = isTax ? "#059669" : "#0b4c80";
@@ -102,7 +102,7 @@ const IllustratedAvatar = ({ index, type }: { index: number; type: string }) => 
       whileHover={{ y: -5 }}
     >
       {/* Premium Background Container */}
-      <div className={`absolute inset-2 bg-gradient-to-br ${bgGradient} rounded-[3rem] border border-slate-100 shadow-2xl transition-all duration-500 group-hover:shadow-blue-200/50 group-hover:border-blue-100`} />
+      <div className={`absolute inset-2 bg-gradient-to-br ${bgGradient} rounded-[3rem] border border-slate-100 shadow-2xl transition-all duration-500 ${isTax ? 'group-hover:shadow-emerald-200/50 group-hover:border-emerald-100' : 'group-hover:shadow-blue-200/50 group-hover:border-blue-100'}`} />
 
       <svg
         viewBox="0 0 120 120"
@@ -280,7 +280,7 @@ export function DynamicTeamSection() {
   return (
     <section className="py-12 md:py-16 bg-white relative overflow-hidden">
       {/* Background Decorative Element - Light Theme */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(1000px_circle_at_center,rgba(37,99,235,0.03),transparent_100%)] -z-10" />
+      <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 transition-colors duration-500 ${division === 'taxation' ? 'bg-[radial-gradient(1000px_circle_at_center,rgba(16,185,129,0.03),transparent_100%)]' : 'bg-[radial-gradient(1000px_circle_at_center,rgba(37,99,235,0.03),transparent_100%)]'}`} />
 
       <div className="container mx-auto px-4 mb-12">
         <div className="relative text-center max-w-4xl mx-auto">
@@ -302,11 +302,11 @@ export function DynamicTeamSection() {
               viewport={{ once: false }}
               className="inline-flex items-center gap-2 mb-4"
             >
-              <span className="w-8 h-[2px] bg-blue-600"></span>
-              <span className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-600">
+              <span className={`w-8 h-[2px] ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}></span>
+              <span className={`text-[10px] font-black uppercase tracking-[0.5em] ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
                 {teamSection?.tagline || "Our Team"}
               </span>
-              <span className="w-8 h-[2px] bg-blue-600"></span>
+              <span className={`w-8 h-[2px] ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}></span>
             </motion.div>
 
             <motion.h2
@@ -349,16 +349,16 @@ export function DynamicTeamSection() {
               }}
               className="w-full sm:w-80 group"
             >
-              <Card className="relative text-center p-10 border border-slate-100 shadow-[0_15px_40px_rgba(0,0,0,0.02)] transition-all duration-500 rounded-[2.5rem] bg-white overflow-hidden group-hover:-translate-y-4 group-hover:shadow-[0_45px_100px_rgba(37,99,235,0.1)] group-hover:border-blue-100">
+              <Card className={`relative text-center p-10 border border-slate-100 shadow-[0_15px_40px_rgba(0,0,0,0.02)] transition-all duration-500 rounded-[2.5rem] bg-white overflow-hidden group-hover:-translate-y-4 ${division === 'taxation' ? 'group-hover:shadow-[0_45px_100px_rgba(16,185,129,0.1)] group-hover:border-emerald-100' : 'group-hover:shadow-[0_45px_100px_rgba(37,99,235,0.1)] group-hover:border-blue-100'}`}>
                 {/* Decorative Brand Accent - Light Theme */}
-                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 to-indigo-500 opacity-80" />
+                <div className={`absolute top-0 left-0 w-full h-1.5 opacity-80 ${division === 'taxation' ? 'bg-gradient-to-r from-emerald-600 to-teal-500' : 'bg-gradient-to-r from-blue-600 to-indigo-500'}`} />
 
                 <div className="mb-8 relative">
-                  <div className="absolute inset-0 bg-blue-100 opacity-0 group-hover:opacity-40 rounded-full transition-all duration-500 transform group-hover:scale-150 blur-xl"></div>
+                  <div className={`absolute inset-0 opacity-0 group-hover:opacity-40 rounded-full transition-all duration-500 transform group-hover:scale-150 blur-xl ${division === 'taxation' ? 'bg-emerald-100' : 'bg-blue-100'}`}></div>
                   <div className="relative z-10 transition-transform duration-500 group-hover:scale-110">
                     {member.image ? (
                       <div className="relative w-40 h-40 mx-auto flex items-center justify-center">
-                        <div className={`absolute inset-2 bg-gradient-to-br ${member.title.toLowerCase().includes("tax") ? "from-emerald-50 to-white" : "from-blue-50 to-white"} rounded-[3rem] border border-slate-100 shadow-2xl transition-all duration-500 group-hover:shadow-blue-200/50 group-hover:border-blue-100`} />
+                        <div className={`absolute inset-2 bg-gradient-to-br ${division === 'taxation' ? "from-emerald-50 to-white" : "from-blue-50 to-white"} rounded-[3rem] border border-slate-100 shadow-2xl transition-all duration-500 ${division === 'taxation' ? 'group-hover:shadow-emerald-200/50 group-hover:border-emerald-100' : 'group-hover:shadow-blue-200/50 group-hover:border-blue-100'}`} />
                         <img
                           src={member.image}
                           alt={member.name}
@@ -366,15 +366,15 @@ export function DynamicTeamSection() {
                         />
                       </div>
                     ) : (
-                      <IllustratedAvatar index={index} type={member.title} />
+                      <IllustratedAvatar index={index} type={member.title} division={division} />
                     )}
                   </div>
                 </div>
 
-                <h3 className="text-2xl font-black mb-2 text-slate-800 group-hover:text-blue-600 transition-colors tracking-tight uppercase">
+                <h3 className={`text-2xl font-black mb-2 text-slate-800 transition-colors tracking-tight uppercase ${division === 'taxation' ? 'group-hover:text-emerald-600' : 'group-hover:text-blue-600'}`}>
                   {member?.name}
                 </h3>
-                <p className="text-blue-600 font-black uppercase tracking-widest text-[10px]">
+                <p className={`font-black uppercase tracking-widest text-[10px] ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
                   {member?.title}
                 </p>
 
