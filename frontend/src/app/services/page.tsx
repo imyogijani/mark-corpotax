@@ -206,7 +206,7 @@ function ServicesPageContent() {
             <div className="flex flex-col lg:flex-row items-center justify-between gap-10 mb-16">
               <div className="flex flex-col text-center lg:text-left">
                 <span className={`text-[9px] font-black uppercase tracking-[0.5em] mb-3 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>Vertical Segments</span>
-                <h2 className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tighter leading-tight">Business <br />Architecture</h2>
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-slate-900 leading-[0.95] md:leading-[0.9] tracking-tighter uppercase">Business <br />Architecture</h2>
               </div>
               
               <div className="flex flex-col items-center lg:items-end gap-3">
