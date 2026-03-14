@@ -206,7 +206,7 @@ export function Footer() {
                   <span className="text-xl font-black text-white tracking-tight block leading-tight uppercase">
                     {companyName}
                   </span>
-                  <span className={`text-[10px] font-black ${division === 'taxation' ? 'text-emerald-400' : 'text-blue-400'} uppercase tracking-[0.3em] block`}>
+                  <span className={`font-black uppercase tracking-[0.3em] block ${division === "taxation" ? "text-[10px] text-emerald-400" : "text-[8px] text-blue-400 mt-1"}`}>
                     {companyTagline}
                   </span>
                 </div>

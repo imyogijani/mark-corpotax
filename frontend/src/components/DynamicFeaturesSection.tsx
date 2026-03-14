@@ -215,17 +215,7 @@ export function DynamicFeaturesSection() {
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
           {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
-              transition={{
-                duration: 0.8,
-                delay: index * 0.15,
-                ease: [0.21, 1.11, 0.81, 0.99]
-              }}
-            >
+            <div key={index}>
               <div className="relative group h-full">
                 <Card className={`relative h-full text-center p-8 md:p-14 border bg-white shadow-[0_20px_40px_rgba(0,0,0,0.03)] transition-all duration-500 rounded-[2.5rem] md:rounded-[3rem] overflow-hidden hover:-translate-y-3 ${division === 'taxation' ? 'border-slate-100 hover:shadow-[0_40px_80px_rgba(16,185,129,0.12)] hover:border-emerald-100' : 'border-slate-100 hover:shadow-[0_40px_80px_rgba(37,99,235,0.12)] hover:border-blue-100'}`}>
                   {/* Image Container */}
@@ -234,7 +224,7 @@ export function DynamicFeaturesSection() {
                       src={getImage(index)}
                       alt={feature.title}
                       fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="object-cover"
                     />
                   </div>
 
@@ -246,7 +236,7 @@ export function DynamicFeaturesSection() {
                   </p>
                 </Card>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
