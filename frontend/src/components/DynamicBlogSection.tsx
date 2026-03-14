@@ -121,11 +121,11 @@ export function DynamicBlogSection() {
 
       <div className="container mx-auto px-4 mb-12">
         <div className="relative text-center max-w-4xl mx-auto">
-          {/* Animated Watermark - Light Theme */}
+          {/* Animated Watermark - Dark Theme */}
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10vw] font-black text-slate-300 opacity-[0.2] select-none pointer-events-none tracking-tighter uppercase"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10vw] font-black text-slate-950 opacity-[0.05] select-none pointer-events-none tracking-tighter uppercase"
             initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 0.15, scale: 1 }}
+            whileInView={{ opacity: 0.1, scale: 1 }}
             viewport={{ once: false }}
             transition={{ duration: 1 }}
           >
