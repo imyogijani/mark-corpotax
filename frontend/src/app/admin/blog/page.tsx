@@ -139,7 +139,7 @@ export default function BlogManagementPage() {
               </Card>
             ) : (
               filteredBlogs.map((blog, index) => (
-                <Card key={blog._id || index}>
+                <Card key={blog.id || blog._id || index}>
                   <CardContent className="p-6">
                     <div className="flex justify-between items-start gap-4">
                       <div className="flex-1">

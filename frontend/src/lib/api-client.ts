@@ -31,6 +31,7 @@ interface LoginResponse {
 
 interface Blog {
   _id: string;
+  id?: string;
   title: string;
   content: string;
   excerpt: string;
@@ -575,8 +576,18 @@ class ApiClient {
     pageName: string,
     division?: string,
   ): Promise<ApiResponse<any>> {
-    let query = division ? `?division=${division}` : "";
-    return this.request<any>(`/page-layouts/page/${pageName}${query}`);
+    const query = division ? `?division=${division}` : "";
+    const url = `${this.baseURL}/page-layouts/page/${pageName}${query}`;
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      // 404 = no layout in DB yet, silently return failure so fallback is used
+      if (!response.ok)
+        return { success: false, message: data.message || "No layout found" };
+      return data;
+    } catch {
+      return { success: false, message: "No layout found" };
+    }
   }
 
   async getAdminContent(page?: string): Promise<ApiResponse<any>> {

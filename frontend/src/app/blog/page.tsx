@@ -378,6 +378,7 @@ export default function BlogPage() {
                 </div>
               </motion.div>
 
+
               {/* Categories Navigation */}
               <motion.div 
                 initial={{ opacity: 0, x: 30 }}
