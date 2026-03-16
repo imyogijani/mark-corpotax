@@ -100,7 +100,7 @@ export default function ServicesTemplate({ division }: ServicesTemplateProps) {
       </div>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 md:pt-48 md:pb-32 px-6">
+      <section className="pt-20 pb-12 md:pt-28 md:pb-20 px-6">
         <div className="container mx-auto">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
             <motion.div
