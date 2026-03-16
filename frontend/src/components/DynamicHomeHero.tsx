@@ -113,23 +113,9 @@ const StaticHeroImage = ({ heroMain, y3, division }: { heroMain: HeroMainData; y
             </div>
           </motion.div>
 
-          {/* Floating Element 1 */}
-          <motion.div
-            animate={{ y: [0, -15, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className={`absolute -top-10 -left-10 bg-white p-3 rounded-2xl border shadow-xl hidden md:block transition-colors duration-500 ${division === 'taxation' ? 'border-emerald-100' : 'border-blue-100'}`}
-          >
-            <PieChart className={`w-6 h-6 transition-colors duration-500 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`} />
-          </motion.div>
 
-          {/* Floating Element 2 */}
-          <motion.div
-            animate={{ y: [0, 15, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className={`absolute top-1/2 -left-20 bg-white p-3 rounded-2xl border shadow-xl hidden lg:block transition-colors duration-500 ${division === 'taxation' ? 'border-emerald-100' : 'border-blue-100'}`}
-          >
-            <TrendingUp className={`w-6 h-6 transition-colors duration-500 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`} />
-          </motion.div>
+
+
         </motion.div>
       </div>
 

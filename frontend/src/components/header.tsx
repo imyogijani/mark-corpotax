@@ -233,11 +233,11 @@ export function Header() {
                 height={42}
               />
               <div className="flex flex-col">
-                <span className={`text-sm md:text-lg font-black tracking-tighter text-slate-900 transition-colors uppercase leading-none ${currentDivision === 'taxation' ? 'group-hover/logo:text-emerald-600' : 'group-hover/logo:text-blue-600'}`}>
+                <span className="text-sm md:text-lg font-black tracking-tighter text-slate-900 transition-colors uppercase leading-none group-hover/logo:text-blue-600">
                   Mark Corpotax
                 </span>
-                <span className={`text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] ${currentDivision === 'taxation' ? 'text-emerald-500' : 'text-blue-500'} leading-none mt-1 whitespace-nowrap`}>
-                  {currentDivision === "taxation" ? "Taxation & Legal" : "Finance Division"}
+                <span className={`font-black uppercase tracking-[0.3em] leading-none mt-1 whitespace-nowrap ${currentDivision === "taxation" ? "text-[8px] md:text-[10px] text-emerald-500" : "text-[7px] md:text-[8px] text-blue-500"}`}>
+                  {currentDivision === "taxation" ? "Taxation & Legal" : "Finance & Loan Division"}
                 </span>
               </div>
             </Link>
@@ -482,13 +482,13 @@ export function Header() {
             >
               <div className="p-6 flex items-center justify-between border-b border-slate-50 bg-white sticky top-0 z-20">
                 <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-xl ${currentDivision === 'taxation' ? 'bg-emerald-50' : 'bg-blue-50'}`}>
+                  <div className="p-2 rounded-xl bg-blue-50">
                     <Logo width={28} height={28} />
                   </div>
                   <div className="flex flex-col">
                     <span className="font-black uppercase tracking-tighter text-lg leading-none text-slate-900">Mark Corpotax</span>
-                    <span className={`text-[8px] font-black tracking-[0.2em] mt-1 uppercase ${currentDivision === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
-                      {currentDivision === "taxation" ? "Taxation & Legal" : "Finance Division"}
+                    <span className={`font-black tracking-[0.2em] mt-1 uppercase ${currentDivision === "taxation" ? "text-[8px] text-emerald-600" : "text-[7px] text-blue-600"}`}>
+                      {currentDivision === "taxation" ? "Taxation & Legal" : "Finance & Loan Division"}
                     </span>
                   </div>
                 </div>
