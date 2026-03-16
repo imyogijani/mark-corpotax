@@ -360,7 +360,7 @@ export const servicesData: Service[] = [
       "Strategic insights into financial health"
     ],
     icon: FileSearch,
-    image: "https://images.unsplash.com/photo-1554224155-db674d29df45?q=80&w=1000&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=1000&auto=format&fit=crop"
   },
   {
     id: "income-tax",
@@ -380,7 +380,7 @@ export const servicesData: Service[] = [
       "Seamless and accurate return filing"
     ],
     icon: Scale,
-    image: "https://images.unsplash.com/photo-1554224155-db674d29df45?q=80&w=1000&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1554224155-1696413565d3?q=80&w=1000&auto=format&fit=crop"
   },
   {
     id: "gst-compliance",
@@ -400,7 +400,7 @@ export const servicesData: Service[] = [
       "Audit-proof data and documentation"
     ],
     icon: FileCheck,
-    image: "https://images.unsplash.com/photo-1586282391083-72575c51741b?q=80&w=1000&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1586486855514-8c633cc6fd38?q=80&w=1000&auto=format&fit=crop"
   },
   {
     id: "roc",
@@ -420,6 +420,106 @@ export const servicesData: Service[] = [
       "Protection from Director disqualifications"
     ],
     icon: Gavel,
-    image: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=1000&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1453723490053-6ef01bffe7ad?q=80&w=1000&auto=format&fit=crop"
+  },
+  {
+    id: "accounting-bookkeeping",
+    name: "Accounting & Bookkeeping",
+    category: "Taxation Division",
+    description: "Focus on your core business while we handle the numbers. Precision accounting services following Indian AS and IFRS standards for crystal-clear financial health.",
+    features: [
+      "Cloud-based Tally/ERP management",
+      "Bank Reconciliation and AP/AR management",
+      "Monthly MIS reporting for management",
+      "Inventory and Fixed Asset accounting"
+    ],
+    benefits: [
+      "Real-time visibility into business cash flow",
+      "Ready-to-use data for bank loan processing",
+      "Compliance with accounting standards",
+      "Professional financial statements & analytics"
+    ],
+    icon: Briefcase,
+    image: "https://images.unsplash.com/photo-1554224154-26032ffc0d00?q=80&w=1000&auto=format&fit=crop"
+  },
+  {
+    id: "trademark-registration",
+    name: "Trade Mark & IPR",
+    category: "Taxation Division",
+    description: "Protect your brand identity. We provide expert consulting for Trademark registration, Copyrights, and Intellectual Property Rights to secure your creative assets.",
+    features: [
+      "Trademark search and class classification",
+      "Filing and tracking of TM applications",
+      "Opposition and hearing representation",
+      "Brand monitoring and enforcement advisory"
+    ],
+    benefits: [
+      "Exclusive rights to your brand name/logo",
+      "Building a valuable intangible corporate asset",
+      "Protection against brand infringement",
+      "Global brand protection through WIPO"
+    ],
+    icon: Award,
+    image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=1000&auto=format&fit=crop"
+  },
+  {
+    id: "trade-license",
+    name: "Trade & FDA Licensing",
+    category: "Taxation Division",
+    description: "Navigate the maze of local and state licensing. From Shop Establishment (Gumasta) to complex FSSAI and FDA licenses, we handle the departmental liaisons.",
+    features: [
+      "Shop & Establishment (Gumasta) compliance",
+      "FSSAI (Food License) State & Central",
+      "IEC (Import Export Code) registration",
+      "Professional Tax (PT) & Labor Law compliance"
+    ],
+    benefits: [
+      "Hassle-free departmental approvals",
+      "Full compliance with local municipal laws",
+      "Legally secure business operations",
+      "Avoidance of hefty government fines/closures"
+    ],
+    icon: FileText,
+    image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=1000&auto=format&fit=crop"
+  },
+  {
+    id: "project-reports",
+    name: "Project Reports & CMA",
+    category: "Taxation Division",
+    description: "Expert preparation of Bankable Project Reports and CMA data for securing business loans and CC limits. We ensure your financial projections are audit-ready and professional.",
+    features: [
+      "Detailed Project Reports (DPR) for new ventures",
+      "CMA Data for bank loan renewals",
+      "Feasibility studies for industrial units",
+      "Financial modeling for investor decks"
+    ],
+    benefits: [
+      "Higher success rate in loan sanctions",
+      "Professionally vetted financial projections",
+      "Saves time in bank processing",
+      "Accurate assessment of project viability"
+    ],
+    icon: PieChart,
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop"
+  },
+  {
+    id: "labor-law",
+    name: "Labor Law & PF/ESIC",
+    category: "Taxation Division",
+    description: "Comprehensive payroll and labor law compliance. We handle PF, ESIC, and recurring labor law filings to ensure your workforce management is legally sound.",
+    features: [
+      "Monthly PF & ESIC return filing",
+      "Labor Law Audit & Compliance check",
+      "Payroll processing and slip generation",
+      "Registration under various labor acts"
+    ],
+    benefits: [
+      "Peace of mind from labor inspections",
+      "Simplified employee benefit management",
+      "Reduced administrative overhead",
+      "Stronger corporate compliance reputation"
+    ],
+    icon: Users,
+    image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1000&auto=format&fit=crop"
   }
 ];
