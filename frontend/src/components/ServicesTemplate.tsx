@@ -109,10 +109,7 @@ export default function ServicesTemplate({ division }: ServicesTemplateProps) {
               transition={{ duration: 0.8 }}
               className="flex-1 text-center lg:text-left"
             >
-              <div className={`inline-flex items-center gap-2 px-5 py-2 rounded-full border mb-8 ${division === 'taxation' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-blue-50 text-blue-600 border-blue-100'}`}>
-                <Sparkles className="w-3.5 h-3.5" />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em]">{division === 'taxation' ? 'Regulatory Intelligence' : 'Capital Ecosystem'}</span>
-              </div>
+
 
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-slate-900 leading-[0.95] md:leading-[0.9] tracking-tighter uppercase mb-4">
                 {division === 'taxation' ? 'Tax' : 'Financial'}<br />
@@ -155,7 +152,7 @@ export default function ServicesTemplate({ division }: ServicesTemplateProps) {
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-10 mb-16">
               <div className="flex flex-col text-center lg:text-left">
-                <span className={`text-[9px] font-black uppercase tracking-[0.5em] mb-3 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>Vertical Segments</span>
+
                 <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-slate-900 leading-[0.95] md:leading-[0.9] tracking-tighter uppercase">Business <br />Architecture</h2>
               </div>
 

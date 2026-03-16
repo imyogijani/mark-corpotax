@@ -60,13 +60,17 @@ export default function ServiceDetailPage() {
           className="mb-12 md:mb-20"
         >
           <Link
-            href="/services"
+            href={isTaxation ? "/services/taxation" : "/services/finance"}
             className={`inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 transition-all group ${isTaxation ? 'hover:text-emerald-600' : 'hover:text-blue-600'}`}
           >
-            <div className={`w-10 h-10 md:w-14 md:h-14 rounded-full border border-slate-200 bg-white flex items-center justify-center transition-all shadow-sm ${isTaxation ? 'group-hover:border-emerald-600 group-hover:bg-emerald-50' : 'group-hover:border-blue-600 group-hover:bg-blue-50'}`}>
-              <ArrowLeft className="w-4 h-4 md:w-5 md:h-5 group-hover:-translate-x-1 transition-transform" />
-            </div>
-            Back to Services
+            <motion.div 
+              whileHover={{ scale: 1.15 }}
+              whileTap={{ scale: 0.95 }}
+              className={`w-10 h-10 md:w-14 md:h-14 rounded-full border border-slate-200 bg-white flex items-center justify-center transition-all shadow-sm ${isTaxation ? 'group-hover:border-emerald-600 group-hover:bg-emerald-50 group-hover:shadow-emerald-500/10' : 'group-hover:border-blue-600 group-hover:bg-blue-50 group-hover:shadow-blue-500/10'}`}
+            >
+              <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
+            </motion.div>
+            <span className="group-hover:translate-x-1 transition-transform duration-300">Back to Services</span>
           </Link>
         </motion.div>
 
@@ -78,13 +82,7 @@ export default function ServiceDetailPage() {
             variants={staggerContainer}
             className="space-y-8 md:space-y-12"
           >
-            <motion.div
-              variants={fadeInUp}
-              className={`inline-flex items-center gap-2 px-6 py-2 rounded-full border text-[10px] font-black uppercase tracking-[0.4em] ${isTaxation ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-blue-50 border-blue-100 text-blue-600 shadow-[0_10px_30px_rgba(37,99,235,0.08)]'}`}
-            >
-              <Sparkles className="w-4 h-4" />
-              <span>{service.category} Excellence</span>
-            </motion.div>
+
 
             <motion.h1
               variants={fadeInUp}
