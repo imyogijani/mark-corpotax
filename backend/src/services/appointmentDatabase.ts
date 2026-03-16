@@ -531,6 +531,75 @@ export const ServiceDatabaseService = {
     if (!doc.exists) return null;
     return formatTimestamp({ id: doc.id, ...doc.data() });
   },
+
+  /**
+   * Create a new service
+   */
+  async create(data: any): Promise<any> {
+    const { firestore, config, isExternal } = await getAppointmentFirestore();
+    const collectionName =
+      config?.servicesCollection || APPOINTMENT_COLLECTIONS.SERVICES;
+
+    const serviceData = {
+      ...data,
+      isActive: data.isActive !== undefined ? data.isActive : true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const docRef = await firestore.collection(collectionName).add(serviceData);
+
+    console.log(
+      `🛠️ Service created in ${
+        isExternal ? "external" : "default"
+      } database: ${docRef.id}`
+    );
+
+    return { id: docRef.id, ...serviceData };
+  },
+
+  /**
+   * Update a service
+   */
+  async update(id: string, data: any): Promise<any | null> {
+    const { firestore, config, isExternal } = await getAppointmentFirestore();
+    const collectionName =
+      config?.servicesCollection || APPOINTMENT_COLLECTIONS.SERVICES;
+
+    const updateData = {
+      ...data,
+      updatedAt: new Date().toISOString(),
+    };
+
+    await firestore.collection(collectionName).doc(id).update(updateData);
+
+    console.log(
+      `🛠️ Service updated in ${
+        isExternal ? "external" : "default"
+      } database: ${id}`
+    );
+
+    return this.findById(id);
+  },
+
+  /**
+   * Delete a service
+   */
+  async delete(id: string): Promise<boolean> {
+    const { firestore, config, isExternal } = await getAppointmentFirestore();
+    const collectionName =
+      config?.servicesCollection || APPOINTMENT_COLLECTIONS.SERVICES;
+
+    await firestore.collection(collectionName).doc(id).delete();
+
+    console.log(
+      `🛠️ Service deleted from ${
+        isExternal ? "external" : "default"
+      } database: ${id}`
+    );
+
+    return true;
+  },
 };
 
 /**

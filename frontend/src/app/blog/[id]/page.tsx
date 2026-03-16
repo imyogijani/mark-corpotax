@@ -37,6 +37,12 @@ interface BlogPost {
   slug?: string;
   tags?: string[];
   readTime?: string;
+  seoTitle?: string;
+  metaDescription?: string;
+  keywords?: string;
+  authorName?: string;
+  authorBio?: string;
+  viewCount?: number;
 }
 
 export default function BlogDetailPage() {
@@ -67,6 +73,32 @@ export default function BlogDetailPage() {
     };
     fetchPost();
   }, [idOrSlug]);
+
+  useEffect(() => {
+    if (post) {
+      if (post.seoTitle || post.title) {
+        document.title = `${post.seoTitle || post.title} | Mark Corpotax`;
+      }
+      if (post.metaDescription || post.excerpt) {
+        let metaDescription = document.querySelector('meta[name="description"]');
+        if (!metaDescription) {
+          metaDescription = document.createElement('meta');
+          metaDescription.setAttribute('name', 'description');
+          document.head.appendChild(metaDescription);
+        }
+        metaDescription.setAttribute('content', post.metaDescription || post.excerpt);
+      }
+      if (post.keywords) {
+        let metaKeywords = document.querySelector('meta[name="keywords"]');
+        if (!metaKeywords) {
+          metaKeywords = document.createElement('meta');
+          metaKeywords.setAttribute('name', 'keywords');
+          document.head.appendChild(metaKeywords);
+        }
+        metaKeywords.setAttribute('content', post.keywords);
+      }
+    }
+  }, [post]);
 
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
@@ -148,8 +180,8 @@ export default function BlogDetailPage() {
                     <User className="w-5 h-5 text-blue-400" />
                   </div>
                   <div>
-                    <p className="text-[9px] font-black uppercase tracking-widest text-slate-300 mb-0.5">Primary Author</p>
-                    <p className="text-sm font-black uppercase tracking-tight text-white">{post.author || "ADMIN"}</p>
+                    <p className="text-[9px] font-black uppercase tracking-widest text-slate-300 mb-0.5">Author</p>
+                    <p className="text-sm font-black uppercase tracking-tight text-white">{post.authorName || post.author || "ADMIN"}</p>
                   </div>
                 </div>
 
@@ -210,6 +242,19 @@ export default function BlogDetailPage() {
                           {tag}
                         </div>
                       ))}
+                    </div>
+                  )}
+
+                  {post.authorBio && (
+                    <div className="mt-16 bg-slate-50 p-8 rounded-[2rem] border border-slate-100 flex gap-6 items-center">
+                      <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center shrink-0 border-4 border-white shadow-sm">
+                        <User className="w-8 h-8" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-black uppercase tracking-widest text-blue-600 mb-2">About The Author</p>
+                        <h4 className="text-lg font-black text-slate-900 uppercase tracking-tighter mb-2">{post.authorName || post.author}</h4>
+                        <p className="text-sm font-medium text-slate-600 leading-relaxed">{post.authorBio}</p>
+                      </div>
                     </div>
                   )}
                 </CardContent>

@@ -42,6 +42,12 @@ interface Blog {
   tags: string[];
   createdAt: string;
   updatedAt: string;
+  viewCount?: number;
+  seoTitle?: string;
+  metaDescription?: string;
+  keywords?: string;
+  authorName?: string;
+  authorBio?: string;
 }
 
 interface User {
@@ -99,6 +105,23 @@ interface PageContent {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface TeamMember {
+  _id: string;
+  name: string;
+  role: string;
+  image?: string;
+  bio?: string;
+  division?: "finance" | "taxation" | "both";
+  socials?: {
+    linkedin?: string;
+    twitter?: string;
+    email?: string;
+  };
+  order: number;
+  isActive: boolean;
+  createdAt: string;
 }
 
 interface DashboardStats {
@@ -551,6 +574,53 @@ class ApiClient {
 
   async getService(id: string): Promise<ApiResponse<Service>> {
     return this.request<Service>(`/services/${id}`);
+  }
+
+  async createService(service: Partial<Service>): Promise<ApiResponse<Service>> {
+    return this.request<Service>("/services", {
+      method: "POST",
+      body: JSON.stringify(service),
+    });
+  }
+
+  async updateService(
+    id: string,
+    service: Partial<Service>
+  ): Promise<ApiResponse<Service>> {
+    return this.request<Service>(`/services/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(service),
+    });
+  }
+
+  async deleteService(id: string): Promise<ApiResponse<void>> {
+    return this.request<void>(`/services/${id}`, { method: "DELETE" });
+  }
+
+  // ============ Team Management ============
+  async getTeam(): Promise<ApiResponse<TeamMember[]>> {
+    return this.request<TeamMember[]>("/team");
+  }
+
+  async createTeamMember(member: Partial<TeamMember>): Promise<ApiResponse<TeamMember>> {
+    return this.request<TeamMember>("/team", {
+      method: "POST",
+      body: JSON.stringify(member),
+    });
+  }
+
+  async updateTeamMember(
+    id: string,
+    member: Partial<TeamMember>
+  ): Promise<ApiResponse<TeamMember>> {
+    return this.request<TeamMember>(`/team/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(member),
+    });
+  }
+
+  async deleteTeamMember(id: string): Promise<ApiResponse<void>> {
+    return this.request<void>(`/team/${id}`, { method: "DELETE" });
   }
 
   // ============ Admin Dashboard ============

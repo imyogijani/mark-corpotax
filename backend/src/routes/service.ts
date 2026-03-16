@@ -2,6 +2,7 @@ import express from "express";
 import { Request, Response } from "express";
 import { SiteSettingsService } from "../services/firebaseService";
 import { ServiceDatabaseService } from "../services/appointmentDatabase";
+import { protect, authorize } from "../middleware/auth";
 
 const router = express.Router();
 
@@ -72,5 +73,108 @@ router.get("/:id", async (req: Request, res: Response) => {
     });
   }
 });
+
+// @desc    Create a service
+// @route   POST /api/services
+// @access  Private/Admin
+router.post(
+  "/",
+  protect,
+  authorize("admin"),
+  async (req: Request, res: Response) => {
+    try {
+      const businessId = await SiteSettingsService.getLinkedBusinessId();
+      if (!businessId) {
+        return res.status(400).json({
+          success: false,
+          message: "No business linked to the website",
+        });
+      }
+
+      const service = await ServiceService.create({
+        ...req.body,
+        businessId,
+      });
+
+      return res.status(201).json({
+        success: true,
+        message: "Service created successfully",
+        data: service,
+      });
+    } catch (error: any) {
+      return res.status(400).json({
+        success: false,
+        message: error.message || "Error creating service",
+      });
+    }
+  }
+);
+
+// @desc    Update a service
+// @route   PUT /api/services/:id
+// @access  Private/Admin
+router.put(
+  "/:id",
+  protect,
+  authorize("admin"),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const service = await ServiceService.update(id, req.body);
+
+      if (!service) {
+        return res.status(404).json({
+          success: false,
+          message: "Service not found",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "Service updated successfully",
+        data: service,
+      });
+    } catch (error: any) {
+      return res.status(400).json({
+        success: false,
+        message: error.message || "Error updating service",
+      });
+    }
+  }
+);
+
+// @desc    Delete a service
+// @route   DELETE /api/services/:id
+// @access  Private/Admin
+router.delete(
+  "/:id",
+  protect,
+  authorize("admin"),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const service = await ServiceService.findById(id);
+
+      if (!service) {
+        return res.status(404).json({
+          success: false,
+          message: "Service not found",
+        });
+      }
+
+      await ServiceService.delete(id);
+
+      return res.status(200).json({
+        success: true,
+        message: "Service deleted successfully",
+      });
+    } catch (error: any) {
+      return res.status(400).json({
+        success: false,
+        message: error.message || "Error deleting service",
+      });
+    }
+  }
+);
 
 export default router;

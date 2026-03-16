@@ -34,6 +34,7 @@ import {
   PanelTop,
   LayoutTemplate,
   Palette,
+  Briefcase,
 } from "lucide-react";
 
 interface AdminSidebarProps {
@@ -106,6 +107,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
       icon: FileText,
       description: "Create & Manage Blogs",
     },
+
     {
       name: "Appointments",
       href: "/admin/appointments",
@@ -144,26 +146,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
         </div>
       </div>
 
-      {/* User Info */}
-      <div className="p-6 border-b border-slate-700">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-            <Users size={20} className="text-white" />
-          </div>
-          <div>
-            <p className="font-medium text-white">{user?.name || "Admin"}</p>
-            <p className="text-xs text-slate-300">
-              {user?.email || "admin@markgroup.com"}
-            </p>
-          </div>
-        </div>
-        <Badge
-          variant="secondary"
-          className="mt-2 bg-blue-100 text-blue-700"
-        >
-          Administrator
-        </Badge>
-      </div>
+
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2 overflow-y-auto">

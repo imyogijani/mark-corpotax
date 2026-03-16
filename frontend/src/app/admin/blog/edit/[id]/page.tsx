@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,8 +15,10 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import RichTextEditor from "@/components/admin/RichTextEditor";
 
-export default function NewBlogPage() {
+export default function EditBlogPage() {
   const router = useRouter();
+  const params = useParams();
+  const blogId = params.id as string;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -46,6 +48,38 @@ export default function NewBlogPage() {
     }));
   };
 
+  useEffect(() => {
+    if (blogId) {
+      const fetchBlog = async () => {
+        try {
+          const response = await apiClient.getBlog(blogId);
+          if (response.success && response.data) {
+            const blog = response.data;
+            setFormData({
+              title: blog.title || "",
+              excerpt: blog.excerpt || "",
+              content: blog.content || "",
+              category: blog.category || "",
+              tags: Array.isArray(blog.tags) ? blog.tags.join(", ") : (blog.tags || ""),
+              status: blog.status || "draft",
+              featuredImage: blog.featuredImage || "",
+              seoTitle: blog.seoTitle || "",
+              metaDescription: blog.metaDescription || "",
+              keywords: blog.keywords || "",
+              authorName: blog.authorName || blog.author || "",
+              authorBio: blog.authorBio || "",
+            });
+          } else {
+            setError(response.message || "Failed to load blog");
+          }
+        } catch (err: any) {
+          setError("Error fetching blog details");
+        }
+      };
+      fetchBlog();
+    }
+  }, [blogId]);
+
   const handleSubmit = async (
     e: React.FormEvent,
     status: "draft" | "published" = "draft"
@@ -64,7 +98,7 @@ export default function NewBlogPage() {
           .filter((tag) => tag),
       };
 
-      const response = await apiClient.createBlog(blogData);
+      const response = await apiClient.updateBlog(blogId, blogData);
 
       if (response.success) {
         router.push("/admin/blog");
@@ -79,7 +113,7 @@ export default function NewBlogPage() {
   };
 
   return (
-    <AdminLayout title="Create Blog Post">
+    <AdminLayout title="Edit Blog Post">
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -93,8 +127,8 @@ export default function NewBlogPage() {
               </Button>
             </Link>
             <div>
-              <h2 className="text-2xl font-bold tracking-tight text-gray-900">New Article</h2>
-              <p className="text-sm text-gray-500">Draft your next great piece of content</p>
+              <h2 className="text-2xl font-bold tracking-tight text-gray-900">Edit Article</h2>
+              <p className="text-sm text-gray-500">Update your piece of content</p>
             </div>
           </div>
         </div>
@@ -291,7 +325,7 @@ export default function NewBlogPage() {
                       ) : (
                         <>
                           <Eye className="h-5 w-5 mr-2" />
-                          Publish Article Now
+                          Update Article
                         </>
                       )}
                     </Button>

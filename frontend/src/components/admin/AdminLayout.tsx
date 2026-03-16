@@ -20,11 +20,44 @@ import {
   AlertCircle,
   Image,
   Loader2,
+  Clock,
+  ArrowUpRight,
+  ArrowDownRight,
+  MoreVertical,
+  Bell,
+  Search,
+  Settings,
+  Palette,
 } from "lucide-react";
+import { 
+  AreaChart, 
+  Area, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  Cell,
+  PieChart,
+  Pie
+} from 'recharts';
+import { motion, AnimatePresence } from "framer-motion";
 
 interface AdminLayoutProps {
   children?: React.ReactNode;
   title?: string;
+}
+
+interface DashboardData {
+  totalContacts: number;
+  totalAppointments: number;
+  totalPageContents: number;
+  pendingContacts: number;
+  pendingAppointments: number;
+  recentContacts: any[];
+  recentAppointments: any[];
 }
 
 interface QuickStat {
@@ -57,6 +90,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
     imagesContent: 0,
     loading: true,
   });
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+  const [statsLoading, setStatsLoading] = useState(true);
 
   // Redirect if not admin
   useEffect(() => {
@@ -124,7 +159,82 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
     }
   }, [isAdmin]);
 
-  const quickStats: QuickStat[] = [];
+  // Fetch Dashboard Stats
+  useEffect(() => {
+    const fetchStats = async () => {
+      if (title !== "Dashboard") return;
+      
+      try {
+        setStatsLoading(true);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/admin/dashboard-stats`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        const data = await response.json();
+        if (data.success) {
+          setDashboardData(data.data);
+        }
+      } catch (error) {
+        console.error("Dashboard stats error:", error);
+      } finally {
+        setStatsLoading(false);
+      }
+    };
+
+    if (isAdmin) {
+      fetchStats();
+    }
+  }, [isAdmin, title]);
+
+  const quickStats: QuickStat[] = dashboardData ? [
+    {
+      title: "Total Contacts",
+      value: dashboardData.totalContacts.toString(),
+      change: "+12.5%",
+      icon: MessageSquare,
+      color: "text-blue-600",
+    },
+    {
+      title: "New Appointments",
+      value: dashboardData.totalAppointments.toString(),
+      change: "+8.2%",
+      icon: Calendar,
+      color: "text-purple-600",
+    },
+    {
+      title: "Pending Tasks",
+      value: (dashboardData.pendingContacts + dashboardData.pendingAppointments).toString(),
+      change: "-3.1%",
+      icon: Clock,
+      color: "text-orange-600",
+    },
+    {
+      title: "Total Content",
+      value: contentStats.totalContent.toString(),
+      change: "+2.4%",
+      icon: FileText,
+      color: "text-emerald-600",
+    }
+  ] : [];
+
+  const chartData = [
+    { name: 'Mon', contacts: 4, appointments: 2 },
+    { name: 'Tue', contacts: 7, appointments: 5 },
+    { name: 'Wed', contacts: 5, appointments: 8 },
+    { name: 'Thu', contacts: 9, appointments: 4 },
+    { name: 'Fri', contacts: 12, appointments: 9 },
+    { name: 'Sat', contacts: 8, appointments: 3 },
+    { name: 'Sun', contacts: 6, appointments: 4 },
+  ];
+
+  const pieData = [
+    { name: 'Taxation', value: 400, color: '#3b82f6' },
+    { name: 'Finance', value: 300, color: '#8b5cf6' },
+    { name: 'Business', value: 300, color: '#10b981' },
+    { name: 'Legal', value: 200, color: '#f59e0b' },
+  ];
 
   if (!isAdmin) {
     return null;
@@ -299,137 +409,242 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
         <main className="p-4 sm:p-6 lg:p-8">
           {title === "Dashboard" ? (
             <>
-              {/* Quick Stats */}
-              <div className="mb-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Stats Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <AnimatePresence>
                   {quickStats.map((stat, index) => (
-                    <Card
+                    <motion.div
                       key={index}
-                      className="border-0 shadow-lg bg-white/80 backdrop-blur-sm hover:shadow-xl transition-all duration-300"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
                     >
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-gray-600">
-                          {stat.title}
-                        </CardTitle>
-                        <div className="p-2 bg-gray-100 rounded-lg">
-                          <stat.icon size={20} className={stat.color} />
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="text-2xl font-bold text-gray-900">
-                          {stat.value}
-                        </div>
-                        <div className="flex items-center gap-1 text-xs text-blue-600">
-                          <TrendingUp size={12} />
-                          {stat.change} from last month
-                        </div>
-                      </CardContent>
-                    </Card>
+                      <Card className="relative overflow-hidden border-0 shadow-sm hover:shadow-md transition-shadow group">
+                        <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full opacity-10 group-hover:scale-110 transition-transform ${stat.color.replace('text', 'bg')}`} />
+                        <CardContent className="p-6">
+                          <div className="flex items-center justify-between mb-4">
+                            <div className={`p-3 rounded-2xl ${stat.color.replace('text', 'bg')}/10 shadow-sm`}>
+                              <stat.icon size={24} className={stat.color} />
+                            </div>
+                            <div className={`flex items-center text-xs font-semibold px-2 py-1 rounded-full ${stat.change.startsWith('+') ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>
+                              {stat.change.startsWith('+') ? <ArrowUpRight size={14} className="mr-1" /> : <ArrowDownRight size={14} className="mr-1" />}
+                              {stat.change}
+                            </div>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-500">{stat.title}</p>
+                            <h3 className="text-3xl font-bold text-gray-900 mt-1">{stat.value}</h3>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
                   ))}
-                </div>
+                </AnimatePresence>
               </div>
 
-              {/* Recent Activity */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Activity size={20} className="text-primary" />
-                      Recent Activity
-                    </CardTitle>
+              {/* Charts Section */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                {/* Main Activity Chart */}
+                <Card className="lg:col-span-2 border-0 shadow-sm">
+                  <CardHeader className="flex flex-row items-center justify-between">
+                    <div>
+                      <CardTitle className="text-lg font-bold">Activity Overview</CardTitle>
+                      <p className="text-sm text-muted-foreground">Weekly interaction trends</p>
+                    </div>
+                    <Button variant="outline" size="sm" className="h-8">Last 7 Days</Button>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4">
-                      {[
-                        {
-                          action: "New appointment request",
-                          time: "2 minutes ago",
-                          type: "appointment",
-                        },
-                        {
-                          action: "Contact form submitted",
-                          time: "15 minutes ago",
-                          type: "contact",
-                        },
-                        {
-                          action: "Content updated",
-                          time: "1 hour ago",
-                          type: "content",
-                        },
-                      ].map((activity, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"
-                        >
-                          <div
-                            className={`p-2 rounded-full ${
-                              activity.type === "appointment"
-                                ? "bg-blue-100 text-blue-600"
-                                : activity.type === "contact"
-                                ? "bg-blue-200 text-blue-700"
-                                : "bg-purple-100 text-purple-600"
-                            }`}
+                    <div className="h-[300px] w-full mt-4">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                          <XAxis 
+                            dataKey="name" 
+                            axisLine={false} 
+                            tickLine={false} 
+                            tick={{fill: '#94a3b8', fontSize: 12}} 
+                            dy={10} 
+                          />
+                          <YAxis 
+                            axisLine={false} 
+                            tickLine={false} 
+                            tick={{fill: '#94a3b8', fontSize: 12}} 
+                          />
+                          <Tooltip 
+                            cursor={{fill: '#f8fafc'}}
+                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                          />
+                          <Bar 
+                            dataKey="contacts" 
+                            fill="#3b82f6" 
+                            radius={[6, 6, 0, 0]} 
+                            barSize={30}
+                          />
+                          <Bar 
+                            dataKey="appointments" 
+                            fill="#8b5cf6" 
+                            radius={[6, 6, 0, 0]} 
+                            barSize={30}
+                          />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Service Distribution Pie */}
+                <Card className="border-0 shadow-sm">
+                  <CardHeader>
+                    <CardTitle className="text-lg font-bold">Service Interest</CardTitle>
+                    <p className="text-sm text-muted-foreground">Most popular categories</p>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-[250px] flex items-center justify-center">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={pieData}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={60}
+                            outerRadius={80}
+                            paddingAngle={8}
+                            dataKey="value"
                           >
-                            {activity.type === "appointment" ? (
-                              <Calendar size={14} />
-                            ) : activity.type === "contact" ? (
-                              <MessageSquare size={14} />
-                            ) : (
-                              <Users size={14} />
-                            )}
+                            {pieData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                          </Pie>
+                          <Tooltip />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <div className="space-y-3 mt-4">
+                      {pieData.map((item, i) => (
+                        <div key={i} className="flex items-center justify-between text-sm">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                            <span className="text-gray-600">{item.name}</span>
                           </div>
-                          <div className="flex-1">
-                            <p className="text-sm font-medium text-gray-900">
-                              {activity.action}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              {activity.time}
-                            </p>
-                          </div>
+                          <span className="font-semibold">{Math.round((item.value / 1200) * 100)}%</span>
                         </div>
                       ))}
                     </div>
                   </CardContent>
                 </Card>
+              </div>
 
-                <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <TrendingUp size={20} className="text-primary" />
-                      Quick Actions
+              {/* Bottom Section: Activity & Quick Actions */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <Card className="border-0 shadow-sm overflow-hidden">
+                  <CardHeader className="bg-gray-50/50">
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                      <Activity size={20} className="text-primary" />
+                      Live Feed
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="p-0">
+                    <div className="divide-y divide-gray-100">
+                      {statsLoading ? (
+                        <div className="flex justify-center py-12">
+                          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                      ) : !dashboardData || (dashboardData.recentContacts.length === 0 && dashboardData.recentAppointments.length === 0) ? (
+                        <div className="text-center py-12 text-gray-500">
+                          <div className="bg-gray-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Clock className="text-gray-300" />
+                          </div>
+                          <p>No activity yet.</p>
+                        </div>
+                      ) : (
+                        [
+                          ...dashboardData.recentAppointments.map(a => ({
+                            action: `New appointment: ${a.name}`,
+                            sub: a.service || 'General Inquiry',
+                            time: new Date(a.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                            type: "appointment" as const
+                          })),
+                          ...dashboardData.recentContacts.map(c => ({
+                            action: `New message from ${c.name}`,
+                            sub: c.subject || 'Direct Contact',
+                            time: new Date(c.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                            type: "contact" as const
+                          }))
+                        ].sort((a,b) => new Date(b.time).getTime() - new Date(a.time).getTime())
+                         .slice(0, 6)
+                         .map((activity, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center gap-4 p-4 hover:bg-gray-50/80 transition-colors cursor-pointer group"
+                          >
+                            <div
+                              className={`p-3 rounded-xl transition-transform group-hover:scale-110 ${
+                                activity.type === "appointment"
+                                  ? "bg-blue-50 text-blue-600"
+                                  : "bg-purple-50 text-purple-600"
+                              }`}
+                            >
+                              {activity.type === "appointment" ? (
+                                <Calendar size={18} />
+                              ) : (
+                                <MessageSquare size={18} />
+                              )}
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm font-bold text-gray-900 leading-tight">
+                                {activity.action}
+                              </p>
+                              <p className="text-xs text-gray-500 mt-0.5">
+                                {activity.sub}
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-xs font-medium text-gray-400">
+                                {activity.time}
+                              </p>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-0 shadow-sm">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                      <TrendingUp size={20} className="text-primary" />
+                      Shortcuts
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid grid-cols-2 gap-4">
+                    {[
+                      { label: "Update Blogs", icon: FileText, href: "/admin/blog", color: "bg-blue-500" },
+                      { label: "Bookings", icon: Calendar, href: "/admin/appointments", color: "bg-indigo-500" },
+                      { label: "Team Space", icon: Users, href: "/admin/team", color: "bg-purple-500" },
+                      { label: "Settings", icon: Settings, href: "/admin/settings", color: "bg-slate-700" },
+                    ].map((btn, i) => (
+                      <Button
+                        key={i}
+                        asChild
+                        variant="secondary"
+                        className="h-24 flex-col gap-2 bg-gray-50 hover:bg-gray-100 border-0 group"
+                      >
+                        <a href={btn.href}>
+                          <div className={`p-2 rounded-lg ${btn.color} text-white group-hover:scale-110 transition-transform`}>
+                            <btn.icon size={20} />
+                          </div>
+                          <span className="font-semibold text-slate-700">{btn.label}</span>
+                        </a>
+                      </Button>
+                    ))}
                     <Button
                       asChild
-                      className="w-full justify-start bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+                      className="col-span-2 mt-2 h-12 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
                     >
                       <a href="/admin/content">
-                        <MessageSquare size={16} className="mr-2" />
-                        Manage Website Content
-                      </a>
-                    </Button>
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="w-full justify-start border-blue-200 hover:bg-blue-50"
-                    >
-                      <a href="/admin/appointments">
-                        <Calendar size={16} className="mr-2 text-blue-600" />
-                        View Appointments
-                      </a>
-                    </Button>
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="w-full justify-start border-purple-200 hover:bg-purple-50"
-                    >
-                      <a href="/admin/contacts">
-                        <MessageSquare
-                          size={16}
-                          className="mr-2 text-purple-600"
-                        />
-                        Check Contact Queries
+                        <Palette size={18} className="mr-2" />
+                        Edit Website Theme
                       </a>
                     </Button>
                   </CardContent>

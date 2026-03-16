@@ -20,6 +20,7 @@ import notificationRoutes from "./routes/notifications";
 import businessRoutes from "./routes/business";
 import settingsRoutes from "./routes/settings";
 import pageLayoutRoutes from "./routes/pageLayouts";
+import teamRoutes from "./routes/team";
 
 // Load environment variables
 dotenv.config();
@@ -111,6 +112,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/business", businessRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/page-layouts", pageLayoutRoutes);
+app.use("/api/team", teamRoutes);
 
 // 404 handler
 app.use("*", (req: Request, res: Response) => {
