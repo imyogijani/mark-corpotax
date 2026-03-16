@@ -75,19 +75,18 @@ export function AskExpertSection() {
                 </p>
               </div>
 
-              {/* Expert Cards */}
               <div className="space-y-6">
                 {(division === "taxation"
                   ? [
-                    { name: "Rahul S. Mehta", role: "Certified CA - Taxation", seeds: "CA" },
-                    { name: "Meera Iyer", role: "Legal Associate", seeds: "Legal" }
+                    { name: "Rahul S. Mehta", role: "Certified CA - Taxation", seeds: "CA", image: "/mark-patel.png" },
+                    { name: "Meera Iyer", role: "Legal Associate", seeds: "Legal", image: "/priya-desai.png" }
                   ] : [
-                    { name: "Siddharth V.", role: "Financial Advisor", seeds: "Finance" },
-                    { name: "Ankit Jain", role: "MSME Funding Expert", seeds: "MSME" }
+                    { name: "Siddharth V.", role: "Financial Advisor", seeds: "Finance", image: "/mark-patel.png" },
+                    { name: "Ankit Jain", role: "MSME Funding Expert", seeds: "MSME", image: "/hitesh-shah.png" }
                   ]).map((expert, i) => (
                     <div key={i} className="flex items-center gap-4 bg-white/5 backdrop-blur-md border border-white/5 p-4 rounded-2xl group/exp hover:bg-white/10 transition-colors">
                       <div className="w-12 h-12 rounded-xl bg-slate-800 border border-white/10 flex items-center justify-center overflow-hidden flex-shrink-0">
-                        <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${expert.seeds}`} alt="Expert" className="w-full h-full object-cover" />
+                        <img src={expert.image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${expert.seeds}`} alt="Expert" className="w-full h-full object-cover" />
                       </div>
                       <div>
                         <h4 className={`text-xs font-black uppercase tracking-widest text-white transition-colors ${division === 'taxation' ? 'group-hover/exp:text-emerald-400' : 'group-hover/exp:text-blue-400'}`}>{expert.name}</h4>

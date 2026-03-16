@@ -225,6 +225,54 @@ export default function AppointmentPage() {
     form.setValue("serviceName", selectedService?.name || "");
   };
 
+
+  const [division, setDivision] = useState<string>("finance");
+
+  useEffect(() => {
+    const handleSync = () => {
+      setDivision(localStorage.getItem("user_division") || "finance");
+    };
+    handleSync();
+    window.addEventListener("storage", handleSync);
+    window.addEventListener("division-change", handleSync);
+    return () => {
+      window.removeEventListener("storage", handleSync);
+      window.removeEventListener("division-change", handleSync);
+    };
+  }, []);
+
+  const themeTheme = division === 'taxation' ? {
+    text: 'text-emerald-600',
+    textLight: 'text-emerald-500',
+    textFocus: 'group-focus-within:text-emerald-400',
+    ring: 'focus:ring-emerald-500/20',
+    border: 'focus:border-emerald-500/50',
+    gradient: 'from-emerald-600 to-teal-500',
+    gradientHover: 'hover:from-emerald-500 hover:to-teal-400',
+    shadow: 'shadow-[0_20px_50px_rgba(16,185,129,0.2)]',
+    boxHover: 'group-hover:bg-emerald-600 group-hover:border-emerald-500',
+    bgLight: 'bg-emerald-100/30',
+    bgDark: 'bg-emerald-50/30',
+    activeTab: 'bg-emerald-600 border-emerald-500 shadow-emerald-500/20 text-white scale-[1.02]',
+    btnSelect: 'hover:bg-emerald-600 hover:text-white focus:bg-emerald-600 focus:text-white',
+    progressBar: 'bg-gradient-to-r from-emerald-500 to-teal-400'
+  } : {
+    text: 'text-blue-600',
+    textLight: 'text-blue-500',
+    textFocus: 'group-focus-within:text-blue-400',
+    ring: 'focus:ring-blue-500/20',
+    border: 'focus:border-blue-500/50',
+    gradient: 'from-blue-600 to-cyan-500',
+    gradientHover: 'hover:from-blue-500 hover:to-cyan-400',
+    shadow: 'shadow-[0_20px_50px_rgba(37,99,235,0.2)]',
+    boxHover: 'group-hover:bg-blue-600 group-hover:border-blue-500',
+    bgLight: 'bg-blue-100/30',
+    bgDark: 'bg-blue-50/30',
+    activeTab: 'bg-blue-600 border-blue-500 shadow-blue-500/20 text-white scale-[1.02]',
+    btnSelect: 'hover:bg-blue-600 hover:text-white focus:bg-blue-600 focus:text-white',
+    progressBar: 'bg-gradient-to-r from-blue-500 to-cyan-400'
+  };
+
   const { hero, form: formContent } = content;
 
   return (
@@ -232,14 +280,14 @@ export default function AppointmentPage() {
       {/* Hero Section */}
       <section className="relative pt-48 pb-12 overflow-hidden bg-slate-50">
         <div className="absolute inset-0 z-0">
-          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100/30 rounded-full blur-[120px] -mr-64 -mt-64" />
-          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-50/30 rounded-full blur-[100px] -ml-48 -mb-48" />
+          <div className={`absolute top-0 right-0 w-[800px] h-[800px] ${themeTheme.bgLight} rounded-full blur-[120px] -mr-64 -mt-64`} />
+          <div className={`absolute bottom-0 left-0 w-[600px] h-[600px] ${themeTheme.bgDark} rounded-full blur-[100px] -ml-48 -mb-48`} />
         </div>
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10 text-center">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 tracking-tighter leading-[0.9] uppercase mb-10 font-outfit">
-              Schedule <span className="text-blue-600">Appointment.</span>
+              Schedule <span className={`${themeTheme.text}`}>Appointment.</span>
             </h1>
             <p className="text-base md:text-xl text-slate-600 font-medium max-w-2xl mx-auto leading-relaxed mb-20 font-sans">
               {hero.subtitle}
@@ -264,7 +312,7 @@ export default function AppointmentPage() {
                 <h2 className="text-4xl font-black text-white uppercase tracking-tighter mb-4 font-outfit">
                   {formContent.form_title}
                 </h2>
-                <div className="h-1.5 w-16 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full" />
+                <div className={`h-1.5 w-16 ${themeTheme.progressBar} rounded-full`} />
               </div>
 
               <Form {...form}>
@@ -275,14 +323,14 @@ export default function AppointmentPage() {
                       name="fullName"
                       render={({ field }) => (
                         <FormItem className="group">
-                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 group-focus-within:text-blue-400 transition-colors font-outfit">
-                            <User className="w-3.5 h-3.5 text-blue-500" /> {formContent.name_label}
+                          <FormLabel className={`text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 ${themeTheme.textFocus} transition-colors font-outfit`}>
+                            <User className={`w-3.5 h-3.5 ${themeTheme.textLight}`} /> {formContent.name_label}
                           </FormLabel>
                           <FormControl>
                             <Input
                               placeholder="John Doe"
                               {...field}
-                              className="bg-slate-950/50 border border-slate-800 rounded-2xl h-14 px-6 text-white font-bold placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all font-sans"
+                              className={`bg-slate-950/50 border border-slate-800 rounded-2xl h-14 px-6 text-white font-bold placeholder:text-slate-600 focus:ring-2 ${themeTheme.ring} ${themeTheme.border} transition-all font-sans`}
                             />
                           </FormControl>
                           <FormMessage className="text-rose-500 font-bold text-[10px] uppercase tracking-wider" />
@@ -294,14 +342,14 @@ export default function AppointmentPage() {
                       name="email"
                       render={({ field }) => (
                         <FormItem className="group">
-                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 group-focus-within:text-blue-400 transition-colors font-outfit">
-                            <Mail className="w-3.5 h-3.5 text-blue-500" /> {formContent.email_label}
+                          <FormLabel className={`text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 ${themeTheme.textFocus} transition-colors font-outfit`}>
+                            <Mail className={`w-3.5 h-3.5 ${themeTheme.textLight}`} /> {formContent.email_label}
                           </FormLabel>
                           <FormControl>
                             <Input
                               placeholder="john.doe@example.com"
                               {...field}
-                              className="bg-slate-950/50 border border-slate-800 rounded-2xl h-14 px-6 text-white font-bold placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all font-sans"
+                              className={`bg-slate-950/50 border border-slate-800 rounded-2xl h-14 px-6 text-white font-bold placeholder:text-slate-600 focus:ring-2 ${themeTheme.ring} ${themeTheme.border} transition-all font-sans`}
                             />
                           </FormControl>
                           <FormMessage className="text-rose-500 font-bold text-[10px] uppercase tracking-wider" />
@@ -313,14 +361,14 @@ export default function AppointmentPage() {
                       name="phone"
                       render={({ field }) => (
                         <FormItem className="group">
-                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 group-focus-within:text-blue-400 transition-colors font-outfit">
-                            <Phone className="w-3.5 h-3.5 text-blue-500" /> {formContent.phone_label}
+                          <FormLabel className={`text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 ${themeTheme.textFocus} transition-colors font-outfit`}>
+                            <Phone className={`w-3.5 h-3.5 ${themeTheme.textLight}`} /> {formContent.phone_label}
                           </FormLabel>
                           <FormControl>
                             <Input
                               placeholder="+91 00000 00000"
                               {...field}
-                              className="bg-slate-950/50 border border-slate-800 rounded-2xl h-14 px-6 text-white font-bold placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all font-sans"
+                              className={`bg-slate-950/50 border border-slate-800 rounded-2xl h-14 px-6 text-white font-bold placeholder:text-slate-600 focus:ring-2 ${themeTheme.ring} ${themeTheme.border} transition-all font-sans`}
                             />
                           </FormControl>
                           <FormMessage className="text-rose-500 font-bold text-[10px] uppercase tracking-wider" />
@@ -332,18 +380,18 @@ export default function AppointmentPage() {
                       name="serviceId"
                       render={({ field }) => (
                         <FormItem className="group">
-                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 group-focus-within:text-blue-400 transition-colors font-outfit">
-                            <Briefcase className="w-3.5 h-3.5 text-blue-500" /> Services of Interest
+                          <FormLabel className={`text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 ${themeTheme.textFocus} transition-colors font-outfit`}>
+                            <Briefcase className={`w-3.5 h-3.5 ${themeTheme.textLight}`} /> Services of Interest
                           </FormLabel>
                           <Select onValueChange={handleServiceChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="bg-slate-950/50 border border-slate-800 rounded-2xl h-14 px-6 text-white font-bold placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all">
+                              <SelectTrigger className={`bg-slate-950/50 border border-slate-800 rounded-2xl h-14 px-6 text-white font-bold placeholder:text-slate-600 focus:ring-2 ${themeTheme.ring} ${themeTheme.border} transition-all`}>
                                 <SelectValue placeholder="Select a service" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent className="bg-slate-900 border-slate-800 text-white rounded-2xl overflow-hidden">
                               {services.map((service) => (
-                                <SelectItem key={service.id} value={service.id} className="hover:bg-blue-600 hover:text-white font-bold uppercase text-[10px] tracking-widest pl-10 focus:bg-blue-600 focus:text-white transition-colors cursor-pointer">
+                                <SelectItem key={service.id} value={service.id} className={`${themeTheme.btnSelect} font-bold uppercase text-[10px] tracking-widest pl-10 transition-colors cursor-pointer`}>
                                   {service.name}
                                 </SelectItem>
                               ))}
@@ -361,8 +409,8 @@ export default function AppointmentPage() {
                       name="preferredDate"
                       render={({ field }) => (
                         <FormItem className="flex flex-col group">
-                          <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 group-focus-within:text-blue-400 transition-colors font-outfit">
-                            <CalendarIcon className="w-3.5 h-3.5 text-blue-500" /> {formContent.date_label}
+                          <FormLabel className={`text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 ${themeTheme.textFocus} transition-colors font-outfit`}>
+                            <CalendarIcon className={`w-3.5 h-3.5 ${themeTheme.textLight}`} /> {formContent.date_label}
                           </FormLabel>
                           <Popover>
                             <PopoverTrigger asChild>
@@ -370,7 +418,7 @@ export default function AppointmentPage() {
                                 <Button
                                   variant={"outline"}
                                   className={cn(
-                                    "bg-slate-950/50 border border-slate-800 rounded-2xl h-14 px-6 text-white font-bold focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all w-full text-left font-sans hover:bg-slate-800 hover:text-white",
+                                    "bg-slate-950/50 border border-slate-800 rounded-2xl h-14 px-6 text-white font-bold focus:ring-2 ${themeTheme.ring} ${themeTheme.border} transition-all w-full text-left font-sans hover:bg-slate-800 hover:text-white",
                                     !field.value && "text-slate-600",
                                   )}
                                 >
@@ -396,8 +444,8 @@ export default function AppointmentPage() {
                     />
 
                     <div className="group">
-                      <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-4 group-focus-within:text-blue-400 transition-colors font-outfit">
-                        <Clock className="w-3.5 h-3.5 text-blue-500" /> {formContent.time_label}
+                      <label className={`text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-4 ${themeTheme.textFocus} transition-colors font-outfit`}>
+                        <Clock className={`w-3.5 h-3.5 ${themeTheme.textLight}`} /> {formContent.time_label}
                       </label>
                       <FormField
                         control={form.control}
@@ -417,7 +465,7 @@ export default function AppointmentPage() {
                                     </FormControl>
                                     <FormLabel className={cn(
                                       "flex-1 flex items-center justify-center p-4 rounded-2xl border bg-slate-950/50 text-[10px] font-black uppercase tracking-tight cursor-pointer transition-all hover:bg-slate-800 hover:border-slate-700",
-                                      field.value === slot ? "bg-blue-600 border-blue-500 text-white shadow-xl shadow-blue-500/20 scale-[1.02]" : "border-slate-800 text-slate-400"
+                                      field.value === slot ? themeTheme.activeTab : "border-slate-800 text-slate-400"
                                     )}>
                                       {slot.split(' - ')[0]}
                                     </FormLabel>
@@ -437,13 +485,13 @@ export default function AppointmentPage() {
                     name="notes"
                     render={({ field }) => (
                       <FormItem className="group">
-                        <FormLabel className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 group-focus-within:text-blue-400 transition-colors font-outfit">
-                          <BookUser className="w-3.5 h-3.5 text-blue-500" /> {formContent.notes_label}
+                        <FormLabel className={`text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-3 ${themeTheme.textFocus} transition-colors font-outfit`}>
+                          <BookUser className={`w-3.5 h-3.5 ${themeTheme.textLight}`} /> {formContent.notes_label}
                         </FormLabel>
                         <FormControl>
                           <Textarea
                             placeholder="Tell us anything else that might be helpful."
-                            className="bg-slate-950/50 border border-slate-800 rounded-[2rem] min-h-[140px] px-6 py-6 text-white font-bold placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all resize-none font-sans"
+                            className={`bg-slate-950/50 border border-slate-800 rounded-[2rem] min-h-[140px] px-6 py-6 text-white font-bold placeholder:text-slate-600 focus:ring-2 ${themeTheme.ring} ${themeTheme.border} transition-all resize-none font-sans`}
                             {...field}
                           />
                         </FormControl>
@@ -455,7 +503,7 @@ export default function AppointmentPage() {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-black uppercase tracking-[0.3em] py-10 rounded-[2rem] shadow-[0_20px_50px_rgba(37,99,235,0.2)] transition-all active:scale-[0.98] flex items-center justify-center gap-4 h-auto text-xs border border-white/10 font-outfit"
+                    className={`w-full bg-gradient-to-r ${themeTheme.gradient} ${themeTheme.gradientHover} text-white font-black uppercase tracking-[0.3em] py-10 rounded-[2rem] ${themeTheme.shadow} transition-all active:scale-[0.98] flex items-center justify-center gap-4 h-auto text-xs border border-white/10 font-outfit`}
                   >
                     {isSubmitting ? (
                       <>
@@ -496,8 +544,8 @@ export default function AppointmentPage() {
                  <div className="space-y-6">
                     {[content.info.benefit_1, content.info.benefit_2, content.info.benefit_3, content.info.benefit_4].map((benefit, i) => (
                       <div key={i} className="flex items-center gap-4 group">
-                        <div className="w-8 h-8 rounded-lg bg-slate-950 flex items-center justify-center border border-slate-800 group-hover:bg-blue-600 group-hover:border-blue-500 transition-colors">
-                          <CheckCircle2 className="w-4 h-4 text-blue-500 group-hover:text-white" />
+                        <div className={`w-8 h-8 rounded-lg bg-slate-950 flex items-center justify-center border border-slate-800 ${themeTheme.boxHover} transition-colors`}>
+                          <CheckCircle2 className={`w-4 h-4 ${themeTheme.textLight} group-hover:text-white`} />
                         </div>
                         <span className="text-[11px] font-black uppercase tracking-widest text-slate-300 group-hover:text-white transition-colors font-outfit">{benefit}</span>
                       </div>

@@ -37,12 +37,14 @@ interface BlogPost {
   featuredImage?: string;
 }
 
-const categoryIcons: Record<string, React.ReactNode> = {
-  Business: <BarChart2 className="w-12 h-12 text-blue-600" />,
-  Analytics: <TrendingUp className="w-12 h-12 text-blue-600" />,
-  Finance: <DollarSign className="w-12 h-12 text-blue-600" />,
-  Strategy: <PieChart className="w-12 h-12 text-blue-600" />,
-  Default: <FileText className="w-12 h-12 text-blue-600" />,
+const getCategoryIcon = (category: string, colorClass: string): React.ReactNode => {
+  switch (category) {
+    case 'Business': return <BarChart2 className={`w-12 h-12 ${colorClass}`} />;
+    case 'Analytics': return <TrendingUp className={`w-12 h-12 ${colorClass}`} />;
+    case 'Finance': return <DollarSign className={`w-12 h-12 ${colorClass}`} />;
+    case 'Strategy': return <PieChart className={`w-12 h-12 ${colorClass}`} />;
+    default: return <FileText className={`w-12 h-12 ${colorClass}`} />;
+  }
 };
 
 const defaultCategories = [
@@ -61,6 +63,65 @@ const defaultTags = [
 ];
 
 export default function BlogPage() {
+  const [division, setDivision] = useState<string>("finance");
+
+  useEffect(() => {
+    const handleSync = () => {
+      setDivision(localStorage.getItem("user_division") || "finance");
+    };
+    handleSync();
+    window.addEventListener("storage", handleSync);
+    window.addEventListener("division-change", handleSync);
+    return () => {
+      window.removeEventListener("storage", handleSync);
+      window.removeEventListener("division-change", handleSync);
+    };
+  }, []);
+
+  const themeTheme = division === 'taxation' ? {
+    text: 'text-emerald-600',
+    textLight: 'text-emerald-500',
+    textFocus: 'group-focus-within:text-emerald-400',
+    ring: 'focus:ring-emerald-500/20',
+    border: 'focus:border-emerald-500/50',
+    gradient: 'from-emerald-600 to-teal-500',
+    gradientHover: 'hover:from-emerald-500 hover:to-teal-400',
+    shadow: 'shadow-[0_20px_50px_rgba(16,185,129,0.2)]',
+    boxHover: 'group-hover:bg-emerald-600 group-hover:border-emerald-500',
+    bgLight: 'bg-emerald-100/30',
+    bgDark: 'bg-emerald-50/30',
+    activeTab: 'bg-emerald-600 border-emerald-500 shadow-emerald-500/20 text-white scale-[1.02]',
+    btnSelect: 'hover:bg-emerald-600 hover:text-white focus:bg-emerald-600 focus:text-white',
+    progressBar: 'bg-gradient-to-r from-emerald-500 to-teal-400',
+    bgSolid: 'bg-emerald-600',
+    bgHoverSolid: 'hover:bg-emerald-600',
+    borderSolid: 'border-emerald-600',
+    hoverBorderSolid: 'hover:border-emerald-600',
+    badgeBg: 'bg-emerald-50',
+    lightBorder: 'border-emerald-100'
+  } : {
+    text: 'text-blue-600',
+    textLight: 'text-blue-500',
+    textFocus: 'group-focus-within:text-blue-400',
+    ring: 'focus:ring-blue-500/20',
+    border: 'focus:border-blue-500/50',
+    gradient: 'from-blue-600 to-cyan-500',
+    gradientHover: 'hover:from-blue-500 hover:to-cyan-400',
+    shadow: 'shadow-[0_20px_50px_rgba(37,99,235,0.2)]',
+    boxHover: 'group-hover:bg-blue-600 group-hover:border-blue-500',
+    bgLight: 'bg-blue-100/30',
+    bgDark: 'bg-blue-50/30',
+    activeTab: 'bg-blue-600 border-blue-500 shadow-blue-500/20 text-white scale-[1.02]',
+    btnSelect: 'hover:bg-blue-600 hover:text-white focus:bg-blue-600 focus:text-white',
+    progressBar: 'bg-gradient-to-r from-blue-500 to-cyan-400',
+    bgSolid: 'bg-blue-600',
+    bgHoverSolid: 'hover:bg-blue-600',
+    borderSolid: 'border-blue-600',
+    hoverBorderSolid: 'hover:border-blue-600',
+    badgeBg: 'bg-blue-50',
+    lightBorder: 'border-blue-100'
+  };
+
   const [heroContent, setHeroContent] = useState<Record<string, any>>({});
   const [statsContent, setStatsContent] = useState<Record<string, any>>({});
   const [sidebarContent, setSidebarContent] = useState<Record<string, any>>({});
@@ -134,16 +195,7 @@ export default function BlogPage() {
     });
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-50">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-slate-500 font-medium">Loading Insights...</p>
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <motion.div 
@@ -153,7 +205,7 @@ export default function BlogPage() {
       className="blog-page-wrapper overflow-hidden bg-white"
     >
       {/* Premium Hero Section */}
-      <section className="relative pt-48 pb-32 overflow-hidden bg-slate-50">
+      <section className="relative pt-48 pb-16 overflow-hidden bg-slate-50">
         <div className="absolute inset-0 z-0">
           <FloatingGraffiti />
           <motion.div 
@@ -162,7 +214,7 @@ export default function BlogPage() {
               opacity: [0.3, 0.5, 0.3],
             }}
             transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-            className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100/30 rounded-full blur-[120px] -mr-64 -mt-64" 
+            className={`absolute top-0 right-0 w-[800px] h-[800px] ${themeTheme.bgLight} rounded-full blur-[120px] -mr-64 -mt-64`} 
           />
           <motion.div 
             animate={{ 
@@ -170,7 +222,7 @@ export default function BlogPage() {
               opacity: [0.3, 0.4, 0.3],
             }}
             transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-            className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-50/30 rounded-full blur-[100px] -ml-48 -mb-48" 
+            className={`absolute bottom-0 left-0 w-[600px] h-[600px] ${themeTheme.bgDark} rounded-full blur-[100px] -ml-48 -mb-48`} 
           />
         </div>
 
@@ -179,7 +231,7 @@ export default function BlogPage() {
             <MotionWrapper direction="up" delay={0.1}>
               <motion.div 
                 whileHover={{ scale: 1.05 }}
-                className="inline-flex items-center gap-2 px-6 py-2 bg-white rounded-full border border-blue-100 shadow-[0_10px_30px_rgba(37,99,235,0.08)] text-blue-600 text-[10px] font-black uppercase tracking-[0.4em] mb-10"
+                className={`inline-flex items-center gap-2 px-6 py-2 bg-white rounded-full border ${themeTheme.lightBorder} shadow-[0_10px_30px_rgba(37,99,235,0.08)] ${themeTheme.text} text-[10px] font-black uppercase tracking-[0.4em] mb-10`}
               >
                 <Sparkles className="w-4 h-4" />
                 <span>Knowledge Hub</span>
@@ -193,7 +245,7 @@ export default function BlogPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 1, delay: 0.5 }}
-                  className="text-blue-600"
+                  className={themeTheme.text}
                 >
                   Insights.
                 </motion.span>
@@ -201,43 +253,19 @@ export default function BlogPage() {
             </MotionWrapper>
 
             <MotionWrapper direction="up" delay={0.3}>
-              <p className="text-base md:text-xl text-slate-600 font-medium max-w-2xl mx-auto leading-relaxed mb-20 italic-none">
+              <p className="text-base md:text-xl text-slate-600 font-medium max-w-2xl mx-auto leading-relaxed mb-8 italic-none">
                 {heroContent.subtitle ||
                   "Stay updated with the latest insights, trends, and news in the world of finance and business."}
               </p>
             </MotionWrapper>
 
-            <MotionWrapper direction="up" delay={0.4}>
-              <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                {[
-                  { label: "Articles Published", value: statsContent.stat_1_value || "50+", icon: FileText, color: "blue" },
-                  { label: "Active Readers", value: statsContent.stat_2_value || "10K+", icon: TrendingUp, color: "blue" },
-                  { label: "Fresh Content", value: statsContent.stat_3_value || "Weekly", icon: BarChart2, color: "blue" }
-                ].map((stat, i) => (
-                  <motion.div 
-                    key={i} 
-                    whileHover={{ y: -10 }}
-                    className="flex flex-col items-center bg-white rounded-[3rem] p-10 border border-slate-100 shadow-[0_20px_50px_rgba(37,99,235,0.03)] group hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500"
-                  >
-                    <div className="w-16 h-16 rounded-2xl bg-slate-50 text-blue-600 flex items-center justify-center mb-6 group-hover:rotate-12 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
-                      <stat.icon className="w-8 h-8" />
-                    </div>
-                    <span className="text-4xl font-black text-slate-900 tracking-tighter mb-1 uppercase text-shadow-sm">
-                      {stat.value}
-                    </span>
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">
-                      {stat.label}
-                    </span>
-                  </motion.div>
-                ))}
-              </div>
-            </MotionWrapper>
+
           </div>
         </div>
       </section>
 
       {/* Main Content Area */}
-      <section className="py-32 bg-white relative">
+      <section className="pt-16 pb-32 bg-white relative">
         <div className="container mx-auto px-4 lg:px-8">
           {/* Header Section above grid */}
           <motion.div 
@@ -251,7 +279,7 @@ export default function BlogPage() {
                <motion.div 
                  animate={{ scale: [1, 1.5, 1] }}
                  transition={{ duration: 2, repeat: Infinity }}
-                 className="w-2 h-2 rounded-full bg-blue-500" 
+                 className={`w-2 h-2 rounded-full ${themeTheme.bgSolid}`} 
                />
                <span>{blogPosts.length} total articles</span>
             </div>
@@ -271,7 +299,7 @@ export default function BlogPage() {
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.8, delay: index * 0.1 }}
                   >
-                    <Card className="group bg-white border-0 rounded-[3.5rem] shadow-[0_30px_70px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_100px_rgba(37,99,235,0.12)] transition-all duration-700 overflow-hidden relative border border-transparent hover:border-blue-100">
+                    <Card className={`group bg-white border-0 rounded-[3.5rem] shadow-[0_30px_70px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_100px_rgba(37,99,235,0.12)] transition-all duration-700 overflow-hidden relative border border-transparent hover:${themeTheme.lightBorder}`}>
                       <div className="flex flex-col md:flex-row min-h-[380px]">
                         {/* Visual Area */}
                         <div className="md:w-[40%] relative bg-[#111827] overflow-hidden flex items-center justify-center border-r border-[#111827]">
@@ -280,14 +308,14 @@ export default function BlogPage() {
                             transition={{ duration: 0.7 }}
                             className="transition-all duration-700 opacity-60"
                           >
-                            {categoryIcons[post.category] || categoryIcons.Default}
+                            {getCategoryIcon(post.category, themeTheme.text)}
                           </motion.div>
                           <div className="absolute top-10 left-10">
-                            <span className="px-6 py-2 bg-white/10 backdrop-blur-md text-blue-400 text-[10px] font-black uppercase tracking-[0.3em] rounded-full shadow-lg border border-white/10">
+                            <span className={`px-6 py-2 bg-white/10 backdrop-blur-md ${themeTheme.text} text-[10px] font-black uppercase tracking-[0.3em] rounded-full shadow-lg border border-white/10`}>
                               {post.category || "General"}
                             </span>
                           </div>
-                          <div className="absolute inset-0 bg-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <div className={`absolute inset-0 ${themeTheme.bgSolid}/10 opacity-0 group-hover:opacity-100 transition-opacity`} />
                         </div>
 
                         {/* Content Area */}
@@ -295,18 +323,18 @@ export default function BlogPage() {
                           <div>
                             <div className="flex items-center gap-6 mb-8 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
                               <div className="flex items-center gap-2">
-                                <User className="w-3.5 h-3.5 text-blue-500" /> 
+                                <User className={`w-3.5 h-3.5 ${themeTheme.textLight}`} /> 
                                 <span>{post.author || "Global Head"}</span>
                               </div>
                               <div className="w-1.5 h-1.5 bg-slate-200 rounded-full" />
                               <div className="flex items-center gap-2">
-                                <Calendar className="w-3.5 h-3.5 text-blue-500" />
+                                <Calendar className={`w-3.5 h-3.5 ${themeTheme.textLight}`} />
                                 <span>{formatDate(post.createdAt)}</span>
                               </div>
                             </div>
 
                             <Link href={`/blog/${post.slug || post.id || post._id}`}>
-                              <h3 className="text-3xl lg:text-4xl font-black text-slate-900 leading-[1.05] uppercase tracking-tighter mb-6 group-hover:text-blue-600 transition-colors">
+                              <h3 className={`text-3xl lg:text-4xl font-black text-slate-900 leading-[1.05] uppercase tracking-tighter mb-6 group-hover:${themeTheme.text} transition-colors`}>
                                 {post.title}
                               </h3>
                             </Link>
@@ -319,11 +347,11 @@ export default function BlogPage() {
                           <Button
                             asChild
                             variant="link"
-                            className="p-0 h-auto text-blue-600 text-[11px] font-black uppercase tracking-[0.3em] flex items-center gap-4 w-fit no-underline hover:no-underline group/btn transition-colors"
+                            className={`p-0 h-auto ${themeTheme.text} text-[11px] font-black uppercase tracking-[0.3em] flex items-center gap-4 w-fit no-underline hover:no-underline group/btn transition-colors`}
                           >
                             <Link href={`/blog/${post.slug || post.id || post._id}`}>
                               Open Investigation
-                              <div className="w-12 h-12 rounded-full border border-blue-100 flex items-center justify-center transition-all group-hover/btn:bg-blue-600 group-hover/btn:text-white group-hover/btn:border-blue-600 group-hover/btn:translate-x-2">
+                              <div className={`w-12 h-12 rounded-full border ${themeTheme.lightBorder} flex items-center justify-center transition-all group-hover/btn:${themeTheme.bgSolid} group-hover/btn:text-white group-hover/btn:${themeTheme.borderSolid} group-hover/btn:translate-x-2`}>
                                 <ArrowRight className="w-5 h-5" />
                               </div>
                             </Link>
@@ -371,7 +399,7 @@ export default function BlogPage() {
                   <div className="relative">
                     <Input 
                       placeholder="Keyword Investigation..." 
-                      className="bg-white border border-slate-200 rounded-2xl h-14 pl-12 shadow-sm placeholder:text-slate-400 font-bold text-sm text-slate-900 focus-visible:ring-blue-500/20 focus-visible:border-blue-500/50"
+                      className={`bg-white border border-slate-200 rounded-2xl h-14 pl-12 shadow-sm placeholder:text-slate-400 font-bold text-sm text-slate-900 ${themeTheme.ring} ${themeTheme.border}`}
                     />
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
                   </div>
@@ -387,15 +415,14 @@ export default function BlogPage() {
                 className="bg-white border border-slate-50 p-10 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.02)]"
               >
                 <h4 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em] mb-10 flex items-center gap-3">
-                  <PieChart className="w-5 h-5 text-blue-600" />
+                  <PieChart className={`w-5 h-5 ${themeTheme.text}`} />
                   Divisions
                 </h4>
                 <div className="space-y-3">
                   {categories.map((cat, i) => (
                     <motion.div 
                       key={i} 
-                      whileHover={{ scale: 1.02 }}
-                      className="group flex items-center justify-between p-5 bg-slate-50 rounded-2xl cursor-pointer hover:bg-blue-600 hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300"
+                      className={`group flex items-center justify-between p-5 bg-slate-50 rounded-2xl cursor-pointer hover:${themeTheme.bgSolid} hover:shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-all duration-300`}
                     >
                       <span className="text-[11px] font-black uppercase tracking-widest text-slate-600 group-hover:text-white">{cat.name}</span>
                       <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-white transition-transform group-hover:translate-x-1" />
@@ -411,18 +438,18 @@ export default function BlogPage() {
                 viewport={{ once: true }}
                 className="bg-[#111827] p-12 rounded-[3.5rem] text-white relative overflow-hidden text-center"
               >
-                 <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[80px] -mr-32 -mt-32" />
+                 <div className={`absolute top-0 right-0 w-64 h-64 ${themeTheme.bgSolid}/10 rounded-full blur-[80px] -mr-32 -mt-32`} />
                  <div className="relative z-10">
                     <motion.div 
                       animate={{ rotate: [0, 10, 0] }}
                       transition={{ duration: 4, repeat: Infinity }}
                       className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-8 backdrop-blur-sm"
                     >
-                       <Sparkles className="w-8 h-8 text-blue-400" />
+                       <Sparkles className={`w-8 h-8 ${themeTheme.text}`} />
                     </motion.div>
                     <h3 className="text-3xl font-black uppercase tracking-tighter leading-none mb-6">Expert <br /> Clarity</h3>
                     <p className="text-slate-400 font-medium text-sm leading-relaxed mb-10 italic-none">Direct connection to senior chartered accountants.</p>
-                    <Button asChild className="w-full bg-white text-slate-900 hover:bg-blue-600 hover:text-white rounded-2xl h-14 font-black uppercase tracking-widest text-[10px] transition-all">
+                    <Button asChild className={`w-full bg-white text-slate-900 hover:${themeTheme.bgSolid} hover:text-white rounded-2xl h-14 font-black uppercase tracking-widest text-[10px] transition-all`}>
                        <Link href="/contact">Initial Connection</Link>
                     </Button>
                  </div>
@@ -440,8 +467,7 @@ export default function BlogPage() {
                   {recentPosts.map((post, i) => (
                     <motion.div key={i} whileHover={{ x: 5 }}>
                       <Link href={`/blog/${post.slug || post.id}`} className="group block">
-                         <span className="text-[9px] font-black text-blue-600 uppercase tracking-widest mb-2 block">{formatDate(post.createdAt)}</span>
-                         <h5 className="font-black text-slate-900 uppercase text-sm leading-snug group-hover:text-blue-600 transition-colors line-clamp-2 underline-offset-4 decoration-blue-100 group-hover:underline">{post.title}</h5>
+                         <h5 className={`font-black text-slate-900 uppercase text-sm leading-snug group-hover:${themeTheme.text} transition-colors line-clamp-2 underline-offset-4 decoration-transparent group-hover:underline`}>{post.title}</h5>
                       </Link>
                     </motion.div>
                   ))}
