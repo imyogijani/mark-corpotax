@@ -122,8 +122,13 @@ export default function AppointmentsPage() {
         setStats(newStats);
       }
     } catch (err: any) {
-      console.error("Error fetching appointments:", err);
-      setError(err.message || "Failed to fetch appointments");
+      // Network errors (backend not running) are shown as user-friendly messages
+      const isNetworkError = err.message === "Failed to fetch" || err.name === "TypeError";
+      setError(
+        isNetworkError
+          ? "Cannot connect to server. Please ensure the backend is running and try again."
+          : err.message || "Failed to fetch appointments"
+      );
     } finally {
       setLoading(false);
     }

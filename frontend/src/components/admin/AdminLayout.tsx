@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { NotificationBell } from "@/components/NotificationBell";
 import { NotificationToast } from "@/components/NotificationToast";
 import AdminSidebar from "./AdminSidebar";
+import { apiClient } from "@/lib/api-client";
 import {
   Menu,
   Calendar,
@@ -100,27 +101,19 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
     }
   }, [isAdmin, router]);
 
-  // Fetch content statistics
+
+  const isContentPage = title.toLowerCase().includes("content");
+
+  // Fetch content statistics - only on content management pages
   useEffect(() => {
+    if (!isAdmin || !isContentPage) return;
+
     const fetchContentStats = async () => {
       try {
-        const token = localStorage.getItem("auth_token");
-        const API_BASE =
-          typeof process !== "undefined" && process.env?.NEXT_PUBLIC_API_URL
-            ? process.env.NEXT_PUBLIC_API_URL
-            : "http://localhost:5000/api";
-        const response = await fetch(
-          `${API_BASE}/admin/content?includeInactive=true`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await apiClient.getAdminContent({ includeInactive: true });
 
-        if (response.ok) {
-          const data = await response.json();
+        if (response.success && response.data) {
+          const data = response.data;
           const content = Array.isArray(data.data)
             ? data.data
             : Array.isArray(data)
@@ -148,16 +141,14 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
         } else {
           setContentStats((prev) => ({ ...prev, loading: false }));
         }
-      } catch (error) {
-        console.error("Error fetching content stats:", error);
+      } catch {
+        // Silently fail - content stats are non-critical
         setContentStats((prev) => ({ ...prev, loading: false }));
       }
     };
 
-    if (isAdmin) {
-      fetchContentStats();
-    }
-  }, [isAdmin]);
+    fetchContentStats();
+  }, [isAdmin, isContentPage]);
 
   // Fetch Dashboard Stats
   useEffect(() => {
@@ -166,15 +157,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
       
       try {
         setStatsLoading(true);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/admin/dashboard-stats`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        const data = await response.json();
-        if (data.success) {
-          setDashboardData(data.data);
+        const response = await apiClient.getDashboardStats();
+        
+        if (response.success && response.data) {
+          setDashboardData(response.data);
         }
       } catch (error) {
         console.error("Dashboard stats error:", error);
