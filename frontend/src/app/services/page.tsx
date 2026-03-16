@@ -69,8 +69,16 @@ function ServicesPageContent() {
   const y2 = useTransform(scrollY, [0, 500], [0, -150]);
 
   useEffect(() => {
-    const saved = localStorage.getItem("user_division");
-    if (saved) setDivision(saved);
+    const handleSync = () => {
+      setDivision(localStorage.getItem("user_division") || "finance");
+    };
+    handleSync();
+    window.addEventListener("storage", handleSync);
+    window.addEventListener("division-change", handleSync);
+    return () => {
+      window.removeEventListener("storage", handleSync);
+      window.removeEventListener("division-change", handleSync);
+    };
   }, []);
 
   const categories = useMemo(() => {
@@ -182,7 +190,7 @@ function ServicesPageContent() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-              className="flex-shrink-0 w-full md:w-[600px] aspect-square relative hidden lg:flex items-center justify-center p-0"
+              className="flex-shrink-0 w-full lg:w-[600px] aspect-square relative flex items-center justify-center p-0"
             >
               {/* Subtle Background Glow to give it context */}
               <div className={`absolute inset-0 rounded-full opacity-30 blur-[120px] ${division === 'taxation' ? 'bg-emerald-400' : 'bg-blue-400'}`} />
@@ -190,7 +198,7 @@ function ServicesPageContent() {
               {/* Lottie Animation - Now Direct */}
               <div className="relative w-full h-full z-10">
                 <DotLottiePlayer
-                  src={division === 'taxation' ? "/extrafiles/taxation3.json" : "/extrafiles/Service.lottie"}
+                  src={division === 'taxation' ? "/extrafiles/taxationgreen.json" : "/extrafiles/taxation.json"}
                   autoplay
                   loop
                   className="w-full h-full"
