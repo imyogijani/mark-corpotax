@@ -154,9 +154,9 @@ export function DynamicServicesSection() {
                     >
                       <div className="relative z-10 flex h-full flex-col">
                         <div className="flex-1">
-                            <h3 className="text-lg md:text-xl font-bold text-slate-900 tracking-tight uppercase leading-[1.2] mb-4">
-                              {service.title}
-                            </h3>
+                          <h3 className="text-lg md:text-xl font-bold text-slate-900 tracking-tight uppercase leading-[1.2] mb-4">
+                            {service.title}
+                          </h3>
 
                           <p className="text-sm text-slate-500 leading-relaxed font-medium">
                             {service.description}

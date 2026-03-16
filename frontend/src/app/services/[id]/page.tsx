@@ -72,21 +72,21 @@ export default function ServiceDetailPage() {
 
         {/* Hero Section */}
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 mb-24 md:mb-40 items-center">
-          <motion.div 
+          <motion.div
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
             className="space-y-8 md:space-y-12"
           >
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               className={`inline-flex items-center gap-2 px-6 py-2 rounded-full border text-[10px] font-black uppercase tracking-[0.4em] ${isTaxation ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-blue-50 border-blue-100 text-blue-600 shadow-[0_10px_30px_rgba(37,99,235,0.08)]'}`}
             >
               <Sparkles className="w-4 h-4" />
               <span>{service.category} Excellence</span>
             </motion.div>
-            
-            <motion.h1 
+
+            <motion.h1
               variants={fadeInUp}
               className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-slate-900 tracking-tighter leading-[1] md:leading-[0.85] uppercase"
             >
@@ -95,8 +95,8 @@ export default function ServiceDetailPage() {
                 {service.name.split(' ').slice(-1)}
               </span>
             </motion.h1>
-            
-            <motion.p 
+
+            <motion.p
               variants={fadeInUp}
               className="text-base md:text-xl text-slate-500 font-medium leading-relaxed md:leading-loose max-w-xl"
             >
@@ -112,7 +112,7 @@ export default function ServiceDetailPage() {
             </motion.div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -147,7 +147,7 @@ export default function ServiceDetailPage() {
         {/* Details Section */}
         <div className="grid lg:grid-cols-2 gap-10 md:gap-16 lg:gap-20">
           {/* Key Features Column */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -177,7 +177,7 @@ export default function ServiceDetailPage() {
           </motion.div>
 
           {/* Core Benefits Column */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -197,7 +197,7 @@ export default function ServiceDetailPage() {
                 {service.benefits.map((benefit, idx) => (
                   <div key={idx} className="flex items-start gap-6 p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-white/5 border border-white/5 hover:border-white/10 transition-all group/benefit">
                     <div className={`w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${isTaxation ? 'bg-emerald-500/30' : 'bg-blue-500/30'}`}>
-                       <div className={`w-2 md:w-3 h-2 md:h-3 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.2)] ${isTaxation ? 'bg-emerald-400' : 'bg-blue-400'}`} />
+                      <div className={`w-2 md:w-3 h-2 md:h-3 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.2)] ${isTaxation ? 'bg-emerald-400' : 'bg-blue-400'}`} />
                     </div>
                     <p className="text-xs md:text-base font-black text-slate-300 leading-tight tracking-[0.1em] uppercase">
                       {benefit}
@@ -210,7 +210,7 @@ export default function ServiceDetailPage() {
         </div>
 
         {/* Support Section */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -218,33 +218,33 @@ export default function ServiceDetailPage() {
         >
           <div className="relative bg-white rounded-[3rem] md:rounded-[5rem] p-10 md:p-32 border border-slate-100 text-center shadow-[0_60px_120px_rgba(0,0,0,0.04)] overflow-hidden group">
             <div className="absolute inset-0 bg-blue-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-            
+
             <div className="relative z-10 max-w-4xl mx-auto">
-               <div className={`w-20 h-20 md:w-24 md:h-24 text-white rounded-[2rem] md:rounded-[2.5rem] flex items-center justify-center mx-auto mb-10 md:mb-16 shadow-2xl group-hover:rotate-12 transition-transform duration-500 ${isTaxation ? 'bg-emerald-600 shadow-emerald-200' : 'bg-blue-600 shadow-blue-200'}`}>
-                  <Users className="w-10 h-10 md:w-12 md:h-12" />
-               </div>
-               <h2 className="text-4xl md:text-8xl font-black text-slate-900 uppercase tracking-tighter mb-8 md:mb-12 leading-[0.85]">
-                 Strategic Vertical <br />
-                 <span className={isTaxation ? 'text-emerald-600' : 'text-blue-600'}>Guidance</span>
-               </h2>
-               <p className="text-base md:text-2xl text-slate-500 font-medium mb-12 md:mb-20 leading-relaxed max-w-2xl mx-auto">
-                 Connect with our specialized advisors to craft a strategy for your unique goals. 24/7 priority support for all corporate accounts.
-               </p>
-               
-               <div className="flex flex-col sm:flex-row gap-6 md:gap-8 justify-center">
-                  <Link href={`tel:${isTaxation ? '9773822604' : '9712067891'}`} className="w-full sm:w-auto">
-                    <button className={`w-full px-12 py-7 md:py-9 text-white rounded-full font-black text-lg md:text-2xl transition-all flex items-center justify-center gap-6 shadow-2xl ${isTaxation ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-slate-900 hover:bg-blue-600'}`}>
-                        <Phone className="w-6 h-6 md:w-8 md:h-8" /> Call Expert
-                    </button>
-                  </Link>
-                  <Link href="/appointment" className="w-full sm:w-auto">
-                    <button className={`w-full px-12 py-7 md:py-9 border-2 rounded-full font-black text-lg md:text-2xl transition-all flex items-center justify-center gap-6 group/kb ${isTaxation ? 'border-emerald-600 text-emerald-600 hover:bg-emerald-50' : 'border-slate-900 text-slate-900 hover:bg-slate-50'}`}>
-                        Book Now <ChevronRight className="w-6 h-6 md:w-8 md:h-8 group-hover/kb:translate-x-3 transition-transform duration-500" />
-                    </button>
-                  </Link>
-               </div>
+              <div className={`w-20 h-20 md:w-24 md:h-24 text-white rounded-[2rem] md:rounded-[2.5rem] flex items-center justify-center mx-auto mb-10 md:mb-16 shadow-2xl group-hover:rotate-12 transition-transform duration-500 ${isTaxation ? 'bg-emerald-600 shadow-emerald-200' : 'bg-blue-600 shadow-blue-200'}`}>
+                <Users className="w-10 h-10 md:w-12 md:h-12" />
+              </div>
+              <h2 className="text-4xl md:text-8xl font-black text-slate-900 uppercase tracking-tighter mb-8 md:mb-12 leading-[0.85]">
+                Strategic Vertical <br />
+                <span className={isTaxation ? 'text-emerald-600' : 'text-blue-600'}>Guidance</span>
+              </h2>
+              <p className="text-base md:text-2xl text-slate-500 font-medium mb-12 md:mb-20 leading-relaxed max-w-2xl mx-auto">
+                Connect with our specialized advisors to craft a strategy for your unique goals. 24/7 priority support for all corporate accounts.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-6 md:gap-8 justify-center">
+                <Link href={`tel:${isTaxation ? '9773822604' : '9712067891'}`} className="w-full sm:w-auto">
+                  <button className={`w-full px-12 py-7 md:py-9 text-white rounded-full font-black text-lg md:text-2xl transition-all flex items-center justify-center gap-6 shadow-2xl ${isTaxation ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-slate-900 hover:bg-blue-600'}`}>
+                    <Phone className="w-6 h-6 md:w-8 md:h-8" /> Call Expert
+                  </button>
+                </Link>
+                <Link href="/appointment" className="w-full sm:w-auto">
+                  <button className={`w-full px-12 py-7 md:py-9 border-2 rounded-full font-black text-lg md:text-2xl transition-all flex items-center justify-center gap-6 group/kb ${isTaxation ? 'border-emerald-600 text-emerald-600 hover:bg-emerald-50' : 'border-slate-900 text-slate-900 hover:bg-slate-50'}`}>
+                    Book Now <ChevronRight className="w-6 h-6 md:w-8 md:h-8 group-hover/kb:translate-x-3 transition-transform duration-500" />
+                  </button>
+                </Link>
+              </div>
             </div>
-            
+
             {/* Asset Overlay */}
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
           </div>
