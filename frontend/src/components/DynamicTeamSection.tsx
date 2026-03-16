@@ -278,7 +278,7 @@ export function DynamicTeamSection() {
   );
 
   return (
-    <section className="py-12 md:py-16 bg-white relative overflow-hidden">
+    <section className="py-10 md:py-12 bg-white relative overflow-hidden">
       {/* Background Decorative Element - Light Theme */}
       <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 transition-colors duration-500 ${division === 'taxation' ? 'bg-[radial-gradient(1000px_circle_at_center,rgba(16,185,129,0.03),transparent_100%)]' : 'bg-[radial-gradient(1000px_circle_at_center,rgba(37,99,235,0.03),transparent_100%)]'}`} />
 
@@ -296,18 +296,7 @@ export function DynamicTeamSection() {
           </motion.div>
 
           <div className="relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
-              className="inline-flex items-center gap-2 mb-4"
-            >
-              <span className={`w-8 h-[2px] ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}></span>
-              <span className={`text-[10px] font-black uppercase tracking-[0.5em] ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`}>
-                {teamSection?.tagline || "Our Team"}
-              </span>
-              <span className={`w-8 h-[2px] ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}></span>
-            </motion.div>
+
 
             <motion.h2
               className="text-4xl md:text-5xl font-black mb-6 text-slate-900 uppercase tracking-tighter"

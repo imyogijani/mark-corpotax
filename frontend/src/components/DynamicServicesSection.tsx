@@ -96,7 +96,7 @@ export function DynamicServicesSection() {
   const displayServices = useMemo(() => services.slice(0, 3), [services]);
 
   return (
-    <section className="py-24 md:py-36 bg-slate-50 relative overflow-hidden font-sans">
+    <section className="py-16 md:py-20 bg-slate-50 relative overflow-hidden font-sans">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col xl:flex-row gap-16 xl:gap-20 items-start">
           {/* Left: Heading Content (Sticky) */}
@@ -108,10 +108,7 @@ export function DynamicServicesSection() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="relative z-10"
             >
-              <div className={`inline-flex items-center gap-3 px-6 py-2 bg-white rounded-full border shadow-sm ${division === 'taxation' ? 'border-emerald-100 text-emerald-600' : 'border-blue-100 text-blue-600'} text-[10px] font-black uppercase tracking-[0.4em] mb-8`}>
-                <Sparkles className="w-4 h-4" />
-                <span>{division === "taxation" ? "Regulatory Excellence" : "Strategic Wealth"}</span>
-              </div>
+
 
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 md:mb-8 text-slate-900 uppercase tracking-tighter leading-[1.1] md:leading-[1] space-y-2">
                 <span className="block">{division === "taxation" ? "Statutory" : "Capital"}</span>

@@ -41,7 +41,7 @@ export function AskExpertSection() {
   };
 
   return (
-    <section className="my-12 relative group">
+    <section className="my-8 relative group">
       {/* Decorative Glows */}
       <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full blur-[120px] rounded-full -z-20 scale-110 opacity-50 transition-opacity group-hover:opacity-100 ${division === 'taxation' ? 'bg-emerald-600/5' : 'bg-blue-600/5'}`} />
 
@@ -49,7 +49,7 @@ export function AskExpertSection() {
         <div className="grid lg:grid-cols-5 items-stretch min-h-[550px]">
 
           {/* Left Panel: Expert Identity */}
-          <div className={`lg:col-span-2 p-10 md:p-14 text-white flex flex-col justify-between relative overflow-hidden transition-colors duration-700 ${division === 'taxation' ? 'bg-emerald-950' : 'bg-[#111827]'}`}>
+          <div className={`lg:col-span-2 p-8 md:p-10 text-white flex flex-col justify-between relative overflow-hidden transition-colors duration-700 ${division === 'taxation' ? 'bg-emerald-950' : 'bg-[#111827]'}`}>
             {/* Background Texture */}
             <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
             <div className={`absolute top-0 right-0 w-80 h-80 rounded-full blur-[100px] -mr-40 -mt-40 ${division === 'taxation' ? 'bg-emerald-500/10' : 'bg-blue-500/10'}`} />
@@ -113,7 +113,7 @@ export function AskExpertSection() {
           </div>
 
           {/* Right Panel: Premium Form */}
-          <div className="lg:col-span-3 p-10 md:p-14 relative bg-white">
+          <div className="lg:col-span-3 p-8 md:p-10 relative bg-white">
             <div className="absolute top-0 right-0 w-64 h-64 bg-slate-50 rounded-full blur-[80px] -mr-32 -mt-32 opacity-40 pointer-events-none" />
 
             <AnimatePresence mode="wait">

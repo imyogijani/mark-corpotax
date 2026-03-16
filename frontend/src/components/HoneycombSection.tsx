@@ -70,7 +70,7 @@ export default function HoneycombSection() {
   }, []);
 
   return (
-    <section className="py-12 md:py-16 bg-slate-50 relative overflow-hidden font-sans">
+    <section className="py-10 md:py-12 bg-slate-50 relative overflow-hidden font-sans">
       {/* Structural Pattern Background - Light Theme */}
       <div className="absolute inset-0 opacity-[0.5] pointer-events-none">
         <div
@@ -91,9 +91,7 @@ export default function HoneycombSection() {
             viewport={{ once: true }}
             className="text-slate-900 flex flex-col items-center"
           >
-            <span className={`${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'} text-[10px] font-black uppercase tracking-[0.5em] mb-4`}>
-              Comprehensive Solutions
-            </span>
+
             <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-4 text-slate-800">
               {division === "finance" ? "Finance Ecosystem" : "Taxation Interface"}
             </h2>

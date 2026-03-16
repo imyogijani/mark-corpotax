@@ -204,18 +204,11 @@ export const DynamicHeroSection = () => {
         </motion.div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-10 py-12">
+      <div className="container mx-auto px-6 relative z-10 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center h-full">
           {/* Left Content */}
           <div className="flex flex-col space-y-8 md:space-y-10 items-center lg:items-start text-center lg:text-left">
-            <MotionWrapper direction="left">
-              <div className={`inline-flex items-center gap-2 px-1 py-1 pr-4 bg-white border rounded-full font-semibold text-xs md:text-sm uppercase tracking-wider shadow-sm group ${division === 'taxation' ? 'border-emerald-100 text-emerald-600' : 'border-blue-100 text-blue-600'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'}`}>
-                  <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
-                </div>
-                <span>{heroMain.tagline || "MARK GROUP"}</span>
-              </div>
-            </MotionWrapper>
+
 
             <HeroTitle
               text={
