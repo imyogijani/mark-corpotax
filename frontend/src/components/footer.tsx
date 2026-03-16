@@ -173,7 +173,7 @@ export function Footer() {
   // Default links if none from CMS
   const defaultQuickLinks: FooterLink[] = [
     { label: "About Us", url: "/about" },
-    { label: "Services", url: "/services" },
+    { label: "Services", url: division === "taxation" ? "/services/taxation" : "/services/finance" },
     { label: "Blog", url: "/blog" },
     { label: "Contact", url: "/contact" },
     { label: "Appointments", url: "/appointment" },

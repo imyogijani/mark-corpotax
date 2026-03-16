@@ -61,7 +61,7 @@ interface ServiceCategory {
 const navLinks: NavLink[] = [
   { href: "/", label: "Home", icon: Home },
   { href: "/about", label: "About", icon: Info },
-  { href: "/services", label: "Services", icon: Briefcase },
+  { href: "/services/finance", label: "Services", icon: Briefcase },
   { href: "/blog", label: "Blog", icon: FileText },
   { href: "/contact", label: "Contact", icon: Mail },
 ];
@@ -147,9 +147,7 @@ export function Header() {
     localStorage.setItem("user_division", choice);
     setCurrentDivision(choice);
     window.dispatchEvent(new Event("division-change"));
-    if (pathname !== "/") {
-      router.push("/");
-    }
+    router.push("/");
   };
 
   const handleGoToLanding = () => {
@@ -245,7 +243,9 @@ export function Header() {
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-1 xl:gap-2">
               {navLinks.map((link) => {
-                const isActive = pathname === link.href;
+                const isActive = link.label === "Services" 
+                  ? pathname.startsWith("/services") 
+                  : pathname === link.href;
                 const isServices = link.label === "Services";
 
                 if (isServices) {
@@ -257,7 +257,7 @@ export function Header() {
                       onMouseLeave={handleMouseLeave}
                     >
                       <Link
-                        href={link.href}
+                        href={currentDivision === 'taxation' ? "/services/taxation" : "/services/finance"}
                         className={`group/nav flex items-center gap-1.5 px-3.5 py-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 relative ${isActive
                           ? currentDivision === 'taxation' ? "text-emerald-600" : "text-blue-600"
                           : "text-slate-600 hover:text-slate-900"
@@ -530,7 +530,9 @@ export function Header() {
                 <nav className="flex flex-col gap-2">
                   {navLinks.map((link) => {
                     const LinkIcon = link.icon;
-                    const isActive = pathname === link.href;
+                    const isActive = link.label === "Services" 
+                      ? pathname.startsWith("/services") 
+                      : pathname === link.href;
                     return (
                       <Link
                         key={link.href}

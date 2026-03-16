@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   DollarSign,
   TrendingUp,
@@ -9,11 +8,17 @@ import {
   BarChart3,
   Coins,
   Wallet,
+  Scale,
+  Gavel,
+  FileText,
+  ShieldCheck,
+  Calculator,
+  HandCoins
 } from "lucide-react";
-
-const icons = [DollarSign, TrendingUp, PieChart, BarChart3, Coins, Wallet];
-
 import anime from "animejs";
+
+const financeIcons = [DollarSign, TrendingUp, PieChart, BarChart3, Coins, Wallet];
+const taxationIcons = [Scale, Gavel, FileText, ShieldCheck, Calculator, HandCoins];
 
 interface GraffitiElement {
   text?: string;
@@ -24,49 +29,74 @@ interface GraffitiElement {
   bottom?: string;
   size?: string;
   opacity?: number;
+  rotation?: number;
 }
 
 interface FloatingGraffitiProps {
   elements?: GraffitiElement[];
+  division?: string;
 }
 
-export default function FloatingGraffiti({ elements }: FloatingGraffitiProps) {
+export default function FloatingGraffiti({ elements, division = "finance" }: FloatingGraffitiProps) {
   const [mounted, setMounted] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [items, setItems] = useState<GraffitiElement[]>([]);
 
   useEffect(() => {
     setMounted(true);
+    
+    // Determine icons based on division
+    const baseIcons = division === "taxation" ? taxationIcons : financeIcons;
+    
+    // Generate initial positions only on the client to avoid hydration mismatch
+    const generatedItems: GraffitiElement[] = (elements || (baseIcons.map((Icon) => ({ Icon })) as GraffitiElement[])).map(item => ({
+      ...item,
+      top: item.top || `${Math.random() * 90 + 5}%`,
+      left: item.left || (item.right ? "auto" : `${Math.random() * 90 + 5}%`),
+      rotation: item.rotation || (Math.random() * 40 - 20),
+      size: item.size || `${3 + Math.random() * 3}rem`
+    }));
+    
+    setItems(generatedItems);
 
-    anime({
-      targets: ".floating-graffiti-item",
-      translateY: [0, -20, 0],
-      rotate: [0, 5, 0],
-      duration: (el: any, i: number) => 3000 + i * 500,
-      easing: "easeInOutQuad",
-      loop: true,
-      delay: anime.stagger(200),
-    });
-  }, []);
+    const timer = setTimeout(() => {
+      if (containerRef.current) {
+        anime({
+          targets: containerRef.current.querySelectorAll(".floating-graffiti-item"),
+          translateY: [0, -30, 0],
+          translateX: (el: any, i: number) => [0, (i % 2 === 0 ? 15 : -15), 0],
+          rotate: (el: any, i: number) => {
+             const baseRot = parseFloat(el.getAttribute('data-rotation') || '0');
+             return [baseRot, baseRot + 10, baseRot];
+          },
+          duration: (el: any, i: number) => 4000 + i * 800,
+          easing: "easeInOutQuad",
+          loop: true,
+          delay: anime.stagger(300),
+        });
+      }
+    }, 100);
 
-  if (!mounted) return null;
+    return () => clearTimeout(timer);
+  }, [elements, division]);
 
-  // Use provided elements or default icons if none provided
-  const items: GraffitiElement[] = elements || icons.map((Icon) => ({ Icon }));
+  if (!mounted) return <div className="absolute inset-0 pointer-events-none" />;
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+    <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none z-0 select-none">
       {items.map((item, i) => (
         <div
           key={i}
-          className="floating-graffiti-item absolute select-none pointer-events-none"
+          className="floating-graffiti-item absolute pointer-events-none"
+          data-rotation={item.rotation}
           style={{
-            top: item.top || `${Math.random() * 100}%`,
-            left:
-              item.left || (item.right ? "auto" : `${Math.random() * 100}%`),
+            top: item.top,
+            left: item.left,
             right: item.right || "auto",
             bottom: item.bottom || "auto",
-            opacity: item.opacity || 0.05,
-            fontSize: item.size || "4rem",
-            transform: `rotate(${Math.random() * 20 - 10}deg)`,
+            opacity: item.opacity || 0.04,
+            fontSize: item.size,
+            transform: `rotate(${item.rotation}deg)`,
           }}
         >
           {item.text ? (
