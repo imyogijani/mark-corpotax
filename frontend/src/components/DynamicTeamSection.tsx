@@ -278,7 +278,7 @@ export function DynamicTeamSection() {
   );
 
   return (
-    <section className="py-12 md:py-16 bg-white relative overflow-hidden">
+    <section className="py-10 md:py-12 bg-white relative overflow-hidden">
       {/* Background Decorative Element - Light Theme */}
       <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 transition-colors duration-500 ${division === 'taxation' ? 'bg-[radial-gradient(1000px_circle_at_center,rgba(16,185,129,0.03),transparent_100%)]' : 'bg-[radial-gradient(1000px_circle_at_center,rgba(37,99,235,0.03),transparent_100%)]'}`} />
 

@@ -204,7 +204,7 @@ export const DynamicHeroSection = () => {
         </motion.div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-10 py-12">
+      <div className="container mx-auto px-6 relative z-10 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center h-full">
           {/* Left Content */}
           <div className="flex flex-col space-y-8 md:space-y-10 items-center lg:items-start text-center lg:text-left">

@@ -70,7 +70,7 @@ export default function HoneycombSection() {
   }, []);
 
   return (
-    <section className="py-12 md:py-16 bg-slate-50 relative overflow-hidden font-sans">
+    <section className="py-10 md:py-12 bg-slate-50 relative overflow-hidden font-sans">
       {/* Structural Pattern Background - Light Theme */}
       <div className="absolute inset-0 opacity-[0.5] pointer-events-none">
         <div

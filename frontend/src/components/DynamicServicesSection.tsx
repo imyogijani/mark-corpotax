@@ -96,7 +96,7 @@ export function DynamicServicesSection() {
   const displayServices = useMemo(() => services.slice(0, 3), [services]);
 
   return (
-    <section className="py-24 md:py-36 bg-slate-50 relative overflow-hidden font-sans">
+    <section className="py-16 md:py-20 bg-slate-50 relative overflow-hidden font-sans">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col xl:flex-row gap-16 xl:gap-20 items-start">
           {/* Left: Heading Content (Sticky) */}

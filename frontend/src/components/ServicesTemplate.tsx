@@ -246,9 +246,9 @@ export default function ServicesTemplate({ division }: ServicesTemplateProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 md:py-48 px-6">
+      <section className="py-20 md:py-32 px-6">
         <div className="container mx-auto">
-          <div className={`max-w-6xl mx-auto rounded-[4rem] p-12 md:p-32 text-center relative overflow-hidden ${division === 'taxation' ? 'bg-emerald-600 shadow-2xl shadow-emerald-600/20' : 'bg-blue-600 shadow-2xl shadow-blue-600/20'}`}>
+          <div className={`max-w-6xl mx-auto rounded-[4rem] p-12 md:p-24 text-center relative overflow-hidden ${division === 'taxation' ? 'bg-emerald-600 shadow-2xl shadow-emerald-600/20' : 'bg-blue-600 shadow-2xl shadow-blue-600/20'}`}>
             <div className="relative z-10">
               <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter uppercase leading-[0.9] mb-10">Ready to Fuel <br />Your Growth?</h2>
               <p className="text-white/80 text-lg md:text-xl font-medium max-w-2xl mx-auto mb-16 leading-relaxed">Connect with our vertical heads today for a tailored financial or legal roadmap designed for your scale.</p>
