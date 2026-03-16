@@ -107,7 +107,7 @@ const CompanyTimeline = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-5xl md:text-[5.5rem] font-black text-slate-900 tracking-tighter uppercase leading-[0.9] mb-4"
+            className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter uppercase leading-[0.9] mb-4"
           >
             Moments to <br />
             Remember

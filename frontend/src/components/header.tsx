@@ -234,7 +234,7 @@ export function Header() {
                 <span className="text-sm md:text-lg font-black tracking-tighter text-slate-900 transition-colors uppercase leading-none group-hover/logo:text-blue-600">
                   Mark Corpotax
                 </span>
-                <span className={`font-black uppercase tracking-[0.3em] leading-none mt-1 whitespace-nowrap ${currentDivision === "taxation" ? "text-[8px] md:text-[10px] text-emerald-500" : "text-[7px] md:text-[8px] text-blue-500"}`}>
+                <span className={`font-black uppercase tracking-[0.3em] leading-none mt-1 whitespace-nowrap ${currentDivision === "taxation" ? "text-[8px] md:text-[10px] text-slate-900" : "text-[7px] md:text-[8px] text-slate-900"}`}>
                   {currentDivision === "taxation" ? "Taxation & Legal" : "Finance & Loan Division"}
                 </span>
               </div>
@@ -487,7 +487,7 @@ export function Header() {
                   </div>
                   <div className="flex flex-col">
                     <span className="font-black uppercase tracking-tighter text-lg leading-none text-slate-900">Mark Corpotax</span>
-                    <span className={`font-black tracking-[0.2em] mt-1 uppercase ${currentDivision === "taxation" ? "text-[8px] text-emerald-600" : "text-[7px] text-blue-600"}`}>
+                    <span className={`font-black tracking-[0.2em] mt-1 uppercase ${currentDivision === "taxation" ? "text-[8px] text-slate-900" : "text-[7px] text-slate-900"}`}>
                       {currentDivision === "taxation" ? "Taxation & Legal" : "Finance & Loan Division"}
                     </span>
                   </div>
