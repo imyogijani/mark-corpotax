@@ -217,7 +217,7 @@ export function DynamicFeaturesSection() {
           {features.map((feature, index) => (
             <div key={index}>
               <div className="relative group h-full">
-                <Card className={`relative h-full text-center p-8 md:p-14 border bg-white shadow-[0_20px_40px_rgba(0,0,0,0.03)] transition-all duration-500 rounded-[2.5rem] md:rounded-[3rem] overflow-hidden hover:-translate-y-3 ${division === 'taxation' ? 'border-slate-100 hover:shadow-[0_40px_80px_rgba(16,185,129,0.12)] hover:border-emerald-100' : 'border-slate-100 hover:shadow-[0_40px_80px_rgba(37,99,235,0.12)] hover:border-blue-100'}`}>
+                <Card className={`relative h-full text-center p-8 md:p-14 border bg-white shadow-[0_20px_40px_rgba(0,0,0,0.03)] rounded-[2.5rem] md:rounded-[3rem] overflow-hidden ${division === 'taxation' ? 'border-slate-100' : 'border-slate-100'}`}>
                   {/* Image Container */}
                   <div className="w-full h-48 md:h-56 flex items-center justify-center mx-auto mb-6 md:mb-8 relative overflow-hidden bg-slate-50 rounded-2xl md:rounded-[2rem]">
                     <Image
