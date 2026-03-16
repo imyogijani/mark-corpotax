@@ -363,8 +363,22 @@ class ApiClient {
   }
 
   // ============ Blog Methods ============
-  async getBlogs(): Promise<ApiResponse<Blog[]>> {
-    return this.request<Blog[]>("/blog");
+  async getBlogs(params?: {
+    status?: string;
+    category?: string;
+    limit?: number;
+    page?: number;
+  }): Promise<ApiResponse<Blog[]>> {
+    const queryParams = new URLSearchParams();
+    if (params) {
+      if (params.status) queryParams.append("status", params.status);
+      if (params.category) queryParams.append("category", params.category);
+      if (params.limit) queryParams.append("limit", params.limit.toString());
+      if (params.page) queryParams.append("page", params.page.toString());
+    }
+
+    const query = queryParams.toString();
+    return this.request<Blog[]>(`/blog${query ? `?${query}` : ""}`);
   }
 
   async getBlog(id: string): Promise<ApiResponse<Blog>> {
@@ -579,8 +593,21 @@ class ApiClient {
     return this.request<any>(`/page-layouts/page/${pageName}${query}`);
   }
 
-  async getAdminContent(page?: string): Promise<ApiResponse<any>> {
-    const endpoint = page ? `/admin/content/${page}` : "/admin/content";
+  async getAdminContent(params?: {
+    page?: string;
+    section?: string;
+    includeInactive?: boolean;
+  }): Promise<ApiResponse<any>> {
+    const queryParams = new URLSearchParams();
+    if (params) {
+      if (params.page) queryParams.append("page", params.page);
+      if (params.section) queryParams.append("section", params.section);
+      if (params.includeInactive)
+        queryParams.append("includeInactive", params.includeInactive.toString());
+    }
+
+    const query = queryParams.toString();
+    const endpoint = `/admin/content${query ? `?${query}` : ""}`;
     return this.request<any>(endpoint);
   }
 

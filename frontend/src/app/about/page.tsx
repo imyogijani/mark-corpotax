@@ -17,6 +17,7 @@ import { motion } from "framer-motion";
 import anime from "animejs";
 import Image from "next/image";
 import CompanyTimeline from "@/components/CompanyTimeline";
+import { contentService } from "@/lib/content-service";
 
 interface HeroData {
   title?: string;
@@ -91,11 +92,9 @@ export default function AboutPage() {
 
     const fetchContent = async () => {
       try {
-        const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-        const response = await fetch(`${API_BASE}/content/about`);
-        const data = await response.json();
-        if (data.success && data.data) {
-          setContent(data.data);
+        const data = await contentService.getPageContent("about");
+        if (data) {
+          setContent(data);
         }
       } catch (error) {
         console.error("Error loading about page content:", error);
@@ -105,6 +104,18 @@ export default function AboutPage() {
     };
 
     fetchContent();
+  }, []);
+
+  // Subscribe to content updates
+  useEffect(() => {
+    const unsubscribe = contentService.onCacheInvalidated(() => {
+      setLoading(true);
+      contentService.getPageContent("about").then(data => {
+        if (data) setContent(data);
+        setLoading(false);
+      });
+    });
+    return unsubscribe;
   }, []);
 
   useEffect(() => {
