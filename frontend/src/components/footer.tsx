@@ -122,6 +122,13 @@ export function Footer() {
   useEffect(() => {
     loadSettings();
 
+    const handleSync = () => {
+      setDivision(localStorage.getItem("user_division"));
+    };
+    handleSync();
+    window.addEventListener("storage", handleSync);
+    window.addEventListener("division-change", handleSync);
+
     // Subscribe to cache invalidation events to refresh when content is updated
     const unsubscribe = contentService.onCacheInvalidated(() => {
       loadSettings();
@@ -129,10 +136,11 @@ export function Footer() {
 
     return () => {
       unsubscribe();
+      window.removeEventListener("storage", handleSync);
+      window.removeEventListener("division-change", handleSync);
     };
   }, [loadSettings]);
 
-  const companyName = settings.company_name || "Mark Corpotax";
   const companyTagline =
     settings.company_tagline || (division === 'taxation' ? "Taxation & Legal Division" : "Finance & Loan Division");
   const companyDescription =
@@ -203,8 +211,8 @@ export function Footer() {
                   height={48}
                 />
                 <div className="brand-info">
-                  <span className="text-xl font-black text-white tracking-tight block leading-tight uppercase">
-                    {companyName}
+                  <span className="text-xl font-black text-white tracking-tight block leading-tight uppercase flex items-center gap-1.5">
+                    MARK <span className={division === "taxation" ? "text-emerald-500" : "text-blue-500"}>{division === "taxation" ? "TAXATION" : "FINANCE"}</span>
                   </span>
                   <span className={`font-black uppercase tracking-[0.3em] block ${division === "taxation" ? "text-[10px] text-emerald-400" : "text-[8px] text-blue-400 mt-1"}`}>
                     {companyTagline}

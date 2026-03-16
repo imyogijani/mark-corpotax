@@ -19,7 +19,7 @@ import {
   Search,
   ChevronRight,
 } from "lucide-react";
-import { DynamicCTASection } from "@/components/DynamicCTASection";
+
 import FloatingGraffiti from "@/components/FloatingGraffiti";
 import { MotionWrapper } from "@/components/MotionWrapper";
 import { AskExpertSection } from "@/components/AskExpertSection";
@@ -453,8 +453,6 @@ export default function BlogPage() {
         </div>
       </section>
 
-
-      <DynamicCTASection />
     </motion.div>
   );
 }

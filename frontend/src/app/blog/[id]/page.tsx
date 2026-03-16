@@ -19,7 +19,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { apiClient } from "@/lib/api-client";
-import { DynamicCTASection } from "@/components/DynamicCTASection";
+
 import { AskExpertSection } from "@/components/AskExpertSection";
 import { MotionWrapper } from "@/components/MotionWrapper";
 
@@ -274,8 +274,6 @@ export default function BlogDetailPage() {
           </div>
         </div>
       </section>
-
-      <DynamicCTASection />
     </div>
   );
 }
