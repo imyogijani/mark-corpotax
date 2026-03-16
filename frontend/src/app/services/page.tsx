@@ -190,7 +190,7 @@ function ServicesPageContent() {
               {/* Lottie Animation - Now Direct */}
               <div className="relative w-full h-full z-10">
                 <DotLottiePlayer
-                  src={division === 'taxation' ? "/extrafiles/taxation.lottie" : "/extrafiles/Service.lottie"}
+                  src={division === 'taxation' ? "/extrafiles/taxation3.json" : "/extrafiles/Service.lottie"}
                   autoplay
                   loop
                   className="w-full h-full"
