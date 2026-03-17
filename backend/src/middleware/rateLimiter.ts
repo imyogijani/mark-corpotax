@@ -1,9 +1,11 @@
 import { RateLimiterMemory } from "rate-limiter-flexible";
 import { Request, Response, NextFunction } from "express";
 
+const isDev = process.env.NODE_ENV === "development";
+
 const rateLimiter = new RateLimiterMemory({
-  points: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || "300"), // 300 requests (increased from 100)
-  duration: parseInt(process.env.RATE_LIMIT_WINDOW || "15") * 60, // Per 15 minutes by default
+  points: isDev ? 10000 : parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || "300"), 
+  duration: parseInt(process.env.RATE_LIMIT_WINDOW || "15") * 60,
 });
 
 export const rateLimiterMiddleware = async (
