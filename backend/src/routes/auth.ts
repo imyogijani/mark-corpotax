@@ -91,7 +91,7 @@ router.post("/login", async (req: Request, res: Response) => {
     }
 
     // Check if password matches
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password || "");
     if (!isMatch) {
       res.status(401).json({
         success: false,
@@ -414,7 +414,7 @@ router.put("/change-password", protect, async (req: any, res: Response) => {
     }
 
     // Verify current password
-    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    const isMatch = await bcrypt.compare(currentPassword, user.password || "");
     if (!isMatch) {
       res.status(401).json({
         success: false,
