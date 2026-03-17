@@ -246,7 +246,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
         {/* Top Header */}
         <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200/50 shadow-sm">
           <div className="flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6">
               {/* Mobile menu button */}
               <Button
                 variant="ghost"
@@ -258,18 +258,51 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
                 <span className="sr-only">Open sidebar</span>
               </Button>
 
-              <div className="hidden md:block relative group">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={18} />
-                <input 
-                  type="text" 
-                  placeholder="Search analytics..." 
-                  className="pl-10 pr-4 py-2 bg-gray-100/50 border-transparent focus:bg-white focus:border-primary/30 focus:ring-4 focus:ring-primary/5 rounded-2xl text-sm transition-all w-64 outline-none"
-                />
+              {/* Dynamic Title Section */}
+              <div className="flex flex-col">
+                <div className="flex items-center gap-3">
+                  <h1 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tighter leading-none">
+                    {title === "Dashboard" ? (
+                      <>Dashboard <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">Overview</span></>
+                    ) : (
+                      title
+                    )}
+                  </h1>
+                  
+                  <div className="inline-flex items-center gap-2 px-2 py-0.5 bg-primary/10 text-primary rounded-full text-[8px] font-black uppercase tracking-widest">
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary"></span>
+                    </span>
+                    {title === "Dashboard" ? "Live" : "Management"}
+                  </div>
+                </div>
+                
+                <p className="text-[11px] text-gray-500 font-medium mt-1 flex items-center gap-1">
+                  {title === "Dashboard" ? (
+                    <>Welcome back, <span className="text-primary font-bold">{user?.name || 'Administrator'}</span></>
+                  ) : (
+                    <>Admin: <span className="text-primary font-bold">{user?.name || 'Administrator'}</span></>
+                  )}
+                  <span className="w-1 h-1 bg-gray-300 rounded-full mx-1" />
+                  <span className="opacity-70">
+                    {title === "Dashboard" && "Viewing company snapshot"}
+                    {title === "Appointments" && "Managing booking requests"}
+                    {title === "Blog" && "Content management system"}
+                    {title === "Contacts" && "Direct customer messages"}
+                    {title === "Settings" && "Global system configuration"}
+                    {title === "Team" && "Staff and organization profiles"}
+                    {title === "Services" && "Service listings & offerings"}
+                    {title === "Page Builder" && "Visual content editor"}
+                    {title === "Site Builder" && "Global components configuration"}
+                    {!["Dashboard", "Appointments", "Blog", "Contacts", "Settings", "Team", "Services", "Page Builder", "Site Builder"].includes(title) && "System administrator access"}
+                  </span>
+                </p>
               </div>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-xs font-semibold animate-pulse border border-emerald-100">
+              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-xs font-semibold animate-pulse border border-emerald-100">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full" />
                 System Online
               </div>
@@ -394,30 +427,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
 
           {title === "Dashboard" ? (
             <div className="relative z-10">
-              {/* Welcome Section */}
-              <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-black uppercase tracking-widest mb-3 animate-in fade-in slide-in-from-bottom-2 duration-700">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                    </span>
-                    Live Analytics
-                  </div>
-                  <h1 className="text-4xl font-black text-gray-900 tracking-tighter sm:text-5xl">
-                    Dashboard <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">Overview</span>
-                  </h1>
-                  <p className="text-gray-500 mt-2 font-medium">
-                    Welcome back, <span className="text-gray-900 font-bold underline decoration-primary/30 decoration-4 underline-offset-4">{user?.name || 'Administrator'}</span>. Here's your company snapshot.
-                  </p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-white/50 backdrop-blur-sm border border-white/20 rounded-2xl shadow-sm text-right hidden sm:block">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Last Update</p>
-                    <p className="text-xs font-black text-gray-900">Just now</p>
-                  </div>
-                </div>
-              </div>
+              {/* Welcome Section moved to header */}
+              <div className="mb-8" />
 
               {/* Stats Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
