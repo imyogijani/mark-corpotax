@@ -1,9 +1,13 @@
+import dotenv from "dotenv";
+
+// Load environment variables immediately
+dotenv.config();
+
 import express, { Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import compression from "compression";
-import dotenv from "dotenv";
 import { initializeFirebase } from "./config/firebase";
 import { errorHandler } from "./middleware/errorHandler";
 import { rateLimiterMiddleware } from "./middleware/rateLimiter";
@@ -21,9 +25,6 @@ import businessRoutes from "./routes/business";
 import settingsRoutes from "./routes/settings";
 import pageLayoutRoutes from "./routes/pageLayouts";
 import teamRoutes from "./routes/team";
-
-// Load environment variables
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;

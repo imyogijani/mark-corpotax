@@ -406,10 +406,8 @@ export default function AppointmentsPage() {
               color: "rose" 
             },
           ].map((stat) => (
-            <motion.div
+            <div
               key={stat.key}
-              whileHover={{ y: -4, scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
             >
               <Card
                 className={`border-0 shadow-sm overflow-hidden cursor-pointer transition-all relative ${
@@ -436,7 +434,7 @@ export default function AppointmentsPage() {
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           ))}
         </div>
 
@@ -510,13 +508,9 @@ export default function AppointmentsPage() {
               filteredAppointments.map((appointment, index) => {
                 const StatusIcon = getStatusIcon(appointment.status);
                 return (
-                  <motion.div
+                  <div
                     key={appointment.id}
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ delay: index * 0.05 }}
+                    className="appointment-card-wrapper"
                   >
                     <Card
                       className="border-0 shadow-sm bg-white/70 backdrop-blur-md hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 group overflow-hidden"
@@ -527,7 +521,7 @@ export default function AppointmentsPage() {
                           {/* Client Info */}
                           <div className="flex items-center gap-4 flex-[1.5]">
                             <div className="relative">
-                              <div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-200 group-hover:rotate-6 transition-transform">
+                              <div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-200">
                                 <User size={24} className="text-white" />
                               </div>
                               <div className={`absolute -bottom-1 -right-1 w-6 h-6 rounded-lg border-2 border-white flex items-center justify-center shadow-sm ${getStatusColor(appointment.status)}`}>
@@ -570,7 +564,7 @@ export default function AppointmentsPage() {
                             <div className="space-y-1">
                               <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Service Category</p>
                               <div className="flex items-center gap-2 px-3 py-1 bg-slate-50 rounded-lg border border-slate-100">
-                                <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+                                <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
                                 <span className="text-sm font-semibold text-slate-700">{appointment.service}</span>
                               </div>
                             </div>
@@ -643,7 +637,7 @@ export default function AppointmentsPage() {
                         </div>
                       </CardContent>
                     </Card>
-                  </motion.div>
+                  </div>
                 );
               })
             )}
