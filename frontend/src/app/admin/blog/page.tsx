@@ -19,10 +19,19 @@ import {
   User, 
   FileText,
   TrendingUp,
-  AlertCircle
+  AlertCircle,
+  MoreHorizontal,
+  ArrowRight,
+  Share2,
+  BarChart3,
+  Globe,
+  Loader2,
+  Layers,
+  Image as ImageIcon
 } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 export default function BlogManagementPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -38,9 +47,9 @@ export default function BlogManagementPage() {
 
   const fetchBlogs = async () => {
     try {
+      setLoading(true);
       const response = await apiClient.getAdminBlogs();
       if (response.success && response.data) {
-        // Backend returns { blogs: [...], pagination: {...} } or just array
         const data = response.data as { blogs?: Blog[] } | Blog[];
         const blogsData = Array.isArray(data) ? data : data.blogs || [];
         setBlogs(Array.isArray(blogsData) ? blogsData : []);
@@ -56,7 +65,7 @@ export default function BlogManagementPage() {
   };
 
   const deleteBlog = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this blog post?")) {
+    if (!confirm("Are you sure you want to delete this blog post? This action cannot be undone.")) {
       return;
     }
 
@@ -73,7 +82,7 @@ export default function BlogManagementPage() {
   const filteredBlogs = blogs.filter((blog) => {
     const matchesSearch =
       blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+      (blog.excerpt && blog.excerpt.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesStatus =
       statusFilter === "all" || blog.status === statusFilter;
     return matchesSearch && matchesStatus;
@@ -81,234 +90,280 @@ export default function BlogManagementPage() {
 
   const draftCount = blogs.filter(b => b.status === 'draft').length;
   const publishedCount = blogs.filter(b => b.status === 'published').length;
+  const totalViews = blogs.reduce((acc, b) => acc + (b.viewCount || 0), 0);
 
   return (
     <AdminLayout title="Blog Management">
-      <div className="space-y-8">
-        {/* Top Header & Actions */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-primary/10 rounded-xl">
-              <FileText className="h-6 w-6 text-primary" />
+      <div className="max-w-[1400px] mx-auto space-y-10 pb-20">
+        {/* Premium Header Section */}
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 border-b border-gray-100 pb-10">
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-indigo-100/50">
+              <Globe size={12} className="animate-spin-slow" />
+              Content Engine v2.4
             </div>
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight text-gray-900">Blog Posts</h2>
-              <p className="text-sm text-gray-500">Manage your website's articles and news</p>
-            </div>
+            <h1 className="text-5xl font-black text-gray-900 tracking-tighter">
+              Manage <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">Articles</span>
+            </h1>
+            <p className="text-gray-500 max-w-xl font-medium text-lg leading-relaxed">
+              Create, edit and manage your company's insights, industry news and thought leadership pieces from one powerful interface.
+            </p>
           </div>
-          <Link href="/admin/blog/new">
-            <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl shadow-lg shadow-primary/20 px-6 py-2.5 font-medium transition-all hover:scale-105">
-              <Plus className="h-4 w-4 mr-2" />
-              New Article
+          
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="outline" 
+              onClick={fetchBlogs}
+              className="h-14 px-6 rounded-2xl border-gray-200 hover:bg-gray-50 font-bold text-gray-600 gap-2 transition-all active:scale-95"
+            >
+              <Loader2 className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+              Sync
             </Button>
-          </Link>
+            <Link href="/admin/blog/new">
+              <Button className="h-14 px-8 bg-gradient-to-r from-primary to-blue-600 hover:shadow-2xl hover:shadow-primary/30 text-white rounded-2xl font-black uppercase tracking-widest transition-all hover:-translate-y-1 active:scale-95 border-0">
+                <Plus className="h-5 w-5 mr-3" strokeWidth={3} />
+                Create New Post
+              </Button>
+            </Link>
+          </div>
         </div>
 
-        {/* Stats Row */}
-        {!loading && blogs.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="border-0 shadow-sm bg-gradient-to-br from-blue-50 to-blue-100/50">
-              <CardContent className="p-6 flex items-center gap-4">
-                <div className="p-3 bg-blue-500/10 rounded-xl">
-                  <FileText className="h-6 w-6 text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-blue-900/60">Total Posts</p>
-                  <h3 className="text-2xl font-bold text-blue-900">{blogs.length}</h3>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="border-0 shadow-sm bg-gradient-to-br from-emerald-50 to-emerald-100/50">
-              <CardContent className="p-6 flex items-center gap-4">
-                <div className="p-3 bg-emerald-500/10 rounded-xl">
-                  <TrendingUp className="h-6 w-6 text-emerald-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-emerald-900/60">Published</p>
-                  <h3 className="text-2xl font-bold text-emerald-900">{publishedCount}</h3>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="border-0 shadow-sm bg-gradient-to-br from-amber-50 to-amber-100/50">
-              <CardContent className="p-6 flex items-center gap-4">
-                <div className="p-3 bg-amber-500/10 rounded-xl">
-                  <Clock className="h-6 w-6 text-amber-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-amber-900/60">Drafts</p>
-                  <h3 className="text-2xl font-bold text-amber-900">{draftCount}</h3>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
+        {/* Dynamic Analytics Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { label: "Total Articles", value: blogs.length, icon: FileText, color: "bg-blue-600", bg: "bg-blue-50" },
+            { label: "Live & Public", value: publishedCount, icon: Globe, color: "bg-emerald-600", bg: "bg-emerald-50" },
+            { label: "Work in Progress", value: draftCount, icon: Layers, color: "bg-amber-600", bg: "bg-amber-50" },
+            { label: "Lifetime Views", value: totalViews.toLocaleString(), icon: BarChart3, color: "bg-purple-600", bg: "bg-purple-50" }
+          ].map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <Card className="border-0 shadow-xl shadow-gray-100/50 bg-white/70 backdrop-blur-md overflow-hidden group hover:shadow-2xl transition-all duration-300">
+                <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full opacity-[0.05] group-hover:scale-150 transition-transform duration-700 ${stat.color}`} />
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className={`p-4 rounded-2xl ${stat.bg} ${stat.color.replace('bg-', 'text-')} transform group-hover:rotate-6 transition-transform`}>
+                      <stat.icon size={26} />
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Status</p>
+                      <p className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${stat.bg} ${stat.color.replace('bg-', 'text-')}`}>Active</p>
+                    </div>
+                  </div>
+                  <h3 className="text-4xl font-black text-gray-900 tracking-tighter">{stat.value}</h3>
+                  <p className="text-sm font-bold text-gray-500 uppercase tracking-tight mt-1 opacity-60">{stat.label}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
 
-        {/* Search & Filters */}
-        <Card className="border-0 shadow-sm overflow-hidden">
-          <CardContent className="p-2">
-            <div className="flex flex-col md:flex-row gap-2">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+        {/* Advanced Filters & Search */}
+        <Card className="border-0 shadow-2xl shadow-gray-200/50 bg-white overflow-hidden rounded-[2rem]">
+          <CardContent className="p-4">
+            <div className="flex flex-col lg:flex-row gap-4">
+              <div className="relative flex-1 group">
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors" />
                 <Input
-                  placeholder="Search articles by title or content..."
+                  placeholder="Scan through title, content or authorship..."
                   value={searchTerm}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setSearchTerm(e.target.value)
                   }
-                  className="pl-10 border-0 bg-gray-50/50 focus-visible:ring-1 focus-visible:ring-primary/20 focus-visible:bg-white h-12 rounded-xl"
+                  className="pl-14 h-16 border-0 bg-gray-50/50 focus-visible:ring-4 focus-visible:ring-primary/5 focus-visible:bg-white text-lg font-medium rounded-2xl transition-all"
                 />
               </div>
-              <div className="flex items-center gap-2 px-2 md:px-0">
-                <Filter className="h-4 w-4 text-gray-400 hidden md:block" />
-                <select
-                  aria-label="Filter by status"
-                  title="Filter by status"
-                  value={statusFilter}
-                  onChange={(e) =>
-                    setStatusFilter(
-                      e.target.value as "all" | "draft" | "published",
-                    )
-                  }
-                  className="h-12 px-4 border-0 bg-gray-50/50 rounded-xl text-sm font-medium text-gray-600 outline-none focus:ring-1 focus:ring-primary/20 appearance-none min-w-[140px] cursor-pointer"
-                >
-                  <option value="all">All Articles</option>
-                  <option value="published">Published Only</option>
-                  <option value="draft">Drafts Only</option>
-                </select>
+              <div className="flex items-center gap-3">
+                <div className="h-16 flex items-center gap-3 px-6 bg-gray-50/50 rounded-2xl border border-transparent focus-within:border-primary/20 transition-all">
+                  <Filter className="h-5 w-5 text-gray-400" />
+                  <select
+                    aria-label="Status Filter"
+                    value={statusFilter}
+                    onChange={(e) =>
+                      setStatusFilter(
+                        e.target.value as "all" | "draft" | "published",
+                      )
+                    }
+                    className="bg-transparent border-0 text-gray-700 font-black uppercase tracking-widest text-[10px] outline-none cursor-pointer min-w-[120px]"
+                  >
+                    <option value="all">Every State</option>
+                    <option value="published">Final (Public)</option>
+                    <option value="draft">In-Progress (Draft)</option>
+                  </select>
+                </div>
+                <Button variant="ghost" className="h-16 w-16 rounded-2xl hover:bg-gray-100 transition-colors">
+                  <MoreHorizontal className="h-6 w-6 text-gray-400" />
+                </Button>
               </div>
             </div>
           </CardContent>
         </Card>
 
+        {/* Blog Post List (Premium Cards) */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 opacity-50">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-            <p className="text-sm font-medium">Loading articles...</p>
+          <div className="flex flex-col items-center justify-center py-32 space-y-4">
+            <div className="relative h-20 w-20">
+              <div className="absolute inset-0 rounded-full border-4 border-primary/10 border-t-primary animate-spin" />
+              <div className="absolute inset-4 rounded-full border-4 border-blue-400/10 border-b-blue-400 animate-spin-slow" />
+            </div>
+            <p className="text-xl font-black text-gray-900 tracking-tighter animate-pulse">Initializing Data Vault...</p>
           </div>
         ) : (
-          <div className="space-y-4">
-            {filteredBlogs.length === 0 ? (
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <Card className="border-0 shadow-sm border-dashed border-2 bg-gray-50/50">
-                  <CardContent className="py-16 flex flex-col items-center justify-center text-center">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-400">
-                      {searchTerm ? <Search size={24} /> : <AlertCircle size={24} />}
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                      {searchTerm ? "No results found" : "No articles yet"}
-                    </h3>
-                    <p className="text-gray-500 mb-6 max-w-sm">
-                      {searchTerm 
-                        ? `We couldn't find any articles matching "${searchTerm}". Try different keywords.` 
-                        : "Start building your blog by creating your first awesome article."}
-                    </p>
-                    {!searchTerm && (
-                      <Link href="/admin/blog/new">
-                        <Button className="rounded-xl px-6">
-                          <Plus className="h-4 w-4 mr-2" />
-                          Write First Article
-                        </Button>
-                      </Link>
-                    )}
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ) : (
-              <div className="grid grid-cols-1 gap-4">
-                <AnimatePresence>
-                  {filteredBlogs.map((blog, index) => (
-                    <motion.div
-                      key={blog._id || index}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ delay: index * 0.05 }}
-                    >
-                      <Card className="border-0 shadow-sm overflow-hidden group hover:shadow-md transition-shadow">
-                        <CardContent className="p-0">
-                          <div className="flex flex-col md:flex-row">
-                            <div className="flex-1 p-6">
-                              <div className="flex items-start justify-between gap-4 mb-3">
-                                <div>
-                                  <div className="flex items-center gap-3 mb-2">
-                                    <h3 className="font-semibold text-lg text-gray-900 group-hover:text-primary transition-colors line-clamp-1">
-                                      {blog.title}
-                                    </h3>
-                                    <Badge
-                                      variant="secondary"
-                                      className={`rounded-full ${
-                                        blog.status === "published"
-                                          ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
-                                          : "bg-amber-50 text-amber-600 hover:bg-amber-100"
-                                      }`}
-                                    >
-                                      {blog.status === "published" ? "Published" : "Draft"}
-                                    </Badge>
+          <div className="grid grid-cols-1 gap-8">
+            <AnimatePresence mode="popLayout">
+              {filteredBlogs.length === 0 ? (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center justify-center py-32 text-center"
+                >
+                  <div className="w-40 h-40 bg-gray-100 rounded-[3rem] flex items-center justify-center mb-8 rotate-3 shadow-inner">
+                    <AlertCircle size={64} className="text-gray-300" />
+                  </div>
+                  <h2 className="text-3xl font-black text-gray-900 tracking-tighter">No articles matched your criteria</h2>
+                  <p className="text-gray-500 mt-2 max-w-sm mx-auto font-medium">Try refining your search or create a new masterpiece to populate this list.</p>
+                  <Button 
+                    onClick={() => {setSearchTerm(""); setStatusFilter("all");}}
+                    className="mt-8 h-12 px-8 rounded-xl bg-gray-900 text-white font-bold"
+                  >
+                    Clear All Filters
+                  </Button>
+                </motion.div>
+              ) : (
+                filteredBlogs.map((blog, index) => (
+                  <motion.div
+                    key={blog._id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ delay: index * 0.05, type: "spring", damping: 20 }}
+                    className="group"
+                  >
+                    <Card className="border-0 shadow-lg shadow-gray-200/40 bg-white/80 backdrop-blur-md overflow-hidden rounded-[2.5rem] hover:shadow-2xl hover:shadow-gray-300 transition-all duration-500 group">
+                      <div className="flex flex-col md:flex-row min-h-[220px]">
+                        {/* Thumbnail Part */}
+                        <div className="md:w-72 lg:w-80 h-64 md:h-auto relative overflow-hidden">
+                          {blog.featuredImage ? (
+                            <Image 
+                              src={blog.featuredImage} 
+                              alt={blog.title}
+                              fill
+                              className="object-cover group-hover:scale-110 transition-transform duration-700"
+                            />
+                          ) : (
+                            <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                              <ImageIcon size={48} className="text-gray-300" />
+                            </div>
+                          )}
+                          <div className="absolute top-4 left-4">
+                            <Badge 
+                              className={`px-3 py-1.5 rounded-xl border-0 shadow-lg font-black uppercase tracking-widest text-[10px] ${
+                                blog.status === 'published' 
+                                  ? 'bg-emerald-500 text-white shadow-emerald-200' 
+                                  : 'bg-amber-500 text-white shadow-amber-200'
+                              }`}
+                            >
+                              {blog.status}
+                            </Badge>
+                          </div>
+                          {blog.viewCount && blog.viewCount > 100 && (
+                            <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-white/90 backdrop-blur-md rounded-xl shadow-lg flex items-center gap-2">
+                              <TrendingUp size={12} className="text-rose-500" />
+                              <span className="text-[10px] font-black text-gray-900 uppercase">Trending</span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Content Part */}
+                        <div className="flex-1 p-8 lg:p-10 flex flex-col justify-between">
+                          <div>
+                            <div className="flex items-start justify-between gap-4 mb-4">
+                              <div className="space-y-2">
+                                <div className="flex items-center gap-3">
+                                  <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">{blog.category || 'Insights'}</span>
+                                  <div className="w-1 h-1 rounded-full bg-gray-300" />
+                                  <div className="flex items-center gap-1.5">
+                                    <Clock size={12} className="text-gray-400" />
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">5m Read</span>
                                   </div>
-                                  <p className="text-gray-600 text-sm line-clamp-2 mb-4">
-                                    {blog.excerpt || "No excerpt provided for this article..."}
-                                  </p>
                                 </div>
-                              </div>
-                              
-                              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-gray-500 font-medium">
-                                <div className="flex items-center gap-1.5">
-                                  <User className="h-3.5 w-3.5" />
-                                  <span>{blog.author}</span>
-                                </div>
-                                <div className="flex items-center gap-1.5">
-                                  <Calendar className="h-3.5 w-3.5" />
-                                  <span>{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                                </div>
-                                {blog.status === "published" && (
-                                  <div className="flex items-center gap-1.5 text-emerald-600">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                    <span>Last updated: {new Date(blog.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-                                  </div>
-                                )}
-                                <div className="flex items-center gap-1.5 text-blue-600">
-                                  <Eye className="h-3.5 w-3.5" />
-                                  <span>{blog.viewCount || 0} views</span>
-                                </div>
+                                <h3 className="text-2xl lg:text-3xl font-black text-gray-900 tracking-tight leading-tight group-hover:text-primary transition-colors pr-10">
+                                  {blog.title}
+                                </h3>
                               </div>
                             </div>
-                            
-                            <div className="bg-gray-50/80 md:w-48 p-4 md:p-6 flex md:flex-col items-center justify-end md:justify-center gap-2 border-t md:border-t-0 md:border-l border-gray-100">
-                              {blog.status === "published" && (
-                                <Button variant="outline" size="sm" asChild className="w-full bg-white hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200">
-                                  <Link href={`/blog/${blog.slug}`} target="_blank">
-                                    <Eye className="h-4 w-4 md:mr-2" />
-                                    <span className="hidden md:inline">View Live</span>
-                                  </Link>
-                                </Button>
-                              )}
-                              <Button variant="outline" size="sm" asChild className="w-full bg-white hover:bg-gray-100">
-                                <Link href={`/admin/blog/edit/${blog._id}`}>
-                                  <Edit className="h-4 w-4 md:mr-2 text-gray-600" />
-                                  <span className="hidden md:inline text-gray-600">Edit Post</span>
-                                </Link>
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => deleteBlog(blog._id)}
-                                className="w-full bg-white text-rose-600 border-rose-100 hover:bg-rose-50 hover:text-rose-700 hover:border-rose-200"
+                            <p className="text-gray-500 font-medium line-clamp-2 mb-8 text-lg">
+                              {blog.excerpt || "We are still crafting the narrative for this specific masterpiece. Check back soon for the full summary of insights and value."}
+                            </p>
+                          </div>
+
+                          <div className="flex flex-wrap items-center justify-between gap-6 border-t border-gray-100 pt-8">
+                            <div className="flex items-center gap-6">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-gray-100 to-gray-200 flex items-center justify-center border border-white shadow-sm font-black text-xs text-gray-600">
+                                  {blog.author?.charAt(0) || 'A'}
+                                </div>
+                                <div>
+                                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Author</p>
+                                  <p className="text-sm font-black text-gray-900">{blog.author}</p>
+                                </div>
+                              </div>
+                              <div className="h-8 w-px bg-gray-100" />
+                              <div>
+                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Timestamp</p>
+                                <p className="text-sm font-black text-gray-900">{new Date(blog.createdAt).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'20' + new Date(blog.createdAt).getFullYear().toString().slice(-2)})}</p>
+                              </div>
+                              <div className="h-8 w-px bg-gray-100 hidden lg:block" />
+                              <div className="hidden lg:block">
+                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Interactions</p>
+                                <p className="text-sm font-black text-gray-900 flex items-center gap-1.5">
+                                  <Eye size={16} className="text-primary" />
+                                  {blog.viewCount || 0}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-3 ml-auto md:ml-0">
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-12 w-12 rounded-2xl hover:bg-gray-100 text-gray-400 hover:text-gray-900"
                               >
-                                <Trash2 className="h-4 w-4 md:mr-2" />
-                                <span className="hidden md:inline">Delete</span>
+                                <Share2 size={20} />
                               </Button>
+                              <div className="h-10 w-px bg-gray-100 mx-2" />
+                              <div className="flex gap-2">
+                                <Link href={`/admin/blog/edit/${blog._id}`}>
+                                  <Button className="h-12 w-12 lg:w-auto lg:px-6 rounded-2xl bg-gray-900 hover:bg-black text-white font-black uppercase tracking-widest text-[10px] transition-all group-hover:scale-105">
+                                    <Edit className="h-4 w-4 lg:mr-2" />
+                                    <span className="hidden lg:inline">Modify</span>
+                                  </Button>
+                                </Link>
+                                <Button 
+                                  onClick={() => deleteBlog(blog._id)}
+                                  className="h-12 w-12 rounded-2xl bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white border-0 transition-all border border-rose-100"
+                                >
+                                  <Trash2 size={20} />
+                                </Button>
+                              </div>
                             </div>
                           </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            )}
+                        </div>
+
+                        {/* Decoration Block */}
+                        <div className="hidden lg:flex w-2 bg-gray-50 flex-col items-center justify-center gap-1 opacity-20 group-hover:opacity-100 transition-opacity">
+                          {[1,2,3].map(i => <div key={i} className="w-1 h-1 rounded-full bg-gray-300" />)}
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                ))
+              )}
+            </AnimatePresence>
           </div>
         )}
       </div>

@@ -10,6 +10,7 @@ import { NotificationToast } from "@/components/NotificationToast";
 import AdminSidebar from "./AdminSidebar";
 import { apiClient } from "@/lib/api-client";
 import {
+  LayoutDashboard,
   Menu,
   Calendar,
   Users,
@@ -227,7 +228,12 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 relative overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-primary/5 rounded-full blur-[120px] animate-pulse pointer-events-none" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-400/5 rounded-full blur-[120px] animate-pulse pointer-events-none" style={{ animationDelay: '2s' }} />
+      <div className="absolute top-[30%] right-[10%] w-32 h-32 bg-purple-500/5 rounded-full blur-[60px] animate-bounce pointer-events-none" style={{ animationDuration: '8s' }} />
+
       <NotificationToast />
       {/* Sidebar */}
       <AdminSidebar
@@ -238,7 +244,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
       {/* Main Content */}
       <div className="lg:pl-72">
         {/* Top Header */}
-        <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+        <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200/50 shadow-sm">
           <div className="flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-4">
               {/* Mobile menu button */}
@@ -252,28 +258,35 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
                 <span className="sr-only">Open sidebar</span>
               </Button>
 
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-                <p className="text-sm text-gray-500">
-                  Welcome back, {user?.name || "Admin"}
-                </p>
+              <div className="hidden md:block relative group">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={18} />
+                <input 
+                  type="text" 
+                  placeholder="Search analytics..." 
+                  className="pl-10 pr-4 py-2 bg-gray-100/50 border-transparent focus:bg-white focus:border-primary/30 focus:ring-4 focus:ring-primary/5 rounded-2xl text-sm transition-all w-64 outline-none"
+                />
               </div>
             </div>
 
             <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-xs font-semibold animate-pulse border border-emerald-100">
+                <div className="w-2 h-2 bg-emerald-500 rounded-full" />
+                System Online
+              </div>
+
               {/* Notifications */}
               <NotificationBell variant="sheet" />
 
               {/* User Info */}
-              <div className="hidden sm:flex items-center gap-2">
-                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                  <Users size={16} className="text-white" />
-                </div>
-                <div className="text-sm">
-                  <p className="font-medium text-gray-900">
+              <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
+                <div className="text-right hidden sm:block">
+                  <p className="text-sm font-bold text-gray-900 leading-none">
                     {user?.name || "Admin"}
                   </p>
-                  <p className="text-xs text-gray-500">Administrator</p>
+                  <p className="text-[10px] uppercase tracking-wider text-gray-500 mt-1 font-bold">Admin Role</p>
+                </div>
+                <div className="w-10 h-10 bg-gradient-to-tr from-primary to-blue-400 rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 transform hover:rotate-6 transition-transform cursor-pointer">
+                  <Users size={20} className="text-white" />
                 </div>
               </div>
             </div>
@@ -282,107 +295,89 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
 
         {/* Content Statistics Cards - Only show on content management page */}
         {title.toLowerCase().includes("content") && (
-          <div className="px-4 sm:px-6 lg:px-8 py-6 bg-gray-50/50 border-b">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="px-4 sm:px-6 lg:px-8 py-8 bg-gray-50/30 border-b border-gray-200/50 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-blob" />
+            
+            <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-6">
               {/* Total Content */}
-              <Card className="bg-blue-50 border-blue-200">
-                <CardContent className="p-4">
+              <Card className="bg-white/80 backdrop-blur-md border-0 shadow-lg shadow-blue-100/50 group hover:scale-[1.02] transition-all duration-300">
+                <CardContent className="p-5">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <FileText className="h-4 w-4 text-blue-600" />
-                        <p className="text-xs font-medium text-blue-900">
-                          Total Content
-                        </p>
-                      </div>
-                      <p className="text-2xl font-bold text-blue-900">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-blue-500 mb-1">Total Assets</p>
+                      <h3 className="text-3xl font-black text-gray-900">
                         {contentStats.loading ? (
                           <Loader2 className="h-6 w-6 animate-spin" />
                         ) : (
                           contentStats.totalContent
                         )}
-                      </p>
+                      </h3>
                     </div>
-                    <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <FileText className="h-6 w-6 text-blue-600" />
+                    <div className="h-14 w-14 bg-blue-50 rounded-2xl flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                      <FileText className="h-7 w-7 text-blue-600 group-hover:text-white" />
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
               {/* Active Content */}
-              <Card className="bg-blue-50 border-blue-200">
-                <CardContent className="p-4">
+              <Card className="bg-white/80 backdrop-blur-md border-0 shadow-lg shadow-emerald-100/50 group hover:scale-[1.02] transition-all duration-300">
+                <CardContent className="p-5">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <CheckCircle className="h-4 w-4 text-blue-600" />
-                        <p className="text-xs font-medium text-blue-900">
-                          Active
-                        </p>
-                      </div>
-                      <p className="text-2xl font-bold text-blue-900">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-emerald-500 mb-1">Live Now</p>
+                      <h3 className="text-3xl font-black text-gray-900">
                         {contentStats.loading ? (
                           <Loader2 className="h-6 w-6 animate-spin" />
                         ) : (
                           contentStats.activeContent
                         )}
-                      </p>
+                      </h3>
                     </div>
-                    <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <CheckCircle className="h-6 w-6 text-blue-600" />
+                    <div className="h-14 w-14 bg-emerald-50 rounded-2xl flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+                      <CheckCircle className="h-7 w-7 text-emerald-600 group-hover:text-white" />
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
               {/* Inactive Content */}
-              <Card className="bg-yellow-50 border-yellow-200">
-                <CardContent className="p-4">
+              <Card className="bg-white/80 backdrop-blur-md border-0 shadow-lg shadow-amber-100/50 group hover:scale-[1.02] transition-all duration-300">
+                <CardContent className="p-5">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <AlertCircle className="h-4 w-4 text-yellow-600" />
-                        <p className="text-xs font-medium text-yellow-900">
-                          Inactive
-                        </p>
-                      </div>
-                      <p className="text-2xl font-bold text-yellow-900">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-amber-500 mb-1">Drafts</p>
+                      <h3 className="text-3xl font-black text-gray-900">
                         {contentStats.loading ? (
                           <Loader2 className="h-6 w-6 animate-spin" />
                         ) : (
                           contentStats.inactiveContent
                         )}
-                      </p>
+                      </h3>
                     </div>
-                    <div className="h-12 w-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                      <AlertCircle className="h-6 w-6 text-yellow-600" />
+                    <div className="h-14 w-14 bg-amber-50 rounded-2xl flex items-center justify-center group-hover:bg-amber-600 group-hover:text-white transition-colors duration-300">
+                      <AlertCircle className="h-7 w-7 text-amber-600 group-hover:text-white" />
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
               {/* Images */}
-              <Card className="bg-purple-50 border-purple-200">
-                <CardContent className="p-4">
+              <Card className="bg-white/80 backdrop-blur-md border-0 shadow-lg shadow-purple-100/50 group hover:scale-[1.02] transition-all duration-300">
+                <CardContent className="p-5">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <Image className="h-4 w-4 text-purple-600" />
-                        <p className="text-xs font-medium text-purple-900">
-                          Images
-                        </p>
-                      </div>
-                      <p className="text-2xl font-bold text-purple-900">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-purple-500 mb-1">Resources</p>
+                      <h3 className="text-3xl font-black text-gray-900">
                         {contentStats.loading ? (
                           <Loader2 className="h-6 w-6 animate-spin" />
                         ) : (
                           contentStats.imagesContent
                         )}
-                      </p>
+                      </h3>
                     </div>
-                    <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <Image className="h-6 w-6 text-purple-600" />
+                    <div className="h-14 w-14 bg-purple-50 rounded-2xl flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-colors duration-300">
+                      <Image className="h-7 w-7 text-purple-600 group-hover:text-white" />
                     </div>
                   </div>
                 </CardContent>
@@ -392,9 +387,38 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
         )}
 
         {/* Page Content */}
-        <main className="p-4 sm:p-6 lg:p-8">
+        <main className="p-4 sm:p-6 lg:p-8 relative overflow-hidden">
+          {/* Decorative Background Blobs */}
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-blob" />
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl animate-blob" style={{ animationDelay: '2s' }} />
+
           {title === "Dashboard" ? (
-            <>
+            <div className="relative z-10">
+              {/* Welcome Section */}
+              <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-black uppercase tracking-widest mb-3 animate-in fade-in slide-in-from-bottom-2 duration-700">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                    </span>
+                    Live Analytics
+                  </div>
+                  <h1 className="text-4xl font-black text-gray-900 tracking-tighter sm:text-5xl">
+                    Dashboard <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">Overview</span>
+                  </h1>
+                  <p className="text-gray-500 mt-2 font-medium">
+                    Welcome back, <span className="text-gray-900 font-bold underline decoration-primary/30 decoration-4 underline-offset-4">{user?.name || 'Administrator'}</span>. Here's your company snapshot.
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-white/50 backdrop-blur-sm border border-white/20 rounded-2xl shadow-sm text-right hidden sm:block">
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Last Update</p>
+                    <p className="text-xs font-black text-gray-900">Just now</p>
+                  </div>
+                </div>
+              </div>
+
               {/* Stats Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <AnimatePresence>
@@ -405,21 +429,24 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
                     >
-                      <Card className="relative overflow-hidden border-0 shadow-sm hover:shadow-md transition-shadow group">
-                        <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full opacity-10 group-hover:scale-110 transition-transform ${stat.color.replace('text', 'bg')}`} />
+                      <Card className="relative overflow-hidden border-0 shadow-lg shadow-gray-200/50 hover:shadow-xl transition-all duration-300 group bg-white/70 backdrop-blur-md border border-white/20">
+                        <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full opacity-[0.03] group-hover:scale-150 transition-transform duration-700 ${stat.color.replace('text', 'bg')}`} />
                         <CardContent className="p-6">
                           <div className="flex items-center justify-between mb-4">
-                            <div className={`p-3 rounded-2xl ${stat.color.replace('text', 'bg')}/10 shadow-sm`}>
-                              <stat.icon size={24} className={stat.color} />
+                            <div className={`p-4 rounded-2xl ${stat.color.replace('text', 'bg')}/10 shadow-inner transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
+                              <stat.icon size={28} className={stat.color} />
                             </div>
-                            <div className={`flex items-center text-xs font-semibold px-2 py-1 rounded-full ${stat.change.startsWith('+') ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>
-                              {stat.change.startsWith('+') ? <ArrowUpRight size={14} className="mr-1" /> : <ArrowDownRight size={14} className="mr-1" />}
+                            <div className={`flex items-center text-[10px] font-bold tracking-wider uppercase px-2 py-1 rounded-lg ${stat.change.startsWith('+') ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>
+                              {stat.change.startsWith('+') ? <ArrowUpRight size={14} className="mr-0.5" /> : <ArrowDownRight size={14} className="mr-0.5" />}
                               {stat.change}
                             </div>
                           </div>
                           <div>
-                            <p className="text-sm font-medium text-gray-500">{stat.title}</p>
-                            <h3 className="text-3xl font-bold text-gray-900 mt-1">{stat.value}</h3>
+                            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{stat.title}</p>
+                            <h3 className="text-4xl font-black text-gray-900 mt-2 flex items-baseline gap-1">
+                              {stat.value}
+                              <span className="text-xs font-normal text-gray-400 tracking-normal">units</span>
+                            </h3>
                           </div>
                         </CardContent>
                       </Card>
@@ -431,88 +458,130 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
               {/* Charts Section */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                 {/* Main Activity Chart */}
-                <Card className="lg:col-span-2 border-0 shadow-sm">
-                  <CardHeader className="flex flex-row items-center justify-between">
+                <Card className="lg:col-span-2 border-0 shadow-lg shadow-gray-200/50 bg-white/70 backdrop-blur-md border border-white/20 overflow-hidden">
+                  <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <div>
-                      <CardTitle className="text-lg font-bold">Activity Overview</CardTitle>
-                      <p className="text-sm text-muted-foreground">Weekly interaction trends</p>
+                      <CardTitle className="text-xl font-black tracking-tight">Activity Trends</CardTitle>
+                      <p className="text-sm text-gray-500">Weekly user interactions analysis</p>
                     </div>
-                    <Button variant="outline" size="sm" className="h-8">Last 7 Days</Button>
+                    <div className="flex gap-2">
+                      <div className="flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
+                        Contacts
+                      </div>
+                      <div className="flex items-center gap-2 px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                        <div className="w-1.5 h-1.5 bg-purple-500 rounded-full" />
+                        Appointments
+                      </div>
+                    </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="h-[300px] w-full mt-4">
+                    <div className="h-[320px] w-full mt-4">
                       <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                        <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                          <defs>
+                            <linearGradient id="colorContacts" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1}/>
+                              <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                            </linearGradient>
+                            <linearGradient id="colorApps" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.1}/>
+                              <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
+                            </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                           <XAxis 
                             dataKey="name" 
                             axisLine={false} 
                             tickLine={false} 
-                            tick={{fill: '#94a3b8', fontSize: 12}} 
+                            tick={{fill: '#94a3b8', fontSize: 12, fontWeight: 600}} 
                             dy={10} 
                           />
                           <YAxis 
                             axisLine={false} 
                             tickLine={false} 
-                            tick={{fill: '#94a3b8', fontSize: 12}} 
+                            tick={{fill: '#94a3b8', fontSize: 12, fontWeight: 600}} 
                           />
                           <Tooltip 
-                            cursor={{fill: '#f8fafc'}}
-                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                            contentStyle={{ 
+                              borderRadius: '20px', 
+                              border: 'none', 
+                              boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
+                              background: 'rgba(255, 255, 255, 0.9)',
+                              backdropFilter: 'blur(8px)',
+                              padding: '12px 16px'
+                            }}
+                            itemStyle={{ fontWeight: 700, fontSize: '12px' }}
                           />
-                          <Bar 
+                          <Area 
+                            type="monotone" 
                             dataKey="contacts" 
-                            fill="#3b82f6" 
-                            radius={[6, 6, 0, 0]} 
-                            barSize={30}
+                            stroke="#3b82f6" 
+                            strokeWidth={3}
+                            fillOpacity={1} 
+                            fill="url(#colorContacts)" 
                           />
-                          <Bar 
+                          <Area 
+                            type="monotone" 
                             dataKey="appointments" 
-                            fill="#8b5cf6" 
-                            radius={[6, 6, 0, 0]} 
-                            barSize={30}
+                            stroke="#8b5cf6" 
+                            strokeWidth={3}
+                            fillOpacity={1} 
+                            fill="url(#colorApps)" 
                           />
-                        </BarChart>
+                        </AreaChart>
                       </ResponsiveContainer>
                     </div>
                   </CardContent>
                 </Card>
 
                 {/* Service Distribution Pie */}
-                <Card className="border-0 shadow-sm">
+                <Card className="border-0 shadow-lg shadow-gray-200/50 bg-white/70 backdrop-blur-md border border-white/20">
                   <CardHeader>
-                    <CardTitle className="text-lg font-bold">Service Interest</CardTitle>
-                    <p className="text-sm text-muted-foreground">Most popular categories</p>
+                    <CardTitle className="text-xl font-black tracking-tight">Service Mix</CardTitle>
+                    <p className="text-sm text-gray-500">Distribution by category</p>
                   </CardHeader>
                   <CardContent>
-                    <div className="h-[250px] flex items-center justify-center">
+                    <div className="h-[250px] flex items-center justify-center relative">
+                      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                        <span className="text-4xl font-black text-gray-900">1.2k</span>
+                        <span className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Total Leads</span>
+                      </div>
                       <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
                           <Pie
                             data={pieData}
                             cx="50%"
                             cy="50%"
-                            innerRadius={60}
-                            outerRadius={80}
+                            innerRadius={75}
+                            outerRadius={95}
                             paddingAngle={8}
                             dataKey="value"
+                            stroke="none"
                           >
                             {pieData.map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
                           </Pie>
-                          <Tooltip />
+                          <Tooltip 
+                            contentStyle={{ 
+                              borderRadius: '16px', 
+                              border: 'none', 
+                              boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)',
+                              padding: '8px 12px'
+                            }}
+                          />
                         </PieChart>
                       </ResponsiveContainer>
                     </div>
-                    <div className="space-y-3 mt-4">
+                    <div className="grid grid-cols-2 gap-3 mt-6">
                       {pieData.map((item, i) => (
-                        <div key={i} className="flex items-center justify-between text-sm">
-                          <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                            <span className="text-gray-600">{item.name}</span>
+                        <div key={i} className="flex flex-col p-2 rounded-xl bg-gray-50/50 border border-gray-100/50">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ backgroundColor: item.color }} />
+                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">{item.name}</span>
                           </div>
-                          <span className="font-semibold">{Math.round((item.value / 1200) * 100)}%</span>
+                          <span className="text-sm font-black text-gray-900">{Math.round((item.value / 1200) * 100)}%</span>
                         </div>
                       ))}
                     </div>
@@ -522,121 +591,143 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
 
               {/* Bottom Section: Activity & Quick Actions */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <Card className="border-0 shadow-sm overflow-hidden">
-                  <CardHeader className="bg-gray-50/50">
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <Activity size={20} className="text-primary" />
-                      Live Feed
+                <Card className="border-0 shadow-lg shadow-gray-200/50 bg-white/70 backdrop-blur-md border border-white/20 overflow-hidden">
+                  <CardHeader className="bg-gray-50/30 border-b border-gray-100/50 flex flex-row items-center justify-between">
+                    <CardTitle className="flex items-center gap-2 text-xl font-black tracking-tighter">
+                      <div className="p-2 bg-primary/10 rounded-xl">
+                        <Activity size={20} className="text-primary" />
+                      </div>
+                      Live Activity Stream
                     </CardTitle>
+                    <div className="flex items-center gap-2 px-3 py-1 bg-rose-50 text-rose-600 rounded-full text-[10px] font-bold uppercase tracking-wider border border-rose-100">
+                      <div className="w-1.5 h-1.5 bg-rose-500 rounded-full animate-ping" />
+                      Live Feed
+                    </div>
                   </CardHeader>
                   <CardContent className="p-0">
-                    <div className="divide-y divide-gray-100">
+                    <div className="divide-y divide-gray-100/50">
                       {statsLoading ? (
                         <div className="flex justify-center py-12">
                           <Loader2 className="h-8 w-8 animate-spin text-primary" />
                         </div>
                       ) : !dashboardData || (dashboardData.recentContacts.length === 0 && dashboardData.recentAppointments.length === 0) ? (
-                        <div className="text-center py-12 text-gray-500">
-                          <div className="bg-gray-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Clock className="text-gray-300" />
+                        <div className="text-center py-16 text-gray-400">
+                          <div className="bg-gray-100/50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-200/50">
+                            <Clock size={32} className="text-gray-300" />
                           </div>
-                          <p>No activity yet.</p>
+                          <p className="font-medium">No recent activity detected.</p>
+                          <p className="text-xs">Incoming requests will appear here in real-time.</p>
                         </div>
                       ) : (
                         [
                           ...dashboardData.recentAppointments.map(a => ({
-                            action: `New appointment: ${a.name}`,
+                            action: `Appointment: ${a.name}`,
                             sub: a.service || 'General Inquiry',
                             time: new Date(a.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                            type: "appointment" as const
+                            type: "appointment" as const,
+                            date: new Date(a.createdAt)
                           })),
                           ...dashboardData.recentContacts.map(c => ({
-                            action: `New message from ${c.name}`,
+                            action: `Message: ${c.name}`,
                             sub: c.subject || 'Direct Contact',
                             time: new Date(c.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                            type: "contact" as const
+                            type: "contact" as const,
+                            date: new Date(c.createdAt)
                           }))
-                        ].sort((a,b) => new Date(b.time).getTime() - new Date(a.time).getTime())
-                         .slice(0, 6)
+                        ].sort((a,b) => b.date.getTime() - a.date.getTime())
+                         .slice(0, 5)
                          .map((activity, index) => (
                           <div
                             key={index}
-                            className="flex items-center gap-4 p-4 hover:bg-gray-50/80 transition-colors cursor-pointer group"
+                            className="flex items-center gap-4 p-5 hover:bg-white/80 transition-all cursor-pointer group"
                           >
                             <div
-                              className={`p-3 rounded-xl transition-transform group-hover:scale-110 ${
+                              className={`p-4 rounded-2xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg ${
                                 activity.type === "appointment"
-                                  ? "bg-blue-50 text-blue-600"
-                                  : "bg-purple-50 text-purple-600"
+                                  ? "bg-blue-50 text-blue-600 shadow-blue-100"
+                                  : "bg-purple-50 text-purple-600 shadow-purple-100"
                               }`}
                             >
                               {activity.type === "appointment" ? (
-                                <Calendar size={18} />
+                                <Calendar size={20} />
                               ) : (
-                                <MessageSquare size={18} />
+                                <MessageSquare size={20} />
                               )}
                             </div>
                             <div className="flex-1">
-                              <p className="text-sm font-bold text-gray-900 leading-tight">
+                              <p className="text-sm font-black text-gray-900 tracking-tight flex items-center gap-2">
                                 {activity.action}
+                                {index === 0 && <span className="px-1.5 py-0.5 bg-primary/10 text-primary text-[8px] font-bold uppercase rounded">New</span>}
                               </p>
-                              <p className="text-xs text-gray-500 mt-0.5">
+                              <p className="text-xs text-gray-500 font-medium mt-1 uppercase tracking-tight opacity-70">
                                 {activity.sub}
                               </p>
                             </div>
                             <div className="text-right">
-                              <p className="text-xs font-medium text-gray-400">
+                              <div className="px-2 py-1 bg-gray-100 rounded-lg text-[10px] font-bold text-gray-400">
                                 {activity.time}
-                              </p>
+                              </div>
                             </div>
                           </div>
                         ))
                       )}
                     </div>
+                    {(dashboardData?.recentContacts.length || 0) > 5 && (
+                      <div className="p-4 bg-gray-50/30 border-t border-gray-100/50 text-center">
+                        <Button variant="ghost" size="sm" className="text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/5">
+                          View All Activity Logs
+                        </Button>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
 
-                <Card className="border-0 shadow-sm">
+                <Card className="border-0 shadow-lg shadow-gray-200/50 bg-white/70 backdrop-blur-md border border-white/20">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <TrendingUp size={20} className="text-primary" />
-                      Shortcuts
+                    <CardTitle className="flex items-center gap-2 text-xl font-black tracking-tighter">
+                      <div className="p-2 bg-indigo-100 rounded-xl">
+                        <TrendingUp size={20} className="text-indigo-600" />
+                      </div>
+                      Mission Control
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="grid grid-cols-2 gap-4">
                     {[
-                      { label: "Update Blogs", icon: FileText, href: "/admin/blog", color: "bg-blue-500" },
-                      { label: "Bookings", icon: Calendar, href: "/admin/appointments", color: "bg-indigo-500" },
-                      { label: "Team Space", icon: Users, href: "/admin/team", color: "bg-purple-500" },
-                      { label: "Settings", icon: Settings, href: "/admin/settings", color: "bg-slate-700" },
+                      { label: "Content Control", icon: Palette, href: "/admin/page-builder", color: "from-blue-500 to-blue-600", sub: "Visual Editor" },
+                      { label: "Blog Engine", icon: FileText, href: "/admin/blog", color: "from-indigo-500 to-indigo-600", sub: "Manager" },
+                      { label: "Leads Stack", icon: MessageSquare, href: "/admin/contacts", color: "from-purple-500 to-purple-600", sub: "Inbox" },
+                      { label: "The Vault", icon: Settings, href: "/admin/settings", color: "from-slate-700 to-slate-800", sub: "Deep Config" },
                     ].map((btn, i) => (
-                      <Button
+                      <button
                         key={i}
-                        asChild
-                        variant="secondary"
-                        className="h-24 flex-col gap-2 bg-gray-50 hover:bg-gray-100 border-0 group"
+                        onClick={() => router.push(btn.href)}
+                        className="relative h-32 rounded-3xl overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-xl shadow-gray-200"
                       >
-                        <a href={btn.href}>
-                          <div className={`p-2 rounded-lg ${btn.color} text-white group-hover:scale-110 transition-transform`}>
-                            <btn.icon size={20} />
+                        <div className={`absolute inset-0 bg-gradient-to-br ${btn.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                        <div className="absolute inset-0 bg-white group-hover:bg-transparent transition-colors duration-300" />
+                        
+                        <div className="relative z-10 p-5 h-full flex flex-col justify-between items-start text-left">
+                          <div className={`p-3 rounded-2xl bg-gray-50 group-hover:bg-white/20 transition-colors shadow-sm`}>
+                            <btn.icon size={22} className={`text-slate-700 group-hover:text-white transition-colors`} />
                           </div>
-                          <span className="font-semibold text-slate-700">{btn.label}</span>
-                        </a>
-                      </Button>
+                          <div>
+                            <p className="text-[10px] font-bold text-gray-400 group-hover:text-white/60 uppercase tracking-widest mb-1">{btn.sub}</p>
+                            <p className="font-black text-gray-900 group-hover:text-white tracking-tight">{btn.label}</p>
+                          </div>
+                        </div>
+                      </button>
                     ))}
                     <Button
-                      asChild
-                      className="col-span-2 mt-2 h-12 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
+                      onClick={() => router.push("/admin/site-builder")}
+                      className="col-span-2 mt-2 h-14 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-xl shadow-primary/20 rounded-2xl group border-0"
                     >
-                      <a href="/admin/content">
-                        <Palette size={18} className="mr-2" />
-                        Edit Website Theme
-                      </a>
+                      <LayoutDashboard size={20} className="mr-3 group-hover:rotate-12 transition-transform" />
+                      <span className="font-black uppercase tracking-widest text-xs">Launch Global Site Builder</span>
                     </Button>
                   </CardContent>
                 </Card>
               </div>
-            </>
+            </div>
           ) : (
             children
           )}

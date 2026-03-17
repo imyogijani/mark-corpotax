@@ -33,18 +33,12 @@ const MenuBar = ({ editor }: { editor: any }) => {
     const previousUrl = editor.getAttributes('link').href;
     const url = window.prompt('Enter link URL:', previousUrl);
     
-    // cancelled
-    if (url === null) {
-      return;
-    }
-
-    // empty
+    if (url === null) return;
     if (url === '') {
       editor.chain().focus().extendMarkRange('link').unsetLink().run();
       return;
     }
 
-    // update link
     try {
       editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
     } catch (e: any) {
@@ -53,103 +47,70 @@ const MenuBar = ({ editor }: { editor: any }) => {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-1 border-b border-gray-200 p-2 bg-gray-50 rounded-t-xl sticky top-0 z-10">
-      <Button 
-        type="button" 
-        variant="ghost" 
-        size="sm" 
-        onClick={() => editor.chain().focus().toggleBold().run()} 
-        className={`h-8 w-8 p-0 ${editor.isActive('bold') ? 'bg-gray-200 text-gray-900' : 'text-gray-600'}`}
-      >
-        <Bold className="h-4 w-4" />
-      </Button>
-      <Button 
-        type="button" 
-        variant="ghost" 
-        size="sm" 
-        onClick={() => editor.chain().focus().toggleItalic().run()} 
-        className={`h-8 w-8 p-0 ${editor.isActive('italic') ? 'bg-gray-200 text-gray-900' : 'text-gray-600'}`}
-      >
-        <Italic className="h-4 w-4" />
-      </Button>
-      <Button 
-        type="button" 
-        variant="ghost" 
-        size="sm" 
-        onClick={() => editor.chain().focus().toggleUnderline().run()} 
-        className={`h-8 w-8 p-0 ${editor.isActive('underline') ? 'bg-gray-200 text-gray-900' : 'text-gray-600'}`}
-      >
-        <UnderlineIcon className="h-4 w-4" />
-      </Button>
-      <Button 
-        type="button" 
-        variant="ghost" 
-        size="sm" 
-        onClick={() => editor.chain().focus().toggleStrike().run()} 
-        className={`h-8 w-8 p-0 ${editor.isActive('strike') ? 'bg-gray-200 text-gray-900' : 'text-gray-600'}`}
-      >
-        <Strikethrough className="h-4 w-4" />
-      </Button>
+    <div className="flex flex-wrap items-center gap-1.5 border-b border-gray-100 p-3 bg-gray-50/50 backdrop-blur-sm sticky top-0 z-10">
+      {[
+        { icon: Bold, action: () => editor.chain().focus().toggleBold().run(), active: 'bold' },
+        { icon: Italic, action: () => editor.chain().focus().toggleItalic().run(), active: 'italic' },
+        { icon: UnderlineIcon, action: () => editor.chain().focus().toggleUnderline().run(), active: 'underline' },
+        { icon: Strikethrough, action: () => editor.chain().focus().toggleStrike().run(), active: 'strike' },
+      ].map((item, i) => (
+        <Button 
+          key={i}
+          type="button" 
+          variant="ghost" 
+          size="sm" 
+          onClick={item.action} 
+          className={`h-9 w-9 p-0 rounded-lg transition-all ${editor.isActive(item.active) ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-500 hover:bg-gray-200'}`}
+        >
+          <item.icon className="h-4 w-4" />
+        </Button>
+      ))}
 
-      <div className="w-px h-5 bg-gray-300 mx-1"></div>
+      <div className="w-px h-6 bg-gray-200 mx-2"></div>
 
-      <Button 
-        type="button" 
-        variant="ghost" 
-        size="sm" 
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} 
-        className={`h-8 w-8 p-0 ${editor.isActive('heading', { level: 2 }) ? 'bg-gray-200 text-gray-900' : 'text-gray-600'}`}
-      >
-        <Heading1 className="h-4 w-4" />
-      </Button>
-      <Button 
-        type="button" 
-        variant="ghost" 
-        size="sm" 
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} 
-        className={`h-8 w-8 p-0 ${editor.isActive('heading', { level: 3 }) ? 'bg-gray-200 text-gray-900' : 'text-gray-600'}`}
-      >
-        <Heading2 className="h-4 w-4" />
-      </Button>
+      {[
+        { icon: Heading1, action: () => editor.chain().focus().toggleHeading({ level: 2 }).run(), active: 'heading', level: 2 },
+        { icon: Heading2, action: () => editor.chain().focus().toggleHeading({ level: 3 }).run(), active: 'heading', level: 3 },
+      ].map((item, i) => (
+        <Button 
+          key={i}
+          type="button" 
+          variant="ghost" 
+          size="sm" 
+          onClick={item.action} 
+          className={`h-9 w-9 p-0 rounded-lg transition-all ${editor.isActive(item.active, { level: item.level }) ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-500 hover:bg-gray-200'}`}
+        >
+          <item.icon className="h-4 w-4" />
+        </Button>
+      ))}
 
-      <div className="w-px h-5 bg-gray-300 mx-1"></div>
+      <div className="w-px h-6 bg-gray-200 mx-2"></div>
 
-      <Button 
-        type="button" 
-        variant="ghost" 
-        size="sm" 
-        onClick={() => editor.chain().focus().toggleBulletList().run()} 
-        className={`h-8 w-8 p-0 ${editor.isActive('bulletList') ? 'bg-gray-200 text-gray-900' : 'text-gray-600'}`}
-      >
-        <List className="h-4 w-4" />
-      </Button>
-      <Button 
-        type="button" 
-        variant="ghost" 
-        size="sm" 
-        onClick={() => editor.chain().focus().toggleOrderedList().run()} 
-        className={`h-8 w-8 p-0 ${editor.isActive('orderedList') ? 'bg-gray-200 text-gray-900' : 'text-gray-600'}`}
-      >
-        <ListOrdered className="h-4 w-4" />
-      </Button>
-      <Button 
-        type="button" 
-        variant="ghost" 
-        size="sm" 
-        onClick={() => editor.chain().focus().toggleBlockquote().run()} 
-        className={`h-8 w-8 p-0 ${editor.isActive('blockquote') ? 'bg-gray-200 text-gray-900' : 'text-gray-600'}`}
-      >
-        <Quote className="h-4 w-4" />
-      </Button>
+      {[
+        { icon: List, action: () => editor.chain().focus().toggleBulletList().run(), active: 'bulletList' },
+        { icon: ListOrdered, action: () => editor.chain().focus().toggleOrderedList().run(), active: 'orderedList' },
+        { icon: Quote, action: () => editor.chain().focus().toggleBlockquote().run(), active: 'blockquote' },
+      ].map((item, i) => (
+        <Button 
+          key={i}
+          type="button" 
+          variant="ghost" 
+          size="sm" 
+          onClick={item.action} 
+          className={`h-9 w-9 p-0 rounded-lg transition-all ${editor.isActive(item.active) ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-500 hover:bg-gray-200'}`}
+        >
+          <item.icon className="h-4 w-4" />
+        </Button>
+      ))}
 
-      <div className="w-px h-5 bg-gray-300 mx-1"></div>
+      <div className="w-px h-6 bg-gray-200 mx-2"></div>
 
       <Button 
         type="button" 
         variant="ghost" 
         size="sm" 
         onClick={setLink} 
-        className={`h-8 w-8 p-0 ${editor.isActive('link') ? 'bg-gray-200 text-gray-900' : 'text-gray-600'}`}
+        className={`h-9 w-9 p-0 rounded-lg transition-all ${editor.isActive('link') ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-gray-500 hover:bg-gray-200'}`}
       >
         <LinkIcon className="h-4 w-4" />
       </Button>
@@ -158,7 +119,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
         variant="ghost" 
         size="sm" 
         onClick={addImage}
-        className="h-8 w-8 p-0 text-gray-600"
+        className="h-9 w-9 p-0 rounded-lg text-gray-500 hover:bg-gray-200 transition-all font-sans"
       >
         <ImageIcon className="h-4 w-4" />
       </Button>
@@ -174,13 +135,13 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
       Underline,
       Image.configure({
         HTMLAttributes: {
-          class: 'rounded-xl max-w-full m-auto shadow-md',
+          class: 'rounded-[2rem] max-w-full m-auto shadow-2xl border-8 border-white my-8',
         },
       }),
       Link.configure({ 
         openOnClick: false,
         HTMLAttributes: {
-          class: 'text-primary underline cursor-pointer',
+          class: 'text-primary font-bold underline decoration-primary/30 underline-offset-4 cursor-pointer hover:text-primary/80 transition-colors',
         },
       }),
     ],
@@ -190,12 +151,11 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-sm sm:prose-base focus:outline-none min-h-[350px] max-w-none p-4 pb-10 bg-white rounded-b-xl',
+        class: 'prose prose-lg max-w-none focus:outline-none min-h-[450px] p-10 bg-white rounded-b-[2rem] font-sans selection:bg-primary/10 selection:text-primary',
       },
     },
   });
 
-  // Update content dynamically if the parsed external content changes (useful for edit mode initial load)
   useEffect(() => {
     if (editor && content && editor.getHTML() !== content && editor.getHTML() !== `<p>${content}</p>`) {
       if (editor.isEmpty) {
@@ -205,9 +165,9 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
   }, [content, editor]);
 
   return (
-    <div className="border border-gray-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-primary/20 transition-all bg-white flex flex-col">
+    <div className="w-full flex flex-col group/editor transition-all">
       <MenuBar editor={editor} />
-      <div className="flex-1 max-h-[600px] overflow-y-auto w-full">
+      <div className="flex-1 max-h-[800px] overflow-y-auto w-full scrollbar-hide">
         <EditorContent editor={editor} />
       </div>
     </div>

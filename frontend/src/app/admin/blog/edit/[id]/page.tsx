@@ -10,9 +10,29 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { apiClient } from "@/lib/api-client";
-import { Save, Eye, ArrowLeft, FileText, Type, AlignLeft, Tags, LayoutList, Image as ImageIcon, Search, User, Trash2 } from "lucide-react";
+import { 
+  Save, 
+  Eye, 
+  ArrowLeft, 
+  FileText, 
+  Type, 
+  AlignLeft, 
+  Tags, 
+  LayoutList, 
+  Image as ImageIcon, 
+  Search as SearchIcon, 
+  User as UserIcon, 
+  Trash2,
+  Sparkles,
+  Globe,
+  Loader2,
+  AlertCircle,
+  Clock,
+  CheckCircle2,
+  History
+} from "lucide-react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import RichTextEditor from "@/components/admin/RichTextEditor";
 
 export default function EditBlogPage() {
@@ -20,6 +40,7 @@ export default function EditBlogPage() {
   const params = useParams();
   const blogId = params.id as string;
   const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     title: "",
@@ -52,6 +73,7 @@ export default function EditBlogPage() {
     if (blogId) {
       const fetchBlog = async () => {
         try {
+          setIsFetching(true);
           const response = await apiClient.getBlog(blogId);
           if (response.success && response.data) {
             const blog = response.data;
@@ -73,7 +95,9 @@ export default function EditBlogPage() {
             setError(response.message || "Failed to load blog");
           }
         } catch (err: any) {
-          setError("Error fetching blog details");
+          setError("Error fetching blog details from the vault.");
+        } finally {
+          setIsFetching(false);
         }
       };
       fetchBlog();
@@ -91,6 +115,7 @@ export default function EditBlogPage() {
     try {
       const blogData = {
         ...formData,
+        author: formData.authorName || "Admin",
         status,
         tags: formData.tags
           .split(",")
@@ -103,314 +128,302 @@ export default function EditBlogPage() {
       if (response.success) {
         router.push("/admin/blog");
       } else {
-        setError(response.error || "Failed to create blog post");
+        setError(response.error || "Failed to sync updates with production.");
       }
     } catch {
-      setError("An unexpected error occurred");
+      setError("An unexpected synchronization error occurred.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  return (
-    <AdminLayout title="Edit Blog Post">
-      <motion.div 
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="space-y-8 max-w-6xl mx-auto"
-      >
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <Link href="/admin/blog">
-              <Button variant="outline" size="icon" className="h-10 w-10 rounded-full hover:bg-gray-100">
-                <ArrowLeft className="h-5 w-5 text-gray-600" />
-              </Button>
-            </Link>
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight text-gray-900">Edit Article</h2>
-              <p className="text-sm text-gray-500">Update your piece of content</p>
-            </div>
+  if (isFetching) {
+    return (
+      <AdminLayout title="System Processing">
+        <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
+          <div className="relative h-24 w-24">
+            <div className="absolute inset-0 rounded-full border-b-2 border-primary animate-spin" />
+            <div className="absolute inset-4 rounded-full border-t-2 border-blue-400 animate-spin-slow" />
           </div>
+          <p className="text-xl font-black text-gray-900 tracking-tighter animate-pulse uppercase">Accessing Content Archive...</p>
         </div>
+      </AdminLayout>
+    );
+  }
 
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+  return (
+    <AdminLayout title="Refine Article">
+       <div className="max-w-[1400px] mx-auto pb-32 relative">
+        {/* Abstract Background Blobs */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10 animate-pulse" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-[120px] -z-10 animate-pulse" />
 
-        <form onSubmit={(e) => handleSubmit(e, "draft")} className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-8">
-              <Card className="border-0 shadow-sm overflow-hidden">
-                <CardHeader className="bg-gray-50/50 border-b border-gray-100 pb-4">
-                  <div className="flex items-center gap-2">
-                    <div className="p-2 bg-blue-100 rounded-lg text-blue-600">
-                      <Type className="h-4 w-4" />
-                    </div>
-                    <CardTitle className="text-lg">Article Details</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-6 pt-6">
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700 block">Featured Cover Image</Label>
-                    <div className="flex flex-col gap-4">
-                      {formData.featuredImage ? (
-                        <div className="relative w-full h-48 rounded-xl overflow-hidden border shadow-sm">
-                          <img src={formData.featuredImage} alt="Cover" className="object-cover w-full h-full" />
-                          <button 
-                            type="button" 
-                            onClick={() => setFormData(prev => ({...prev, featuredImage: ''}))} 
-                            className="absolute top-2 right-2 bg-white/90 hover:bg-red-50 text-red-600 rounded-full p-2 transition-colors shadow-sm"
-                          >
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                      ) : (
-                        <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 hover:border-primary/50 transition-colors">
-                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                            <ImageIcon className="h-8 w-8 text-primary/50 mb-2" />
-                            <p className="text-sm text-gray-600 font-medium font-sans">Click to upload cover photo</p>
-                            <p className="text-xs text-gray-400 mt-1">PNG, JPG or WebP (Max 2MB)</p>
-                          </div>
-                          <input type="file" className="hidden" accept="image/*" onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              const reader = new FileReader();
-                              reader.onloadend = () => {
-                                setFormData(prev => ({...prev, featuredImage: reader.result as string}));
-                              };
-                              reader.readAsDataURL(file);
-                            }
-                          }} />
-                        </label>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="title" className="text-sm font-semibold text-gray-700">Article Title <span className="text-rose-500">*</span></Label>
-                    <Input
-                      id="title"
-                      name="title"
-                      value={formData.title}
-                      onChange={handleInputChange}
-                      placeholder="e.g. 10 Tax Saving Tips for MSMEs in 2026"
-                      className="h-12 text-lg font-medium px-4 bg-gray-50/50 focus:bg-white rounded-xl transition-all"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="excerpt" className="text-sm font-semibold text-gray-700">Short Excerpt <span className="text-rose-500">*</span></Label>
-                    <Textarea
-                      id="excerpt"
-                      name="excerpt"
-                      value={formData.excerpt}
-                      onChange={handleInputChange}
-                      placeholder="A brief summary that will appear on blog preview cards..."
-                      className="resize-none bg-gray-50/50 focus:bg-white rounded-xl transition-all p-4"
-                      rows={3}
-                      required
-                    />
-                    <p className="text-xs text-gray-500 text-right">Recommended: 120-160 characters</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-0 shadow-sm overflow-hidden">
-                <CardHeader className="bg-gray-50/50 border-b border-gray-100 pb-4 flex flex-row items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600">
-                      <AlignLeft className="h-4 w-4" />
-                    </div>
-                    <CardTitle className="text-lg">Main Content</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="space-y-2">
-                    <RichTextEditor
-                      content={formData.content}
-                      onChange={(html) => setFormData(prev => ({...prev, content: html}))}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-0 shadow-sm overflow-hidden">
-                <CardHeader className="bg-gray-50/50 border-b border-gray-100 pb-4 flex flex-row items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="p-2 bg-purple-100 rounded-lg text-purple-600">
-                      <Search className="h-4 w-4" />
-                    </div>
-                    <CardTitle className="text-lg">SEO & Google Ranking</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-6 pt-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="seoTitle" className="text-sm font-semibold text-gray-700">SEO Title</Label>
-                    <Input
-                      id="seoTitle" name="seoTitle" value={formData.seoTitle} onChange={handleInputChange}
-                      placeholder="Title specifically optimized for search engines..."
-                      className="bg-gray-50/50 focus:bg-white rounded-xl h-11"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="metaDescription" className="text-sm font-semibold text-gray-700">Meta Description</Label>
-                    <Textarea
-                      id="metaDescription" name="metaDescription" value={formData.metaDescription} onChange={handleInputChange}
-                      placeholder="Catchy description that shows up in Google results..."
-                      className="resize-none bg-gray-50/50 focus:bg-white rounded-xl p-4" rows={3}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="keywords" className="text-sm font-semibold text-gray-700">Keywords Focus</Label>
-                    <Input
-                      id="keywords" name="keywords" value={formData.keywords} onChange={handleInputChange}
-                      placeholder="startup, taxes, funding (comma separated)"
-                      className="bg-gray-50/50 focus:bg-white rounded-xl h-11"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-0 shadow-sm overflow-hidden">
-                 <CardHeader className="bg-gray-50/50 border-b border-gray-100 pb-4 flex flex-row items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600">
-                      <User className="h-4 w-4" />
-                    </div>
-                    <CardTitle className="text-lg">Author Details</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-6 pt-6">
-                   <div className="space-y-2">
-                    <Label htmlFor="authorName" className="text-sm font-semibold text-gray-700">Author Name</Label>
-                    <Input
-                      id="authorName" name="authorName" value={formData.authorName} onChange={handleInputChange}
-                      placeholder="e.g. Adv. John Doe"
-                      className="bg-gray-50/50 focus:bg-white rounded-xl h-11"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="authorBio" className="text-sm font-semibold text-gray-700">Author Bio</Label>
-                    <Textarea
-                      id="authorBio" name="authorBio" value={formData.authorBio} onChange={handleInputChange}
-                      placeholder="Expertise, qualifications, and background..."
-                      className="resize-none bg-gray-50/50 focus:bg-white rounded-xl p-4" rows={2}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="space-y-8">
-              {/* Publishing Controls Sticky Wrapper */}
-              <div className="sticky top-24 space-y-6">
-                
-                <Card className="border-0 shadow-sm overflow-hidden border-t-4 border-t-primary">
-                  <CardHeader className="bg-gray-50/50 border-b border-gray-100 pb-4">
-                    <CardTitle className="text-lg">Publish</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4 pt-6">
-                    <Button
-                      type="button"
-                      variant="default"
-                      className="w-full rounded-xl py-6 text-base font-semibold shadow-lg shadow-primary/20 hover:scale-[1.02] hover:shadow-primary/30 transition-all"
-                      disabled={isLoading}
-                      onClick={(e) => handleSubmit(e, "published")}
-                    >
-                      {isLoading ? (
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                      ) : (
-                        <>
-                          <Eye className="h-5 w-5 mr-2" />
-                          Update Article
-                        </>
-                      )}
-                    </Button>
-                    
-                    <div className="grid grid-cols-2 gap-3">
-                      <Button 
-                        type="submit" 
-                        variant="secondary"
-                        className="w-full rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700" 
-                        disabled={isLoading}
-                      >
-                        <Save className="h-4 w-4 mr-2" />
-                        Save Draft
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="w-full rounded-xl border-gray-200 text-gray-500 hover:text-gray-700"
-                        asChild
-                      >
-                        <Link href="/admin/blog">Cancel</Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-0 shadow-sm overflow-hidden">
-                  <CardHeader className="bg-gray-50/50 border-b border-gray-100 pb-4">
-                    <div className="flex items-center gap-2">
-                      <div className="p-2 bg-amber-100 rounded-lg text-amber-600">
-                        <LayoutList className="h-4 w-4" />
-                      </div>
-                      <CardTitle className="text-lg">Organization</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-6 pt-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="status" className="text-sm font-semibold text-gray-700">Set Status</Label>
-                      <select
-                        id="status"
-                        name="status"
-                        title="Publication status"
-                        value={formData.status}
-                        onChange={handleInputChange}
-                        className="w-full h-11 px-4 border-0 bg-gray-50/50 rounded-xl font-medium focus:ring-2 focus:ring-primary/20 cursor-pointer"
-                      >
-                        <option value="draft">Draft (Hidden)</option>
-                        <option value="published">Published (Live)</option>
-                      </select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="category" className="text-sm font-semibold text-gray-700">Category</Label>
-                      <Input
-                        id="category"
-                        name="category"
-                        value={formData.category}
-                        onChange={handleInputChange}
-                        placeholder="e.g. Finance"
-                        className="h-11 bg-gray-50/50 focus:bg-white rounded-xl"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="tags" className="text-sm font-semibold text-gray-700 flex items-center gap-1">
-                        <Tags className="h-4 w-4 text-gray-400" /> Tags
-                      </Label>
-                      <Input
-                        id="tags"
-                        name="tags"
-                        value={formData.tags}
-                        onChange={handleInputChange}
-                        placeholder="tax, savings, smb"
-                        className="h-11 bg-gray-50/50 focus:bg-white rounded-xl"
-                      />
-                      <p className="text-xs text-gray-500 mt-1">Separate tags with commas</p>
-                    </div>
-                  </CardContent>
-                </Card>
-
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-12"
+        >
+          {/* Enhanced Header */}
+          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8 border-b border-gray-100 pb-12">
+            <div className="space-y-4">
+              <Link href="/admin/blog" className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-[0.2em] text-[10px] hover:translate-x-[-4px] transition-transform">
+                <ArrowLeft size={14} strokeWidth={3} />
+                Return to Directory
+              </Link>
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-[10px] font-black bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full uppercase tracking-widest border border-emerald-100/50">Production Ready</span>
+                  <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest leading-none">ID: {blogId.slice(-6).toUpperCase()}</span>
+                </div>
+                <h1 className="text-4xl font-black text-gray-900 tracking-tighter">
+                  Edit <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-500">Blog Article</span>
+                </h1>
               </div>
             </div>
+
+            <div className="flex items-center gap-4">
+               <Button
+                type="button"
+                variant="outline"
+                className="h-16 px-8 rounded-2xl border-gray-200 hover:bg-gray-50 text-gray-600 font-black uppercase tracking-widest text-xs border-2"
+                asChild
+              >
+                <Link href="/admin/blog">Cancel</Link>
+              </Button>
+               <Button
+                type="button"
+                onClick={(e) => handleSubmit(e, "draft")}
+                disabled={isLoading}
+                className="h-16 px-8 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-900 font-black uppercase tracking-widest text-xs border-0"
+              >
+                <CheckCircle2 className="h-4 w-4 mr-2" />
+                Sync Updates
+              </Button>
+            </div>
           </div>
-        </form>
-      </motion.div>
+
+          {error && (
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+              <Alert variant="destructive" className="rounded-3xl border-rose-100 bg-rose-50 text-rose-600 p-6 flex items-center gap-4">
+                <AlertCircle className="h-6 w-6" />
+                <AlertDescription className="font-bold text-lg">{error}</AlertDescription>
+              </Alert>
+            </motion.div>
+          )}
+
+          <form onSubmit={(e) => handleSubmit(e, "draft")} className="space-y-10">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+              <div className="lg:col-span-2 space-y-12">
+                {/* Core Details Card */}
+                <Card className="border-0 shadow-2xl shadow-gray-200/50 bg-white/70 backdrop-blur-md rounded-[3rem] overflow-hidden">
+                  <div className="h-2 bg-gradient-to-r from-gray-900 to-gray-400" />
+                  <CardHeader className="pt-10 px-10 pb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-3 bg-blue-50 text-blue-600 rounded-2xl shadow-inner">
+                        <Type className="h-6 w-6" />
+                      </div>
+                      <CardTitle className="text-2xl font-black tracking-tight">Modify Identity</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-10 px-10 pb-10">
+                    {/* Featured Image Section */}
+                    <div className="space-y-4">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Backdrop Overlay</Label>
+                      <div className="relative group">
+                        {formData.featuredImage ? (
+                          <div className="relative w-full aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white group">
+                            <img src={formData.featuredImage} alt="Cover" className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700" />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                               <button 
+                                type="button" 
+                                onClick={() => setFormData(prev => ({...prev, featuredImage: ''}))} 
+                                className="bg-white text-rose-600 rounded-2xl px-6 py-3 font-black text-xs uppercase tracking-widest flex items-center gap-2 hover:bg-rose-50 transition-colors"
+                              >
+                                <Trash2 size={16} />
+                                Purge Backdrop
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <label className="flex flex-col items-center justify-center w-full aspect-video border-4 border-dashed border-gray-200 rounded-[2.5rem] cursor-pointer bg-gray-50/50 hover:bg-white hover:border-primary/50 transition-all duration-300 group shadow-inner">
+                            <div className="flex flex-col items-center justify-center p-10 text-center">
+                              <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-primary/5">
+                                <ImageIcon className="h-10 w-10 text-primary" />
+                              </div>
+                              <p className="text-xl font-black text-gray-900 tracking-tight">Relink Visual Asset</p>
+                            </div>
+                            <input type="file" className="hidden" accept="image/*" onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                const reader = new FileReader();
+                                reader.onloadend = () => {
+                                  setFormData(prev => ({...prev, featuredImage: reader.result as string}));
+                                };
+                                reader.readAsDataURL(file);
+                              }
+                            }} />
+                          </label>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <Label htmlFor="title" className="text-[10px] font-black uppercase tracking-widest text-gray-400">Article Title</Label>
+                      <Input
+                        id="title"
+                        name="title"
+                        value={formData.title}
+                        onChange={handleInputChange}
+                        placeholder="Define your narrative here..."
+                        className="h-16 text-2xl font-black px-6 bg-gray-50/50 border-0 focus:bg-white focus:ring-4 focus:ring-primary/5 rounded-[1.5rem] transition-all"
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-4">
+                      <Label htmlFor="excerpt" className="text-[10px] font-black uppercase tracking-widest text-gray-400">The Abstract (Excerpt)</Label>
+                      <Textarea
+                        id="excerpt"
+                        name="excerpt"
+                        value={formData.excerpt}
+                        onChange={handleInputChange}
+                        placeholder="Write a summary that demands recognition..."
+                        className="resize-none bg-gray-50/50 border-0 focus:bg-white focus:ring-4 focus:ring-primary/5 rounded-[1.5rem] transition-all p-8 text-lg font-medium min-h-[140px]"
+                        required
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Editor Section */}
+                <Card className="border-0 shadow-2xl shadow-gray-200/50 bg-white/70 backdrop-blur-md rounded-[3rem] overflow-hidden">
+                  <CardHeader className="pt-10 px-10 pb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl shadow-inner">
+                        <AlignLeft className="h-6 w-6" />
+                      </div>
+                      <CardTitle className="text-2xl font-black tracking-tight">Main Manuscript</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="px-10 pb-10">
+                    <div className="rounded-[2rem] overflow-hidden border-2 border-gray-100 bg-white shadow-inner">
+                      <RichTextEditor
+                        content={formData.content}
+                        onChange={(html) => setFormData(prev => ({...prev, content: html}))}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="space-y-10">
+                {/* Control Panel Stickyness */}
+                <div className="sticky top-24 space-y-10">
+                  
+                  {/* Deployment Control */}
+                  <Card className="border-0 shadow-2xl shadow-primary/10 bg-gradient-to-br from-indigo-900 via-gray-900 to-black rounded-[2.5rem] overflow-hidden group">
+                     <CardHeader className="pt-10 px-8 pb-4">
+                      <CardTitle className="text-xl font-black text-white tracking-widest uppercase">System Sync</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-6 px-8 pb-10">
+                      <Button
+                        type="button"
+                        variant="default"
+                        className="w-full h-16 rounded-2xl bg-gradient-to-r from-primary to-blue-600 hover:shadow-2xl hover:shadow-primary/40 text-base font-black uppercase tracking-[0.1em] transition-all hover:-translate-y-1 border-0"
+                        disabled={isLoading}
+                        onClick={(e) => handleSubmit(e, "published")}
+                      >
+                        {isLoading ? (
+                          <Loader2 className="animate-spin h-6 w-6" />
+                        ) : (
+                          <>
+                            <Globe className="h-5 w-5 mr-3" />
+                            Update Live Record
+                          </>
+                        )}
+                      </Button>
+                      
+                       <div className="p-4 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/5">
+                        <div className="flex items-center justify-between mb-2">
+                           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Visibility</p>
+                           <div className={`w-3 h-3 rounded-full ${formData.status === 'published' ? 'bg-emerald-500 shadow-emerald-500/50' : 'bg-amber-500 shadow-amber-500/50'} shadow-lg animate-pulse`} />
+                        </div>
+                        <select
+                          id="status"
+                          name="status"
+                          title="Publication status"
+                          value={formData.status}
+                          onChange={handleInputChange}
+                          className="w-full bg-transparent text-white font-black uppercase tracking-widest text-xs outline-none cursor-pointer"
+                        >
+                          <option value="draft" className="bg-gray-900 text-white">Private Draft</option>
+                          <option value="published" className="bg-gray-900 text-white">Public Archive</option>
+                        </select>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Taxonomy Control */}
+                  <Card className="border-0 shadow-2xl shadow-gray-200/50 bg-white/70 backdrop-blur-md rounded-[2.5rem] overflow-hidden">
+                    <CardHeader className="pt-8 px-8 pb-2">
+                       <div className="flex items-center gap-2">
+                        <div className="p-2 bg-amber-50 text-amber-600 rounded-xl">
+                          <LayoutList size={18} />
+                        </div>
+                        <CardTitle className="font-black text-sm uppercase tracking-widest text-gray-400">Class & Tags</CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-6 px-8 pb-8">
+                       <div className="space-y-4">
+                        <Label htmlFor="category" className="text-[10px] font-black uppercase tracking-widest text-gray-400">Category Sphere</Label>
+                        <Input
+                          id="category" name="category" value={formData.category} onChange={handleInputChange}
+                          className="h-12 bg-gray-100/5 border-0 focus:bg-white focus:ring-4 focus:ring-primary/5 rounded-xl font-bold"
+                        />
+                      </div>
+                      <div className="space-y-4">
+                        <Label htmlFor="tags" className="text-[10px] font-black uppercase tracking-widest text-gray-400">Taxonomy Tags</Label>
+                        <Input
+                          id="tags" name="tags" value={formData.tags} onChange={handleInputChange}
+                          className="h-12 bg-gray-100/5 border-0 focus:bg-white focus:ring-4 focus:ring-primary/5 rounded-xl font-medium"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                   {/* Ranking Engine Control */}
+                  <Card className="border-0 shadow-2xl shadow-gray-200/50 bg-white/70 backdrop-blur-md rounded-[2.5rem] overflow-hidden border-t-4 border-t-primary">
+                    <CardHeader className="pt-8 px-8 pb-2">
+                       <div className="flex items-center gap-2">
+                        <div className="p-2 bg-purple-50 text-purple-600 rounded-xl">
+                          <SearchIcon size={18} />
+                        </div>
+                        <CardTitle className="font-black text-sm uppercase tracking-widest text-gray-400">SEO Stack</CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-6 px-8 pb-8">
+                       <div className="space-y-4">
+                        <Label htmlFor="seoTitle" className="text-[10px] font-black uppercase tracking-widest text-gray-400">Meta Title</Label>
+                        <Input
+                          id="seoTitle" name="seoTitle" value={formData.seoTitle} onChange={handleInputChange}
+                          className="bg-gray-100/5 border-0 focus:bg-white focus:ring-4 focus:ring-primary/5 rounded-xl h-12 font-bold"
+                        />
+                      </div>
+                      <div className="space-y-4">
+                        <Label htmlFor="metaDescription" className="text-[10px] font-black uppercase tracking-widest text-gray-400">Search Abstract</Label>
+                        <Textarea
+                          id="metaDescription" name="metaDescription" value={formData.metaDescription} onChange={handleInputChange}
+                          className="resize-none bg-gray-100/5 border-0 focus:bg-white focus:ring-4 focus:ring-primary/5 rounded-xl p-4 text-sm font-medium h-24"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </div>
+          </form>
+        </motion.div>
+      </div>
     </AdminLayout>
   );
 }
