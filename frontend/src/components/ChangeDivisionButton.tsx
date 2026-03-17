@@ -6,9 +6,10 @@ import { useRef } from "react";
 interface ChangeDivisionButtonProps {
     className?: string;
     shouldAnimate?: boolean;
+    onReset?: () => void;
 }
 
-export function ChangeDivisionButton({ className, shouldAnimate = true }: ChangeDivisionButtonProps) {
+export function ChangeDivisionButton({ className, shouldAnimate = true, onReset }: ChangeDivisionButtonProps) {
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     // Magnetic effect values
@@ -20,8 +21,12 @@ export function ChangeDivisionButton({ className, shouldAnimate = true }: Change
     const springY = useSpring(y, springConfig);
 
     const handleClick = () => {
-        localStorage.removeItem("user_division");
-        window.location.href = "/";
+        if (onReset) {
+            onReset();
+        } else {
+            localStorage.removeItem("user_division");
+            window.location.href = "/";
+        }
     };
 
     const handleMouseMove = (e: React.MouseEvent) => {

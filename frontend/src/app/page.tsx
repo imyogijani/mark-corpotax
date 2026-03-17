@@ -37,7 +37,29 @@ export default function Home() {
         selectedDivision || undefined,
       );
       if (response.success && response.data?.components) {
-        setLayoutComponents(response.data.components);
+        let components = [...response.data.components];
+        
+        // Find existing Blog and Team indices
+        const teamIdx = components.findIndex(c => c.type === 'Team');
+        const blogIdx = components.findIndex(c => c.type === 'Blog');
+
+        // If Team is missing, add it
+        if (teamIdx === -1) {
+          // If Blog exists, insert Team before it, otherwise push to end
+          if (blogIdx !== -1) {
+            components.splice(blogIdx, 0, { id: 'team-auto', type: 'Team', props: {} });
+          } else {
+            components.push({ id: 'team-auto', type: 'Team', props: {} });
+          }
+        } else if (blogIdx !== -1 && blogIdx < teamIdx) {
+          // If Blog is above Team, move it below Team
+          const [blogComp] = components.splice(blogIdx, 1);
+          // Find Team index again after splice
+          const newTeamIdx = components.findIndex(c => c.type === 'Team');
+          components.splice(newTeamIdx + 1, 0, blogComp);
+        }
+
+        setLayoutComponents(components);
       } else {
         console.warn(
           `No dynamic layout found for 'home' (${selectedDivision}), using fallback.`,
@@ -58,11 +80,6 @@ export default function Home() {
     if (savedDivision) {
       setDivision(savedDivision);
       fetchLayout(savedDivision);
-    } else {
-      // Default to finance if no choice is made
-      setDivision("finance");
-      localStorage.setItem("user_division", "finance");
-      fetchLayout("finance");
     }
   }, [fetchLayout]);
 
@@ -81,7 +98,19 @@ export default function Home() {
       {showTransition && (
         <CurtainTransition onComplete={() => setShowTransition(false)} />
       )}
-      <ComponentRenderer components={layoutComponents} />
+      {!division ? (
+        <LandingChoice onChoice={handleChoice} />
+      ) : (
+        <>
+          <ComponentRenderer components={layoutComponents} />
+          <ChangeDivisionButton 
+            onReset={() => {
+              localStorage.removeItem("user_division");
+              setDivision(null);
+            }} 
+          />
+        </>
+      )}
     </div>
   );
 }

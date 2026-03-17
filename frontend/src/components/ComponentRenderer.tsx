@@ -14,6 +14,8 @@ const COMPONENT_MAP: { [key: string]: React.ComponentType<any> } = {
   Team: dynamic(() => import("./DynamicTeamSection").then(m => m.DynamicTeamSection), { ssr: false }),
   Blog: dynamic(() => import("./DynamicBlogSection").then(m => m.DynamicBlogSection), { ssr: false }),
   Honeycomb: dynamic(() => import("./HoneycombSection"), { ssr: false }),
+  ExpertHelp: dynamic(() => import("./AskExpertSection").then(m => m.AskExpertSection), { ssr: false }),
+  CTA: dynamic(() => import("./DynamicCTASection").then(m => m.DynamicCTASection), { ssr: false }),
 };
 
 interface ComponentData {
