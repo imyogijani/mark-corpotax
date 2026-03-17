@@ -101,18 +101,26 @@ function AnimatedStat({ value, label, icon, index, division }: { value: string; 
   const { count, elementRef } = useCountAnimation(number, 2000);
 
   const getStatIcon = (iconName?: string, idx?: number) => {
-    // Icons without hardcoded colors to allow parent control
+    const iconColors = [
+      "#6366f1", // Indigo
+      "#f59e0b", // Amber
+      "#10b981", // Emerald
+      "#ec4899", // Rose
+    ];
+    const color = iconColors[(idx || 0) % iconColors.length];
+
+    // Icons with unique colors applied directly
     const iconMap: { [key: string]: JSX.Element } = {
-      Award: <Award className="w-8 h-8" />,
-      Users: <Users className="w-8 h-8" />,
-      TrendingUp: <TrendingUp className="w-8 h-8" />,
-      Shield: <Shield className="w-8 h-8" />,
+      Award: <Award className="w-8 h-8" style={{ color }} />,
+      Users: <Users className="w-8 h-8" style={{ color }} />,
+      TrendingUp: <TrendingUp className="w-8 h-8" style={{ color }} />,
+      Shield: <Shield className="w-8 h-8" style={{ color }} />,
     };
     const defaultIcons = [
-      <Award key="award" className="w-8 h-8" />,
-      <Users key="users" className="w-8 h-8" />,
-      <TrendingUp key="trending" className="w-8 h-8" />,
-      <Shield key="shield" className="w-8 h-8" />,
+      <Award key="award" className="w-8 h-8" style={{ color: iconColors[0] }} />,
+      <Users key="users" className="w-8 h-8" style={{ color: iconColors[1] }} />,
+      <TrendingUp key="trending" className="w-8 h-8" style={{ color: iconColors[2] }} />,
+      <Shield key="shield" className="w-8 h-8" style={{ color: iconColors[3] }} />,
     ];
     return iconName && iconMap[iconName] ? iconMap[iconName] : defaultIcons[(idx || 0) % defaultIcons.length];
   };
@@ -123,7 +131,7 @@ function AnimatedStat({ value, label, icon, index, division }: { value: string; 
       className="relative bg-transparent h-full flex flex-col justify-between"
     >
       <div
-        className={`w-14 h-14 rounded-xl flex items-center justify-center mb-5 border relative z-10 ${division === 'taxation' ? 'text-emerald-600 bg-emerald-50 border-emerald-100' : 'text-blue-600 bg-blue-50 border-blue-100'}`}
+        className={`w-14 h-14 rounded-xl flex items-center justify-center mb-5 border relative z-10 ${division === 'taxation' ? 'bg-emerald-50 border-emerald-100' : 'bg-blue-50 border-blue-100'}`}
       >
         <div className="[&>svg]:w-7 [&>svg]:h-7">{getStatIcon(icon, index)}</div>
       </div>

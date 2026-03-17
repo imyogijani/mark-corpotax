@@ -5,7 +5,6 @@ import LandingChoice from "@/components/LandingChoice";
 import { ComponentRenderer } from "@/components/ComponentRenderer";
 import CurtainTransition from "@/components/CurtainTransition";
 import { apiClient } from "@/lib/api-client";
-import { ChangeDivisionButton } from "@/components/ChangeDivisionButton";
 import { motion } from "framer-motion";
 import { Logo } from "@/components/logo-image";
 
@@ -101,15 +100,7 @@ export default function Home() {
       {!division ? (
         <LandingChoice onChoice={handleChoice} />
       ) : (
-        <>
-          <ComponentRenderer components={layoutComponents} />
-          <ChangeDivisionButton 
-            onReset={() => {
-              localStorage.removeItem("user_division");
-              setDivision(null);
-            }} 
-          />
-        </>
+        <ComponentRenderer components={layoutComponents} />
       )}
     </div>
   );

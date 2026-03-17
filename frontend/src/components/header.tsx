@@ -391,11 +391,11 @@ export function Header() {
             {/* Right: Actions Area */}
             <div className="hidden lg:flex items-center gap-2 md:gap-3 flex-shrink-0">
               {currentDivision && (
-                <div className="flex items-center gap-1 bg-slate-100/80 p-1.5 rounded-xl border border-slate-200 shadow-inner relative">
+                <div className="flex items-center gap-1 bg-slate-100/50 backdrop-blur-sm p-1 rounded-xl border border-slate-200 shadow-inner relative">
                   {/* Finance Choice */}
                   <button
                     onClick={() => handleSwitchDivision("finance")}
-                    className={`relative z-10 flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-500 overflow-hidden ${currentDivision === "finance"
+                    className={`relative z-10 flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all duration-500 overflow-hidden ${currentDivision === "finance"
                       ? "text-white font-black"
                       : "text-slate-500 hover:text-slate-800"
                       }`}
@@ -404,8 +404,8 @@ export function Header() {
                     <span className="text-[10px] uppercase tracking-widest leading-none">Finance</span>
                     {currentDivision === "finance" && (
                       <motion.div
-                        layoutId="active-division"
-                        className="absolute inset-0 bg-blue-600 -z-10 shadow-[0_4px_15px_rgba(37,99,235,0.4)]"
+                        layoutId="active-division-desktop"
+                        className="absolute inset-0 bg-blue-600 -z-10 shadow-[0_4px_12px_rgba(37,99,235,0.3)]"
                         transition={{ type: "spring", stiffness: 400, damping: 30 }}
                       />
                     )}
@@ -414,7 +414,7 @@ export function Header() {
                   {/* Taxation Choice */}
                   <button
                     onClick={() => handleSwitchDivision("taxation")}
-                    className={`relative z-10 flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-500 overflow-hidden ${currentDivision === "taxation"
+                    className={`relative z-10 flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all duration-500 overflow-hidden ${currentDivision === "taxation"
                       ? "text-white font-black"
                       : "text-slate-500 hover:text-slate-800"
                       }`}
@@ -423,8 +423,8 @@ export function Header() {
                     <span className="text-[10px] uppercase tracking-widest leading-none">Taxation</span>
                     {currentDivision === "taxation" && (
                       <motion.div
-                        layoutId="active-division"
-                        className="absolute inset-0 bg-emerald-600 -z-10 shadow-[0_4px_15px_rgba(16,185,129,0.4)]"
+                        layoutId="active-division-desktop"
+                        className="absolute inset-0 bg-emerald-600 -z-10 shadow-[0_4px_12px_rgba(16,185,129,0.3)]"
                         transition={{ type: "spring", stiffness: 400, damping: 30 }}
                       />
                     )}
@@ -501,27 +501,41 @@ export function Header() {
               </div>
 
               {/* Mobile Division Switcher */}
-              <div className="px-8 pt-6">
-                <div className="bg-slate-50/80 p-1.5 rounded-[2rem] border border-slate-100 flex items-center justify-between">
+              <div className="px-6 pt-6">
+                <div className="bg-slate-100/50 backdrop-blur-sm p-1.5 rounded-2xl border border-slate-200 flex items-center relative gap-1">
                   <button
                     onClick={() => handleSwitchDivision("finance")}
-                    className={`flex-1 flex items-center justify-center gap-2 py-4 rounded-[1.5rem] transition-all duration-300 ${currentDivision === "finance"
-                      ? "bg-blue-600 text-white shadow-[0_10px_25px_rgba(37,99,235,0.3)] scale-100 font-black"
-                      : "text-slate-400 font-bold"
+                    className={`relative z-10 flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all duration-500 overflow-hidden ${currentDivision === "finance"
+                      ? "text-white font-black"
+                      : "text-slate-500 hover:text-slate-800"
                       }`}
                   >
-                    <TrendingUp className="w-4 h-4" />
-                    <span className="text-[11px] uppercase tracking-widest">Finance</span>
+                    <TrendingUp className={`w-4 h-4 ${currentDivision === 'finance' ? 'animate-bounce' : ''}`} />
+                    <span className="text-[11px] uppercase tracking-widest font-black">Finance</span>
+                    {currentDivision === "finance" && (
+                      <motion.div
+                        layoutId="active-division-mobile"
+                        className="absolute inset-0 bg-blue-600 -z-10 shadow-[0_8px_20px_rgba(37,99,235,0.3)]"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
                   </button>
                   <button
                     onClick={() => handleSwitchDivision("taxation")}
-                    className={`flex-1 flex items-center justify-center gap-2 py-4 rounded-[1.5rem] transition-all duration-300 ${currentDivision === "taxation"
-                      ? "bg-emerald-600 text-white shadow-[0_10px_25px_rgba(16,185,129,0.3)] scale-100 font-black"
-                      : "text-slate-400 font-bold"
+                    className={`relative z-10 flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all duration-500 overflow-hidden ${currentDivision === "taxation"
+                      ? "text-white font-black"
+                      : "text-slate-500 hover:text-slate-800"
                       }`}
                   >
-                    <ShieldCheck className="w-4 h-4" />
-                    <span className="text-[11px] uppercase tracking-widest">Taxation</span>
+                    <ShieldCheck className={`w-4 h-4 ${currentDivision === 'taxation' ? 'animate-pulse' : ''}`} />
+                    <span className="text-[11px] uppercase tracking-widest font-black">Taxation</span>
+                    {currentDivision === "taxation" && (
+                      <motion.div
+                        layoutId="active-division-mobile"
+                        className="absolute inset-0 bg-emerald-600 -z-10 shadow-[0_8px_20px_rgba(16,185,129,0.3)]"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
                   </button>
                 </div>
               </div>
@@ -535,8 +549,8 @@ export function Header() {
                       : pathname === link.href;
                     return (
                       <Link
-                        key={link.href}
-                        href={link.href}
+                        key={link.label}
+                        href={link.label === "Services" ? (currentDivision === "taxation" ? "/services/taxation" : "/services/finance") : link.href}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={`group flex items-center justify-between p-5 rounded-2xl transition-all duration-300 ${isActive
                           ? currentDivision === 'taxation' ? "bg-emerald-600 text-white shadow-xl shadow-emerald-500/20" : "bg-blue-600 text-white shadow-xl shadow-blue-500/20"
