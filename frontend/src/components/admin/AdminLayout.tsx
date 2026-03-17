@@ -27,9 +27,11 @@ import {
   ArrowDownRight,
   MoreVertical,
   Bell,
-  Search,
   Settings,
   Palette,
+  LogOut,
+  Globe,
+  ChevronDown,
 } from "lucide-react";
 import { 
   AreaChart, 
@@ -82,9 +84,15 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
   children,
   title = "Dashboard",
 }) => {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, logout } = useAuth();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
   const [contentStats, setContentStats] = useState<ContentStats>({
     totalContent: 0,
     activeContent: 0,
@@ -258,14 +266,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
                 <span className="sr-only">Open sidebar</span>
               </Button>
 
-              <div className="hidden md:block relative group">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={18} />
-                <input 
-                  type="text" 
-                  placeholder="Search analytics..." 
-                  className="pl-10 pr-4 py-2 bg-gray-100/50 border-transparent focus:bg-white focus:border-primary/30 focus:ring-4 focus:ring-primary/5 rounded-2xl text-sm transition-all w-64 outline-none"
-                />
-              </div>
+
             </div>
 
             <div className="flex items-center gap-4">
@@ -277,17 +278,81 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
               {/* Notifications */}
               <NotificationBell variant="sheet" />
 
-              {/* User Info */}
-              <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
+              {/* User Info with Dropdown */}
+              <div className="relative flex items-center gap-3 pl-4 border-l border-gray-200">
                 <div className="text-right hidden sm:block">
                   <p className="text-sm font-bold text-gray-900 leading-none">
                     {user?.name || "Admin"}
                   </p>
                   <p className="text-[10px] uppercase tracking-wider text-gray-500 mt-1 font-bold">Admin Role</p>
                 </div>
-                <div className="w-10 h-10 bg-gradient-to-tr from-primary to-blue-400 rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 transform hover:rotate-6 transition-transform cursor-pointer">
-                  <Users size={20} className="text-white" />
-                </div>
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center gap-1 group"
+                >
+                  <div className="w-10 h-10 bg-gradient-to-tr from-primary to-blue-400 rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform cursor-pointer">
+                    <Users size={20} className="text-white" />
+                  </div>
+                  <ChevronDown size={14} className={`text-gray-400 transition-transform duration-200 ${userMenuOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                <AnimatePresence>
+                  {userMenuOpen && (
+                    <>
+                      {/* Backdrop */}
+                      <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />
+                      <motion.div
+                        initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                        transition={{ duration: 0.15, ease: 'easeOut' }}
+                        className="absolute right-0 top-[calc(100%+12px)] w-52 bg-white rounded-2xl shadow-xl shadow-gray-200/80 border border-gray-100 overflow-hidden z-50"
+                      >
+                        {/* User Header */}
+                        <div className="px-4 py-3 bg-gradient-to-r from-primary/5 to-blue-50 border-b border-gray-100">
+                          <p className="text-xs font-black text-gray-900">{user?.name || 'Admin'}</p>
+                          <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mt-0.5">Admin Role</p>
+                        </div>
+
+                        <div className="p-2 space-y-0.5">
+                          <button
+                            onClick={() => { router.push('/admin/settings'); setUserMenuOpen(false); }}
+                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-all group"
+                          >
+                            <div className="w-7 h-7 bg-gray-100 group-hover:bg-primary/10 rounded-lg flex items-center justify-center transition-colors">
+                              <Settings size={14} className="text-gray-500 group-hover:text-primary" />
+                            </div>
+                            <span className="font-semibold">Settings</span>
+                          </button>
+
+                          <a
+                            href="/"
+                            target="_blank"
+                            onClick={() => setUserMenuOpen(false)}
+                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-all group"
+                          >
+                            <div className="w-7 h-7 bg-gray-100 group-hover:bg-blue-50 rounded-lg flex items-center justify-center transition-colors">
+                              <Globe size={14} className="text-gray-500 group-hover:text-blue-600" />
+                            </div>
+                            <span className="font-semibold">View Website</span>
+                          </a>
+
+                          <div className="h-px bg-gray-100 my-1" />
+
+                          <button
+                            onClick={() => { handleLogout(); setUserMenuOpen(false); }}
+                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-red-500 hover:bg-red-50 transition-all group"
+                          >
+                            <div className="w-7 h-7 bg-red-50 group-hover:bg-red-100 rounded-lg flex items-center justify-center transition-colors">
+                              <LogOut size={14} className="text-red-400" />
+                            </div>
+                            <span className="font-semibold">Logout</span>
+                          </button>
+                        </div>
+                      </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </div>

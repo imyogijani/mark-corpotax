@@ -231,7 +231,7 @@ export function Header() {
                 height={42}
               />
               <div className="flex flex-col">
-                <span className="text-sm md:text-lg font-black tracking-tighter text-slate-900 transition-colors uppercase leading-none group-hover/logo:text-blue-600">
+                <span className={`text-sm md:text-lg font-black tracking-tighter text-slate-900 transition-colors uppercase leading-none ${currentDivision === 'taxation' ? 'group-hover/logo:text-emerald-600' : 'group-hover/logo:text-blue-600'}`}>
                   Mark Corpotax
                 </span>
                 <span className={`font-black uppercase tracking-[0.3em] leading-none mt-1 whitespace-nowrap ${currentDivision === "taxation" ? "text-[8px] md:text-[10px] text-slate-900" : "text-[7px] md:text-[8px] text-slate-900"}`}>

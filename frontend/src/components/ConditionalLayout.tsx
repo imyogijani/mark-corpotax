@@ -59,8 +59,8 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
   return (
     <>
       <SmoothScroll />
-      <Preloader />
-      <ScrollProgress />
+      <Preloader division={currentDivision} />
+      <ScrollProgress division={currentDivision} />
 
 
 
