@@ -124,7 +124,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
       name: "Settings",
       href: "/admin/settings",
       icon: Settings,
-      description: "Business & Site Config",
+      description: "Global & Business Config",
     },
   ];
 
