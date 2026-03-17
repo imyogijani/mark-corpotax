@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 
 interface ScrollProgressProps {
@@ -14,11 +15,26 @@ export default function ScrollProgress({ division }: ScrollProgressProps) {
     restDelta: 0.001,
   });
 
-  const barColor = division === 'taxation' ? 'bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-[#0b4c80] shadow-[0_0_15px_rgba(11,76,128,0.3)]';
+  const [currentDivision, setCurrentDivision] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleSync = () => {
+      setCurrentDivision(localStorage.getItem("user_division"));
+    };
+    handleSync();
+    window.addEventListener("storage", handleSync);
+    window.addEventListener("division-change", handleSync);
+    return () => {
+      window.removeEventListener("storage", handleSync);
+      window.removeEventListener("division-change", handleSync);
+    };
+  }, []);
 
   return (
     <motion.div
-      className={`fixed top-0 left-0 right-0 h-1 ${barColor} origin-left z-[100]`}
+      className={`fixed top-0 left-0 right-0 h-1 origin-left z-[999] transition-colors duration-500 ${
+        currentDivision === "taxation" ? "bg-emerald-600" : "bg-[#0b4c80]"
+      }`}
       style={{ scaleX }}
     />
   );

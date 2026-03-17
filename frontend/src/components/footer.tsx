@@ -201,7 +201,7 @@ export function Footer() {
   return (
     <footer className="w-full border-t border-white/5 bg-slate-950 text-slate-400">
       <div className="container max-w-screen-xl py-16 px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="footer-widget lg:col-span-2">
             <div className="mb-8">
               <Link href="/" className="brand-container inline-flex items-center gap-3 group">
@@ -214,7 +214,7 @@ export function Footer() {
                   <span className="text-xl font-black text-white tracking-tight block leading-tight uppercase flex items-center gap-1.5">
                     MARK <span className={division === "taxation" ? "text-emerald-500" : "text-blue-500"}>{division === "taxation" ? "TAXATION" : "FINANCE"}</span>
                   </span>
-                  <span className={`font-black uppercase tracking-[0.3em] block ${division === "taxation" ? "text-[10px] text-emerald-400" : "text-[8px] text-blue-400 mt-1"}`}>
+                  <span className={`font-black uppercase tracking-[0.3em] block ${division === "taxation" ? "text-[12px] text-emerald-400" : "text-[10px] text-blue-400 mt-1"}`}>
                     {companyTagline}
                   </span>
                 </div>
@@ -225,20 +225,20 @@ export function Footer() {
             </p>
             <div className="text-slate-400 text-sm space-y-3 mb-8">
               <p className="flex items-start gap-2">
-                <strong className="text-white font-black min-w-[70px] uppercase text-[10px] tracking-widest">Address:</strong>
+                <strong className="text-white font-black min-w-[70px] uppercase text-[12px] tracking-widest">Address:</strong>
                 <span className="leading-relaxed opacity-80">{address}</span>
               </p>
               <p className="flex items-center gap-2">
-                <strong className="text-white font-black min-w-[70px] uppercase text-[10px] tracking-widest">Finance:</strong>
+                <strong className="text-white font-black min-w-[70px] uppercase text-[12px] tracking-widest">Finance:</strong>
                 <Link href={`tel:${phoneFinance}`} className={`${division === 'taxation' ? 'hover:text-emerald-400' : 'hover:text-blue-400'} transition-colors opacity-80`}>{phoneFinance}</Link>
               </p>
               <p className="flex items-center gap-2">
-                <strong className="text-white font-black min-w-[70px] uppercase text-[10px] tracking-widest">Taxation:</strong>
+                <strong className="text-white font-black min-w-[70px] uppercase text-[12px] tracking-widest">Taxation:</strong>
                 <Link href={`tel:${phoneTaxation}`} className={`${division === 'taxation' ? 'hover:text-emerald-400' : 'hover:text-blue-400'} transition-colors opacity-80`}>{phoneTaxation}</Link>
               </p>
               <p className="flex items-center gap-2">
-                <strong className="text-white font-black min-w-[70px] uppercase text-[10px] tracking-widest">Email:</strong>
-                <Link href={`mailto:${email}`} className={`${division === 'taxation' ? 'hover:text-emerald-400' : 'hover:text-blue-400'} transition-colors uppercase tracking-wider text-[10px] font-bold opacity-80`}>{email}</Link>
+                <strong className="text-white font-black min-w-[70px] uppercase text-[12px] tracking-widest">Email:</strong>
+                <Link href={`mailto:${email}`} className={`${division === 'taxation' ? 'hover:text-emerald-400' : 'hover:text-blue-400'} transition-colors uppercase tracking-wider text-[12px] font-bold opacity-80`}>{email}</Link>
               </p>
             </div>
             <div className="flex items-center gap-4">
@@ -285,10 +285,10 @@ export function Footer() {
             </div>
           </div>
           <div className="footer-widget">
-            <h4 className="font-black text-white mb-6 uppercase tracking-[0.3em] text-[10px]">
+            <h4 className="font-black text-white mb-6 uppercase tracking-[0.3em] text-[13px]">
               {quickLinksTitle}
             </h4>
-            <ul className="space-y-3 text-sm font-bold uppercase tracking-widest text-[10px]">
+            <ul className="space-y-3 font-black uppercase tracking-[0.2em] text-[13px]">
               {displayQuickLinks.map((link: FooterLink, index: number) => (
                 <li key={index}>
                   <Link
@@ -302,10 +302,10 @@ export function Footer() {
             </ul>
           </div>
           <div className="footer-widget">
-            <h4 className="font-black text-white mb-6 uppercase tracking-[0.3em] text-[10px]">
+            <h4 className="font-black text-white mb-6 uppercase tracking-[0.3em] text-[13px]">
               {servicesTitle}
             </h4>
-            <ul className="space-y-3 text-sm font-bold uppercase tracking-widest text-[10px]">
+            <ul className="space-y-3 font-black uppercase tracking-[0.2em] text-[13px]">
               {displayServiceLinks.map((link: FooterLink, index: number) => (
                 <li key={index}>
                   <Link
@@ -317,28 +317,6 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
-          <div className="footer-widget">
-            <h4 className="font-black text-white mb-6 uppercase tracking-[0.3em] text-[10px]">
-              {newsletterTitle}
-            </h4>
-            <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-6 leading-relaxed">
-              {newsletterDescription}
-            </p>
-            <form className={`flex items-center gap-1 p-1 bg-white/5 border border-white/10 rounded-3xl shadow-2xl focus-within:ring-2 ${division === 'taxation' ? 'focus-within:ring-emerald-500/20' : 'focus-within:ring-blue-500/20'} transition-all`}>
-              <Input
-                type="email"
-                placeholder="EMAIL ADDRESS"
-                className="flex-grow bg-transparent border-none shadow-none text-white placeholder:text-slate-600 focus-visible:ring-0 pl-4 h-10 min-w-0 font-black text-[10px] tracking-widest"
-              />
-              <Button
-                type="submit"
-                size="sm"
-                className={`rounded-2xl ${division === 'taxation' ? 'bg-emerald-600' : 'bg-blue-600'} hover:bg-white hover:text-slate-950 text-white px-5 h-10 text-[10px] font-black uppercase tracking-widest transition-all`}
-              >
-                Join
-              </Button>
-            </form>
           </div>
         </div>
 
