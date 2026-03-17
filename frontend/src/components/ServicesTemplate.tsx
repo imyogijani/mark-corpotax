@@ -204,7 +204,11 @@ export default function ServicesTemplate({ division }: ServicesTemplateProps) {
                       className="group flex-shrink-0 w-[80vw] md:w-full snap-center"
                     >
                       <Link href={`/services/${service.id}`}>
-                        <div className={`relative bg-white rounded-[2.5rem] md:rounded-[3rem] p-5 md:p-10 flex flex-col md:flex-row gap-6 md:gap-10 border border-slate-100 overflow-hidden shadow-sm`}>
+                        <motion.div 
+                          whileHover={{ y: -10 }}
+                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                          className={`relative bg-white rounded-[2.5rem] md:rounded-[3rem] p-5 md:p-10 flex flex-col md:flex-row gap-6 md:gap-10 border border-slate-100 overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300`}
+                        >
                           <div className="w-full md:w-48 flex-shrink-0">
                             <div className="relative aspect-[16/9] md:aspect-square rounded-[2rem] overflow-hidden bg-slate-100">
                               <img src={service.image} alt={service.name} className="absolute inset-0 w-full h-full object-cover" />
@@ -231,7 +235,7 @@ export default function ServicesTemplate({ division }: ServicesTemplateProps) {
                               <ArrowRight className={`w-4 h-4 ${division === 'taxation' ? 'text-emerald-600' : 'text-blue-600'}`} />
                             </div>
                           </div>
-                        </div>
+                        </motion.div>
                       </Link>
                     </motion.div>
                   ))}

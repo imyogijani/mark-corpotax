@@ -216,7 +216,11 @@ export function DynamicFeaturesSection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
           {features.map((feature, index) => (
             <div key={index}>
-              <div className="relative group h-full">
+              <motion.div 
+                className="relative h-full"
+                whileHover={{ y: -15 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
                 <Card className={`relative h-full text-center p-8 md:p-14 border bg-white shadow-[0_20px_40px_rgba(0,0,0,0.03)] rounded-[2.5rem] md:rounded-[3rem] overflow-hidden ${division === 'taxation' ? 'border-slate-100' : 'border-slate-100'}`}>
                   {/* Image Container */}
                   <div className="w-full h-48 md:h-56 flex items-center justify-center mx-auto mb-6 md:mb-8 relative overflow-hidden bg-slate-50 rounded-2xl md:rounded-[2rem]">
@@ -235,7 +239,7 @@ export function DynamicFeaturesSection() {
                     {feature.description}
                   </p>
                 </Card>
-              </div>
+              </motion.div>
             </div>
           ))}
         </div>
