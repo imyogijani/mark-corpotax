@@ -139,7 +139,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
     <div className="flex h-full flex-col bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       {/* Header */}
       <div className="flex items-center gap-3 p-6 border-b border-slate-700">
-        <Logo className="object-contain" width={32} height={32} />
+        <Logo className="object-contain" width={32} height={32} division={null} />
         <div>
           <h2 className="font-bold text-lg text-white">Mark Corpotax</h2>
           <p className="text-xs text-slate-300">Admin Panel</p>

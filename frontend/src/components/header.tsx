@@ -229,6 +229,7 @@ export function Header() {
                 className="object-contain transition-transform duration-500 group-hover/logo:scale-110"
                 width={42}
                 height={42}
+                division={currentDivision}
               />
               <div className="flex flex-col">
                 <span className={`text-sm md:text-lg font-black tracking-tighter text-slate-900 transition-colors uppercase leading-none ${currentDivision === 'taxation' ? 'group-hover/logo:text-emerald-600' : 'group-hover/logo:text-blue-600'}`}>

@@ -1,15 +1,42 @@
 import Image from "next/image";
+import { useState, useEffect } from "react";
 
 interface LogoProps {
   className?: string;
   width?: number;
   height?: number;
+  division?: string | null;
 }
 
-export function Logo({ className = "", width = 32, height = 32 }: LogoProps) {
+export function Logo({ className = "", width = 32, height = 32, division: propDivision }: LogoProps) {
+  const [division, setDivision] = useState<string | null>(propDivision || null);
+
+  useEffect(() => {
+    if (propDivision !== undefined) {
+      setDivision(propDivision);
+      return;
+    }
+
+    const handleSync = () => {
+      setDivision(localStorage.getItem("user_division"));
+    };
+
+    handleSync();
+    window.addEventListener("storage", handleSync);
+    window.addEventListener("division-change", handleSync);
+    return () => {
+      window.removeEventListener("storage", handleSync);
+      window.removeEventListener("division-change", handleSync);
+    };
+  }, [propDivision]);
+
+  const logoSrc = division === "taxation" 
+    ? "/logo/taxation-logo.png" 
+    : "/logo/Mark Corpotax x11.png";
+
   return (
     <Image
-      src="/logo/Mark Corpotax x11.png"
+      src={logoSrc}
       alt="MARK GROUP - Financial Services & Legal Solutions"
       width={width}
       height={height}

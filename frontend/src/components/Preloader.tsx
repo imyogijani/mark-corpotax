@@ -76,7 +76,7 @@ export default function Preloader({ division }: { division?: string }) {
             >
               <div className={`absolute inset-0 rounded-full border ${isTaxation ? 'border-emerald-100' : 'border-blue-100'} scale-125 shadow-sm bg-white/50 backdrop-blur-sm`} />
               <div className="flex items-center justify-center w-full h-full p-6">
-                <Logo className="w-full h-full object-contain" />
+                <Logo className="w-full h-full object-contain" division={isTaxation ? 'taxation' : 'finance'} />
               </div>
             </motion.div>
 
