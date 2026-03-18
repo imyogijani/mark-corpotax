@@ -4,12 +4,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/logo-image";
 import { useLoading } from "@/contexts/LoadingContext";
+import { usePathname } from "next/navigation";
 
 export default function Preloader({ division }: { division?: string }) {
   const { isLoading, setIsLoading } = useLoading();
   const [progress, setProgress] = useState(0);
+  const pathname = usePathname();
 
-  const isTaxation = division === 'taxation';
+  const isTaxation = division === 'taxation' && !pathname.startsWith('/admin');
   const primaryColor = isTaxation ? '#10b981' : '#0b4c80';
   const secondaryColor = isTaxation ? 'text-emerald-500' : 'text-blue-500';
   const bgSecondary = isTaxation ? 'bg-emerald-100/50' : 'bg-blue-100/50';

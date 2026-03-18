@@ -145,7 +145,7 @@ export default function AppointmentPage() {
   const API_URL =
     typeof process !== "undefined" && process.env?.NEXT_PUBLIC_API_URL
       ? process.env.NEXT_PUBLIC_API_URL
-      : "http://localhost:5000/api";
+      : "http://127.0.0.1:5000/api";
 
   const form = useForm<AppointmentFormValues>({
     resolver: zodResolver(appointmentFormSchema),

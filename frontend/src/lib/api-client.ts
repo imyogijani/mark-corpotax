@@ -5,7 +5,7 @@ const getApiBaseUrl = () => {
   if (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_API_URL) {
     return process.env.NEXT_PUBLIC_API_URL;
   }
-  return "http://localhost:5000/api";
+  return "http://127.0.0.1:5000/api";
 };
 
 const API_BASE_URL = getApiBaseUrl();

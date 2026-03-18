@@ -39,8 +39,11 @@ app.use(helmet());
 // CORS configuration - handles both development and production
 const allowedOrigins = [
   "http://localhost:3000",
+  "http://127.0.0.1:3000",
   "http://localhost:3001",
+  "http://127.0.0.1:3001",
   "http://localhost:9002",
+  "http://127.0.0.1:9002",
   "https://markcorpotax.com",
   "https://www.markcorpotax.com",
   "http://markcorpotax.com",
@@ -127,10 +130,10 @@ app.use("*", (req: Request, res: Response) => {
 app.use(errorHandler);
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
+app.listen(Number(PORT), "127.0.0.1", () => {
+  console.log(`🚀 Server is running on http://127.0.0.1:${PORT}`);
   console.log(`📱 Environment: ${process.env.NODE_ENV}`);
-  console.log(`🌐 Health check: http://localhost:${PORT}/health`);
+  console.log(`🌐 Health check: http://127.0.0.1:${PORT}/health`);
 });
 
 export default app;
