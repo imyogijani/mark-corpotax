@@ -203,7 +203,7 @@ export function Footer() {
       <div className="container max-w-screen-xl py-16 px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="footer-widget lg:col-span-2">
-            <div className="mb-8">
+            <div className="mb-2">
               <Link href="/" className="brand-container inline-flex items-center gap-3 group">
                 <Logo
                   className="object-contain flex-shrink-0 transition-transform group-hover:scale-110"
