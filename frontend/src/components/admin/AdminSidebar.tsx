@@ -99,11 +99,10 @@ function SidebarContent({
         {/* Dashboard */}
         <Link
           href="/admin"
-          className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${
-            pathname === "/admin"
+          className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${pathname === "/admin"
               ? "bg-primary text-white shadow-lg shadow-primary/25"
               : "text-slate-300 hover:bg-white/5 hover:text-white"
-          }`}
+            }`}
         >
           <div className={`p-2 rounded-lg transition-colors ${pathname === "/admin" ? "bg-white/20" : "bg-slate-800 group-hover:bg-slate-700"}`}>
             <LayoutDashboard size={20} className={pathname === "/admin" ? "text-white" : "text-slate-400 group-hover:text-white"} />
@@ -114,26 +113,22 @@ function SidebarContent({
           </div>
         </Link>
 
-        <div className="h-px bg-slate-700/30 my-4 mx-2" />
-        <p className="px-3 mb-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Website & Content</p>
 
         {/* Website Builder Collapsible */}
         <Collapsible open={websiteBuilderOpen} onOpenChange={setWebsiteBuilderOpen}>
           <CollapsibleTrigger asChild>
             <button
               type="button"
-              className={`w-full group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${
-                pathname.includes("/page-builder") || pathname.includes("/site-builder")
+              className={`w-full group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${pathname.includes("/page-builder") || pathname.includes("/site-builder")
                   ? "bg-slate-700/50 text-white shadow-md shadow-black/10 border border-slate-600/50"
                   : "text-slate-300 hover:bg-white/5 hover:text-white"
-              }`}
+                }`}
             >
               <div
-                className={`p-2 rounded-lg transition-colors ${
-                  pathname.includes("/page-builder") || pathname.includes("/site-builder")
+                className={`p-2 rounded-lg transition-colors ${pathname.includes("/page-builder") || pathname.includes("/site-builder")
                     ? "bg-primary/20 text-primary"
                     : "bg-slate-800 group-hover:bg-slate-700"
-                }`}
+                  }`}
               >
                 <Palette
                   size={20}
@@ -158,9 +153,8 @@ function SidebarContent({
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`group flex items-center gap-3 rounded-xl p-2.5 transition-all duration-200 ${
-                    active ? "bg-primary/10 text-primary border border-primary/20" : "text-slate-400 hover:bg-white/5 hover:text-white"
-                  }`}
+                  className={`group flex items-center gap-3 rounded-xl p-2.5 transition-all duration-200 ${active ? "bg-primary/10 text-primary border border-primary/20" : "text-slate-400 hover:bg-white/5 hover:text-white"
+                    }`}
                 >
                   <div className={`p-1.5 rounded-lg ${active ? "bg-primary/20" : "bg-transparent group-hover:bg-slate-700"}`}>
                     <item.icon size={16} className={active ? "text-primary" : "text-slate-500 group-hover:text-white"} />
@@ -181,11 +175,10 @@ function SidebarContent({
             <Link
               key={item.name}
               href={item.href}
-              className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${
-                active
+              className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${active
                   ? "bg-primary text-white shadow-lg shadow-primary/25"
                   : "text-slate-300 hover:bg-white/5 hover:text-white"
-              }`}
+                }`}
             >
               <div className={`p-2 rounded-lg transition-colors ${active ? "bg-white/20" : "bg-slate-800 group-hover:bg-slate-700"}`}>
                 <item.icon size={20} className={active ? "text-white" : "text-slate-400 group-hover:text-white"} />
@@ -213,7 +206,7 @@ function SidebarContent({
             </div>
             {clearingCache ? "Clearing..." : "Clear Cache"}
           </button>
-          
+
           <a
             href="/"
             target="_blank"
