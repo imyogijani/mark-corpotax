@@ -259,9 +259,6 @@ export default function SettingsPage() {
             <TabsTrigger value="seo" className="py-4 rounded-[1.25rem] data-[state=active]:bg-white data-[state=active]:shadow-[0_8px_30px_rgb(0,0,0,0.06)] data-[state=active]:text-primary font-black uppercase tracking-widest text-[10px] gap-2 transition-all">
               <Search className="h-4 w-4" /> <span className="hidden sm:inline">SEO Edge</span>
             </TabsTrigger>
-            <TabsTrigger value="advanced" className="py-4 rounded-[1.25rem] data-[state=active]:bg-white data-[state=active]:shadow-[0_8px_30px_rgb(0,0,0,0.06)] data-[state=active]:text-primary font-black uppercase tracking-widest text-[10px] gap-2 transition-all">
-              <Code2 className="h-4 w-4" /> <span className="hidden sm:inline">Dev Mode</span>
-            </TabsTrigger>
           </TabsList>
         </div>
 
@@ -567,62 +564,6 @@ export default function SettingsPage() {
                           <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="advanced" className="mt-0 outline-none">
-                <Card className="border-0 shadow-[0_25px_80px_rgba(0,0,0,0.03)] rounded-[2.5rem] overflow-hidden bg-slate-900 text-white">
-                  <header className="p-10 pb-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/20">
-                        <Code2 className="h-5 w-5 text-white" />
-                      </div>
-                      <CardTitle className="text-2xl font-black uppercase tracking-tighter text-white">Developer Overrides</CardTitle>
-                    </div>
-                    <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mt-2">DANGER ZONE: SCRIPT INJECTION & CORE LOGIC</p>
-                  </header>
-                  <CardContent className="p-10 pt-4 space-y-10">
-                    <div className="grid md:grid-cols-2 gap-8">
-                      <div className="space-y-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="w-6 h-6 rounded bg-slate-800 flex items-center justify-center">
-                            <span className="text-[10px] font-mono text-primary font-bold">{"<H>"}</span>
-                          </div>
-                          <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Head Script Injection (Custom Styles/Scripts)</Label>
-                        </div>
-                        <Textarea
-                          value={settings.custom_head_scripts}
-                          onChange={e => setSettings({ ...settings, custom_head_scripts: e.target.value })}
-                          placeholder="<!-- Add FB Pixel, GTM, etc -->"
-                          className="rounded-[2.5rem] border-slate-800 bg-slate-800/50 transition-all font-mono text-[11px] text-primary min-h-[160px] p-8 focus:ring-primary/20"
-                        />
-                      </div>
-                      <div className="space-y-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="w-6 h-6 rounded bg-slate-800 flex items-center justify-center">
-                            <span className="text-[10px] font-mono text-emerald-500 font-bold">{"<B>"}</span>
-                          </div>
-                          <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Body Footer Injection (Trackers/Live Chat)</Label>
-                        </div>
-                        <Textarea
-                          value={settings.custom_body_scripts}
-                          onChange={e => setSettings({ ...settings, custom_body_scripts: e.target.value })}
-                          placeholder="<!-- Add Tawk.to, Hotjar, etc -->"
-                          className="rounded-[2.5rem] border-slate-800 bg-slate-800/50 transition-all font-mono text-[11px] text-emerald-400 min-h-[160px] p-8 focus:ring-emerald-500/20"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="p-8 bg-red-500/5 rounded-[2.5rem] border border-red-500/10 flex items-center justify-between">
-                      <div className="space-y-1">
-                        <h4 className="text-red-400 font-black uppercase tracking-tight flex items-center gap-2"><Lock className="h-4 w-4" /> System Lockdown</h4>
-                        <p className="text-[10px] font-bold text-slate-500 uppercase">Emergency maintenance mode toggle (Site-wide)</p>
-                      </div>
-                      <Button variant="outline" className="rounded-2xl border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white font-black uppercase tracking-widest text-[10px] px-8 border-2">
-                        Enter Stealth Mode
-                      </Button>
                     </div>
                   </CardContent>
                 </Card>

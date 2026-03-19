@@ -112,14 +112,6 @@ export default function BlogManagementPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button
-            variant="outline"
-            onClick={fetchBlogs}
-            className="h-14 px-6 rounded-2xl border-gray-200 hover:bg-gray-50 font-bold text-gray-600 gap-2 transition-all active:scale-95"
-          >
-            <Loader2 className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-            Sync
-          </Button>
           <Link href="/admin/blog/new">
             <Button className="h-14 px-8 bg-gradient-to-r from-primary to-blue-600 hover:shadow-2xl hover:shadow-primary/30 text-white rounded-2xl font-black uppercase tracking-widest transition-all hover:-translate-y-1 active:scale-95 border-0">
               <Plus className="h-5 w-5 mr-3" strokeWidth={3} />
@@ -315,7 +307,7 @@ export default function BlogManagementPage() {
                             <div className="h-8 w-px bg-gray-100" />
                             <div>
                               <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Timestamp</p>
-                              <p className="text-sm font-black text-gray-900">{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '20' + new Date(blog.createdAt).getFullYear().toString().slice(-2) })}</p>
+                              <p className="text-sm font-black text-gray-900">{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
                             </div>
                             <div className="h-8 w-px bg-gray-100 hidden lg:block" />
                             <div className="hidden lg:block">
