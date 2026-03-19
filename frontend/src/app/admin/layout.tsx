@@ -65,15 +65,18 @@ function AdminPageContainer({ children }: { children: React.ReactNode }) {
 import { NotificationProvider } from '@/contexts/NotificationContext';
 import { AdminRoute } from '@/components/ProtectedRoute';
 import { AdminUIProvider } from '@/contexts/AdminUIContext';
+import { AdminProvider } from '@/contexts/AdminContext';
 
 export default function AdminRootLayout({ children }: { children: React.ReactNode }) {
   return (
     <NotificationProvider>
       <AdminRoute>
         <AdminUIProvider>
-          <AdminPageContainer>
-            {children}
-          </AdminPageContainer>
+          <AdminProvider>
+            <AdminPageContainer>
+              {children}
+            </AdminPageContainer>
+          </AdminProvider>
         </AdminUIProvider>
       </AdminRoute>
     </NotificationProvider>

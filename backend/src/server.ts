@@ -130,10 +130,10 @@ app.use("*", (req: Request, res: Response) => {
 app.use(errorHandler);
 
 // Start server
-app.listen(Number(PORT), "127.0.0.1", () => {
-  console.log(`🚀 Server is running on http://127.0.0.1:${PORT}`);
+app.listen(Number(PORT), "0.0.0.0", () => {
+  console.log(`🚀 Server is running on http://localhost:${PORT}`);
   console.log(`📱 Environment: ${process.env.NODE_ENV}`);
-  console.log(`🌐 Health check: http://127.0.0.1:${PORT}/health`);
+  console.log(`🌐 Health check: http://localhost:${PORT}/health`);
 });
 
 export default app;

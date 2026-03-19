@@ -84,83 +84,89 @@ function SidebarContent({
   };
 
   return (
-    <div className="flex h-full flex-col bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+    <div className="flex h-full flex-col bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white border-r border-slate-700/50">
       {/* Header */}
-      <div className="flex items-center gap-3 p-6 border-b border-slate-700">
+      <div className="flex items-center gap-3 p-6 border-b border-slate-700/50">
         <Logo className="object-contain" width={32} height={32} division={null} />
         <div>
-          <h2 className="font-bold text-xl text-white">Mark Corpotax</h2>
-          <p className="text-sm text-slate-300 font-medium">Admin Panel</p>
+          <h2 className="font-bold text-xl text-white tracking-tight">Mark Corpotax</h2>
+          <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-0.5">Admin Panel</p>
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+      <nav className="flex-1 p-4 space-y-1.5 overflow-y-auto custom-scrollbar">
         {/* Dashboard */}
         <Link
           href="/admin"
           className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${
             pathname === "/admin"
               ? "bg-primary text-white shadow-lg shadow-primary/25"
-              : "text-slate-300 hover:bg-slate-800 hover:text-white"
+              : "text-slate-300 hover:bg-white/5 hover:text-white"
           }`}
         >
-          <div className={`p-2 rounded-lg ${pathname === "/admin" ? "bg-white/20" : "bg-slate-700 group-hover:bg-slate-600"}`}>
-            <LayoutDashboard size={22} className={pathname === "/admin" ? "text-white" : "text-slate-300 group-hover:text-white"} />
+          <div className={`p-2 rounded-lg transition-colors ${pathname === "/admin" ? "bg-white/20" : "bg-slate-800 group-hover:bg-slate-700"}`}>
+            <LayoutDashboard size={20} className={pathname === "/admin" ? "text-white" : "text-slate-400 group-hover:text-white"} />
           </div>
-          <div className="flex-1">
-            <p className="font-bold text-base">Dashboard</p>
-            <p className="text-sm opacity-75 font-medium">Overview & Analytics</p>
+          <div className="flex-1 min-w-0">
+            <p className="font-bold text-sm truncate">Dashboard</p>
+            <p className="text-[10px] opacity-60 font-medium truncate">Overview & Analytics</p>
           </div>
         </Link>
 
+        <div className="h-px bg-slate-700/30 my-4 mx-2" />
+        <p className="px-3 mb-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Website & Content</p>
+
         {/* Website Builder Collapsible */}
         <Collapsible open={websiteBuilderOpen} onOpenChange={setWebsiteBuilderOpen}>
-          <CollapsibleTrigger className="w-full">
-            <div
-              className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${
+          <CollapsibleTrigger asChild>
+            <button
+              type="button"
+              className={`w-full group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${
                 pathname.includes("/page-builder") || pathname.includes("/site-builder")
-                  ? "bg-primary text-white shadow-lg shadow-primary/25"
-                  : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                  ? "bg-slate-700/50 text-white shadow-md shadow-black/10 border border-slate-600/50"
+                  : "text-slate-300 hover:bg-white/5 hover:text-white"
               }`}
             >
               <div
-                className={`p-2 rounded-lg ${
+                className={`p-2 rounded-lg transition-colors ${
                   pathname.includes("/page-builder") || pathname.includes("/site-builder")
-                    ? "bg-white/20"
-                    : "bg-slate-700 group-hover:bg-slate-600"
+                    ? "bg-primary/20 text-primary"
+                    : "bg-slate-800 group-hover:bg-slate-700"
                 }`}
               >
                 <Palette
-                  size={22}
+                  size={20}
                   className={
                     pathname.includes("/page-builder") || pathname.includes("/site-builder")
-                      ? "text-white"
-                      : "text-slate-300 group-hover:text-white"
+                      ? "text-primary"
+                      : "text-slate-400 group-hover:text-white"
                   }
                 />
               </div>
-              <div className="flex-1 text-left">
-                <p className="font-bold text-base">Website Builder</p>
-                <p className="text-sm opacity-75 font-medium">Design & Customize</p>
+              <div className="flex-1 text-left min-w-0">
+                <p className="font-bold text-sm truncate">Website Builder</p>
+                <p className="text-[10px] opacity-60 font-medium truncate">Design & Customize</p>
               </div>
-              <ChevronDown size={20} className={`transition-transform duration-200 ${websiteBuilderOpen ? "rotate-180" : ""}`} />
-            </div>
+              <ChevronDown size={14} className={`transition-transform duration-300 text-slate-500 ${websiteBuilderOpen ? "rotate-180" : ""}`} />
+            </button>
           </CollapsibleTrigger>
-          <CollapsibleContent className="pl-4 mt-1 space-y-1">
+          <CollapsibleContent className="pl-4 mt-2 space-y-1.5 animate-in slide-in-from-top-2 duration-300">
             {websiteBuilderItems.map((item) => {
               const active = pathname === item.href;
               return (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`group flex items-center gap-3 rounded-lg p-2.5 transition-all duration-200 ${
-                    active ? "bg-white/10 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"
+                  className={`group flex items-center gap-3 rounded-xl p-2.5 transition-all duration-200 ${
+                    active ? "bg-primary/10 text-primary border border-primary/20" : "text-slate-400 hover:bg-white/5 hover:text-white"
                   }`}
                 >
-                  <item.icon size={20} className={active ? "text-white" : "text-slate-400 group-hover:text-white"} />
-                  <div className="flex-1">
-                    <p className="text-base font-bold">{item.name}</p>
+                  <div className={`p-1.5 rounded-lg ${active ? "bg-primary/20" : "bg-transparent group-hover:bg-slate-700"}`}>
+                    <item.icon size={16} className={active ? "text-primary" : "text-slate-500 group-hover:text-white"} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold truncate">{item.name}</p>
                   </div>
                 </Link>
               );
@@ -178,15 +184,15 @@ function SidebarContent({
               className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${
                 active
                   ? "bg-primary text-white shadow-lg shadow-primary/25"
-                  : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                  : "text-slate-300 hover:bg-white/5 hover:text-white"
               }`}
             >
-              <div className={`p-2 rounded-lg ${active ? "bg-white/20" : "bg-slate-700 group-hover:bg-slate-600"}`}>
-                <item.icon size={22} className={active ? "text-white" : "text-slate-300 group-hover:text-white"} />
+              <div className={`p-2 rounded-lg transition-colors ${active ? "bg-white/20" : "bg-slate-800 group-hover:bg-slate-700"}`}>
+                <item.icon size={20} className={active ? "text-white" : "text-slate-400 group-hover:text-white"} />
               </div>
-              <div className="flex-1">
-                <p className="font-bold text-base">{item.name}</p>
-                <p className="text-sm opacity-75 font-medium">{item.description}</p>
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-sm truncate">{item.name}</p>
+                <p className="text-[10px] opacity-60 font-medium truncate">{item.description}</p>
               </div>
             </Link>
           );
@@ -194,38 +200,48 @@ function SidebarContent({
       </nav>
 
       {/* Quick Actions */}
-      <div className="p-4 border-t border-slate-700">
-        <div className="space-y-2">
-          <Button
+      <div className="p-4 border-t border-slate-700/50 bg-black/10">
+        <div className="space-y-1.5">
+          <button
+            type="button"
             onClick={onClearCache}
             disabled={clearingCache}
-            variant="ghost"
-            className="w-full justify-start text-amber-300 hover:text-amber-200 hover:bg-amber-900/20"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-amber-400 hover:bg-amber-400/10 transition-all disabled:opacity-50"
           >
-            <Trash2 size={16} className="mr-2" />
+            <div className="w-8 h-8 rounded-lg bg-amber-400/10 flex items-center justify-center">
+              <Trash2 size={16} />
+            </div>
             {clearingCache ? "Clearing..." : "Clear Cache"}
-          </Button>
-          <Button asChild variant="ghost" className="w-full justify-start text-slate-300 hover:text-white hover:bg-slate-800">
-            <Link href="/" target="_blank" className="flex items-center gap-2">
-              <Globe size={16} />
-              View Website
-            </Link>
-          </Button>
-          <Button
-            onClick={onLogout}
-            variant="ghost"
-            className="w-full justify-start text-red-300 hover:text-red-200 hover:bg-red-900/20"
+          </button>
+          
+          <a
+            href="/"
+            target="_blank"
+            rel="noreferrer"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-300 hover:bg-white/5 hover:text-white transition-all"
           >
-            <LogOut size={16} className="mr-2" />
+            <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center">
+              <Globe size={16} />
+            </div>
+            Website
+          </a>
+
+          <button
+            type="button"
+            onClick={onLogout}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-red-400 hover:bg-red-400/10 transition-all"
+          >
+            <div className="w-8 h-8 rounded-lg bg-red-400/10 flex items-center justify-center">
+              <LogOut size={16} />
+            </div>
             Logout
-          </Button>
+          </button>
         </div>
       </div>
     </div>
   );
 }
 
-// ─── AdminSidebar: now a lightweight shell — passes props to SidebarContent ───
 const AdminSidebar: React.FC<{ isMobileOpen: boolean; setIsMobileOpen: (open: boolean) => void }> = ({
   isMobileOpen,
   setIsMobileOpen,
@@ -267,13 +283,13 @@ const AdminSidebar: React.FC<{ isMobileOpen: boolean; setIsMobileOpen: (open: bo
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col shadow-2xl">
         <SidebarContent {...contentProps} />
       </div>
 
       {/* Mobile Sidebar */}
       <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
-        <SheetContent side="left" className="p-0 w-72 border-0">
+        <SheetContent side="left" className="p-0 w-72 border-0 shadow-2xl">
           <SheetHeader className="sr-only">
             <SheetTitle>Admin Navigation</SheetTitle>
           </SheetHeader>
