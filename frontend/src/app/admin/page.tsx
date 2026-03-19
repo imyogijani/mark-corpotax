@@ -1,15 +1,7 @@
-import AdminLayout from "@/components/admin/AdminLayout";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Admin Dashboard - Mark Corpotax",
-  description: "Admin dashboard for Mark Corpotax Financial & Legal Solutions.",
-};
+import DashboardView from "@/components/admin/DashboardView";
 
 export default function AdminPage() {
   return (
-    <AdminLayout title="Dashboard">
-      {/* Dashboard content is handled within AdminLayout when title is "Dashboard" */}
-    </AdminLayout>
+    <DashboardView />
   );
 }

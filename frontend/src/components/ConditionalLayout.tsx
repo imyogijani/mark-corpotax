@@ -70,39 +70,7 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
         </Suspense>
       )}
       <main className="flex-1 overflow-x-hidden relative bg-slate-50 min-h-screen">
-        <AnimatePresence mode="popLayout" initial={false} custom={direction}>
-          <motion.div
-            key={`${pathname}-${currentDivision}`}
-            custom={direction}
-            variants={{
-              enter: (dir: number) => ({
-                x: dir > 0 ? '100%' : dir < 0 ? '-100%' : 0,
-                opacity: 0
-              }),
-              center: {
-                zIndex: 1,
-                x: 0,
-                opacity: 1
-              },
-              exit: (dir: number) => ({
-                zIndex: 0,
-                x: dir > 0 ? '-100%' : dir < 0 ? '100%' : 0,
-                opacity: 0
-              })
-            }}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{
-              type: "tween",
-              duration: 0.3,
-              ease: "easeInOut"
-            }}
-            className="w-full"
-          >
-            <PageTransition key={pathname}>{children}</PageTransition>
-          </motion.div>
-        </AnimatePresence>
+        <PageTransition>{children}</PageTransition>
       </main>
       {showLayout && (
         <Suspense fallback={null}>

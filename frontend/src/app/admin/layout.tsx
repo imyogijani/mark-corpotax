@@ -2,6 +2,8 @@
 
 import { NotificationProvider } from '@/contexts/NotificationContext';
 import { AdminRoute } from '@/components/ProtectedRoute';
+import { AdminProvider } from '@/contexts/AdminContext';
+import AdminLayout from '@/components/admin/AdminLayout';
 
 export default function AdminRootLayout({
   children,
@@ -11,7 +13,11 @@ export default function AdminRootLayout({
   return (
     <NotificationProvider>
       <AdminRoute>
-        {children}
+        <AdminProvider>
+          <AdminLayout>
+            {children}
+          </AdminLayout>
+        </AdminProvider>
       </AdminRoute>
     </NotificationProvider>
   );

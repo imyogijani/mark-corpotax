@@ -153,18 +153,16 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
         {/* Dashboard - First item */}
         <Link
           href="/admin"
-          className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${
-            pathname === "/admin"
-              ? "bg-primary text-white shadow-lg shadow-primary/25"
-              : "text-slate-300 hover:bg-slate-800 hover:text-white"
-          }`}
+          className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${pathname === "/admin"
+            ? "bg-primary text-white shadow-lg shadow-primary/25"
+            : "text-slate-300 hover:bg-slate-800 hover:text-white"
+            }`}
         >
           <div
-            className={`p-2 rounded-lg ${
-              pathname === "/admin"
-                ? "bg-white/20"
-                : "bg-slate-700 group-hover:bg-slate-600"
-            }`}
+            className={`p-2 rounded-lg ${pathname === "/admin"
+              ? "bg-white/20"
+              : "bg-slate-700 group-hover:bg-slate-600"
+              }`}
           >
             <LayoutDashboard
               size={18}
@@ -188,26 +186,24 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
         >
           <CollapsibleTrigger className="w-full">
             <div
-              className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${
-                pathname.includes("/page-builder") ||
+              className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${pathname.includes("/page-builder") ||
                 pathname.includes("/site-builder")
-                  ? "bg-primary text-white shadow-lg shadow-primary/25"
-                  : "text-slate-300 hover:bg-slate-800 hover:text-white"
-              }`}
+                ? "bg-primary text-white shadow-lg shadow-primary/25"
+                : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                }`}
             >
               <div
-                className={`p-2 rounded-lg ${
-                  pathname.includes("/page-builder") ||
+                className={`p-2 rounded-lg ${pathname.includes("/page-builder") ||
                   pathname.includes("/site-builder")
-                    ? "bg-white/20"
-                    : "bg-slate-700 group-hover:bg-slate-600"
-                }`}
+                  ? "bg-white/20"
+                  : "bg-slate-700 group-hover:bg-slate-600"
+                  }`}
               >
                 <Palette
                   size={18}
                   className={
                     pathname.includes("/page-builder") ||
-                    pathname.includes("/site-builder")
+                      pathname.includes("/site-builder")
                       ? "text-white"
                       : "text-slate-300 group-hover:text-white"
                   }
@@ -219,9 +215,8 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
               </div>
               <ChevronDown
                 size={16}
-                className={`transition-transform duration-200 ${
-                  websiteBuilderOpen ? "rotate-180" : ""
-                }`}
+                className={`transition-transform duration-200 ${websiteBuilderOpen ? "rotate-180" : ""
+                  }`}
               />
             </div>
           </CollapsibleTrigger>
@@ -232,11 +227,10 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`group flex items-center gap-3 rounded-lg p-2.5 transition-all duration-200 ${
-                    active
-                      ? "bg-white/10 text-white"
-                      : "text-slate-400 hover:bg-slate-800/50 hover:text-white"
-                  }`}
+                  className={`group flex items-center gap-3 rounded-lg p-2.5 transition-all duration-200 ${active
+                    ? "bg-white/10 text-white"
+                    : "text-slate-400 hover:bg-slate-800/50 hover:text-white"
+                    }`}
                 >
                   <item.icon
                     size={16}
@@ -262,18 +256,16 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
             <Link
               key={item.name}
               href={item.href}
-              className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${
-                active
-                  ? "bg-primary text-white shadow-lg shadow-primary/25"
-                  : "text-slate-300 hover:bg-slate-800 hover:text-white"
-              }`}
+              className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-200 ${active
+                ? "bg-primary text-white shadow-lg shadow-primary/25"
+                : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                }`}
             >
               <div
-                className={`p-2 rounded-lg ${
-                  active
-                    ? "bg-white/20"
-                    : "bg-slate-700 group-hover:bg-slate-600"
-                }`}
+                className={`p-2 rounded-lg ${active
+                  ? "bg-white/20"
+                  : "bg-slate-700 group-hover:bg-slate-600"
+                  }`}
               >
                 <item.icon
                   size={18}

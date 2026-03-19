@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import AdminLayout from "@/components/admin/AdminLayout";
+import { useAdmin } from "@/contexts/AdminContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -94,6 +94,7 @@ const defaultFooterSettings: FooterSettings = {
 };
 
 export default function SiteBuilderPage() {
+  const { setTitle } = useAdmin();
   const [headerSettings, setHeaderSettings] = useState<HeaderSettings>(
     defaultHeaderSettings
   );
@@ -106,6 +107,10 @@ export default function SiteBuilderPage() {
     header?: "success" | "error";
     footer?: "success" | "error";
   }>({});
+
+  useEffect(() => {
+    setTitle("Header & Footer");
+  }, [setTitle]);
 
   // Load settings from database
   useEffect(() => {
@@ -595,552 +600,548 @@ export default function SiteBuilderPage() {
 
   if (loading) {
     return (
-      <AdminLayout title="Header & Footer">
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-      </AdminLayout>
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
     );
   }
 
   return (
-    <AdminLayout title="Header & Footer">
-      <div className="p-6 max-w-5xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold">Header & Footer Settings</h1>
-            <p className="text-muted-foreground">
-              Manage your website header and footer content
-            </p>
-          </div>
-          <Button variant="outline" onClick={loadSettings}>
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh
-          </Button>
+    <div className="p-6 max-w-5xl mx-auto">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold">Header & Footer Settings</h1>
+          <p className="text-muted-foreground">
+            Manage your website header and footer content
+          </p>
         </div>
+        <Button variant="outline" onClick={loadSettings}>
+          <RefreshCw className="h-4 w-4 mr-2" />
+          Refresh
+        </Button>
+      </div>
 
-        <Tabs defaultValue="header" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="header">Header Settings</TabsTrigger>
-            <TabsTrigger value="footer">Footer Settings</TabsTrigger>
-          </TabsList>
+      <Tabs defaultValue="header" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="header">Header Settings</TabsTrigger>
+          <TabsTrigger value="footer">Footer Settings</TabsTrigger>
+        </TabsList>
 
-          {/* Header Settings Tab */}
-          <TabsContent value="header" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Brand Information</CardTitle>
-                <CardDescription>
-                  Company name and tagline displayed in the header
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="header-company-name">Company Name</Label>
-                    <Input
-                      id="header-company-name"
-                      value={headerSettings.company_name}
-                      onChange={(e) =>
-                        setHeaderSettings((prev) => ({
-                          ...prev,
-                          company_name: e.target.value,
-                        }))
-                      }
-                      placeholder="Mark Corpotax"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="header-tagline">Tagline</Label>
-                    <Input
-                      id="header-tagline"
-                      value={headerSettings.company_tagline}
-                      onChange={(e) =>
-                        setHeaderSettings((prev) => ({
-                          ...prev,
-                          company_tagline: e.target.value,
-                        }))
-                      }
-                      placeholder="Financial & Legal Solutions"
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Contact & CTA</CardTitle>
-                <CardDescription>
-                  Phone number display and call-to-action button
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <Switch
-                    id="show-phone"
-                    checked={headerSettings.show_phone}
-                    onCheckedChange={(checked) =>
+        {/* Header Settings Tab */}
+        <TabsContent value="header" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Brand Information</CardTitle>
+              <CardDescription>
+                Company name and tagline displayed in the header
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="header-company-name">Company Name</Label>
+                  <Input
+                    id="header-company-name"
+                    value={headerSettings.company_name}
+                    onChange={(e) =>
                       setHeaderSettings((prev) => ({
                         ...prev,
-                        show_phone: checked,
+                        company_name: e.target.value,
                       }))
                     }
-                  />
-                  <Label htmlFor="show-phone">
-                    Show phone number in header
-                  </Label>
-                </div>
-                {headerSettings.show_phone && (
-                  <div className="space-y-2">
-                    <Label htmlFor="phone-display">Phone Number</Label>
-                    <Input
-                      id="phone-display"
-                      value={headerSettings.phone_display}
-                      onChange={(e) =>
-                        setHeaderSettings((prev) => ({
-                          ...prev,
-                          phone_display: e.target.value,
-                        }))
-                      }
-                      placeholder="97120 67891"
-                    />
-                  </div>
-                )}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="cta-text">CTA Button Text</Label>
-                    <Input
-                      id="cta-text"
-                      value={headerSettings.cta_text}
-                      onChange={(e) =>
-                        setHeaderSettings((prev) => ({
-                          ...prev,
-                          cta_text: e.target.value,
-                        }))
-                      }
-                      placeholder="Get a Quote"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="cta-link">CTA Button Link</Label>
-                    <Input
-                      id="cta-link"
-                      value={headerSettings.cta_link}
-                      onChange={(e) =>
-                        setHeaderSettings((prev) => ({
-                          ...prev,
-                          cta_link: e.target.value,
-                        }))
-                      }
-                      placeholder="/appointment"
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Navigation Menu</CardTitle>
-                <CardDescription>
-                  Configure navigation menu items (max 6)
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {headerSettings.nav_items.map((item, index) => (
-                  <div key={index} className="flex items-center gap-4">
-                    <div className="flex-1 grid grid-cols-2 gap-4">
-                      <Input
-                        value={item.label}
-                        onChange={(e) =>
-                          updateNavItem(index, "label", e.target.value)
-                        }
-                        placeholder="Label"
-                      />
-                      <Input
-                        value={item.link}
-                        onChange={(e) =>
-                          updateNavItem(index, "link", e.target.value)
-                        }
-                        placeholder="/path"
-                      />
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => removeNavItem(index)}
-                      disabled={headerSettings.nav_items.length <= 1}
-                    >
-                      ×
-                    </Button>
-                  </div>
-                ))}
-                {headerSettings.nav_items.length < 6 && (
-                  <Button variant="outline" onClick={addNavItem}>
-                    + Add Navigation Item
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-
-            <div className="flex justify-end">
-              <Button
-                onClick={saveHeaderSettings}
-                disabled={saving === "header"}
-              >
-                {saving === "header" ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Saving...
-                  </>
-                ) : saveStatus.header === "success" ? (
-                  <>
-                    <Check className="h-4 w-4 mr-2" />
-                    Saved!
-                  </>
-                ) : saveStatus.header === "error" ? (
-                  <>
-                    <AlertCircle className="h-4 w-4 mr-2" />
-                    Error
-                  </>
-                ) : (
-                  <>
-                    <Save className="h-4 w-4 mr-2" />
-                    Save Header Settings
-                  </>
-                )}
-              </Button>
-            </div>
-          </TabsContent>
-
-          {/* Footer Settings Tab */}
-          <TabsContent value="footer" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Brand Information</CardTitle>
-                <CardDescription>
-                  Company details displayed in the footer
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="footer-company-name">Company Name</Label>
-                    <Input
-                      id="footer-company-name"
-                      value={footerSettings.company_name}
-                      onChange={(e) =>
-                        setFooterSettings((prev) => ({
-                          ...prev,
-                          company_name: e.target.value,
-                        }))
-                      }
-                      placeholder="Mark Corpotax"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="footer-tagline">Tagline</Label>
-                    <Input
-                      id="footer-tagline"
-                      value={footerSettings.company_tagline}
-                      onChange={(e) =>
-                        setFooterSettings((prev) => ({
-                          ...prev,
-                          company_tagline: e.target.value,
-                        }))
-                      }
-                      placeholder="Financial & Legal Solutions"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="footer-description">
-                    Company Description
-                  </Label>
-                  <Textarea
-                    id="footer-description"
-                    value={footerSettings.company_description}
-                    onChange={(e) =>
-                      setFooterSettings((prev) => ({
-                        ...prev,
-                        company_description: e.target.value,
-                      }))
-                    }
-                    placeholder="Company description..."
-                    rows={3}
+                    placeholder="Mark Corpotax"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="copyright">Copyright Text</Label>
+                  <Label htmlFor="header-tagline">Tagline</Label>
                   <Input
-                    id="copyright"
-                    value={footerSettings.copyright_text}
+                    id="header-tagline"
+                    value={headerSettings.company_tagline}
                     onChange={(e) =>
-                      setFooterSettings((prev) => ({
+                      setHeaderSettings((prev) => ({
                         ...prev,
-                        copyright_text: e.target.value,
+                        company_tagline: e.target.value,
                       }))
                     }
-                    placeholder="© 2024 Mark Corpotax. All Rights Reserved."
+                    placeholder="Financial & Legal Solutions"
                   />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Contact Information</CardTitle>
-                <CardDescription>
-                  Contact details displayed in the footer
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="phone-finance">Finance Phone</Label>
-                    <Input
-                      id="phone-finance"
-                      value={footerSettings.phone_finance}
-                      onChange={(e) =>
-                        setFooterSettings((prev) => ({
-                          ...prev,
-                          phone_finance: e.target.value,
-                        }))
-                      }
-                      placeholder="97120 67891"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone-taxation">Taxation Phone</Label>
-                    <Input
-                      id="phone-taxation"
-                      value={footerSettings.phone_taxation}
-                      onChange={(e) =>
-                        setFooterSettings((prev) => ({
-                          ...prev,
-                          phone_taxation: e.target.value,
-                        }))
-                      }
-                      placeholder="97738 22604"
-                    />
-                  </div>
-                </div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Contact & CTA</CardTitle>
+              <CardDescription>
+                Phone number display and call-to-action button
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center space-x-4">
+                <Switch
+                  id="show-phone"
+                  checked={headerSettings.show_phone}
+                  onCheckedChange={(checked) =>
+                    setHeaderSettings((prev) => ({
+                      ...prev,
+                      show_phone: checked,
+                    }))
+                  }
+                />
+                <Label htmlFor="show-phone">
+                  Show phone number in header
+                </Label>
+              </div>
+              {headerSettings.show_phone && (
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="phone-display">Phone Number</Label>
                   <Input
-                    id="email"
-                    type="email"
-                    value={footerSettings.email}
+                    id="phone-display"
+                    value={headerSettings.phone_display}
                     onChange={(e) =>
-                      setFooterSettings((prev) => ({
+                      setHeaderSettings((prev) => ({
                         ...prev,
-                        email: e.target.value,
+                        phone_display: e.target.value,
                       }))
                     }
-                    placeholder="markcorpotax@gmail.com"
+                    placeholder="97120 67891"
+                  />
+                </div>
+              )}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="cta-text">CTA Button Text</Label>
+                  <Input
+                    id="cta-text"
+                    value={headerSettings.cta_text}
+                    onChange={(e) =>
+                      setHeaderSettings((prev) => ({
+                        ...prev,
+                        cta_text: e.target.value,
+                      }))
+                    }
+                    placeholder="Get a Quote"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="address">Address</Label>
-                  <Textarea
-                    id="address"
-                    value={footerSettings.address}
+                  <Label htmlFor="cta-link">CTA Button Link</Label>
+                  <Input
+                    id="cta-link"
+                    value={headerSettings.cta_link}
+                    onChange={(e) =>
+                      setHeaderSettings((prev) => ({
+                        ...prev,
+                        cta_link: e.target.value,
+                      }))
+                    }
+                    placeholder="/appointment"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Navigation Menu</CardTitle>
+              <CardDescription>
+                Configure navigation menu items (max 6)
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {headerSettings.nav_items.map((item, index) => (
+                <div key={index} className="flex items-center gap-4">
+                  <div className="flex-1 grid grid-cols-2 gap-4">
+                    <Input
+                      value={item.label}
+                      onChange={(e) =>
+                        updateNavItem(index, "label", e.target.value)
+                      }
+                      placeholder="Label"
+                    />
+                    <Input
+                      value={item.link}
+                      onChange={(e) =>
+                        updateNavItem(index, "link", e.target.value)
+                      }
+                      placeholder="/path"
+                    />
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => removeNavItem(index)}
+                    disabled={headerSettings.nav_items.length <= 1}
+                  >
+                    ×
+                  </Button>
+                </div>
+              ))}
+              {headerSettings.nav_items.length < 6 && (
+                <Button variant="outline" onClick={addNavItem}>
+                  + Add Navigation Item
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+
+          <div className="flex justify-end">
+            <Button
+              onClick={saveHeaderSettings}
+              disabled={saving === "header"}
+            >
+              {saving === "header" ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : saveStatus.header === "success" ? (
+                <>
+                  <Check className="h-4 w-4 mr-2" />
+                  Saved!
+                </>
+              ) : saveStatus.header === "error" ? (
+                <>
+                  <AlertCircle className="h-4 w-4 mr-2" />
+                  Error
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Save Header Settings
+                </>
+              )}
+            </Button>
+          </div>
+        </TabsContent>
+
+        {/* Footer Settings Tab */}
+        <TabsContent value="footer" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Brand Information</CardTitle>
+              <CardDescription>
+                Company details displayed in the footer
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="footer-company-name">Company Name</Label>
+                  <Input
+                    id="footer-company-name"
+                    value={footerSettings.company_name}
                     onChange={(e) =>
                       setFooterSettings((prev) => ({
                         ...prev,
-                        address: e.target.value,
+                        company_name: e.target.value,
                       }))
                     }
-                    placeholder="Office address..."
-                    rows={2}
+                    placeholder="Mark Corpotax"
                   />
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Social Media Links</CardTitle>
-                <CardDescription>Social media profile URLs</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="facebook">Facebook</Label>
-                    <Input
-                      id="facebook"
-                      value={footerSettings.facebook}
-                      onChange={(e) =>
-                        setFooterSettings((prev) => ({
-                          ...prev,
-                          facebook: e.target.value,
-                        }))
-                      }
-                      placeholder="https://facebook.com/..."
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="twitter">Twitter</Label>
-                    <Input
-                      id="twitter"
-                      value={footerSettings.twitter}
-                      onChange={(e) =>
-                        setFooterSettings((prev) => ({
-                          ...prev,
-                          twitter: e.target.value,
-                        }))
-                      }
-                      placeholder="https://twitter.com/..."
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="linkedin">LinkedIn</Label>
-                    <Input
-                      id="linkedin"
-                      value={footerSettings.linkedin}
-                      onChange={(e) =>
-                        setFooterSettings((prev) => ({
-                          ...prev,
-                          linkedin: e.target.value,
-                        }))
-                      }
-                      placeholder="https://linkedin.com/..."
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="instagram">Instagram</Label>
-                    <Input
-                      id="instagram"
-                      value={footerSettings.instagram}
-                      onChange={(e) =>
-                        setFooterSettings((prev) => ({
-                          ...prev,
-                          instagram: e.target.value,
-                        }))
-                      }
-                      placeholder="https://instagram.com/..."
-                    />
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="footer-tagline">Tagline</Label>
+                  <Input
+                    id="footer-tagline"
+                    value={footerSettings.company_tagline}
+                    onChange={(e) =>
+                      setFooterSettings((prev) => ({
+                        ...prev,
+                        company_tagline: e.target.value,
+                      }))
+                    }
+                    placeholder="Financial & Legal Solutions"
+                  />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="footer-description">
+                  Company Description
+                </Label>
+                <Textarea
+                  id="footer-description"
+                  value={footerSettings.company_description}
+                  onChange={(e) =>
+                    setFooterSettings((prev) => ({
+                      ...prev,
+                      company_description: e.target.value,
+                    }))
+                  }
+                  placeholder="Company description..."
+                  rows={3}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="copyright">Copyright Text</Label>
+                <Input
+                  id="copyright"
+                  value={footerSettings.copyright_text}
+                  onChange={(e) =>
+                    setFooterSettings((prev) => ({
+                      ...prev,
+                      copyright_text: e.target.value,
+                    }))
+                  }
+                  placeholder="© 2024 Mark Corpotax. All Rights Reserved."
+                />
+              </div>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Quick Links</CardTitle>
-                <CardDescription>Footer quick links (max 6)</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {footerSettings.quick_links.map((item, index) => (
-                  <div key={index} className="flex items-center gap-4">
-                    <div className="flex-1 grid grid-cols-2 gap-4">
-                      <Input
-                        value={item.label}
-                        onChange={(e) =>
-                          updateQuickLink(index, "label", e.target.value)
-                        }
-                        placeholder="Label"
-                      />
-                      <Input
-                        value={item.url}
-                        onChange={(e) =>
-                          updateQuickLink(index, "url", e.target.value)
-                        }
-                        placeholder="/path"
-                      />
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => removeQuickLink(index)}
-                      disabled={footerSettings.quick_links.length <= 1}
-                    >
-                      ×
-                    </Button>
+          <Card>
+            <CardHeader>
+              <CardTitle>Contact Information</CardTitle>
+              <CardDescription>
+                Contact details displayed in the footer
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="phone-finance">Finance Phone</Label>
+                  <Input
+                    id="phone-finance"
+                    value={footerSettings.phone_finance}
+                    onChange={(e) =>
+                      setFooterSettings((prev) => ({
+                        ...prev,
+                        phone_finance: e.target.value,
+                      }))
+                    }
+                    placeholder="97120 67891"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone-taxation">Taxation Phone</Label>
+                  <Input
+                    id="phone-taxation"
+                    value={footerSettings.phone_taxation}
+                    onChange={(e) =>
+                      setFooterSettings((prev) => ({
+                        ...prev,
+                        phone_taxation: e.target.value,
+                      }))
+                    }
+                    placeholder="97738 22604"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={footerSettings.email}
+                  onChange={(e) =>
+                    setFooterSettings((prev) => ({
+                      ...prev,
+                      email: e.target.value,
+                    }))
+                  }
+                  placeholder="markcorpotax@gmail.com"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="address">Address</Label>
+                <Textarea
+                  id="address"
+                  value={footerSettings.address}
+                  onChange={(e) =>
+                    setFooterSettings((prev) => ({
+                      ...prev,
+                      address: e.target.value,
+                    }))
+                  }
+                  placeholder="Office address..."
+                  rows={2}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Social Media Links</CardTitle>
+              <CardDescription>Social media profile URLs</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="facebook">Facebook</Label>
+                  <Input
+                    id="facebook"
+                    value={footerSettings.facebook}
+                    onChange={(e) =>
+                      setFooterSettings((prev) => ({
+                        ...prev,
+                        facebook: e.target.value,
+                      }))
+                    }
+                    placeholder="https://facebook.com/..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="twitter">Twitter</Label>
+                  <Input
+                    id="twitter"
+                    value={footerSettings.twitter}
+                    onChange={(e) =>
+                      setFooterSettings((prev) => ({
+                        ...prev,
+                        twitter: e.target.value,
+                      }))
+                    }
+                    placeholder="https://twitter.com/..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="linkedin">LinkedIn</Label>
+                  <Input
+                    id="linkedin"
+                    value={footerSettings.linkedin}
+                    onChange={(e) =>
+                      setFooterSettings((prev) => ({
+                        ...prev,
+                        linkedin: e.target.value,
+                      }))
+                    }
+                    placeholder="https://linkedin.com/..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="instagram">Instagram</Label>
+                  <Input
+                    id="instagram"
+                    value={footerSettings.instagram}
+                    onChange={(e) =>
+                      setFooterSettings((prev) => ({
+                        ...prev,
+                        instagram: e.target.value,
+                      }))
+                    }
+                    placeholder="https://instagram.com/..."
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Quick Links</CardTitle>
+              <CardDescription>Footer quick links (max 6)</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {footerSettings.quick_links.map((item, index) => (
+                <div key={index} className="flex items-center gap-4">
+                  <div className="flex-1 grid grid-cols-2 gap-4">
+                    <Input
+                      value={item.label}
+                      onChange={(e) =>
+                        updateQuickLink(index, "label", e.target.value)
+                      }
+                      placeholder="Label"
+                    />
+                    <Input
+                      value={item.url}
+                      onChange={(e) =>
+                        updateQuickLink(index, "url", e.target.value)
+                      }
+                      placeholder="/path"
+                    />
                   </div>
-                ))}
-                {footerSettings.quick_links.length < 6 && (
-                  <Button variant="outline" onClick={addQuickLink}>
-                    + Add Quick Link
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => removeQuickLink(index)}
+                    disabled={footerSettings.quick_links.length <= 1}
+                  >
+                    ×
                   </Button>
-                )}
-              </CardContent>
-            </Card>
+                </div>
+              ))}
+              {footerSettings.quick_links.length < 6 && (
+                <Button variant="outline" onClick={addQuickLink}>
+                  + Add Quick Link
+                </Button>
+              )}
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Service Links</CardTitle>
-                <CardDescription>Footer service links (max 6)</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {footerSettings.service_links.map((item, index) => (
-                  <div key={index} className="flex items-center gap-4">
-                    <div className="flex-1 grid grid-cols-2 gap-4">
-                      <Input
-                        value={item.label}
-                        onChange={(e) =>
-                          updateServiceLink(index, "label", e.target.value)
-                        }
-                        placeholder="Label"
-                      />
-                      <Input
-                        value={item.url}
-                        onChange={(e) =>
-                          updateServiceLink(index, "url", e.target.value)
-                        }
-                        placeholder="/services/..."
-                      />
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => removeServiceLink(index)}
-                      disabled={footerSettings.service_links.length <= 1}
-                    >
-                      ×
-                    </Button>
+          <Card>
+            <CardHeader>
+              <CardTitle>Service Links</CardTitle>
+              <CardDescription>Footer service links (max 6)</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {footerSettings.service_links.map((item, index) => (
+                <div key={index} className="flex items-center gap-4">
+                  <div className="flex-1 grid grid-cols-2 gap-4">
+                    <Input
+                      value={item.label}
+                      onChange={(e) =>
+                        updateServiceLink(index, "label", e.target.value)
+                      }
+                      placeholder="Label"
+                    />
+                    <Input
+                      value={item.url}
+                      onChange={(e) =>
+                        updateServiceLink(index, "url", e.target.value)
+                      }
+                      placeholder="/services/..."
+                    />
                   </div>
-                ))}
-                {footerSettings.service_links.length < 6 && (
-                  <Button variant="outline" onClick={addServiceLink}>
-                    + Add Service Link
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => removeServiceLink(index)}
+                    disabled={footerSettings.service_links.length <= 1}
+                  >
+                    ×
                   </Button>
-                )}
-              </CardContent>
-            </Card>
+                </div>
+              ))}
+              {footerSettings.service_links.length < 6 && (
+                <Button variant="outline" onClick={addServiceLink}>
+                  + Add Service Link
+                </Button>
+              )}
+            </CardContent>
+          </Card>
 
-            <div className="flex justify-end">
-              <Button
-                onClick={saveFooterSettings}
-                disabled={saving === "footer"}
-              >
-                {saving === "footer" ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Saving...
-                  </>
-                ) : saveStatus.footer === "success" ? (
-                  <>
-                    <Check className="h-4 w-4 mr-2" />
-                    Saved!
-                  </>
-                ) : saveStatus.footer === "error" ? (
-                  <>
-                    <AlertCircle className="h-4 w-4 mr-2" />
-                    Error
-                  </>
-                ) : (
-                  <>
-                    <Save className="h-4 w-4 mr-2" />
-                    Save Footer Settings
-                  </>
-                )}
-              </Button>
-            </div>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </AdminLayout>
+          <div className="flex justify-end">
+            <Button
+              onClick={saveFooterSettings}
+              disabled={saving === "footer"}
+            >
+              {saving === "footer" ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : saveStatus.footer === "success" ? (
+                <>
+                  <Check className="h-4 w-4 mr-2" />
+                  Saved!
+                </>
+              ) : saveStatus.footer === "error" ? (
+                <>
+                  <AlertCircle className="h-4 w-4 mr-2" />
+                  Error
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Save Footer Settings
+                </>
+              )}
+            </Button>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 }
