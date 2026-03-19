@@ -39,14 +39,20 @@ export interface ButtonProps
   asChild?: boolean
 }
 
+/**
+ * Updated for React 19 + Next.js 16 Turbopack compatibility.
+ * In React 19, `ref` is a prop. Using the explicit `ref` parameter in non-forwardRef 
+ * components or updating forwardRef signature helps resolve Turbopack's `_ref is not defined` bug.
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  (props, ref) => {
+    const { className, variant, size, asChild = false, ...rest } = props
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
-        {...props}
+        {...rest}
       />
     )
   }

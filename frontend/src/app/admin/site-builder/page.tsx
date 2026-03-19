@@ -613,10 +613,7 @@ export default function SiteBuilderPage() {
               Manage your website header and footer content
             </p>
           </div>
-          <Button variant="outline" onClick={loadSettings}>
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh
-          </Button>
+
         </div>
 
         <Tabs defaultValue="header" className="space-y-6">

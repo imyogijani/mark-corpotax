@@ -198,14 +198,7 @@ export default function SettingsPage() {
           </div>
           
           <div className="flex items-center gap-4 bg-white/50 backdrop-blur-md p-2 rounded-2xl border border-white/50 shadow-sm">
-             <Button 
-                variant="ghost" 
-                onClick={fetchSettings} 
-                className="rounded-xl h-12 px-6 font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-all"
-             >
-               <RefreshCw className="h-4 w-4 mr-2 text-slate-400" />
-               Reload Data
-             </Button>
+
              <Button 
                onClick={handleSave} 
                disabled={saving} 

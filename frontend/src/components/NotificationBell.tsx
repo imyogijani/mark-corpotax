@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -34,11 +33,126 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import Link from "next/link";
 
 interface NotificationBellProps {
   variant?: "dropdown" | "sheet";
 }
+
+// ── Helpers hoisted to module level ──────────────────────────────────────────
+
+function getNotificationIcon(type: Notification["type"]) {
+  switch (type) {
+    case "success":
+      return <CheckCircle2 className="w-4 h-4 text-blue-600" />;
+    case "warning":
+      return <AlertTriangle className="w-4 h-4 text-yellow-600" />;
+    case "error":
+      return <AlertCircle className="w-4 h-4 text-red-600" />;
+    default:
+      return <Info className="w-4 h-4 text-blue-600" />;
+  }
+}
+
+function getNotificationBgColor(type: Notification["type"], read: boolean) {
+  if (read) return "bg-gray-50";
+
+  switch (type) {
+    case "success":
+      return "bg-blue-50 border-l-4 border-blue-500";
+    case "warning":
+      return "bg-yellow-50 border-l-4 border-yellow-500";
+    case "error":
+      return "bg-red-50 border-l-4 border-red-500";
+    default:
+      return "bg-blue-50 border-l-4 border-blue-500";
+  }
+}
+
+function NotificationItem({
+  notification,
+  onMarkAsRead,
+  onRemove,
+  inSheet = false,
+}: {
+  notification: Notification;
+  onMarkAsRead: (id: string) => void;
+  onRemove: (id: string) => void;
+  inSheet?: boolean;
+}) {
+  return (
+    <div
+      className={`p-4 transition-colors duration-200 ${getNotificationBgColor(
+        notification.type,
+        notification.read
+      )} ${inSheet ? "border-b border-gray-100" : ""}`}
+    >
+      <div className="flex items-start gap-3">
+        {getNotificationIcon(notification.type)}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between mb-1">
+            <h4
+              className={`text-sm font-medium ${
+                notification.read ? "text-gray-600" : "text-gray-900"
+              }`}
+            >
+              {notification.title}
+            </h4>
+            <div className="flex items-center gap-1">
+              {!notification.read && (
+                <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+              )}
+              <button
+                type="button"
+                className="h-6 w-6 inline-flex items-center justify-center rounded-md hover:bg-black/5 text-gray-400 hover:text-gray-900 transition-colors"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRemove(notification.id);
+                }}
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          </div>
+          <p
+            className={`text-sm ${
+              notification.read ? "text-gray-500" : "text-gray-700"
+            } mb-2`}
+          >
+            {notification.message}
+          </p>
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-gray-400">
+              {formatDistanceToNow(notification.createdAt, { addSuffix: true })}
+            </span>
+            <div className="flex items-center gap-2">
+              {notification.actionUrl && (
+                <a 
+                  href={notification.actionUrl}
+                  className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-2 py-1 text-xs font-medium hover:bg-gray-50 transition-colors"
+                >
+                  <ExternalLink className="w-3 h-3 mr-1" />
+                  {notification.actionLabel || "View"}
+                </a>
+              )}
+              {!notification.read && (
+                <button
+                  type="button"
+                  className="inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium text-blue-600 hover:bg-blue-50 transition-colors"
+                  onClick={() => onMarkAsRead(notification.id)}
+                >
+                  <Check className="w-3 h-3 mr-1" />
+                  Mark read
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Main export ───────────────────────────────────────────────────────────────
 
 export function NotificationBell({ variant = "sheet" }: NotificationBellProps) {
   const {
@@ -51,108 +165,21 @@ export function NotificationBell({ variant = "sheet" }: NotificationBellProps) {
   } = useNotifications();
   const [isOpen, setIsOpen] = useState(false);
 
-  const getNotificationIcon = (type: Notification["type"]) => {
-    switch (type) {
-      case "success":
-        return <CheckCircle2 className="w-4 h-4 text-blue-600" />;
-      case "warning":
-        return <AlertTriangle className="w-4 h-4 text-yellow-600" />;
-      case "error":
-        return <AlertCircle className="w-4 h-4 text-red-600" />;
-      default:
-        return <Info className="w-4 h-4 text-blue-600" />;
-    }
-  };
-
-  const getNotificationBgColor = (
-    type: Notification["type"],
-    read: boolean
-  ) => {
-    if (read) return "bg-gray-50";
-
-    switch (type) {
-      case "success":
-        return "bg-blue-50 border-l-4 border-blue-500";
-      case "warning":
-        return "bg-yellow-50 border-l-4 border-yellow-500";
-      case "error":
-        return "bg-red-50 border-l-4 border-red-500";
-      default:
-        return "bg-blue-50 border-l-4 border-blue-500";
-    }
-  };
-
-  const NotificationItem = ({
-    notification,
-    inSheet = false,
-  }: {
-    notification: Notification;
-    inSheet?: boolean;
-  }) => (
-    <div
-      className={`p-4 transition-colors duration-200 ${getNotificationBgColor(
-        notification.type,
-        notification.read
-      )} ${inSheet ? "border-b border-gray-100" : ""}`}
-    >
-      <div className="flex items-start gap-3">
-        {getNotificationIcon(notification.type)}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-1">
-            <h4
-              className={`text-sm font-medium ${notification.read ? "text-gray-600" : "text-gray-900"
-                }`}
-            >
-              {notification.title}
-            </h4>
-            <div className="flex items-center gap-1">
-              {!notification.read && (
-                <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-              )}
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-6 w-6 p-0"
-                onClick={() => removeNotification(notification.id)}
-              >
-                <X className="w-3 h-3" />
-              </Button>
-            </div>
-          </div>
-          <p
-            className={`text-sm ${notification.read ? "text-gray-500" : "text-gray-700"
-              } mb-2`}
-          >
-            {notification.message}
-          </p>
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-gray-400">
-              {formatDistanceToNow(notification.createdAt, { addSuffix: true })}
-            </span>
-            <div className="flex items-center gap-2">
-              {notification.actionUrl && (
-                <Link href={notification.actionUrl}>
-                  <Button variant="outline" size="sm" className="h-6 text-xs">
-                    <ExternalLink className="w-3 h-3 mr-1" />
-                    {notification.actionLabel || "View"}
-                  </Button>
-                </Link>
-              )}
-              {!notification.read && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-6 text-xs"
-                  onClick={() => markAsRead(notification.id)}
-                >
-                  <Check className="w-3 h-3 mr-1" />
-                  Mark read
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+  const bellTriggerContent = (
+    <div className="relative p-2 rounded-md hover:bg-gray-100 transition-colors cursor-pointer inline-flex items-center justify-center">
+      {unreadCount > 0 ? (
+        <BellRing className="h-5 w-5 text-gray-600" />
+      ) : (
+        <Bell className="h-5 w-5 text-gray-600" />
+      )}
+      {unreadCount > 0 && (
+        <Badge
+          variant="destructive"
+          className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs pointer-events-none"
+        >
+          {unreadCount > 9 ? "9+" : unreadCount}
+        </Badge>
+      )}
     </div>
   );
 
@@ -160,32 +187,21 @@ export function NotificationBell({ variant = "sheet" }: NotificationBellProps) {
     return (
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className="relative">
-            {unreadCount > 0 ? (
-              <BellRing className="h-5 w-5" />
-            ) : (
-              <Bell className="h-5 w-5" />
-            )}
-            {unreadCount > 0 && (
-              <Badge
-                variant="destructive"
-                className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs"
-              >
-                {unreadCount > 9 ? "9+" : unreadCount}
-              </Badge>
-            )}
-          </Button>
+          {bellTriggerContent}
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="w-80 max-h-96 overflow-y-auto"
+          className="w-80 max-h-96 overflow-y-auto z-[100]"
           align="end"
         >
           <DropdownMenuLabel className="flex items-center justify-between">
-            Notifications
+            <span>Notifications</span>
             {unreadCount > 0 && (
-              <Button variant="ghost" size="sm" onClick={markAllAsRead}>
+              <button 
+                className="text-xs text-blue-600 hover:text-blue-700 font-medium" 
+                onClick={markAllAsRead}
+              >
                 Mark all read
-              </Button>
+              </button>
             )}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -197,7 +213,11 @@ export function NotificationBell({ variant = "sheet" }: NotificationBellProps) {
           ) : (
             notifications.slice(0, 5).map((notification) => (
               <div key={notification.id}>
-                <NotificationItem notification={notification} />
+                <NotificationItem
+                  notification={notification}
+                  onMarkAsRead={markAsRead}
+                  onRemove={removeNotification}
+                />
               </div>
             ))
           )}
@@ -205,9 +225,9 @@ export function NotificationBell({ variant = "sheet" }: NotificationBellProps) {
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link href="/notifications" className="w-full text-center">
+                <a href="/notifications" className="w-full text-center py-2 text-sm text-blue-600 hover:bg-blue-50 block">
                   View all notifications
-                </Link>
+                </a>
               </DropdownMenuItem>
             </>
           )}
@@ -219,26 +239,12 @@ export function NotificationBell({ variant = "sheet" }: NotificationBellProps) {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="sm" className="relative">
-          {unreadCount > 0 ? (
-            <BellRing className="h-5 w-5" />
-          ) : (
-            <Bell className="h-5 w-5" />
-          )}
-          {unreadCount > 0 && (
-            <Badge
-              variant="destructive"
-              className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs"
-            >
-              {unreadCount > 9 ? "9+" : unreadCount}
-            </Badge>
-          )}
-        </Button>
+        {bellTriggerContent}
       </SheetTrigger>
-      <SheetContent className="w-full sm:w-[400px]">
+      <SheetContent className="w-full sm:w-[400px] z-[101]">
         <SheetHeader>
           <SheetTitle className="flex items-center justify-between">
-            Notifications
+            <span>Notifications</span>
             {unreadCount > 0 && (
               <Badge variant="secondary">{unreadCount} unread</Badge>
             )}
@@ -252,15 +258,21 @@ export function NotificationBell({ variant = "sheet" }: NotificationBellProps) {
           {notifications.length > 0 && (
             <div className="flex gap-2 mb-4">
               {unreadCount > 0 && (
-                <Button variant="outline" size="sm" onClick={markAllAsRead}>
+                <button 
+                  className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium hover:bg-gray-50 transition-colors"
+                  onClick={markAllAsRead}
+                >
                   <Check className="w-4 h-4 mr-1" />
                   Mark all read
-                </Button>
+                </button>
               )}
-              <Button variant="outline" size="sm" onClick={clearAll}>
+              <button 
+                className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium hover:bg-gray-50 transition-colors"
+                onClick={clearAll}
+              >
                 <Trash2 className="w-4 h-4 mr-1" />
                 Clear all
-              </Button>
+              </button>
             </div>
           )}
 
@@ -279,6 +291,8 @@ export function NotificationBell({ variant = "sheet" }: NotificationBellProps) {
                   <NotificationItem
                     key={notification.id}
                     notification={notification}
+                    onMarkAsRead={markAsRead}
+                    onRemove={removeNotification}
                     inSheet
                   />
                 ))}

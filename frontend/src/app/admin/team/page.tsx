@@ -143,9 +143,7 @@ export default function TeamManagerPage() {
             <p className="text-sm text-gray-500">Manage the professionals shown on your website</p>
           </div>
           <div className="flex gap-2">
-            <Button onClick={fetchTeam} variant="outline" size="sm">
-              <RefreshCw size={16} className="mr-2" /> Refresh
-            </Button>
+
             <Button onClick={() => {
               setSelectedMember({ status: 'active', order: team.length, socials: {} } as any);
               setIsEditing(true);

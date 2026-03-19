@@ -359,10 +359,7 @@ export default function AppointmentsPage() {
         {/* Action Buttons */}
         <div className="flex justify-end items-center">
           <div className="flex gap-2 w-full sm:w-auto">
-            <Button onClick={fetchAppointments} variant="outline" size="sm" className="h-9 rounded-xl">
-              <RefreshCw size={16} className="mr-2" />
-              Refresh
-            </Button>
+
             <Button
               onClick={exportToCSV}
               disabled={appointments.length === 0}
