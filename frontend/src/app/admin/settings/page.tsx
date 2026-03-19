@@ -41,6 +41,9 @@ import {
   ArrowRight,
   Fingerprint,
   Link as LinkIcon,
+  Layout,
+  Code2,
+  Lock,
 } from "lucide-react";
 import { authFetch } from "@/lib/auth";
 import { contentService } from "@/lib/content-service";
@@ -62,6 +65,12 @@ interface SiteSettings {
   meta_description: string;
   keywords: string;
   ga_id: string;
+  footer_description: string;
+  copyright_text: string;
+  newsletter_title: string;
+  newsletter_description: string;
+  custom_head_scripts: string;
+  custom_body_scripts: string;
 }
 
 export default function SettingsPage() {
@@ -86,6 +95,12 @@ export default function SettingsPage() {
     meta_description: "Expert financial and taxation solutions in Surat, Gujarat. Dedicated to delivering comprehensive financial and legal solutions.",
     keywords: "finance, taxation, msme loan, surat, gujarat, financial planning",
     ga_id: "",
+    footer_description: "Founded in 2012 in Surat, Gujarat. Delivering comprehensive financial and legal solutions designed to address the unique requirements of our clients.",
+    copyright_text: `© ${new Date().getFullYear()} MARK GROUP. All Rights Reserved.`,
+    newsletter_title: "Stay Ahead in Business",
+    newsletter_description: "Get weekly insights on taxation, MSME financing, and business growth delivered to your inbox.",
+    custom_head_scripts: "",
+    custom_body_scripts: "",
   });
 
   useEffect(() => {
@@ -123,8 +138,10 @@ export default function SettingsPage() {
         let section = "general";
         if (["facebook", "twitter", "linkedin", "instagram", "whatsapp"].includes(key)) section = "social";
         if (["meta_title", "meta_description", "keywords", "ga_id"].includes(key)) section = "seo";
-        if (["phone_finance", "phone_taxation", "email", "address"].includes(key)) section = "contact";
+        if (["phone_finance", "phone_taxation", "email", "address", "business_hours"].includes(key)) section = "contact";
         if (["company_name", "company_tagline"].includes(key)) section = "header";
+        if (["footer_description", "copyright_text", "newsletter_title", "newsletter_description"].includes(key)) section = "footer";
+        if (["custom_head_scripts", "custom_body_scripts"].includes(key)) section = "advanced";
 
         return authFetch("/admin/content", {
           method: "PUT",
@@ -236,8 +253,14 @@ export default function SettingsPage() {
             <TabsTrigger value="social" className="py-4 rounded-[1.25rem] data-[state=active]:bg-white data-[state=active]:shadow-[0_8px_30px_rgb(0,0,0,0.06)] data-[state=active]:text-primary font-black uppercase tracking-widest text-[10px] gap-2 transition-all">
               <Globe className="h-4 w-4" /> <span className="hidden sm:inline">Socials</span>
             </TabsTrigger>
+            <TabsTrigger value="footer" className="py-4 rounded-[1.25rem] data-[state=active]:bg-white data-[state=active]:shadow-[0_8px_30px_rgb(0,0,0,0.06)] data-[state=active]:text-primary font-black uppercase tracking-widest text-[10px] gap-2 transition-all">
+              <Layout className="h-4 w-4" /> <span className="hidden sm:inline">Footer</span>
+            </TabsTrigger>
             <TabsTrigger value="seo" className="py-4 rounded-[1.25rem] data-[state=active]:bg-white data-[state=active]:shadow-[0_8px_30px_rgb(0,0,0,0.06)] data-[state=active]:text-primary font-black uppercase tracking-widest text-[10px] gap-2 transition-all">
               <Search className="h-4 w-4" /> <span className="hidden sm:inline">SEO Edge</span>
+            </TabsTrigger>
+            <TabsTrigger value="advanced" className="py-4 rounded-[1.25rem] data-[state=active]:bg-white data-[state=active]:shadow-[0_8px_30px_rgb(0,0,0,0.06)] data-[state=active]:text-primary font-black uppercase tracking-widest text-[10px] gap-2 transition-all">
+              <Code2 className="h-4 w-4" /> <span className="hidden sm:inline">Dev Mode</span>
             </TabsTrigger>
           </TabsList>
         </div>
@@ -438,6 +461,60 @@ export default function SettingsPage() {
                 </div>
               </TabsContent>
 
+              <TabsContent value="footer" className="mt-0 outline-none">
+                <Card className="border-0 shadow-[0_25px_80px_rgba(0,0,0,0.03)] rounded-[2.5rem] overflow-hidden bg-white/80 backdrop-blur-xl">
+                  <header className="p-10 pb-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center">
+                        <Layout className="h-5 w-5 text-white" />
+                      </div>
+                      <CardTitle className="text-2xl font-black uppercase tracking-tighter text-slate-900">Footer Component</CardTitle>
+                    </div>
+                  </header>
+                  <CardContent className="p-10 pt-4 space-y-10">
+                    <div className="space-y-6">
+                      <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 pl-1">Footer Brand Bio</Label>
+                        <Textarea
+                          value={settings.footer_description}
+                          onChange={e => setSettings({ ...settings, footer_description: e.target.value })}
+                          className="rounded-[2rem] border-slate-100 bg-slate-50/50 transition-all font-bold text-slate-800 min-h-[100px] p-6 text-sm"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 pl-1">Copyright Signature</Label>
+                        <Input
+                          value={settings.copyright_text}
+                          onChange={e => setSettings({ ...settings, copyright_text: e.target.value })}
+                          className="h-14 rounded-2xl border-slate-100 bg-slate-50/50 transition-all font-bold text-slate-900"
+                        />
+                      </div>
+                    </div>
+
+                    <Separator className="bg-slate-100" />
+
+                    <div className="grid md:grid-cols-2 gap-8">
+                      <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 pl-1">Newsletter Header</Label>
+                        <Input
+                          value={settings.newsletter_title}
+                          onChange={e => setSettings({ ...settings, newsletter_title: e.target.value })}
+                          className="h-14 rounded-2xl border-slate-100 bg-slate-50/50 font-bold"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 pl-1">Newsletter Hook / Call-to-action</Label>
+                        <Input
+                          value={settings.newsletter_description}
+                          onChange={e => setSettings({ ...settings, newsletter_description: e.target.value })}
+                          className="h-14 rounded-2xl border-slate-100 bg-slate-50/50 font-bold"
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
               <TabsContent value="seo" className="mt-0 outline-none">
                 <Card className="border-0 shadow-[0_25px_80px_rgba(0,0,0,0.03)] rounded-[2.5rem] overflow-hidden bg-white/80 backdrop-blur-xl">
                   <header className="p-10 pb-4">
@@ -490,6 +567,62 @@ export default function SettingsPage() {
                           <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
                         </div>
                       </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="advanced" className="mt-0 outline-none">
+                <Card className="border-0 shadow-[0_25px_80px_rgba(0,0,0,0.03)] rounded-[2.5rem] overflow-hidden bg-slate-900 text-white">
+                  <header className="p-10 pb-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/20">
+                        <Code2 className="h-5 w-5 text-white" />
+                      </div>
+                      <CardTitle className="text-2xl font-black uppercase tracking-tighter text-white">Developer Overrides</CardTitle>
+                    </div>
+                    <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mt-2">DANGER ZONE: SCRIPT INJECTION & CORE LOGIC</p>
+                  </header>
+                  <CardContent className="p-10 pt-4 space-y-10">
+                    <div className="grid md:grid-cols-2 gap-8">
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-6 h-6 rounded bg-slate-800 flex items-center justify-center">
+                            <span className="text-[10px] font-mono text-primary font-bold">{"<H>"}</span>
+                          </div>
+                          <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Head Script Injection (Custom Styles/Scripts)</Label>
+                        </div>
+                        <Textarea
+                          value={settings.custom_head_scripts}
+                          onChange={e => setSettings({ ...settings, custom_head_scripts: e.target.value })}
+                          placeholder="<!-- Add FB Pixel, GTM, etc -->"
+                          className="rounded-[2.5rem] border-slate-800 bg-slate-800/50 transition-all font-mono text-[11px] text-primary min-h-[160px] p-8 focus:ring-primary/20"
+                        />
+                      </div>
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-6 h-6 rounded bg-slate-800 flex items-center justify-center">
+                            <span className="text-[10px] font-mono text-emerald-500 font-bold">{"<B>"}</span>
+                          </div>
+                          <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Body Footer Injection (Trackers/Live Chat)</Label>
+                        </div>
+                        <Textarea
+                          value={settings.custom_body_scripts}
+                          onChange={e => setSettings({ ...settings, custom_body_scripts: e.target.value })}
+                          placeholder="<!-- Add Tawk.to, Hotjar, etc -->"
+                          className="rounded-[2.5rem] border-slate-800 bg-slate-800/50 transition-all font-mono text-[11px] text-emerald-400 min-h-[160px] p-8 focus:ring-emerald-500/20"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="p-8 bg-red-500/5 rounded-[2.5rem] border border-red-500/10 flex items-center justify-between">
+                      <div className="space-y-1">
+                        <h4 className="text-red-400 font-black uppercase tracking-tight flex items-center gap-2"><Lock className="h-4 w-4" /> System Lockdown</h4>
+                        <p className="text-[10px] font-bold text-slate-500 uppercase">Emergency maintenance mode toggle (Site-wide)</p>
+                      </div>
+                      <Button variant="outline" className="rounded-2xl border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white font-black uppercase tracking-widest text-[10px] px-8 border-2">
+                        Enter Stealth Mode
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
